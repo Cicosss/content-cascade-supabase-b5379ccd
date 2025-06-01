@@ -22,7 +22,7 @@ const Profile = () => {
     departure_location: '',
     vacation_type: '',
     number_of_people: 1,
-    children_ages: [] as number[]
+    children_ages: [] as string[]
   });
 
   useEffect(() => {
@@ -62,7 +62,14 @@ const Profile = () => {
       .from('user_profiles')
       .upsert({
         id: user.id,
-        ...profile
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        email: profile.email,
+        arrival_location: profile.arrival_location,
+        departure_location: profile.departure_location,
+        vacation_type: profile.vacation_type,
+        number_of_people: profile.number_of_people,
+        children_ages: profile.children_ages
       });
 
     if (error) {
