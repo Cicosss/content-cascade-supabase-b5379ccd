@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
 
 const Header = () => {
@@ -37,18 +38,18 @@ const Header = () => {
 
           {/* Center Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/experiences" className="text-gray-700 hover:text-blue-600 transition-colors">
               Esperienze
-            </a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">
+            </Link>
+            <Link to="/events" className="text-gray-700 hover:text-blue-600 transition-colors">
               Eventi
-            </a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">
+            </Link>
+            <Link to="/restaurants" className="text-gray-700 hover:text-blue-600 transition-colors">
               Ristoranti
-            </a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors">
+            </Link>
+            <Link to="/itineraries" className="text-gray-700 hover:text-blue-600 transition-colors">
               Itinerari
-            </a>
+            </Link>
           </nav>
 
           {/* Right Section */}
