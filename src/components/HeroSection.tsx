@@ -3,8 +3,22 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MapPin, Calendar, Users } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HeroSection = () => {
+  const { user } = useAuth();
+  
+  // Get user's first name or default greeting
+  const getUserGreeting = () => {
+    if (user?.user_metadata?.first_name) {
+      return `Ciao, ${user.user_metadata.first_name}! 👋`;
+    } else if (user?.email) {
+      const emailName = user.email.split('@')[0];
+      return `Ciao, ${emailName}! 👋`;
+    }
+    return 'Benvenuto in Romagna! 👋';
+  };
+
   return (
     <div className="relative">
       {/* Hero Background */}
@@ -13,7 +27,7 @@ const HeroSection = () => {
         <div className="relative container mx-auto px-4 h-full flex items-center">
           <div className="text-white max-w-2xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Ciao, Luca! 👋
+              {getUserGreeting()}
             </h1>
             <p className="text-xl md:text-2xl mb-6 text-white/90">
               Il tuo compagno di viaggio personalizzato nel cuore della Romagna
