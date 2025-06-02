@@ -89,11 +89,11 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
         <Header />
         <div className="container mx-auto px-4 py-8">
-          <Card className="p-6 text-center">
-            <p>Devi effettuare l'accesso per vedere il tuo profilo.</p>
+          <Card className="p-8 text-center rounded-3xl border-0 shadow-lg">
+            <p className="text-gray-600 text-lg">Devi effettuare l'accesso per vedere il tuo profilo.</p>
           </Card>
         </div>
       </div>
@@ -101,95 +101,106 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
       <Header />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <Card className="p-6">
-            <div className="flex items-center mb-6">
-              <User className="h-6 w-6 mr-3 text-blue-600" />
-              <h1 className="text-2xl font-bold">Il Mio Profilo</h1>
+          <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+            <div className="flex items-center mb-8">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mr-4">
+                <User className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
+                Il Mio Profilo
+              </h1>
             </div>
 
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="first_name">Nome</Label>
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="first_name" className="text-sm font-semibold text-gray-700">Nome</Label>
                   <Input
                     id="first_name"
                     value={profile.first_name}
                     onChange={(e) => setProfile({...profile, first_name: e.target.value})}
                     placeholder="Il tuo nome"
+                    className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="last_name">Cognome</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="last_name" className="text-sm font-semibold text-gray-700">Cognome</Label>
                   <Input
                     id="last_name"
                     value={profile.last_name}
                     onChange={(e) => setProfile({...profile, last_name: e.target.value})}
                     placeholder="Il tuo cognome"
+                    className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                   />
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="email">Email</Label>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   value={profile.email}
                   onChange={(e) => setProfile({...profile, email: e.target.value})}
                   placeholder="La tua email"
+                  className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="arrival_location">Luogo di Arrivo</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="arrival_location" className="text-sm font-semibold text-gray-700">Luogo di Arrivo</Label>
                   <Input
                     id="arrival_location"
                     value={profile.arrival_location}
                     onChange={(e) => setProfile({...profile, arrival_location: e.target.value})}
                     placeholder="Da dove arrivi?"
+                    className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="departure_location">Luogo di Partenza</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="departure_location" className="text-sm font-semibold text-gray-700">Luogo di Partenza</Label>
                   <Input
                     id="departure_location"
                     value={profile.departure_location}
                     onChange={(e) => setProfile({...profile, departure_location: e.target.value})}
                     placeholder="Dove vai dopo?"
+                    className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                   />
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="vacation_type">Tipo di Vacanza</Label>
+              <div className="space-y-2">
+                <Label htmlFor="vacation_type" className="text-sm font-semibold text-gray-700">Tipo di Vacanza</Label>
                 <Input
                   id="vacation_type"
                   value={profile.vacation_type}
                   onChange={(e) => setProfile({...profile, vacation_type: e.target.value})}
                   placeholder="Es. Relax, Avventura, Famiglia..."
+                  className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="number_of_people">Numero di Persone</Label>
+              <div className="space-y-2">
+                <Label htmlFor="number_of_people" className="text-sm font-semibold text-gray-700">Numero di Persone</Label>
                 <Input
                   id="number_of_people"
                   type="number"
                   min="1"
                   value={profile.number_of_people}
                   onChange={(e) => setProfile({...profile, number_of_people: parseInt(e.target.value) || 1})}
+                  className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                 />
               </div>
 
               <Button 
                 onClick={updateProfile} 
                 disabled={loading}
-                className="w-full romagna-gradient"
+                className="w-full h-12 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 {loading ? 'Salvando...' : 'Salva Profilo'}
               </Button>

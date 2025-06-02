@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MapPin, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Mountain, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -23,7 +23,6 @@ const Auth = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) {
       navigate('/');
@@ -107,89 +106,90 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-orange-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl romagna-gradient">
-              <MapPin className="h-8 w-8 text-white" />
+          <div className="flex justify-center mb-6">
+            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-700 shadow-2xl">
+              <Mountain className="h-10 w-10 text-white" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Mia Romagna</h1>
-          <p className="text-gray-600 mt-2">
-            {isLogin ? 'Benvenuto di nuovo!' : 'Inizia la tua avventura'}
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent mb-2">
+            Mia Romagna
+          </h1>
+          <p className="text-gray-600 text-lg">
+            {isLogin ? 'Bentornato! 🌿' : 'Inizia la tua avventura 🏔️'}
           </p>
         </div>
 
-        <Card className="p-6 shadow-xl">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <Card className="p-8 shadow-2xl border-0 rounded-3xl bg-white/80 backdrop-blur-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {!isLogin && (
-              <>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">Nome</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="firstName"
-                        type="text"
-                        placeholder="Mario"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        className="pl-10"
-                        required={!isLogin}
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Cognome</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-sm font-semibold text-gray-700">Nome</Label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-500" />
                     <Input
-                      id="lastName"
+                      id="firstName"
                       type="text"
-                      placeholder="Rossi"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Mario"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="pl-12 h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                       required={!isLogin}
                     />
                   </div>
                 </div>
-              </>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-sm font-semibold text-gray-700">Cognome</Label>
+                  <Input
+                    id="lastName"
+                    type="text"
+                    placeholder="Rossi"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
+                    required={!isLogin}
+                  />
+                </div>
+              </div>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-500" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="mario@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
+                  className="pl-12 h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-sm font-semibold text-gray-700">Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-500" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10"
+                  className="pl-12 pr-12 h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-emerald-600 transition-colors"
                 >
                   {showPassword ? <EyeOff /> : <Eye />}
                 </button>
@@ -198,16 +198,16 @@ const Auth = () => {
 
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Conferma Password</Label>
+                <Label htmlFor="confirmPassword" className="text-sm font-semibold text-gray-700">Conferma Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-500" />
                   <Input
                     id="confirmPassword"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-10"
+                    className="pl-12 h-12 rounded-2xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400"
                     required={!isLogin}
                   />
                 </div>
@@ -216,20 +216,20 @@ const Auth = () => {
 
             <Button 
               type="submit" 
-              className="w-full romagna-gradient text-white"
+              className="w-full h-12 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
               disabled={loading}
             >
               {loading ? 'Caricamento...' : (isLogin ? 'Accedi' : 'Registrati')}
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+          <div className="mt-8 text-center">
+            <p className="text-gray-600">
               {isLogin ? 'Non hai un account?' : 'Hai già un account?'}
               <button
                 type="button"
                 onClick={() => setIsLogin(!isLogin)}
-                className="ml-2 text-blue-600 hover:text-blue-800 font-medium"
+                className="ml-2 text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
               >
                 {isLogin ? 'Registrati' : 'Accedi'}
               </button>
