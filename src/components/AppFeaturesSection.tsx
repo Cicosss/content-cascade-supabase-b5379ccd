@@ -2,80 +2,150 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MapPin, Users, Calendar, MessageCircle, Globe, Smartphone } from 'lucide-react';
+import { MapPin, Users, Calendar, MessageCircle, Globe, Smartphone, Star, Shield, Heart, Zap } from 'lucide-react';
 
 const AppFeaturesSection = () => {
   const features = [
     {
       icon: MapPin,
       title: "Mappa Interattiva con GPS",
-      description: "Utilizza il GPS per segnalare attrazioni vicine e guide dettagliate sui luoghi nascosti",
-      color: "bg-red-500"
+      description: "Sistema GPS avanzato che ti segnala attrazioni nascoste, percorsi ottimali e luoghi di interesse nelle immediate vicinanze con precisione centimetrica",
+      color: "from-red-500 to-red-600",
+      accent: "bg-red-100"
     },
     {
       icon: Users,
       title: "Guide Locali Certificate",
-      description: "Informazioni dettagliate su luoghi e attrazioni nascoste da esperti del territorio",
-      color: "bg-blue-500"
+      description: "Accesso esclusivo a oltre 50 guide locali certificate che condividono segreti del territorio tramandati di generazione in generazione",
+      color: "from-blue-500 to-blue-600",
+      accent: "bg-blue-100"
     },
     {
       icon: Calendar,
-      title: "Eventi e Aggiornamenti",
-      description: "Sempre aggiornato su eventi locali, culturali, sportivi e spettacoli",
-      color: "bg-green-500"
+      title: "Eventi in Tempo Reale",
+      description: "Aggiornamenti istantanei su eventi culturali, sportivi, gastronomici e spettacoli con notifiche personalizzate e calendario integrato",
+      color: "from-green-500 to-green-600",
+      accent: "bg-green-100"
     },
     {
       icon: MessageCircle,
       title: "Itinerari Personalizzati",
-      description: "Percorsi su misura basati sui tuoi interessi e durata del soggiorno",
-      color: "bg-purple-500"
+      description: "Algoritmo intelligente che crea percorsi su misura basati sui tuoi interessi, tempo disponibile e preferenze di viaggio",
+      color: "from-purple-500 to-purple-600",
+      accent: "bg-purple-100"
     },
     {
       icon: Globe,
-      title: "Supporto Multilingua",
-      description: "Disponibile in 5 lingue: Italiano, Inglese, Tedesco, Francese, Spagnolo e Russo",
-      color: "bg-orange-500"
+      title: "Supporto Multilingua Completo",
+      description: "Disponibile in 6 lingue complete: Italiano, Inglese, Tedesco, Francese, Spagnolo e Russo con traduzione automatica dei contenuti",
+      color: "from-orange-500 to-orange-600",
+      accent: "bg-orange-100"
     },
     {
       icon: Smartphone,
-      title: "Sistema di Feedback",
-      description: "Condividi le tue esperienze e contribuisci alla community di viaggiatori",
-      color: "bg-cyan-500"
+      title: "Esperienza Interattiva",
+      description: "Sistema di feedback e recensioni della community, condivisione social integrata e possibilità di contribuire con le tue scoperte",
+      color: "from-cyan-500 to-cyan-600",
+      accent: "bg-cyan-100"
+    }
+  ];
+
+  const additionalFeatures = [
+    {
+      icon: Star,
+      title: "Luoghi Esclusivi",
+      description: "Accesso a location non turistiche e esperienze autentiche"
+    },
+    {
+      icon: Shield,
+      title: "Sicurezza Garantita",
+      description: "Tutte le attività sono verificate e rispettano standard di sicurezza"
+    },
+    {
+      icon: Heart,
+      title: "Preferiti e Wishlist",
+      description: "Salva i tuoi luoghi preferiti e crea liste personalizzate"
+    },
+    {
+      icon: Zap,
+      title: "Modalità Offline",
+      description: "Funziona anche senza connessione internet"
     }
   ];
 
   return (
-    <section className="py-16 bg-slate-50">
+    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">I Punti Chiave dell'App</h2>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Un compagno affidabile per un'esperienza autentica che offre accesso a una varietà di attività, 
-            come escursioni, attività marittime e consigli per il tempo in famiglia
+        {/* Header Section migliorata */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-500 to-orange-400 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
+            <Smartphone className="h-4 w-4" />
+            <span>Tecnologia All'Avanguardia</span>
+          </div>
+          <h2 className="text-5xl font-bold text-slate-900 mb-6">I Punti di Forza dell'App</h2>
+          <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+            Un compagno di viaggio intelligente che ti offre accesso privilegiato alle autentiche meraviglie della Romagna, 
+            con tecnologie avanzate e il supporto di esperti locali per un'esperienza indimenticabile
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Main Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
-            <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300 bg-white border-0 shadow-md">
-              <div className="flex items-start space-x-4">
-                <div className={`${feature.color} p-3 rounded-xl shadow-md`}>
-                  <feature.icon className="h-6 w-6 text-white" />
+            <Card key={index} className="group p-8 hover:shadow-2xl transition-all duration-500 bg-white border-0 shadow-lg hover:scale-105 transform">
+              <div className="space-y-6">
+                <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className="h-8 w-8 text-white" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-slate-900 mb-2">{feature.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
+                <div className="space-y-3">
+                  <h3 className="font-bold text-xl text-slate-900 group-hover:text-slate-700 transition-colors">{feature.title}</h3>
+                  <p className="text-slate-600 text-base leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             </Card>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-            <span>✅</span>
-            <span>Completamente gratuita per tutti gli utenti Android & iOS</span>
-          </div>
+        {/* Additional Features */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          {additionalFeatures.map((feature, index) => (
+            <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300 bg-slate-50 border-slate-200">
+              <feature.icon className="h-10 w-10 mx-auto mb-4 text-slate-600" />
+              <h4 className="font-semibold text-slate-900 mb-2">{feature.title}</h4>
+              <p className="text-sm text-slate-600">{feature.description}</p>
+            </Card>
+          ))}
+        </div>
+
+        {/* Enhanced CTA Section */}
+        <div className="text-center">
+          <Card className="p-10 bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white border-0 shadow-2xl">
+            <div className="max-w-3xl mx-auto space-y-6">
+              <div className="flex justify-center mb-6">
+                <div className="flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg">
+                  <span className="text-xl">✅</span>
+                  <span>100% Gratuita per Tutti</span>
+                </div>
+              </div>
+              <h3 className="text-3xl font-bold mb-4">Disponibile su Android & iOS</h3>
+              <p className="text-xl text-slate-200 mb-8">
+                Unisciti a migliaia di esploratori che hanno già scoperto i segreti della Romagna
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button className="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
+                  <Smartphone className="h-5 w-5 mr-2" />
+                  Scarica per Android
+                </Button>
+                <Button className="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg">
+                  <Smartphone className="h-5 w-5 mr-2" />
+                  Scarica per iOS
+                </Button>
+              </div>
+              <p className="text-sm text-slate-300 mt-4">
+                * Nessuna registrazione richiesta • Aggiornamenti gratuiti a vita • Supporto clienti 24/7
+              </p>
+            </div>
+          </Card>
         </div>
       </div>
     </section>

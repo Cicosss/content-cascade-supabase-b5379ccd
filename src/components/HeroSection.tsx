@@ -2,11 +2,13 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { MapPin, Calendar, Users, Search, Smartphone, Heart } from 'lucide-react';
+import { MapPin, Calendar, Users, Search, Smartphone, Heart, Download } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   
   const getUserGreeting = () => {
     if (user?.user_metadata?.first_name) {
@@ -15,151 +17,187 @@ const HeroSection = () => {
       const emailName = user.email.split('@')[0];
       return `Benvenuto ${emailName}! 👋`;
     }
-    return 'Benvenuto! 👋';
+    return 'Benvenuto in Romagna! 👋';
   };
 
   return (
     <div className="relative overflow-hidden bg-slate-900">
-      {/* Hero Background inspired by the project presentation */}
-      <div className="h-[600px] relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950">
-        {/* Rainbow accent bar at top */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 via-orange-400 via-yellow-300 via-green-400 via-blue-400 via-indigo-400 to-purple-400"></div>
+      {/* Hero Background con design più fedele agli allegati */}
+      <div className="min-h-[700px] relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+        {/* Rainbow accent bar più prominente */}
+        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-red-500 via-orange-400 via-yellow-300 via-green-400 via-blue-400 via-indigo-400 to-purple-400"></div>
         
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+        {/* Overlay più sofisticato */}
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
         
-        {/* Decorative elements inspired by the ferris wheel in the presentation */}
-        <div className="absolute top-20 right-10 w-32 h-32 border-4 border-orange-400/20 rounded-full"></div>
-        <div className="absolute bottom-40 right-20 w-20 h-20 border-2 border-yellow-300/30 rounded-full"></div>
-        <div className="absolute top-40 right-32 w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
+        {/* Elementi decorativi ispirati al design degli allegati */}
+        <div className="absolute top-20 right-10 w-40 h-40 border-4 border-orange-400/20 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-40 right-20 w-24 h-24 border-2 border-yellow-300/30 rounded-full"></div>
+        <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-orange-400 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-1/3 w-2 h-2 bg-yellow-300 rounded-full animate-bounce"></div>
         
-        <div className="relative container mx-auto px-4 h-full flex items-center">
-          <div className="text-white max-w-4xl">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-lg">
-                <Smartphone className="h-6 w-6 text-white" />
+        <div className="relative container mx-auto px-4 h-full flex items-center min-h-[700px]">
+          <div className="text-white max-w-5xl">
+            {/* Brand Section più fedele agli allegati */}
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-2xl">
+                <Smartphone className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">
-                  Mia Romagna 2024
+                <h1 className="text-4xl md:text-5xl font-bold text-white">
+                  Mia Romagna
                 </h1>
-                <p className="text-orange-300 font-medium">"Il territorio è tra le Tue mani"</p>
+                <p className="text-orange-300 font-semibold text-lg italic">"Il territorio è tra le Tue mani"</p>
               </div>
             </div>
             
-            <div className="space-y-4 mb-8">
-              <h2 className="text-4xl md:text-6xl font-bold leading-tight">
+            <div className="space-y-6 mb-10">
+              <h2 className="text-5xl md:text-7xl font-bold leading-tight">
                 {getUserGreeting()}
               </h2>
-              <p className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-3xl">
-                L'applicazione definitiva per esplorare le autentiche eccellenze della Romagna
+              <p className="text-2xl md:text-3xl text-slate-200 font-light leading-relaxed max-w-4xl">
+                L'applicazione ufficiale per scoprire le autentiche meraviglie della Provincia di Rimini
               </p>
-              <p className="text-lg text-slate-400 leading-relaxed max-w-2xl">
-                Scopri tesori nascosti, vivi esperienze autentiche e lasciati guidare dai segreti meglio custoditi della provincia di Rimini
+              <p className="text-xl text-slate-300 leading-relaxed max-w-3xl">
+                Dalla tradizione culinaria ai tesori nascosti, dalle esperienze culturali alle attività marittime. 
+                Vivi la Romagna come un locale con guide certificate e itinerari personalizzati.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white px-8 py-4 text-lg font-bold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300">
-                <Heart className="h-5 w-5 mr-2" />
-                Inizia l'Avventura Gratis
+            {/* CTA Buttons più evidenti */}
+            <div className="flex flex-col sm:flex-row gap-6 mb-10">
+              <Button className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white px-10 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
+                <Download className="h-6 w-6 mr-3" />
+                Scarica l'App Gratis
               </Button>
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg rounded-2xl backdrop-blur-sm">
-                Scopri le Categorie
+              <Button 
+                variant="outline" 
+                className="border-2 border-white/40 text-white hover:bg-white/20 px-10 py-6 text-xl rounded-2xl backdrop-blur-sm transition-all duration-300"
+                onClick={() => navigate('/experiences')}
+              >
+                <Heart className="h-6 w-6 mr-3" />
+                Scopri le Esperienze
               </Button>
             </div>
 
-            {/* Key features highlight */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center space-x-2 text-slate-300">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span>5 lingue disponibili</span>
+            {/* Key features più dettagliate */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-base">
+              <div className="flex items-center space-x-3 text-slate-200 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="font-medium">Supporto 6 lingue complete</span>
               </div>
-              <div className="flex items-center space-x-2 text-slate-300">
-                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                <span>Mappa interattiva GPS</span>
+              <div className="flex items-center space-x-3 text-slate-200 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                <span className="font-medium">GPS integrato e mappe offline</span>
               </div>
-              <div className="flex items-center space-x-2 text-slate-300">
-                <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                <span>Guide locali certificate</span>
+              <div className="flex items-center space-x-3 text-slate-200 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                <span className="font-medium">Guide locali certificate</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Enhanced Search Card - now focused on discovery */}
-      <div className="relative -mt-32 container mx-auto px-4">
-        <Card className="bg-white/98 backdrop-blur-sm shadow-2xl rounded-3xl p-8 border-0">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Cosa vuoi scoprire oggi?</h3>
-            <p className="text-slate-600">Lasciati guidare dalle categorie principali dell'app</p>
+      {/* Enhanced Discovery Card più elaborata */}
+      <div className="relative -mt-40 container mx-auto px-4">
+        <Card className="bg-white/98 backdrop-blur-md shadow-2xl rounded-3xl p-10 border-0 transform hover:scale-[1.02] transition-all duration-300">
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-slate-900 mb-3">Scopri la Vera Romagna</h3>
+            <p className="text-slate-600 text-lg">Scegli la tua categoria preferita e inizia l'avventura</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {/* Tradizione Culinaria */}
-            <div className="text-center space-y-3 p-4 bg-red-50 rounded-2xl hover:bg-red-100 transition-all cursor-pointer group">
-              <div className="mx-auto w-12 h-12 bg-red-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white text-xl">🍝</span>
+            <div 
+              className="text-center space-y-4 p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-3xl hover:from-red-100 hover:to-red-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-xl"
+              onClick={() => navigate('/experiences')}
+            >
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span className="text-white text-2xl">🍝</span>
               </div>
               <div>
-                <div className="font-semibold text-slate-900 text-sm">Tradizione Culinaria</div>
-                <div className="text-xs text-slate-600">Sapori autentici</div>
+                <div className="font-bold text-slate-900 text-lg">Tradizione Culinaria</div>
+                <div className="text-sm text-slate-600">Sapori autentici romagnoli</div>
               </div>
             </div>
 
             {/* Esperienze Culturali */}
-            <div className="text-center space-y-3 p-4 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-all cursor-pointer group">
-              <div className="mx-auto w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white text-xl">🏛️</span>
+            <div 
+              className="text-center space-y-4 p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl hover:from-blue-100 hover:to-blue-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-xl"
+              onClick={() => navigate('/restaurants')}
+            >
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span className="text-white text-2xl">🏛️</span>
               </div>
               <div>
-                <div className="font-semibold text-slate-900 text-sm">Esperienze Culturali</div>
-                <div className="text-xs text-slate-600">Arte e storia</div>
+                <div className="font-bold text-slate-900 text-lg">Esperienze Culturali</div>
+                <div className="text-sm text-slate-600">Arte, storia e patrimonio</div>
               </div>
             </div>
 
             {/* Attività Marittime */}
-            <div className="text-center space-y-3 p-4 bg-cyan-50 rounded-2xl hover:bg-cyan-100 transition-all cursor-pointer group">
-              <div className="mx-auto w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white text-xl">⛵</span>
+            <div 
+              className="text-center space-y-4 p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-3xl hover:from-cyan-100 hover:to-cyan-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-xl"
+              onClick={() => navigate('/itineraries')}
+            >
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span className="text-white text-2xl">⛵</span>
               </div>
               <div>
-                <div className="font-semibold text-slate-900 text-sm">Attività Marittime</div>
-                <div className="text-xs text-slate-600">Mare e avventura</div>
+                <div className="font-bold text-slate-900 text-lg">Attività Marittime</div>
+                <div className="text-sm text-slate-600">Mare e avventure acquatiche</div>
               </div>
             </div>
 
-            {/* Escursioni */}
-            <div className="text-center space-y-3 p-4 bg-green-50 rounded-2xl hover:bg-green-100 transition-all cursor-pointer group">
-              <div className="mx-auto w-12 h-12 bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white text-xl">🥾</span>
+            {/* Eventi Speciali */}
+            <div 
+              className="text-center space-y-4 p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-3xl hover:from-green-100 hover:to-green-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-xl"
+              onClick={() => navigate('/events')}
+            >
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span className="text-white text-2xl">🎭</span>
               </div>
               <div>
-                <div className="font-semibold text-slate-900 text-sm">Escursioni</div>
-                <div className="text-xs text-slate-600">Natura e trekking</div>
-              </div>
-            </div>
-
-            {/* Esperienze del Territorio */}
-            <div className="text-center space-y-3 p-4 bg-orange-50 rounded-2xl hover:bg-orange-100 transition-all cursor-pointer group">
-              <div className="mx-auto w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white text-xl">🏞️</span>
-              </div>
-              <div>
-                <div className="font-semibold text-slate-900 text-sm">Territorio</div>
-                <div className="text-xs text-slate-600">Paesaggi unici</div>
+                <div className="font-bold text-slate-900 text-lg">Eventi Speciali</div>
+                <div className="text-sm text-slate-600">Festival e manifestazioni</div>
               </div>
             </div>
 
             {/* Sezione Family */}
-            <div className="text-center space-y-3 p-4 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-all cursor-pointer group">
-              <div className="mx-auto w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                <span className="text-white text-xl">👨‍👩‍👧‍👦</span>
+            <div 
+              className="text-center space-y-4 p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-3xl hover:from-purple-100 hover:to-purple-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-xl"
+              onClick={() => navigate('/family')}
+            >
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span className="text-white text-2xl">👨‍👩‍👧‍👦</span>
               </div>
               <div>
-                <div className="font-semibold text-slate-900 text-sm">Sezione Family</div>
-                <div className="text-xs text-slate-600">Per tutta la famiglia</div>
+                <div className="font-bold text-slate-900 text-lg">Sezione Family</div>
+                <div className="text-sm text-slate-600">Divertimento per famiglie</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Statistics section come negli allegati */}
+          <div className="mt-10 pt-8 border-t border-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+              <div className="space-y-2">
+                <div className="text-3xl font-bold text-slate-900">500+</div>
+                <div className="text-sm text-slate-600">Luoghi da scoprire</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-3xl font-bold text-slate-900">50+</div>
+                <div className="text-sm text-slate-600">Guide certificate</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-3xl font-bold text-slate-900">6</div>
+                <div className="text-sm text-slate-600">Lingue supportate</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-3xl font-bold text-slate-900">24/7</div>
+                <div className="text-sm text-slate-600">Supporto disponibile</div>
               </div>
             </div>
           </div>
