@@ -6,7 +6,6 @@ import {
   User, 
   Menu,
   X,
-  MapPin,
   Mountain
 } from 'lucide-react';
 import {
@@ -26,35 +25,34 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-gray-200/50">
+    <header className="sticky top-0 z-50 w-full bg-white/98 backdrop-blur-md border-b border-slate-200/60 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 shadow-lg">
-              <Mountain className="h-7 w-7 text-white" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 shadow-md">
+              <Mountain className="h-5 w-5 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-slate-900">
                 Mia Romagna
               </h1>
-              <p className="text-sm text-gray-500 -mt-1">Scopri la bellezza</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            <Link to="/experiences" className="px-4 py-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium">
-              Esperienze
+            <Link to="/experiences" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Cosa fare
             </Link>
-            <Link to="/events" className="px-4 py-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium">
+            <Link to="/restaurants" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Dove mangiare
+            </Link>
+            <Link to="/itineraries" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Dove dormire
+            </Link>
+            <Link to="/events" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
               Eventi
-            </Link>
-            <Link to="/restaurants" className="px-4 py-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium">
-              Ristoranti
-            </Link>
-            <Link to="/itineraries" className="px-4 py-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium">
-              Itinerari
             </Link>
           </nav>
 
@@ -63,18 +61,17 @@ const Header = () => {
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-emerald-50 hover:text-emerald-600 rounded-xl">
-                  <Globe className="h-4 w-4 mr-2" />
+                <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-slate-50 hover:text-slate-900 rounded-lg text-sm">
+                  <Globe className="h-4 w-4 mr-1" />
                   IT
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-xl border-gray-200/50">
-                <DropdownMenuItem className="rounded-lg">🇮🇹 Italiano</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-lg">🇬🇧 English</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-lg">🇩🇪 Deutsch</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-lg">🇫🇷 Français</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-lg">🇪🇸 Español</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-lg">🇷🇺 Русский</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="rounded-lg border-slate-200/60 bg-white/98 backdrop-blur-sm">
+                <DropdownMenuItem className="rounded-md text-sm">🇮🇹 Italiano</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm">🇬🇧 English</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm">🇩🇪 Deutsch</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm">🇫🇷 Français</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm">🇪🇸 Español</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -84,7 +81,7 @@ const Header = () => {
             ) : (
               <Button 
                 onClick={() => navigate('/auth')}
-                className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 rounded-xl px-6"
+                className="bg-slate-900 hover:bg-slate-800 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
               >
                 <User className="h-4 w-4 mr-2" />
                 Accedi
@@ -95,45 +92,45 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2 hover:bg-emerald-50 rounded-xl"
+              className="lg:hidden p-2 hover:bg-slate-50 rounded-lg"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-200/50">
-            <nav className="flex flex-col space-y-2">
+          <div className="lg:hidden py-3 border-t border-slate-200/60">
+            <nav className="flex flex-col space-y-1">
               <Link 
                 to="/experiences" 
-                className="px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Esperienze
-              </Link>
-              <Link 
-                to="/events" 
-                className="px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Eventi
+                Cosa fare
               </Link>
               <Link 
                 to="/restaurants" 
-                className="px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Ristoranti
+                Dove mangiare
               </Link>
               <Link 
                 to="/itineraries" 
-                className="px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all duration-200 font-medium"
+                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Itinerari
+                Dove dormire
+              </Link>
+              <Link 
+                to="/events" 
+                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Eventi
               </Link>
             </nav>
           </div>
