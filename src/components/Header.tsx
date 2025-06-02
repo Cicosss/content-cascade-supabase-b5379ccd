@@ -25,53 +25,58 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/98 backdrop-blur-md border-b border-slate-200/60 shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
+          {/* Logo con rainbow accent */}
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
               <Mountain className="h-5 w-5 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-slate-900">
+              <h1 className="text-xl font-bold text-white">
                 Mia Romagna
               </h1>
+              <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Aggiornato con le voci del progetto */}
           <nav className="hidden lg:flex items-center space-x-1">
-            <Link to="/experiences" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Cosa fare
+            <Link to="/experiences" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Tradizione Culinaria
             </Link>
-            <Link to="/restaurants" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Dove mangiare
+            <Link to="/restaurants" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Esperienze Culturali
             </Link>
-            <Link to="/itineraries" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Dove dormire
+            <Link to="/itineraries" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Attività Marittime
             </Link>
-            <Link to="/events" className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Eventi
+            <Link to="/events" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Eventi Speciali
+            </Link>
+            <Link to="/family" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
+              Sezione Family
             </Link>
           </nav>
 
           {/* Right Section */}
           <div className="flex items-center space-x-3">
-            {/* Language Selector */}
+            {/* Language Selector multilingua */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-slate-50 hover:text-slate-900 rounded-lg text-sm">
+                <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-slate-700/50 hover:text-white rounded-lg text-sm text-slate-300">
                   <Globe className="h-4 w-4 mr-1" />
                   IT
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-lg border-slate-200/60 bg-white/98 backdrop-blur-sm">
-                <DropdownMenuItem className="rounded-md text-sm">🇮🇹 Italiano</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-md text-sm">🇬🇧 English</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-md text-sm">🇩🇪 Deutsch</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-md text-sm">🇫🇷 Français</DropdownMenuItem>
-                <DropdownMenuItem className="rounded-md text-sm">🇪🇸 Español</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="rounded-lg border-slate-600 bg-slate-800/98 backdrop-blur-sm">
+                <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇮🇹 Italiano</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇬🇧 English</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇩🇪 Deutsch</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇫🇷 Français</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇪🇸 Español</DropdownMenuItem>
+                <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇷🇺 Русский</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -81,10 +86,10 @@ const Header = () => {
             ) : (
               <Button 
                 onClick={() => navigate('/auth')}
-                className="bg-slate-900 hover:bg-slate-800 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+                className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold"
               >
                 <User className="h-4 w-4 mr-2" />
-                Accedi
+                Accedi Gratis
               </Button>
             )}
 
@@ -92,7 +97,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2 hover:bg-slate-50 rounded-lg"
+              className="lg:hidden p-2 hover:bg-slate-700/50 rounded-lg text-slate-300 hover:text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -102,35 +107,42 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-3 border-t border-slate-200/60">
+          <div className="lg:hidden py-3 border-t border-slate-700/60">
             <nav className="flex flex-col space-y-1">
               <Link 
                 to="/experiences" 
-                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Cosa fare
+                Tradizione Culinaria
               </Link>
               <Link 
                 to="/restaurants" 
-                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Dove mangiare
+                Esperienze Culturali
               </Link>
               <Link 
                 to="/itineraries" 
-                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Dove dormire
+                Attività Marittime
               </Link>
               <Link 
                 to="/events" 
-                className="px-4 py-2 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Eventi
+                Eventi Speciali
+              </Link>
+              <Link 
+                to="/family" 
+                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sezione Family
               </Link>
             </nav>
           </div>

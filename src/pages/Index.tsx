@@ -2,6 +2,7 @@
 import React from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
+import AppFeaturesSection from '@/components/AppFeaturesSection';
 import WeatherWidget from '@/components/WeatherWidget';
 import GuestCard from '@/components/GuestCard';
 import ContentCarousel from '@/components/ContentCarousel';
@@ -21,113 +22,153 @@ const Index = () => {
       image: "🌹 Notte Rosa"
     },
     {
-      title: "Sagra della Piadina Romagnola",
+      title: "Festival della Piadina Romagnola",
       date: "12-14 Luglio",
       time: "19:00",
       location: "Piazza Cavour",
-      category: "Gastronomia",
-      image: "🥟 Sagra Piadina"
+      category: "Tradizione Culinaria",
+      image: "🥟 Festival Piadina"
     },
     {
-      title: "Concerto al Tramonto - Jazz & Blues",
+      title: "Vetrina delle Eccellenze del Territorio",
       date: "20 Luglio",
-      time: "20:30",
-      location: "Terrazza del Marebello",
-      category: "Musica",
-      image: "🎵 Jazz Sunset"
+      time: "18:00",
+      location: "Centro Fiera",
+      category: "Evento Mia Romagna",
+      image: "🏆 Eccellenze"
     },
     {
-      title: "Mercatino dell'Antiquariato",
-      date: "Ogni Sabato",
-      time: "08:00-19:00",
-      location: "Centro Storico",
-      category: "Mercati",
-      image: "🏺 Antiquariato"
+      title: "Podcast Mia Romagna Live",
+      date: "Ogni Venerdì",
+      time: "20:00",
+      location: "Streaming e Location",
+      category: "Cultura Digitale",
+      image: "🎙️ Podcast Live"
     }
   ];
 
   const restaurants = [
     {
-      name: "Osteria del Borgo",
-      cuisine: "Tradizionale Romagnola",
-      rating: 4.8,
+      name: "Osteria delle Tradizioni Romagnole",
+      cuisine: "Tradizione Culinaria Autentica",
+      rating: 4.9,
       priceRange: "€€€",
       location: "Centro Storico",
-      image: "🍝 Osteria",
-      specialty: "Tagliatelle al ragù"
+      image: "🍝 Tradizioni",
+      specialty: "Cappelletti in brodo di cappone"
     },
     {
-      name: "La Piadineria del Mare",
-      cuisine: "Street Food",
-      rating: 4.9,
+      name: "La Vera Piadineria Artigianale",
+      cuisine: "Street Food Romagnolo",
+      rating: 4.8,
       priceRange: "€",
-      location: "Lungomare",
-      image: "🥟 Piadineria",
-      specialty: "Piadina con squacquerone"
+      location: "Borgo San Giuliano",
+      image: "🥟 Vera Piadina",
+      specialty: "Piadina con squacquerone e rucola"
     },
     {
-      name: "Il Pescatore",
-      cuisine: "Pesce fresco",
+      name: "Pescatore del Porto Antico",
+      cuisine: "Pesce dell'Adriatico",
       rating: 4.7,
       priceRange: "€€€€",
-      location: "Porto",
-      image: "🐟 Pescatore",
-      specialty: "Crudo di ricciola"
+      location: "Porto Canale",
+      image: "🐟 Porto Antico",
+      specialty: "Brodetto di pesce tradizionale"
     },
     {
-      name: "Agriturismo Collina Verde",
-      cuisine: "Km Zero",
+      name: "Agriturismo Terre di Romagna",
+      cuisine: "Km Zero e Sostenibilità",
       rating: 4.6,
       priceRange: "€€",
-      location: "Entroterra",
-      image: "🌾 Agriturismo",
-      specialty: "Tortellini in brodo"
+      location: "Colline dell'Entroterra",
+      image: "🌾 Terre Romagna",
+      specialty: "Passatelli in brodo con erbe selvatiche"
+    }
+  ];
+
+  const culturalExperiences = [
+    {
+      title: "Tour Guidato Tempio Malatestiano",
+      image: "🏛️ Malatestiano",
+      rating: 4.9,
+      duration: "1.5h",
+      groupSize: "Max 15",
+      price: "€15",
+      category: "Esperienze Culturali"
+    },
+    {
+      title: "Laboratorio di Ceramica Faentina",
+      image: "🏺 Ceramica",
+      rating: 4.8,
+      duration: "2h",
+      groupSize: "Max 8",
+      price: "€25",
+      category: "Tradizione Artigianale"
+    },
+    {
+      title: "Escursione in Barca Tradizionale",
+      image: "⛵ Barca",
+      rating: 4.7,
+      duration: "3h",
+      groupSize: "Max 12",
+      price: "€35",
+      category: "Attività Marittime"
+    },
+    {
+      title: "Trekking Patrimonio UNESCO",
+      image: "🥾 Trekking",
+      rating: 4.8,
+      duration: "4h",
+      groupSize: "Max 10",
+      price: "€30",
+      category: "Escursioni"
     }
   ];
 
   const familyExperiences = [
     {
-      title: "Acquario di Cattolica - Mondo Marino",
-      image: "🐠 Acquario",
-      rating: 4.7,
-      duration: "3h",
+      title: "Avventure Family nel Parco del Mare",
+      image: "🎠 Family Park",
+      rating: 4.8,
+      duration: "4h",
       groupSize: "Famiglie",
-      price: "€22",
-      category: "Famiglia"
+      price: "€18",
+      category: "Sezione Family"
     },
     {
-      title: "Parco Avventura Cervia - Tree Climbing",
-      image: "🌳 Adventure Park",
+      title: "Laboratorio Didattico Tradizioni",
+      image: "👨‍👩‍👧‍👦 Family Lab",
+      rating: 4.9,
+      duration: "2h",
+      groupSize: "Età 5+",
+      price: "€12",
+      category: "Famiglia e Cultura"
+    },
+    {
+      title: "Mini Crociera per Bambini",
+      image: "🚢 Mini Cruise",
+      rating: 4.7,
+      duration: "1.5h",
+      groupSize: "Famiglie",
+      price: "€15",
+      category: "Attività Marittime Family"
+    },
+    {
+      title: "Caccia al Tesoro del Territorio",
+      image: "🗺️ Treasure Hunt",
       rating: 4.8,
       duration: "2.5h",
-      groupSize: "Età 6+",
-      price: "€18",
-      category: "Avventura"
-    },
-    {
-      title: "Laboratorio di Ceramica per Bambini",
-      image: "🏺 Ceramica Kids",
-      rating: 4.9,
-      duration: "1.5h",
-      groupSize: "Max 8",
-      price: "€15",
-      category: "Creative"
-    },
-    {
-      title: "Mini Crociera per Famiglie",
-      image: "⛵ Mini Cruise",
-      rating: 4.6,
-      duration: "1h",
-      groupSize: "Famiglie",
-      price: "€12",
-      category: "Mare"
+      groupSize: "Max 6 famiglie",
+      price: "€20",
+      category: "Esperienze del Territorio"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       <Header />
       <HeroSection />
+      <AppFeaturesSection />
       
       <div className="container mx-auto px-4 py-8">
         {/* Top Section: Weather and Guest Card */}
@@ -136,30 +177,34 @@ const Index = () => {
           <GuestCard />
         </div>
 
-        {/* Main Content Carousels */}
+        {/* Main Content Carousels - aggiornati con contenuti del progetto */}
         <div className="space-y-12">
-          {/* Recommended Experiences */}
+          {/* Esperienze Culturali */}
           <ContentCarousel 
-            title="Esperienze Consigliate per Te" 
-            subtitle="Scoperte personalizzate in base ai tuoi interessi"
-          />
+            title="Esperienze Culturali" 
+            subtitle="Arte, storia e tradizioni autentiche della Romagna"
+          >
+            {culturalExperiences.map((exp, index) => (
+              <ExperienceCard key={index} {...exp} />
+            ))}
+          </ContentCarousel>
 
-          {/* Upcoming Events */}
-          <ContentCarousel title="Prossimi Eventi" subtitle="Non perdere le migliori occasioni">
+          {/* Eventi Speciali */}
+          <ContentCarousel title="Eventi Speciali" subtitle="Non perdere gli appuntamenti più esclusivi">
             {events.map((event, index) => (
               <EventCard key={index} {...event} />
             ))}
           </ContentCarousel>
 
-          {/* Where to Eat */}
-          <ContentCarousel title="Dove Mangiare" subtitle="I sapori autentici della Romagna">
+          {/* Tradizione Culinaria */}
+          <ContentCarousel title="Tradizione Culinaria" subtitle="I sapori autentici tramandati di generazione in generazione">
             {restaurants.map((restaurant, index) => (
               <RestaurantCard key={index} {...restaurant} />
             ))}
           </ContentCarousel>
 
-          {/* Family Adventures */}
-          <ContentCarousel title="Avventure in Famiglia" subtitle="Divertimento per grandi e piccini">
+          {/* Sezione Family */}
+          <ContentCarousel title="Sezione Family" subtitle="Divertimento e cultura per tutta la famiglia">
             {familyExperiences.map((exp, index) => (
               <ExperienceCard key={index} {...exp} />
             ))}
