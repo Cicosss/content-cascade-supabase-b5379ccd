@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import InteractiveMap from '@/components/dashboard/InteractiveMap';
 import FilterPanel from '@/components/dashboard/FilterPanel';
+import AdvancedFilters from '@/components/dashboard/AdvancedFilters';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import { Card } from '@/components/ui/card';
@@ -62,7 +63,7 @@ const Dashboard = () => {
                 className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition-all duration-200"
               >
                 <Filter className="h-4 w-4" />
-                <span>Filtri</span>
+                <span>Filtri Base</span>
               </button>
             </div>
           </div>
@@ -80,8 +81,9 @@ const Dashboard = () => {
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           
-          {/* Left Column - Map */}
-          <div className="xl:col-span-2">
+          {/* Left Column - Map and Advanced Filters */}
+          <div className="xl:col-span-2 space-y-6">
+            {/* Interactive Map */}
             <Card className="h-[600px] p-6 rounded-3xl border-0 shadow-xl">
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-400 rounded-xl flex items-center justify-center mr-3">
@@ -95,6 +97,9 @@ const Dashboard = () => {
                 <InteractiveMap filters={filters} />
               </div>
             </Card>
+
+            {/* Advanced Filters */}
+            <AdvancedFilters filters={filters} setFilters={setFilters} />
           </div>
 
           {/* Right Column - Weather */}
