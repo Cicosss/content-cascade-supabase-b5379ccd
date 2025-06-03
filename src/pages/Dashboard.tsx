@@ -91,7 +91,9 @@ const Dashboard = () => {
                   Mappa Interattiva
                 </h2>
               </div>
-              <InteractiveMap filters={filters} />
+              <div className="h-[calc(100%-4rem)]">
+                <InteractiveMap filters={filters} />
+              </div>
             </Card>
           </div>
 

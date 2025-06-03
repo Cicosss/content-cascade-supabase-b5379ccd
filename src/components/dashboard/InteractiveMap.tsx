@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,6 +31,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [pois, setPois] = useState<POI[]>([]);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -39,29 +40,106 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   }, [filters]);
 
   const fetchPOIs = async () => {
-    let query = supabase.from('points_of_interest').select('*');
+    try {
+      console.log('Fetching POIs from database...');
+      let query = supabase.from('points_of_interest').select('*');
 
-    // Apply filters
-    if (filters.activityTypes.length > 0 && !filters.activityTypes.includes('tutto')) {
-      query = query.in('category', filters.activityTypes);
-    }
+      // Apply filters
+      if (filters.activityTypes.length > 0 && !filters.activityTypes.includes('tutto')) {
+        query = query.in('category', filters.activityTypes);
+      }
 
-    if (filters.withChildren === 'sì') {
-      query = query.or('target_audience.eq.families,target_audience.eq.everyone');
-    }
+      if (filters.withChildren === 'sì') {
+        query = query.or('target_audience.eq.families,target_audience.eq.everyone');
+      }
 
-    const { data, error } = await query;
-    
-    if (error) {
-      console.error('Error fetching POIs:', error);
-      toast({
-        title: "Errore",
-        description: "Impossibile caricare i punti di interesse",
-        variant: "destructive"
-      });
-    } else {
-      setPois(data || []);
+      const { data, error } = await query;
+      
+      if (error) {
+        console.error('Error fetching POIs:', error);
+        toast({
+          title: "Errore nel caricamento",
+          description: "Impossibile caricare i punti di interesse",
+          variant: "destructive"
+        });
+        // Use fallback data
+        setFallbackPOIs();
+      } else {
+        console.log('POIs fetched:', data);
+        if (data && data.length > 0) {
+          setPois(data);
+        } else {
+          console.log('No POIs found, using fallback data');
+          setFallbackPOIs();
+        }
+      }
+    } catch (error) {
+      console.error('Error in fetchPOIs:', error);
+      setFallbackPOIs();
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const setFallbackPOIs = () => {
+    const fallbackData = [
+      {
+        id: '1',
+        name: 'Osteria del Borgo Antico',
+        description: 'Tradizione Culinaria Romagnola Autentica',
+        poi_type: 'restaurant',
+        category: 'cibo',
+        latitude: 44.0646,
+        longitude: 12.5736,
+        address: 'Centro Storico di Rimini',
+        target_audience: 'everyone'
+      },
+      {
+        id: '2',
+        name: 'Tempio Malatestiano',
+        description: 'Capolavoro Rinascimentale patrimonio UNESCO',
+        poi_type: 'monument',
+        category: 'arte e cultura',
+        latitude: 44.0587,
+        longitude: 12.5684,
+        address: 'Via IV Novembre, Rimini',
+        target_audience: 'everyone'
+      },
+      {
+        id: '3',
+        name: 'Parco Avventura',
+        description: 'Percorsi acrobatici per famiglie',
+        poi_type: 'experience',
+        category: 'parchi e natura',
+        latitude: 44.0712,
+        longitude: 12.6015,
+        address: 'Colline Riminesi',
+        target_audience: 'families'
+      },
+      {
+        id: '4',
+        name: 'La Vera Piadineria 1952',
+        description: 'Street Food Romagnolo Tradizionale',
+        poi_type: 'restaurant',
+        category: 'cibo',
+        latitude: 44.0587,
+        longitude: 12.5741,
+        address: 'Borgo San Giuliano, Rimini',
+        target_audience: 'everyone'
+      },
+      {
+        id: '5',
+        name: 'Grotte di Onferno',
+        description: 'Meraviglia sotterranea con pipistrelli',
+        poi_type: 'experience',
+        category: 'parchi e natura',
+        latitude: 43.9542,
+        longitude: 12.4856,
+        address: 'Gemmano (RN)',
+        target_audience: 'families'
+      }
+    ];
+    setPois(fallbackData);
   };
 
   const getCurrentLocation = () => {
@@ -82,6 +160,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           });
         }
       );
+    } else {
+      // Default to Rimini center
+      setUserLocation({
+        lat: 44.0646,
+        lng: 12.5736
+      });
     }
   };
 
@@ -101,11 +185,27 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     return '📍';
   };
 
-  // Fixed map style with proper height
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 rounded-2xl">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-600">Caricamento mappa...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden">
-      {/* Map container with fixed height */}
-      <div className="flex-1 relative bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 border-2 border-blue-100">
+    <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200">
+      {/* Map Header */}
+      <div className="p-4 bg-gradient-to-r from-blue-500 to-green-500 text-white">
+        <h3 className="font-bold text-lg">Mappa Interattiva Romagna</h3>
+        <p className="text-blue-100 text-sm">Scopri {pois.length} punti di interesse</p>
+      </div>
+
+      {/* Map Container */}
+      <div className="flex-1 relative bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 overflow-hidden">
         
         {/* Grid overlay for better visual structure */}
         <div 
@@ -139,29 +239,30 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         {pois.map((poi, index) => {
           // Better distribution algorithm
           const gridCols = 4;
-          const gridRows = 3;
+          const gridRows = Math.ceil(pois.length / gridCols);
           const col = index % gridCols;
-          const row = Math.floor(index / gridCols) % gridRows;
+          const row = Math.floor(index / gridCols);
           
-          const x = 15 + (col * 70 / (gridCols - 1));
-          const y = 15 + (row * 70 / (gridRows - 1));
+          const x = 15 + (col * 70 / Math.max(gridCols - 1, 1));
+          const y = 15 + (row * 70 / Math.max(gridRows - 1, 1));
           
           return (
             <div
               key={poi.id}
               className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10"
               style={{
-                left: `${x}%`,
-                top: `${y}%`
+                left: `${Math.min(Math.max(x, 10), 90)}%`,
+                top: `${Math.min(Math.max(y, 10), 90)}%`
               }}
               onClick={() => setSelectedPoi(poi)}
             >
               <div className="relative">
-                <div className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center border-2 border-red-400 group-hover:scale-110 transition-all duration-200 group-hover:shadow-xl">
-                  <span className="text-lg">{getPoiIcon(poi.poi_type, poi.category)}</span>
+                <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center border-3 border-red-400 group-hover:scale-110 transition-all duration-200 group-hover:shadow-xl group-hover:border-red-500">
+                  <span className="text-xl">{getPoiIcon(poi.poi_type, poi.category)}</span>
                 </div>
-                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-lg shadow-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 border border-gray-200 z-30">
-                  {poi.name}
+                <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-white px-3 py-2 rounded-lg shadow-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 border border-gray-200 z-30 max-w-40">
+                  <div className="font-semibold text-gray-800">{poi.name}</div>
+                  <div className="text-gray-500">{poi.category}</div>
                 </div>
               </div>
             </div>
@@ -199,10 +300,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           </div>
         </div>
 
-        {/* Map info overlay */}
+        {/* Map statistics */}
         <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-3 text-sm shadow-lg border border-gray-200">
-          <div className="font-semibold text-gray-800">Mappa Interattiva</div>
-          <div className="text-gray-600">Clicca sui punti per i dettagli</div>
+          <div className="font-semibold text-gray-800">{pois.length} POI trovati</div>
+          <div className="text-gray-600 text-xs">
+            {filters.activityTypes.includes('tutto') ? 'Tutte le categorie' : filters.activityTypes.join(', ')}
+          </div>
         </div>
       </div>
 
@@ -210,10 +313,13 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       {selectedPoi && (
         <div className="p-4 bg-gradient-to-r from-blue-50 to-green-50 border-t border-gray-200">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="font-bold text-lg text-gray-800">{selectedPoi.name}</h3>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">{getPoiIcon(selectedPoi.poi_type, selectedPoi.category)}</span>
+              <h3 className="font-bold text-lg text-gray-800">{selectedPoi.name}</h3>
+            </div>
             <button
               onClick={() => setSelectedPoi(null)}
-              className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+              className="text-gray-400 hover:text-gray-600 text-xl leading-none px-2 py-1 hover:bg-gray-200 rounded"
             >
               ✕
             </button>
