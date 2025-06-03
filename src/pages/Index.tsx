@@ -1,5 +1,6 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
@@ -12,6 +13,28 @@ import ServicesSection from '@/components/ServicesSection';
 import ExperienceCard from '@/components/ExperienceCard';
 
 const Index = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && user) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-white text-xl">Caricamento...</div>
+      </div>
+    );
+  }
+
+  // Se l'utente è loggato, non mostrare nulla (sta per essere reindirizzato)
+  if (user) {
+    return null;
+  }
+
   // Eventi più specifici e dettagliati basati sui documenti
   const events = [
     {

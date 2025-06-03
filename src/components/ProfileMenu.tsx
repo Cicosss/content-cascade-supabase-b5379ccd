@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { User, LogOut, Settings, Heart } from 'lucide-react';
+import { User, LogOut, Settings, Heart, LayoutDashboard } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,6 +39,13 @@ const ProfileMenu = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 rounded-xl border-gray-200/50 shadow-lg">
+        <DropdownMenuItem 
+          onClick={() => navigate('/dashboard')}
+          className="rounded-lg hover:bg-blue-50 cursor-pointer"
+        >
+          <LayoutDashboard className="h-4 w-4 mr-3 text-blue-600" />
+          Dashboard
+        </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate('/profile')}
           className="rounded-lg hover:bg-emerald-50 cursor-pointer"
