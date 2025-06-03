@@ -101,11 +101,22 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     return '📍';
   };
 
+  // Fixed map style with proper height
   return (
-    <div className="h-full flex flex-col">
-      {/* Map placeholder with POIs visualization */}
-      <div className="flex-1 bg-gradient-to-br from-blue-100 to-green-100 rounded-2xl relative overflow-hidden">
+    <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden">
+      {/* Map container with fixed height */}
+      <div className="flex-1 relative bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 border-2 border-blue-100">
         
+        {/* Grid overlay for better visual structure */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                             linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }}
+        />
+
         {/* User location indicator */}
         {userLocation && (
           <div 
@@ -115,91 +126,108 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
               top: '50%'
             }}
           >
-            <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-              La tua posizione
+            <div className="relative">
+              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
+              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs whitespace-nowrap shadow-lg">
+                La tua posizione
+              </div>
             </div>
           </div>
         )}
 
-        {/* POI markers */}
+        {/* POI markers distributed across the map */}
         {pois.map((poi, index) => {
-          const randomX = 20 + (index * 15) % 60;
-          const randomY = 20 + (index * 20) % 60;
+          // Better distribution algorithm
+          const gridCols = 4;
+          const gridRows = 3;
+          const col = index % gridCols;
+          const row = Math.floor(index / gridCols) % gridRows;
+          
+          const x = 15 + (col * 70 / (gridCols - 1));
+          const y = 15 + (row * 70 / (gridRows - 1));
           
           return (
             <div
               key={poi.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10"
               style={{
-                left: `${randomX}%`,
-                top: `${randomY}%`
+                left: `${x}%`,
+                top: `${y}%`
               }}
               onClick={() => setSelectedPoi(poi)}
             >
-              <div className="w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center border-2 border-red-400 group-hover:scale-110 transition-transform">
-                <span className="text-sm">{getPoiIcon(poi.poi_type, poi.category)}</span>
-              </div>
-              <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-2 py-1 rounded shadow-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                {poi.name}
+              <div className="relative">
+                <div className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center border-2 border-red-400 group-hover:scale-110 transition-all duration-200 group-hover:shadow-xl">
+                  <span className="text-lg">{getPoiIcon(poi.poi_type, poi.category)}</span>
+                </div>
+                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-lg shadow-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 border border-gray-200 z-30">
+                  {poi.name}
+                </div>
               </div>
             </div>
           );
         })}
 
         {/* Map controls */}
-        <div className="absolute top-4 right-4 flex flex-col gap-2">
+        <div className="absolute top-4 right-4 flex flex-col gap-2 z-20">
           <Button
             size="sm"
             variant="outline"
-            className="bg-white/90 hover:bg-white"
+            className="bg-white/90 hover:bg-white shadow-lg"
             onClick={getCurrentLocation}
           >
             <Navigation className="h-4 w-4" />
           </Button>
         </div>
 
-        {/* Map legend */}
-        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 text-xs">
-          <div className="font-semibold mb-2">Legenda</div>
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span>🍽️</span> <span>Ristoranti</span>
+        {/* Enhanced legend */}
+        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 text-xs shadow-lg border border-gray-200">
+          <div className="font-semibold mb-3 text-gray-800">Legenda</div>
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🍽️</span> <span className="text-gray-700">Ristoranti</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span>🏛️</span> <span>Monumenti</span>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🏛️</span> <span className="text-gray-700">Monumenti</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span>🌳</span> <span>Natura</span>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🌳</span> <span className="text-gray-700">Natura</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span>🎭</span> <span>Intrattenimento</span>
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🎭</span> <span className="text-gray-700">Intrattenimento</span>
             </div>
           </div>
+        </div>
+
+        {/* Map info overlay */}
+        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-3 text-sm shadow-lg border border-gray-200">
+          <div className="font-semibold text-gray-800">Mappa Interattiva</div>
+          <div className="text-gray-600">Clicca sui punti per i dettagli</div>
         </div>
       </div>
 
       {/* POI Details Panel */}
       {selectedPoi && (
-        <div className="mt-4 p-4 bg-white rounded-xl border border-gray-200">
+        <div className="p-4 bg-gradient-to-r from-blue-50 to-green-50 border-t border-gray-200">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="font-bold text-lg">{selectedPoi.name}</h3>
+            <h3 className="font-bold text-lg text-gray-800">{selectedPoi.name}</h3>
             <button
               onClick={() => setSelectedPoi(null)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 text-xl leading-none"
             >
               ✕
             </button>
           </div>
           <p className="text-gray-600 text-sm mb-3">{selectedPoi.description}</p>
           <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-500">
-              📍 {selectedPoi.address}
+            <div className="text-sm text-gray-500 flex items-center gap-1">
+              <MapPin className="h-4 w-4" />
+              {selectedPoi.address || 'Romagna'}
             </div>
             <Button
               size="sm"
               onClick={() => getDirections(selectedPoi)}
-              className="bg-blue-500 hover:bg-blue-600"
+              className="bg-blue-500 hover:bg-blue-600 shadow-md"
             >
               <Car className="h-4 w-4 mr-1" />
               Indicazioni
