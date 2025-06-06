@@ -9,79 +9,268 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          booking_date: string
+          booking_reference: string | null
+          created_at: string | null
+          event_id: string | null
+          id: string
+          number_of_people: number | null
+          poi_id: string | null
+          special_requests: string | null
+          status: string | null
+          total_price: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          booking_date: string
+          booking_reference?: string | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          number_of_people?: number | null
+          poi_id?: string | null
+          special_requests?: string | null
+          status?: string | null
+          total_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          booking_date?: string
+          booking_reference?: string | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          number_of_people?: number | null
+          poi_id?: string | null
+          special_requests?: string | null
+          status?: string | null
+          total_price?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_poi_id_fkey"
+            columns: ["poi_id"]
+            isOneToOne: false
+            referencedRelation: "points_of_interest"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           address: string | null
           avg_rating: number | null
-          category: string | null
-          created_at: string
-          created_by: string | null
+          category: string
+          created_at: string | null
           description: string | null
           end_datetime: string | null
           id: string
           images: string[] | null
-          latitude: number
-          location: unknown | null
+          latitude: number | null
           location_name: string | null
-          longitude: number
+          longitude: number | null
           name: string
           organizer_info: string | null
           price_info: string | null
-          review_count: number | null
           start_datetime: string
           updated_at: string | null
-          website_url: string | null
         }
         Insert: {
           address?: string | null
           avg_rating?: number | null
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
+          category: string
+          created_at?: string | null
           description?: string | null
           end_datetime?: string | null
           id?: string
           images?: string[] | null
-          latitude: number
-          location?: unknown | null
+          latitude?: number | null
           location_name?: string | null
-          longitude: number
+          longitude?: number | null
           name: string
           organizer_info?: string | null
           price_info?: string | null
-          review_count?: number | null
           start_datetime: string
           updated_at?: string | null
-          website_url?: string | null
         }
         Update: {
           address?: string | null
           avg_rating?: number | null
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
+          category?: string
+          created_at?: string | null
           description?: string | null
           end_datetime?: string | null
           id?: string
           images?: string[] | null
-          latitude?: number
-          location?: unknown | null
+          latitude?: number | null
           location_name?: string | null
-          longitude?: number
+          longitude?: number | null
           name?: string
           organizer_info?: string | null
           price_info?: string | null
-          review_count?: number | null
           start_datetime?: string
           updated_at?: string | null
-          website_url?: string | null
+        }
+        Relationships: []
+      }
+      favorites: {
+        Row: {
+          created_at: string | null
+          event_id: string | null
+          id: string
+          poi_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          poi_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          poi_id?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "events_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "favorites_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "favorites_poi_id_fkey"
+            columns: ["poi_id"]
+            isOneToOne: false
+            referencedRelation: "points_of_interest"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "favorites_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itineraries: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration_days: number | null
+          id: string
+          is_public: boolean | null
+          name: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration_days?: number | null
+          id?: string
+          is_public?: boolean | null
+          name: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration_days?: number | null
+          id?: string
+          is_public?: boolean | null
+          name?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itineraries_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itinerary_stops: {
+        Row: {
+          created_at: string | null
+          event_id: string | null
+          id: string
+          itinerary_id: string | null
+          notes: string | null
+          poi_id: string | null
+          stop_order: number
+          visit_duration: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          itinerary_id?: string | null
+          notes?: string | null
+          poi_id?: string | null
+          stop_order: number
+          visit_duration?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          itinerary_id?: string | null
+          notes?: string | null
+          poi_id?: string | null
+          stop_order?: number
+          visit_duration?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itinerary_stops_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itinerary_stops_itinerary_id_fkey"
+            columns: ["itinerary_id"]
+            isOneToOne: false
+            referencedRelation: "itineraries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "itinerary_stops_poi_id_fkey"
+            columns: ["poi_id"]
+            isOneToOne: false
+            referencedRelation: "points_of_interest"
             referencedColumns: ["id"]
           },
         ]
@@ -90,82 +279,105 @@ export type Database = {
         Row: {
           address: string | null
           avg_rating: number | null
-          category: string | null
-          created_at: string
-          created_by: string | null
+          category: string
+          created_at: string | null
           description: string | null
           duration_info: string | null
-          email: string | null
           id: string
           images: string[] | null
-          is_featured: boolean | null
           latitude: number
-          location: unknown | null
           longitude: number
-          min_age: number | null
           name: string
-          phone: string | null
           poi_type: string
           price_info: string | null
-          review_count: number | null
           target_audience: string | null
           updated_at: string | null
-          website_url: string | null
         }
         Insert: {
           address?: string | null
           avg_rating?: number | null
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
+          category: string
+          created_at?: string | null
           description?: string | null
           duration_info?: string | null
-          email?: string | null
           id?: string
           images?: string[] | null
-          is_featured?: boolean | null
           latitude: number
-          location?: unknown | null
           longitude: number
-          min_age?: number | null
           name: string
-          phone?: string | null
           poi_type: string
           price_info?: string | null
-          review_count?: number | null
           target_audience?: string | null
           updated_at?: string | null
-          website_url?: string | null
         }
         Update: {
           address?: string | null
           avg_rating?: number | null
-          category?: string | null
-          created_at?: string
-          created_by?: string | null
+          category?: string
+          created_at?: string | null
           description?: string | null
           duration_info?: string | null
-          email?: string | null
           id?: string
           images?: string[] | null
-          is_featured?: boolean | null
           latitude?: number
-          location?: unknown | null
           longitude?: number
-          min_age?: number | null
           name?: string
-          phone?: string | null
           poi_type?: string
           price_info?: string | null
-          review_count?: number | null
           target_audience?: string | null
           updated_at?: string | null
-          website_url?: string | null
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          event_id: string | null
+          id: string
+          poi_id: string | null
+          rating: number
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          poi_id?: string | null
+          rating: number
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          poi_id?: string | null
+          rating?: number
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "points_of_interest_created_by_fkey"
-            columns: ["created_by"]
+            foreignKeyName: "reviews_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_poi_id_fkey"
+            columns: ["poi_id"]
+            isOneToOne: false
+            referencedRelation: "points_of_interest"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
@@ -177,45 +389,42 @@ export type Database = {
           arrival_location: string | null
           avatar_url: string | null
           children_ages: string[] | null
-          created_at: string
-          date_of_birth: string | null
+          created_at: string | null
           departure_location: string | null
           email: string | null
           first_name: string | null
-          gender: string | null
           id: string
           last_name: string | null
           number_of_people: number | null
+          updated_at: string | null
           vacation_type: string | null
         }
         Insert: {
           arrival_location?: string | null
           avatar_url?: string | null
           children_ages?: string[] | null
-          created_at?: string
-          date_of_birth?: string | null
+          created_at?: string | null
           departure_location?: string | null
           email?: string | null
           first_name?: string | null
-          gender?: string | null
           id: string
           last_name?: string | null
           number_of_people?: number | null
+          updated_at?: string | null
           vacation_type?: string | null
         }
         Update: {
           arrival_location?: string | null
           avatar_url?: string | null
           children_ages?: string[] | null
-          created_at?: string
-          date_of_birth?: string | null
+          created_at?: string | null
           departure_location?: string | null
           email?: string | null
           first_name?: string | null
-          gender?: string | null
           id?: string
           last_name?: string | null
           number_of_people?: number | null
+          updated_at?: string | null
           vacation_type?: string | null
         }
         Relationships: []
