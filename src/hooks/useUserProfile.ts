@@ -13,7 +13,7 @@ interface UserProfile {
   departure_location?: string;
   vacation_type?: string;
   number_of_people?: number;
-  children_ages?: number[];
+  children_ages?: string[]; // Cambiato da number[] a string[] per allinearlo con il database
 }
 
 export const useUserProfile = () => {
