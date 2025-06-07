@@ -1,14 +1,13 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Heart, Smartphone } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-
 const HeroSection = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const navigate = useNavigate();
-  
   const getUserGreeting = () => {
     if (user?.user_metadata?.first_name) {
       return `Benvenuto ${user.user_metadata.first_name}! 👋`;
@@ -18,9 +17,7 @@ const HeroSection = () => {
     }
     return 'Benvenuto in Romagna! 👋';
   };
-
-  return (
-    <div className="relative overflow-hidden bg-slate-900">
+  return <div className="relative overflow-hidden bg-slate-900">
       {/* Hero Background con design più fedele agli allegati */}
       <div className="min-h-[700px] relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
         {/* Rainbow accent bar più prominente */}
@@ -66,15 +63,11 @@ const HeroSection = () => {
 
             {/* CTA Buttons più evidenti */}
             <div className="flex flex-col sm:flex-row gap-6 mb-10">
-              <Button className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white px-10 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
+              <Button className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white px-10 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 bg-inherit">
                 <Download className="h-6 w-6 mr-3" />
                 Scarica l'App Gratis
               </Button>
-              <Button 
-                variant="outline" 
-                className="border-2 border-white/40 text-white hover:bg-white/20 px-10 py-6 text-xl rounded-2xl backdrop-blur-sm transition-all duration-300"
-                onClick={() => navigate('/experiences')}
-              >
+              <Button variant="outline" onClick={() => navigate('/experiences')} className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white px-10 py-6 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 bg-inherit">
                 <Heart className="h-6 w-6 mr-3" />
                 Scopri le Esperienze
               </Button>
@@ -98,8 +91,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default HeroSection;
