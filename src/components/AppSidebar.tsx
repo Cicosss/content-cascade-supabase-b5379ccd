@@ -101,15 +101,15 @@ const AppSidebar = () => {
 
   return (
     <Sidebar 
-      className="border-r border-slate-200/60 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60"
+      className="border-r-0 bg-gradient-to-br from-white/95 via-slate-50/90 to-blue-50/85 backdrop-blur-xl supports-[backdrop-filter]:bg-white/30 shadow-xl shadow-slate-200/50"
       collapsible="icon"
     >
-      <SidebarHeader className="p-6 bg-gradient-to-r from-blue-50/50 to-transparent">
+      <SidebarHeader className="p-6 bg-gradient-to-r from-blue-50/80 via-indigo-50/60 to-purple-50/40 backdrop-blur-sm border-b border-white/20">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
             <CheckCircle className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-semibold text-slate-900 group-data-[collapsible=icon]:hidden">Board</span>
+          <span className="text-xl font-semibold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent group-data-[collapsible=icon]:hidden">Board</span>
         </div>
       </SidebarHeader>
 
@@ -122,7 +122,7 @@ const AppSidebar = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild
-                    className="text-slate-700 hover:bg-slate-100/70 hover:text-slate-900 rounded-lg mx-2 transition-all duration-200"
+                    className="text-slate-700 hover:bg-white/70 hover:text-slate-900 hover:shadow-md rounded-xl mx-2 transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-white/30"
                   >
                     <a href={item.url} className="flex items-center space-x-3">
                       <item.icon className="h-5 w-5 text-blue-500" />
@@ -138,11 +138,11 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="bg-slate-200/60" />
+        <SidebarSeparator className="bg-gradient-to-r from-transparent via-white/40 to-transparent mx-4" />
 
         {/* My Channel Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-500 text-sm font-medium px-3 py-2 group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel className="text-slate-600 text-sm font-medium px-3 py-2 group-data-[collapsible=icon]:hidden bg-gradient-to-r from-slate-100/50 to-transparent rounded-lg mx-2">
             My Channel
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -151,7 +151,7 @@ const AppSidebar = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild
-                    className="text-slate-700 hover:bg-slate-100/70 hover:text-slate-900 rounded-lg mx-2 transition-all duration-200"
+                    className="text-slate-700 hover:bg-white/70 hover:text-slate-900 hover:shadow-md rounded-xl mx-2 transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-white/30"
                   >
                     <a href={item.url} className="flex items-center space-x-3">
                       {item.title === "Dashboard" ? (
@@ -168,7 +168,7 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="bg-slate-200/60" />
+        <SidebarSeparator className="bg-gradient-to-r from-transparent via-white/40 to-transparent mx-4" />
 
         {/* Bottom Menu */}
         <SidebarGroup>
@@ -178,7 +178,7 @@ const AppSidebar = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild
-                    className="text-slate-700 hover:bg-slate-100/70 hover:text-slate-900 rounded-lg mx-2 transition-all duration-200"
+                    className="text-slate-700 hover:bg-white/70 hover:text-slate-900 hover:shadow-md rounded-xl mx-2 transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-white/30"
                   >
                     <a href={item.url} className="flex items-center space-x-3">
                       <item.icon className="h-5 w-5 text-blue-500" />
@@ -192,14 +192,14 @@ const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-slate-200/60 bg-gradient-to-t from-slate-50/50 to-transparent">
+      <SidebarFooter className="p-4 border-t border-white/20 bg-gradient-to-t from-slate-50/80 via-white/40 to-transparent backdrop-blur-sm">
         {user ? (
           <>
             {/* User Profile */}
-            <div className="flex items-center space-x-3 mb-4 group-data-[collapsible=icon]:justify-center">
-              <Avatar className="h-10 w-10 ring-2 ring-blue-100">
+            <div className="flex items-center space-x-3 mb-4 group-data-[collapsible=icon]:justify-center bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm">
+              <Avatar className="h-10 w-10 ring-2 ring-blue-200/50 shadow-md">
                 <AvatarImage src={user.user_metadata?.avatar_url} />
-                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700">
+                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-200 text-blue-700 font-semibold">
                   {user.user_metadata?.first_name?.[0] || user.email?.[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -214,7 +214,7 @@ const AppSidebar = () => {
             {/* Logout */}
             <SidebarMenuButton 
               onClick={handleLogout}
-              className="text-red-600 hover:bg-red-50/70 w-full justify-start rounded-lg transition-all duration-200"
+              className="text-red-600 hover:bg-red-50/80 w-full justify-start rounded-xl transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-red-200/50 hover:shadow-md"
             >
               <LogOut className="h-5 w-5 text-red-500" />
               <span className="group-data-[collapsible=icon]:hidden">Logout</span>
@@ -223,10 +223,10 @@ const AppSidebar = () => {
         ) : (
           <>
             {/* Login for guests */}
-            <div className="flex items-center space-x-3 mb-4 group-data-[collapsible=icon]:justify-center">
-              <Avatar className="h-10 w-10 ring-2 ring-slate-200">
-                <AvatarFallback className="bg-slate-100">
-                  <User className="h-5 w-5 text-slate-600" />
+            <div className="flex items-center space-x-3 mb-4 group-data-[collapsible=icon]:justify-center bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm">
+              <Avatar className="h-10 w-10 ring-2 ring-slate-200/50 shadow-md">
+                <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600">
+                  <User className="h-5 w-5" />
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
@@ -240,7 +240,7 @@ const AppSidebar = () => {
             {/* Login Button */}
             <SidebarMenuButton 
               onClick={handleLogin}
-              className="text-blue-600 hover:bg-blue-50/70 w-full justify-start rounded-lg transition-all duration-200"
+              className="text-blue-600 hover:bg-blue-50/80 w-full justify-start rounded-xl transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-blue-200/50 hover:shadow-md"
             >
               <User className="h-5 w-5 text-blue-500" />
               <span className="group-data-[collapsible=icon]:hidden">Accedi</span>
@@ -250,13 +250,13 @@ const AppSidebar = () => {
 
         {/* Social Icons */}
         <div className="flex space-x-3 mt-4 justify-center group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:space-x-0 group-data-[collapsible=icon]:space-y-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
             <span className="text-white text-sm font-bold">I</span>
           </div>
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
             <span className="text-white text-sm font-bold">f</span>
           </div>
-          <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+          <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
             <span className="text-white text-sm font-bold">G</span>
           </div>
         </div>

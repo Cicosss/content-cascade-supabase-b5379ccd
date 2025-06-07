@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   // Mostra la sidebar se showSidebar è true, indipendentemente dal login
   if (showSidebar) {
     return (
-      <SidebarProvider>
+      <SidebarProvider defaultOpen={false}>
         <div className="min-h-screen flex w-full">
           <AppSidebar />
           <SidebarInset className="flex-1">
