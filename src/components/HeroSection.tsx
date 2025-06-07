@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { MapPin, Calendar, Users, Search, Smartphone, Heart, Download } from 'lucide-react';
+import { Download, Heart, Smartphone } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -98,133 +97,6 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Enhanced Discovery Card - Layout Completamente Ridisegnato per Evitare Sovrapposizioni */}
-      <div className="relative -mt-40 container mx-auto px-4 z-10">
-        <Card className="bg-white/98 backdrop-blur-md shadow-2xl rounded-3xl border-0 overflow-hidden">
-          <div className="p-8">
-            <div className="text-center mb-10">
-              <h3 className="text-3xl font-bold text-slate-900 mb-4">Scopri la Vera Romagna</h3>
-              <p className="text-slate-600 text-lg">Scegli la tua categoria preferita e inizia l'avventura</p>
-            </div>
-            
-            {/* Layout Completamente Ristrutturato - Grid Responsive Senza Sovrapposizioni */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mb-10">
-              {/* Tradizione Culinaria */}
-              <div className="w-full max-w-none">
-                <div 
-                  className="group cursor-pointer h-full"
-                  onClick={() => navigate('/experiences')}
-                >
-                  <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 h-full min-h-[180px] flex flex-col items-center justify-center text-center space-y-4 transition-all duration-300 hover:from-red-100 hover:to-red-200 hover:shadow-xl border border-red-100">
-                    <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-2xl">🍝</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="font-bold text-slate-900 text-sm leading-tight">Tradizione Culinaria</div>
-                      <div className="text-xs text-slate-600">Sapori autentici romagnoli</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Esperienze Culturali */}
-              <div className="w-full max-w-none">
-                <div 
-                  className="group cursor-pointer h-full"
-                  onClick={() => navigate('/restaurants')}
-                >
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 h-full min-h-[180px] flex flex-col items-center justify-center text-center space-y-4 transition-all duration-300 hover:from-blue-100 hover:to-blue-200 hover:shadow-xl border border-blue-100">
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-2xl">🏛️</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="font-bold text-slate-900 text-sm leading-tight">Esperienze Culturali</div>
-                      <div className="text-xs text-slate-600">Arte, storia e patrimonio</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Attività Marittime */}
-              <div className="w-full max-w-none">
-                <div 
-                  className="group cursor-pointer h-full"
-                  onClick={() => navigate('/itineraries')}
-                >
-                  <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl p-6 h-full min-h-[180px] flex flex-col items-center justify-center text-center space-y-4 transition-all duration-300 hover:from-cyan-100 hover:to-cyan-200 hover:shadow-xl border border-cyan-100">
-                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-2xl">⛵</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="font-bold text-slate-900 text-sm leading-tight">Attività Marittime</div>
-                      <div className="text-xs text-slate-600">Mare e avventure acquatiche</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Eventi Speciali */}
-              <div className="w-full max-w-none">
-                <div 
-                  className="group cursor-pointer h-full"
-                  onClick={() => navigate('/events')}
-                >
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 h-full min-h-[180px] flex flex-col items-center justify-center text-center space-y-4 transition-all duration-300 hover:from-green-100 hover:to-green-200 hover:shadow-xl border border-green-100">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-2xl">🎭</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="font-bold text-slate-900 text-sm leading-tight">Eventi Speciali</div>
-                      <div className="text-xs text-slate-600">Festival e manifestazioni</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Sezione Family */}
-              <div className="w-full max-w-none">
-                <div 
-                  className="group cursor-pointer h-full"
-                  onClick={() => navigate('/family')}
-                >
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 h-full min-h-[180px] flex flex-col items-center justify-center text-center space-y-4 transition-all duration-300 hover:from-purple-100 hover:to-purple-200 hover:shadow-xl border border-purple-100">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white text-2xl">👨‍👩‍👧‍👦</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="font-bold text-slate-900 text-sm leading-tight">Sezione Family</div>
-                      <div className="text-xs text-slate-600">Divertimento per famiglie</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Statistics section come negli allegati */}
-            <div className="pt-8 border-t border-slate-200">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div className="space-y-3">
-                  <div className="text-3xl font-bold text-slate-900">500+</div>
-                  <div className="text-sm text-slate-600">Luoghi da scoprire</div>
-                </div>
-                <div className="space-y-3">
-                  <div className="text-3xl font-bold text-slate-900">50+</div>
-                  <div className="text-sm text-slate-600">Guide certificate</div>
-                </div>
-                <div className="space-y-3">
-                  <div className="text-3xl font-bold text-slate-900">6</div>
-                  <div className="text-sm text-slate-600">Lingue supportate</div>
-                </div>
-                <div className="space-y-3">
-                  <div className="text-3xl font-bold text-slate-900">24/7</div>
-                  <div className="text-sm text-slate-600">Supporto disponibile</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
       </div>
     </div>
   );
