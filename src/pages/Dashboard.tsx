@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import InteractiveMap from '@/components/dashboard/InteractiveMap';
 import FilterPanel from '@/components/dashboard/FilterPanel';
 import AdvancedFilters from '@/components/dashboard/AdvancedFilters';
@@ -42,9 +42,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      <Header />
-      
+    <Layout showSidebar={true}>
       {/* Dashboard Header */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white py-8">
         <div className="container mx-auto px-4">
@@ -113,7 +111,7 @@ const Dashboard = () => {
           <PersonalizedContent filters={filters} />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

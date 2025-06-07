@@ -6,7 +6,8 @@ import {
   User, 
   Menu,
   X,
-  Mountain
+  Mountain,
+  UserPlus
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const Header = () => {
   const { user } = useAuth();
@@ -28,20 +30,24 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo con rainbow accent */}
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
-              <Mountain className="h-5 w-5 text-white" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-white">
-                Mia Romagna
-              </h1>
-              <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
+          
+          {/* Left section with sidebar trigger and logo */}
+          <div className="flex items-center space-x-3">
+            {user && <SidebarTrigger />}
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
+                <Mountain className="h-5 w-5 text-white" />
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold text-white">
+                  Mia Romagna
+                </h1>
+                <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
+              </div>
             </div>
           </div>
 
-          {/* Desktop Navigation - Aggiornato con le voci del progetto */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
             <Link to="/experiences" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
               Tradizione Culinaria
@@ -62,7 +68,7 @@ const Header = () => {
 
           {/* Right Section */}
           <div className="flex items-center space-x-3">
-            {/* Language Selector multilingua */}
+            {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-slate-700/50 hover:text-white rounded-lg text-sm text-slate-300">
@@ -80,17 +86,27 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* User Menu */}
+            {/* Auth Buttons */}
             {user ? (
               <ProfileMenu />
             ) : (
-              <Button 
-                onClick={() => navigate('/auth')}
-                className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold"
-              >
-                <User className="h-4 w-4 mr-2" />
-                Accedi Gratis
-              </Button>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  onClick={() => navigate('/auth?mode=login')}
+                  variant="outline"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white text-sm px-4 py-2 h-9 rounded-lg"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Accedi Gratis
+                </Button>
+                <Button 
+                  onClick={() => navigate('/auth?mode=signup')}
+                  className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold"
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Registrati
+                </Button>
+              </div>
             )}
 
             {/* Mobile Menu Button */}
@@ -145,6 +161,33 @@ const Header = () => {
                 Sezione Family
               </Link>
             </nav>
+
+            {/* Mobile Auth Buttons */}
+            {!user && (
+              <div className="flex flex-col space-y-2 mt-4 px-4">
+                <Button 
+                  onClick={() => {
+                    navigate('/auth?mode=login');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  variant="outline"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white text-sm w-full"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Accedi Gratis
+                </Button>
+                <Button 
+                  onClick={() => {
+                    navigate('/auth?mode=signup');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm w-full"
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Registrati
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

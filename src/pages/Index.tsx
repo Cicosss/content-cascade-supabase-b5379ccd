@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import HeroSection from '@/components/HeroSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
 import WeatherWidget from '@/components/WeatherWidget';
@@ -267,8 +267,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header />
+    <Layout showSidebar={false}>
       <HeroSection />
       <AppFeaturesSection />
       
@@ -279,7 +278,7 @@ const Index = () => {
           <GuestCard />
         </div>
 
-        {/* Main Content Carousels - contenuti più ricchi e fedeli al documento */}
+        {/* Main Content Carousels */}
         <div className="space-y-16">
           {/* Tradizione Culinaria */}
           <ContentCarousel 
@@ -337,7 +336,7 @@ const Index = () => {
           <ServicesSection />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
