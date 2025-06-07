@@ -28,7 +28,8 @@ import {
   Settings,
   Plus,
   LogOut,
-  ArrowLeft
+  ArrowLeft,
+  User
 } from 'lucide-react';
 
 const AppSidebar = () => {
@@ -38,6 +39,10 @@ const AppSidebar = () => {
   const handleLogout = async () => {
     await signOut();
     navigate('/');
+  };
+
+  const handleLogin = () => {
+    navigate('/auth');
   };
 
   const mainMenuItems = [
@@ -57,7 +62,7 @@ const AppSidebar = () => {
     {
       title: "Dashboard",
       icon: ArrowLeft,
-      url: "/dashboard",
+      url: user ? "/dashboard" : "/auth",
     },
     {
       title: "Categories",
@@ -185,7 +190,7 @@ const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-slate-200">
-        {user && (
+        {user ? (
           <>
             {/* User Profile */}
             <div className="flex items-center space-x-3 mb-4">
@@ -211,21 +216,47 @@ const AppSidebar = () => {
               <LogOut className="h-5 w-5 text-red-500" />
               <span>Logout</span>
             </SidebarMenuButton>
-
-            {/* Social Icons */}
-            <div className="flex space-x-3 mt-4 justify-center">
-              <div className="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center">
-                <span className="text-white text-sm font-bold">I</span>
-              </div>
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white text-sm font-bold">f</span>
-              </div>
-              <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
-                <span className="text-white text-sm font-bold">G</span>
+          </>
+        ) : (
+          <>
+            {/* Login for guests */}
+            <div className="flex items-center space-x-3 mb-4">
+              <Avatar className="h-10 w-10">
+                <AvatarFallback className="bg-slate-200">
+                  <User className="h-5 w-5 text-slate-600" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 truncate">
+                  Ospite
+                </p>
+                <p className="text-xs text-slate-500">Non loggato</p>
               </div>
             </div>
+
+            {/* Login Button */}
+            <SidebarMenuButton 
+              onClick={handleLogin}
+              className="text-blue-600 hover:bg-blue-50 w-full justify-start"
+            >
+              <User className="h-5 w-5 text-blue-500" />
+              <span>Accedi</span>
+            </SidebarMenuButton>
           </>
         )}
+
+        {/* Social Icons */}
+        <div className="flex space-x-3 mt-4 justify-center">
+          <div className="w-8 h-8 bg-pink-500 rounded-lg flex items-center justify-center">
+            <span className="text-white text-sm font-bold">I</span>
+          </div>
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-white text-sm font-bold">f</span>
+          </div>
+          <div className="w-8 h-8 bg-yellow-500 rounded-lg flex items-center justify-center">
+            <span className="text-white text-sm font-bold">G</span>
+          </div>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

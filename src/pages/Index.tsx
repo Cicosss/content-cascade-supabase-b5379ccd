@@ -267,7 +267,7 @@ const Index = () => {
   ];
 
   return (
-    <Layout showSidebar={false}>
+    <Layout showSidebar={true}>
       <HeroSection />
       <AppFeaturesSection />
       
