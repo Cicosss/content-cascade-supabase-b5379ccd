@@ -36,6 +36,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -43,28 +44,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!mapContainer.current) return;
-    
-    // Initialize Mapbox map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [12.5736, 44.0646], // Rimini center
-      zoom: 12
-    });
-
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-    // Map loaded
-    map.current.on('load', () => {
-      console.log('Mapbox map loaded');
-      setLoading(false);
-    });
-
+    initializeMap();
     return () => {
       if (map.current) {
         map.current.remove();
+        map.current = null;
       }
     };
   }, []);
@@ -75,23 +59,70 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   }, [filters]);
 
   useEffect(() => {
-    if (map.current && pois.length > 0) {
+    if (mapLoaded && pois.length > 0) {
       addPOIMarkers();
     }
-  }, [pois]);
+  }, [pois, mapLoaded]);
 
   useEffect(() => {
-    if (map.current && userLocation) {
+    if (mapLoaded && userLocation) {
       addUserLocationMarker();
     }
-  }, [userLocation]);
+  }, [userLocation, mapLoaded]);
+
+  const initializeMap = () => {
+    if (!mapContainer.current || map.current) return;
+    
+    try {
+      console.log('Initializing Mapbox map...');
+      
+      // Create map instance
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [12.5736, 44.0646], // Rimini center
+        zoom: 12,
+        attributionControl: false
+      });
+
+      // Add navigation controls
+      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+      map.current.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
+
+      // Map loaded event
+      map.current.on('load', () => {
+        console.log('Mapbox map loaded successfully');
+        setMapLoaded(true);
+        setLoading(false);
+      });
+
+      // Error handling
+      map.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+        setLoading(false);
+        toast({
+          title: "Errore Mappa",
+          description: "Impossibile caricare la mappa",
+          variant: "destructive"
+        });
+      });
+
+    } catch (error) {
+      console.error('Error initializing map:', error);
+      setLoading(false);
+      toast({
+        title: "Errore Mappa",
+        description: "Impossibile inizializzare la mappa",
+        variant: "destructive"
+      });
+    }
+  };
 
   const fetchPOIs = async () => {
     try {
       console.log('Fetching POIs from database...');
       let query = supabase.from('points_of_interest').select('*');
 
-      // Apply filters
       if (filters.activityTypes.length > 0 && !filters.activityTypes.includes('tutto')) {
         query = query.in('category', filters.activityTypes);
       }
@@ -104,27 +135,18 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       
       if (error) {
         console.error('Error fetching POIs:', error);
-        toast({
-          title: "Errore nel caricamento",
-          description: "Impossibile caricare i punti di interesse",
-          variant: "destructive"
-        });
-        // Use fallback data
         setFallbackPOIs();
       } else {
         console.log('POIs fetched:', data);
         if (data && data.length > 0) {
           setPois(data);
         } else {
-          console.log('No POIs found, using fallback data');
           setFallbackPOIs();
         }
       }
     } catch (error) {
       console.error('Error in fetchPOIs:', error);
       setFallbackPOIs();
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -198,9 +220,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
             lng: position.coords.longitude
           };
           setUserLocation(location);
+          console.log('GPS location obtained:', location);
           
-          // Center map on user location
-          if (map.current) {
+          if (map.current && mapLoaded) {
             map.current.flyTo({
               center: [location.lng, location.lat],
               zoom: 14,
@@ -210,7 +232,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         },
         (error) => {
           console.error('Error getting location:', error);
-          // Default to Rimini center
           setUserLocation({
             lat: 44.0646,
             lng: 12.5736
@@ -221,10 +242,14 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
             description: "Usando la posizione predefinita di Rimini",
             variant: "default"
           });
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000
         }
       );
     } else {
-      // Default to Rimini center
       setUserLocation({
         lat: 44.0646,
         lng: 12.5736
@@ -233,16 +258,13 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   };
 
   const addUserLocationMarker = () => {
-    if (!map.current || !userLocation) return;
+    if (!map.current || !userLocation || !mapLoaded) return;
 
-    // Remove existing user marker
     if (userMarker.current) {
       userMarker.current.remove();
     }
 
-    // Create user location marker
     const el = document.createElement('div');
-    el.className = 'user-location-marker';
     el.style.cssText = `
       width: 20px;
       height: 20px;
@@ -260,16 +282,13 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   };
 
   const addPOIMarkers = () => {
-    if (!map.current) return;
+    if (!map.current || !mapLoaded) return;
 
-    // Clear existing markers
     markers.current.forEach(marker => marker.remove());
     markers.current = [];
 
-    // Add POI markers
     pois.forEach(poi => {
       const el = document.createElement('div');
-      el.className = 'poi-marker';
       el.style.cssText = `
         width: 40px;
         height: 40px;
@@ -305,9 +324,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
             </div>
           `)
         )
-        .addTo(map.current);
+        .addTo(map.current!);
 
-      // Click handler for POI selection
       el.addEventListener('click', () => {
         setSelectedPoi(poi);
       });
@@ -345,18 +363,15 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
 
   return (
     <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200">
-      {/* Map Header */}
       <div className="p-4 bg-gradient-to-r from-blue-500 to-green-500 text-white">
         <h3 className="font-bold text-lg">Mappa GPS Romagna</h3>
         <p className="text-blue-100 text-sm">Scopri {pois.length} punti di interesse</p>
       </div>
 
-      {/* Map Container */}
       <div className="flex-1 relative">
         <div ref={mapContainer} className="absolute inset-0" />
         
-        {/* Map controls - Repositioned GPS button to avoid overlap */}
-        <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
+        <div className="absolute bottom-4 left-4 flex flex-col gap-2 z-10">
           <Button
             size="sm"
             variant="outline"
@@ -367,7 +382,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           </Button>
         </div>
 
-        {/* Map statistics */}
         <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-3 text-sm shadow-lg border border-gray-200 z-10">
           <div className="font-semibold text-gray-800">{pois.length} POI trovati</div>
           <div className="text-gray-600 text-xs">
@@ -376,7 +390,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         </div>
       </div>
 
-      {/* POI Details Panel */}
       {selectedPoi && (
         <div className="p-4 bg-gradient-to-r from-blue-50 to-green-50 border-t border-gray-200">
           <div className="flex justify-between items-start mb-2">
@@ -409,7 +422,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         </div>
       )}
 
-      {/* Keep existing style block */}
       <style>
         {`
           @keyframes pulse {
