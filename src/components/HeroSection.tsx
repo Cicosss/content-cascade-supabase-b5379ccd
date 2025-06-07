@@ -100,89 +100,89 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Enhanced Discovery Card - Fixed Layout */}
+      {/* Enhanced Discovery Card - Completely Fixed Layout */}
       <div className="relative -mt-40 container mx-auto px-4 z-10">
-        <Card className="bg-white/98 backdrop-blur-md shadow-2xl rounded-3xl p-8 md:p-10 border-0 transform hover:scale-[1.02] transition-all duration-300">
+        <Card className="bg-white/98 backdrop-blur-md shadow-2xl rounded-3xl p-6 md:p-8 border-0">
           <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-slate-900 mb-3">Scopri la Vera Romagna</h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">Scopri la Vera Romagna</h3>
             <p className="text-slate-600 text-lg">Scegli la tua categoria preferita e inizia l'avventura</p>
           </div>
           
-          {/* Fixed Grid Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+          {/* Completely Redesigned Grid Layout */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
             {/* Tradizione Culinaria */}
             <div 
-              className="text-center space-y-3 p-4 md:p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl hover:from-red-100 hover:to-red-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-lg"
+              className="text-center space-y-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl cursor-pointer transition-colors hover:from-red-100 hover:to-red-200"
               onClick={() => navigate('/experiences')}
             >
-              <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white text-xl md:text-2xl">🍝</span>
+              <div className="mx-auto w-14 h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl">🍝</span>
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-sm md:text-lg">Tradizione Culinaria</div>
-                <div className="text-xs md:text-sm text-slate-600">Sapori autentici romagnoli</div>
+                <div className="font-bold text-slate-900 text-sm">Tradizione Culinaria</div>
+                <div className="text-xs text-slate-600">Sapori autentici romagnoli</div>
               </div>
             </div>
 
             {/* Esperienze Culturali */}
             <div 
-              className="text-center space-y-3 p-4 md:p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl hover:from-blue-100 hover:to-blue-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-lg"
+              className="text-center space-y-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl cursor-pointer transition-colors hover:from-blue-100 hover:to-blue-200"
               onClick={() => navigate('/restaurants')}
             >
-              <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white text-xl md:text-2xl">🏛️</span>
+              <div className="mx-auto w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl">🏛️</span>
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-sm md:text-lg">Esperienze Culturali</div>
-                <div className="text-xs md:text-sm text-slate-600">Arte, storia e patrimonio</div>
+                <div className="font-bold text-slate-900 text-sm">Esperienze Culturali</div>
+                <div className="text-xs text-slate-600">Arte, storia e patrimonio</div>
               </div>
             </div>
 
             {/* Attività Marittime */}
             <div 
-              className="text-center space-y-3 p-4 md:p-6 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl hover:from-cyan-100 hover:to-cyan-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-lg"
+              className="text-center space-y-3 p-4 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl cursor-pointer transition-colors hover:from-cyan-100 hover:to-cyan-200"
               onClick={() => navigate('/itineraries')}
             >
-              <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white text-xl md:text-2xl">⛵</span>
+              <div className="mx-auto w-14 h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl">⛵</span>
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-sm md:text-lg">Attività Marittime</div>
-                <div className="text-xs md:text-sm text-slate-600">Mare e avventure acquatiche</div>
+                <div className="font-bold text-slate-900 text-sm">Attività Marittime</div>
+                <div className="text-xs text-slate-600">Mare e avventure acquatiche</div>
               </div>
             </div>
 
             {/* Eventi Speciali */}
             <div 
-              className="text-center space-y-3 p-4 md:p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl hover:from-green-100 hover:to-green-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-lg"
+              className="text-center space-y-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl cursor-pointer transition-colors hover:from-green-100 hover:to-green-200"
               onClick={() => navigate('/events')}
             >
-              <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white text-xl md:text-2xl">🎭</span>
+              <div className="mx-auto w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl">🎭</span>
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-sm md:text-lg">Eventi Speciali</div>
-                <div className="text-xs md:text-sm text-slate-600">Festival e manifestazioni</div>
+                <div className="font-bold text-slate-900 text-sm">Eventi Speciali</div>
+                <div className="text-xs text-slate-600">Festival e manifestazioni</div>
               </div>
             </div>
 
             {/* Sezione Family */}
             <div 
-              className="text-center space-y-3 p-4 md:p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl hover:from-purple-100 hover:to-purple-200 transition-all cursor-pointer group transform hover:scale-105 hover:shadow-lg"
+              className="text-center space-y-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl cursor-pointer transition-colors hover:from-purple-100 hover:to-purple-200"
               onClick={() => navigate('/family')}
             >
-              <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <span className="text-white text-xl md:text-2xl">👨‍👩‍👧‍👦</span>
+              <div className="mx-auto w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl">👨‍👩‍👧‍👦</span>
               </div>
               <div>
-                <div className="font-bold text-slate-900 text-sm md:text-lg">Sezione Family</div>
-                <div className="text-xs md:text-sm text-slate-600">Divertimento per famiglie</div>
+                <div className="font-bold text-slate-900 text-sm">Sezione Family</div>
+                <div className="text-xs text-slate-600">Divertimento per famiglie</div>
               </div>
             </div>
           </div>
 
           {/* Statistics section come negli allegati */}
-          <div className="mt-10 pt-8 border-t border-slate-200">
+          <div className="pt-6 border-t border-slate-200">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div className="space-y-2">
                 <div className="text-2xl md:text-3xl font-bold text-slate-900">500+</div>
