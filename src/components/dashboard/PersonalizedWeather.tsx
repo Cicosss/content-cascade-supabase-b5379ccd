@@ -1,11 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, MapPin } from 'lucide-react';
 
-const PersonalizedWeather = () => {
+interface PersonalizedWeatherProps {
+  gpsLocation?: {lat: number; lng: number} | null;
+}
+
+const PersonalizedWeather: React.FC<PersonalizedWeatherProps> = ({ gpsLocation }) => {
   const { user } = useAuth();
   const [weather, setWeather] = useState({
     location: 'Rimini',
@@ -16,51 +19,21 @@ const PersonalizedWeather = () => {
     description: 'Cielo sereno'
   });
   const [loading, setLoading] = useState(true);
-  const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [locationName, setLocationName] = useState('Rimini');
 
   useEffect(() => {
-    getCurrentLocation();
-  }, []);
-
-  useEffect(() => {
-    if (userLocation) {
-      setFallbackWeatherByCoordinates(userLocation.lat, userLocation.lng);
+    if (gpsLocation) {
+      console.log('Using GPS location for weather:', gpsLocation);
+      setWeatherByCoordinates(gpsLocation.lat, gpsLocation.lng);
     } else {
       fetchUserProfileLocation();
     }
-  }, [userLocation, user]);
-
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setUserLocation(location);
-          console.log('Got GPS location for weather:', location);
-        },
-        (error) => {
-          console.error('Error getting GPS location:', error);
-          fetchUserProfileLocation();
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 300000
-        }
-      );
-    } else {
-      fetchUserProfileLocation();
-    }
-  };
+  }, [gpsLocation, user]);
 
   const fetchUserProfileLocation = async () => {
     if (!user) {
       setLocationName('Rimini');
-      setFallbackWeatherByLocation('Rimini');
+      setWeatherByLocation('Rimini');
       return;
     }
     
@@ -73,21 +46,21 @@ const PersonalizedWeather = () => {
       
       const location = data?.arrival_location || 'Rimini';
       setLocationName(location);
-      setFallbackWeatherByLocation(location);
+      setWeatherByLocation(location);
     } catch (error) {
       console.error('Error fetching user profile location:', error);
-      setFallbackWeatherByLocation('Rimini');
+      setWeatherByLocation('Rimini');
     }
   };
 
-  const setFallbackWeatherByCoordinates = (lat: number, lng: number) => {
+  const setWeatherByCoordinates = (lat: number, lng: number) => {
     setLoading(true);
     
-    // Determine location based on coordinates
+    // Determina la località basandosi sulle coordinate GPS
     let locationName = 'Romagna';
     let mockData = { temp: 22, condition: 'Soleggiato', humidity: 65, wind: 8 };
 
-    // Check if coordinates are in known areas of Romagna
+    // Controlla se le coordinate sono in aree conosciute della Romagna
     if (lat >= 44.0 && lat <= 44.1 && lng >= 12.5 && lng <= 12.6) {
       locationName = 'Rimini';
       mockData = { temp: 24, condition: 'Soleggiato', humidity: 68, wind: 12 };
@@ -103,6 +76,9 @@ const PersonalizedWeather = () => {
     } else if (lat >= 44.2 && lat <= 44.3 && lng >= 12.0 && lng <= 12.1) {
       locationName = 'Forlì';
       mockData = { temp: 25, condition: 'Soleggiato', humidity: 65, wind: 14 };
+    } else if (lat >= 43.9 && lat <= 44.0 && lng >= 12.4 && lng <= 12.8) {
+      locationName = 'Gradara';
+      mockData = { temp: 23, condition: 'Soleggiato', humidity: 67, wind: 9 };
     }
 
     setWeather({
@@ -117,7 +93,7 @@ const PersonalizedWeather = () => {
     setLoading(false);
   };
 
-  const setFallbackWeatherByLocation = (location: string) => {
+  const setWeatherByLocation = (location: string) => {
     setLoading(true);
     
     const mockWeatherData = {
@@ -190,7 +166,7 @@ const PersonalizedWeather = () => {
             <div className="flex items-center gap-1 text-white/80 text-sm">
               <MapPin className="h-3 w-3" />
               <span>{weather.location}</span>
-              {userLocation && <span className="text-xs">(GPS)</span>}
+              {gpsLocation && <span className="text-xs">(GPS)</span>}
             </div>
           </div>
           {getWeatherIcon(weather.condition)}
@@ -220,9 +196,9 @@ const PersonalizedWeather = () => {
           </div>
         </div>
 
-        {userLocation && (
+        {gpsLocation && (
           <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
-            📍 Posizione rilevata tramite GPS
+            📍 Meteo rilevato tramite GPS dalla mappa
           </div>
         )}
       </div>

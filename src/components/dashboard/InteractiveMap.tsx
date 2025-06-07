@@ -26,12 +26,13 @@ interface InteractiveMapProps {
     period: any;
     isFirstVisit: boolean;
   };
+  onLocationChange?: (location: {lat: number; lng: number}) => void;
 }
 
 // Set Mapbox access token
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
 
-const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
+const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChange }) => {
   const [pois, setPois] = useState<POI[]>([]);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
@@ -55,7 +56,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
 
   useEffect(() => {
     fetchPOIs();
-    getCurrentLocation();
   }, [filters]);
 
   useEffect(() => {
@@ -67,8 +67,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   useEffect(() => {
     if (mapLoaded && userLocation) {
       addUserLocationMarker();
+      // Comunica la posizione al componente padre (meteo)
+      if (onLocationChange) {
+        onLocationChange(userLocation);
+      }
     }
-  }, [userLocation, mapLoaded]);
+  }, [userLocation, mapLoaded, onLocationChange]);
 
   const initializeMap = () => {
     if (!mapContainer.current || map.current) return;
@@ -76,7 +80,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     try {
       console.log('Initializing Mapbox map...');
       
-      // Create map instance
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -85,18 +88,17 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         attributionControl: false
       });
 
-      // Add navigation controls
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
       map.current.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
 
-      // Map loaded event
       map.current.on('load', () => {
         console.log('Mapbox map loaded successfully');
         setMapLoaded(true);
         setLoading(false);
+        // Ottieni la posizione solo dopo che la mappa è caricata
+        getCurrentLocation();
       });
 
-      // Error handling
       map.current.on('error', (e) => {
         console.error('Mapbox error:', e);
         setLoading(false);
@@ -115,6 +117,55 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         description: "Impossibile inizializzare la mappa",
         variant: "destructive"
       });
+    }
+  };
+
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setUserLocation(location);
+          console.log('GPS location obtained:', location);
+          
+          if (map.current && mapLoaded) {
+            map.current.flyTo({
+              center: [location.lng, location.lat],
+              zoom: 14,
+              duration: 2000
+            });
+          }
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          // Fallback a Rimini
+          const fallbackLocation = {
+            lat: 44.0646,
+            lng: 12.5736
+          };
+          setUserLocation(fallbackLocation);
+          
+          toast({
+            title: "Posizione non disponibile",
+            description: "Usando la posizione predefinita di Rimini",
+            variant: "default"
+          });
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000
+        }
+      );
+    } else {
+      const fallbackLocation = {
+        lat: 44.0646,
+        lng: 12.5736
+      };
+      setUserLocation(fallbackLocation);
     }
   };
 
@@ -209,52 +260,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       }
     ];
     setPois(fallbackData);
-  };
-
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setUserLocation(location);
-          console.log('GPS location obtained:', location);
-          
-          if (map.current && mapLoaded) {
-            map.current.flyTo({
-              center: [location.lng, location.lat],
-              zoom: 14,
-              duration: 2000
-            });
-          }
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          setUserLocation({
-            lat: 44.0646,
-            lng: 12.5736
-          });
-          
-          toast({
-            title: "Posizione non disponibile",
-            description: "Usando la posizione predefinita di Rimini",
-            variant: "default"
-          });
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 300000
-        }
-      );
-    } else {
-      setUserLocation({
-        lat: 44.0646,
-        lng: 12.5736
-      });
-    }
   };
 
   const addUserLocationMarker = () => {

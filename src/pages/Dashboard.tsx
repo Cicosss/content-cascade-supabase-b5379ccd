@@ -22,6 +22,7 @@ const Dashboard = () => {
     isFirstVisit: true
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [mapLocation, setMapLocation] = useState<{lat: number; lng: number} | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -92,7 +93,10 @@ const Dashboard = () => {
                 </h2>
               </div>
               <div className="h-[calc(100%-4rem)]">
-                <InteractiveMap filters={filters} />
+                <InteractiveMap 
+                  filters={filters} 
+                  onLocationChange={setMapLocation}
+                />
               </div>
             </Card>
 
@@ -102,7 +106,7 @@ const Dashboard = () => {
 
           {/* Right Column - Weather */}
           <div className="space-y-6">
-            <PersonalizedWeather />
+            <PersonalizedWeather gpsLocation={mapLocation} />
           </div>
         </div>
 
