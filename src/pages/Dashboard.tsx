@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import InteractiveMap from '@/components/dashboard/InteractiveMap';
 import FilterPanel from '@/components/dashboard/FilterPanel';
 import AdvancedFilters from '@/components/dashboard/AdvancedFilters';
@@ -31,9 +31,11 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Caricamento...</div>
-      </div>
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-slate-600 text-xl">Caricamento...</div>
+        </div>
+      </Layout>
     );
   }
 
@@ -42,35 +44,33 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      <Header />
-      
-      {/* Dashboard Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">
-                Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}! 👋
-              </h1>
-              <p className="text-slate-200 text-lg">
-                Esplora la tua Romagna personalizzata
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition-all duration-200"
-              >
-                <Filter className="h-4 w-4" />
-                <span>Filtri Base</span>
-              </button>
+    <Layout>
+      <div className="container mx-auto px-4 py-8">
+        {/* Dashboard Header */}
+        <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white py-8 rounded-3xl mb-8">
+          <div className="px-8">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">
+                  Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}! 👋
+                </h1>
+                <p className="text-slate-200 text-lg">
+                  Esplora la tua Romagna personalizzata
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition-all duration-200"
+                >
+                  <Filter className="h-4 w-4" />
+                  <span>Filtri Base</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8">
         {/* Filter Panel */}
         {showFilters && (
           <div className="mb-8">
@@ -113,7 +113,7 @@ const Dashboard = () => {
           <PersonalizedContent filters={filters} />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
