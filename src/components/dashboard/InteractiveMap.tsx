@@ -205,44 +205,17 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       </div>
 
       {/* Map Container */}
-      <div className="flex-1 relative bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50 overflow-hidden">
+      <div className="flex-1 relative bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 overflow-hidden">
         
-        {/* GPS-style background with roads and districts */}
+        {/* Grid overlay for better visual structure */}
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage: `
-              linear-gradient(45deg, rgba(156, 163, 175, 0.3) 1px, transparent 1px),
-              linear-gradient(-45deg, rgba(156, 163, 175, 0.3) 1px, transparent 1px),
-              linear-gradient(0deg, rgba(59, 130, 246, 0.2) 2px, transparent 2px),
-              linear-gradient(90deg, rgba(59, 130, 246, 0.2) 2px, transparent 2px),
-              radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 75% 75%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%)
-            `,
-            backgroundSize: '30px 30px, 30px 30px, 120px 120px, 120px 120px, 200px 200px, 180px 180px, 300px 300px',
-            backgroundPosition: '0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0'
+            backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                             linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
           }}
         />
-
-        {/* Additional road-like elements */}
-        <div className="absolute inset-0">
-          {/* Main roads */}
-          <div className="absolute top-1/4 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-300/40 to-transparent"></div>
-          <div className="absolute top-3/4 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-300/40 to-transparent"></div>
-          <div className="absolute top-0 bottom-0 left-1/3 w-1 bg-gradient-to-b from-transparent via-blue-300/40 to-transparent"></div>
-          <div className="absolute top-0 bottom-0 left-2/3 w-1 bg-gradient-to-b from-transparent via-blue-300/40 to-transparent"></div>
-          
-          {/* Secondary roads */}
-          <div className="absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-gray-300/50 rotate-12"></div>
-          <div className="absolute top-1/3 left-1/6 right-1/6 h-0.5 bg-gray-300/50 -rotate-12"></div>
-          
-          {/* District areas */}
-          <div className="absolute top-8 left-8 w-20 h-16 border border-green-200/60 rounded bg-green-50/30"></div>
-          <div className="absolute top-16 right-12 w-24 h-20 border border-orange-200/60 rounded bg-orange-50/30"></div>
-          <div className="absolute bottom-20 left-16 w-28 h-18 border border-purple-200/60 rounded bg-purple-50/30"></div>
-          <div className="absolute bottom-16 right-20 w-22 h-16 border border-blue-200/60 rounded bg-blue-50/30"></div>
-        </div>
 
         {/* User location indicator */}
         {userLocation && (
