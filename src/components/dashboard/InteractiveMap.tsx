@@ -1,9 +1,10 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 interface POI {
   id: string;
@@ -27,17 +28,63 @@ interface InteractiveMapProps {
   };
 }
 
+// Set Mapbox access token
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [pois, setPois] = useState<POI[]>([]);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const [loading, setLoading] = useState(true);
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const markers = useRef<mapboxgl.Marker[]>([]);
+  const userMarker = useRef<mapboxgl.Marker | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!mapContainer.current) return;
+    
+    // Initialize Mapbox map
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [12.5736, 44.0646], // Rimini center
+      zoom: 12
+    });
+
+    // Add navigation controls
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    // Map loaded
+    map.current.on('load', () => {
+      console.log('Mapbox map loaded');
+      setLoading(false);
+    });
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     fetchPOIs();
     getCurrentLocation();
   }, [filters]);
+
+  useEffect(() => {
+    if (map.current && pois.length > 0) {
+      addPOIMarkers();
+    }
+  }, [pois]);
+
+  useEffect(() => {
+    if (map.current && userLocation) {
+      addUserLocationMarker();
+    }
+  }, [userLocation]);
 
   const fetchPOIs = async () => {
     try {
@@ -146,10 +193,20 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
+          const location = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          });
+          };
+          setUserLocation(location);
+          
+          // Center map on user location
+          if (map.current) {
+            map.current.flyTo({
+              center: [location.lng, location.lat],
+              zoom: 14,
+              duration: 2000
+            });
+          }
         },
         (error) => {
           console.error('Error getting location:', error);
@@ -157,6 +214,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           setUserLocation({
             lat: 44.0646,
             lng: 12.5736
+          });
+          
+          toast({
+            title: "Posizione non disponibile",
+            description: "Usando la posizione predefinita di Rimini",
+            variant: "default"
           });
         }
       );
@@ -167,6 +230,90 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         lng: 12.5736
       });
     }
+  };
+
+  const addUserLocationMarker = () => {
+    if (!map.current || !userLocation) return;
+
+    // Remove existing user marker
+    if (userMarker.current) {
+      userMarker.current.remove();
+    }
+
+    // Create user location marker
+    const el = document.createElement('div');
+    el.className = 'user-location-marker';
+    el.style.cssText = `
+      width: 20px;
+      height: 20px;
+      background-color: #3b82f6;
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+      animation: pulse 2s infinite;
+    `;
+
+    userMarker.current = new mapboxgl.Marker(el)
+      .setLngLat([userLocation.lng, userLocation.lat])
+      .setPopup(new mapboxgl.Popup().setHTML('<div style="color: #1f2937; font-weight: bold;">La tua posizione</div>'))
+      .addTo(map.current);
+  };
+
+  const addPOIMarkers = () => {
+    if (!map.current) return;
+
+    // Clear existing markers
+    markers.current.forEach(marker => marker.remove());
+    markers.current = [];
+
+    // Add POI markers
+    pois.forEach(poi => {
+      const el = document.createElement('div');
+      el.className = 'poi-marker';
+      el.style.cssText = `
+        width: 40px;
+        height: 40px;
+        background-color: white;
+        border: 3px solid #ef4444;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        transition: transform 0.2s;
+      `;
+      el.innerHTML = getPoiIcon(poi.poi_type, poi.category);
+      
+      el.addEventListener('mouseenter', () => {
+        el.style.transform = 'scale(1.1)';
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'scale(1)';
+      });
+
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat([poi.longitude, poi.latitude])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }).setHTML(`
+            <div style="color: #1f2937;">
+              <h3 style="font-weight: bold; margin-bottom: 8px;">${poi.name}</h3>
+              <p style="margin-bottom: 8px; font-size: 14px;">${poi.description}</p>
+              <p style="font-size: 12px; color: #6b7280;">${poi.address}</p>
+            </div>
+          `)
+        )
+        .addTo(map.current);
+
+      // Click handler for POI selection
+      el.addEventListener('click', () => {
+        setSelectedPoi(poi);
+      });
+
+      markers.current.push(marker);
+    });
   };
 
   const getDirections = (poi: POI) => {
@@ -190,7 +337,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       <div className="h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 rounded-2xl">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Caricamento mappa...</p>
+          <p className="text-gray-600">Caricamento mappa GPS...</p>
         </div>
       </div>
     );
@@ -200,77 +347,16 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-200">
       {/* Map Header */}
       <div className="p-4 bg-gradient-to-r from-blue-500 to-green-500 text-white">
-        <h3 className="font-bold text-lg">Mappa Interattiva Romagna</h3>
+        <h3 className="font-bold text-lg">Mappa GPS Romagna</h3>
         <p className="text-blue-100 text-sm">Scopri {pois.length} punti di interesse</p>
       </div>
 
       {/* Map Container */}
-      <div className="flex-1 relative bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 overflow-hidden">
+      <div className="flex-1 relative">
+        <div ref={mapContainer} className="absolute inset-0" />
         
-        {/* Grid overlay for better visual structure */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-                             linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px'
-          }}
-        />
-
-        {/* User location indicator */}
-        {userLocation && (
-          <div 
-            className="absolute z-20 transform -translate-x-1/2 -translate-y-1/2"
-            style={{
-              left: '50%',
-              top: '50%'
-            }}
-          >
-            <div className="relative">
-              <div className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
-              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs whitespace-nowrap shadow-lg">
-                La tua posizione
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* POI markers distributed across the map */}
-        {pois.map((poi, index) => {
-          // Better distribution algorithm
-          const gridCols = 4;
-          const gridRows = Math.ceil(pois.length / gridCols);
-          const col = index % gridCols;
-          const row = Math.floor(index / gridCols);
-          
-          const x = 15 + (col * 70 / Math.max(gridCols - 1, 1));
-          const y = 15 + (row * 70 / Math.max(gridRows - 1, 1));
-          
-          return (
-            <div
-              key={poi.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10"
-              style={{
-                left: `${Math.min(Math.max(x, 10), 90)}%`,
-                top: `${Math.min(Math.max(y, 10), 90)}%`
-              }}
-              onClick={() => setSelectedPoi(poi)}
-            >
-              <div className="relative">
-                <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center border-3 border-red-400 group-hover:scale-110 transition-all duration-200 group-hover:shadow-xl group-hover:border-red-500">
-                  <span className="text-xl">{getPoiIcon(poi.poi_type, poi.category)}</span>
-                </div>
-                <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-white px-3 py-2 rounded-lg shadow-lg text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-200 border border-gray-200 z-30 max-w-40">
-                  <div className="font-semibold text-gray-800">{poi.name}</div>
-                  <div className="text-gray-500">{poi.category}</div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
         {/* Map controls */}
-        <div className="absolute top-4 right-4 flex flex-col gap-2 z-20">
+        <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
           <Button
             size="sm"
             variant="outline"
@@ -281,27 +367,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           </Button>
         </div>
 
-        {/* Enhanced legend */}
-        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-4 text-xs shadow-lg border border-gray-200">
-          <div className="font-semibold mb-3 text-gray-800">Legenda</div>
-          <div className="space-y-2">
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🍽️</span> <span className="text-gray-700">Ristoranti</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🏛️</span> <span className="text-gray-700">Monumenti</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🌳</span> <span className="text-gray-700">Natura</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-lg">🎭</span> <span className="text-gray-700">Intrattenimento</span>
-            </div>
-          </div>
-        </div>
-
         {/* Map statistics */}
-        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-3 text-sm shadow-lg border border-gray-200">
+        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-3 text-sm shadow-lg border border-gray-200 z-10">
           <div className="font-semibold text-gray-800">{pois.length} POI trovati</div>
           <div className="text-gray-600 text-xs">
             {filters.activityTypes.includes('tutto') ? 'Tutte le categorie' : filters.activityTypes.join(', ')}
@@ -341,6 +408,20 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           </div>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+          }
+        }
+      `}</style>
     </div>
   );
 };
