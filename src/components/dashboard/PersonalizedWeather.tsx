@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets } from 'lucide-react';
+import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, MapPin } from 'lucide-react';
 
 const PersonalizedWeather = () => {
   const { user } = useAuth();
@@ -16,20 +16,54 @@ const PersonalizedWeather = () => {
     description: 'Cielo sereno'
   });
   const [loading, setLoading] = useState(true);
-  const [userLocation, setUserLocation] = useState('Rimini');
+  const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
+  const [locationName, setLocationName] = useState('Rimini');
 
   useEffect(() => {
-    fetchUserLocation();
-  }, [user]);
+    getCurrentLocation();
+  }, []);
 
   useEffect(() => {
     if (userLocation) {
-      fetchWeather(userLocation);
+      fetchWeatherByCoordinates(userLocation.lat, userLocation.lng);
+    } else {
+      fetchUserProfileLocation();
     }
-  }, [userLocation]);
+  }, [userLocation, user]);
 
-  const fetchUserLocation = async () => {
-    if (!user) return;
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setUserLocation(location);
+          console.log('Got GPS location:', location);
+        },
+        (error) => {
+          console.error('Error getting GPS location:', error);
+          // Fallback to profile location or default
+          fetchUserProfileLocation();
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000 // 5 minutes
+        }
+      );
+    } else {
+      fetchUserProfileLocation();
+    }
+  };
+
+  const fetchUserProfileLocation = async () => {
+    if (!user) {
+      setLocationName('Rimini');
+      fetchWeatherByLocation('Rimini');
+      return;
+    }
     
     const { data } = await supabase
       .from('user_profiles')
@@ -37,18 +71,18 @@ const PersonalizedWeather = () => {
       .eq('id', user.id)
       .maybeSingle();
     
-    if (data?.arrival_location) {
-      setUserLocation(data.arrival_location);
-    }
+    const location = data?.arrival_location || 'Rimini';
+    setLocationName(location);
+    fetchWeatherByLocation(location);
   };
 
-  const fetchWeather = async (location: string) => {
+  const fetchWeatherByCoordinates = async (lat: number, lng: number) => {
     setLoading(true);
     try {
       // Using OpenWeatherMap API (free tier)
-      const API_KEY = '8f4e8e8f8c8f8f8f8f8f8f8f8f8f8f8f'; // Replace with your actual API key
+      const API_KEY = '8f4e8e8f8c8f8f8f8f8f8f8f8f8f8f8f'; // Placeholder - user needs to get their own
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${location},IT&appid=${API_KEY}&units=metric&lang=it`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${API_KEY}&units=metric&lang=it`
       );
       
       if (response.ok) {
@@ -62,41 +96,76 @@ const PersonalizedWeather = () => {
           wind: Math.round(data.wind.speed * 3.6), // Convert m/s to km/h
           description: data.weather[0].description
         });
+        setLocationName(data.name);
       } else {
-        // Fallback to mock data for Romagna area
-        const mockWeatherData = {
-          Rimini: { temp: 24, condition: 'Soleggiato', humidity: 68, wind: 12 },
-          Riccione: { temp: 23, condition: 'Soleggiato', humidity: 70, wind: 10 },
-          Cesenatico: { temp: 22, condition: 'Nuvoloso', humidity: 72, wind: 8 },
-          Ravenna: { temp: 21, condition: 'Nuvoloso', humidity: 75, wind: 6 },
-          Forlì: { temp: 25, condition: 'Soleggiato', humidity: 65, wind: 14 }
-        };
-        
-        const locationData = mockWeatherData[location as keyof typeof mockWeatherData] || mockWeatherData.Rimini;
-        
-        setWeather({
-          location: location,
-          temperature: locationData.temp,
-          condition: locationData.condition,
-          humidity: locationData.humidity,
-          wind: locationData.wind,
-          description: `${locationData.condition} con temperatura piacevole`
-        });
+        // Fallback to mock data based on coordinates
+        setFallbackWeatherByCoordinates(lat, lng);
       }
     } catch (error) {
-      console.error('Error fetching weather:', error);
-      // Fallback weather data
-      setWeather({
-        location: location,
-        temperature: 22,
-        condition: 'Soleggiato',
-        humidity: 65,
-        wind: 8,
-        description: 'Tempo piacevole'
-      });
+      console.error('Error fetching weather by coordinates:', error);
+      setFallbackWeatherByCoordinates(lat, lng);
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchWeatherByLocation = async (location: string) => {
+    setLoading(true);
+    try {
+      // Mock weather data for fallback
+      setFallbackWeatherByLocation(location);
+    } catch (error) {
+      console.error('Error fetching weather:', error);
+      setFallbackWeatherByLocation(location);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const setFallbackWeatherByCoordinates = (lat: number, lng: number) => {
+    // Determine location based on coordinates
+    let locationName = 'Romagna';
+    let mockData = { temp: 22, condition: 'Soleggiato', humidity: 65, wind: 8 };
+
+    // Check if coordinates are in known areas
+    if (lat >= 44.0 && lat <= 44.1 && lng >= 12.5 && lng <= 12.6) {
+      locationName = 'Rimini';
+      mockData = { temp: 24, condition: 'Soleggiato', humidity: 68, wind: 12 };
+    } else if (lat >= 44.0 && lat <= 44.1 && lng >= 12.6 && lng <= 12.7) {
+      locationName = 'Riccione';
+      mockData = { temp: 23, condition: 'Soleggiato', humidity: 70, wind: 10 };
+    }
+
+    setWeather({
+      location: locationName,
+      temperature: mockData.temp,
+      condition: mockData.condition,
+      humidity: mockData.humidity,
+      wind: mockData.wind,
+      description: `${mockData.condition} nella tua posizione`
+    });
+    setLocationName(locationName);
+  };
+
+  const setFallbackWeatherByLocation = (location: string) => {
+    const mockWeatherData = {
+      Rimini: { temp: 24, condition: 'Soleggiato', humidity: 68, wind: 12 },
+      Riccione: { temp: 23, condition: 'Soleggiato', humidity: 70, wind: 10 },
+      Cesenatico: { temp: 22, condition: 'Nuvoloso', humidity: 72, wind: 8 },
+      Ravenna: { temp: 21, condition: 'Nuvoloso', humidity: 75, wind: 6 },
+      Forlì: { temp: 25, condition: 'Soleggiato', humidity: 65, wind: 14 }
+    };
+    
+    const locationData = mockWeatherData[location as keyof typeof mockWeatherData] || mockWeatherData.Rimini;
+    
+    setWeather({
+      location: location,
+      temperature: locationData.temp,
+      condition: locationData.condition,
+      humidity: locationData.humidity,
+      wind: locationData.wind,
+      description: `${locationData.condition} con temperatura piacevole`
+    });
   };
 
   const translateCondition = (condition: string) => {
@@ -159,7 +228,11 @@ const PersonalizedWeather = () => {
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold">Meteo Locale</h3>
-            <p className="text-white/80 text-sm">{weather.location}</p>
+            <div className="flex items-center gap-1 text-white/80 text-sm">
+              <MapPin className="h-3 w-3" />
+              <span>{weather.location}</span>
+              {userLocation && <span className="text-xs">(GPS)</span>}
+            </div>
           </div>
           {getWeatherIcon(weather.condition)}
         </div>
@@ -187,6 +260,13 @@ const PersonalizedWeather = () => {
             </div>
           </div>
         </div>
+
+        {/* GPS Status indicator */}
+        {userLocation && (
+          <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
+            📍 Posizione rilevata tramite GPS
+          </div>
+        )}
       </div>
     </Card>
   );

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
@@ -356,8 +355,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       <div className="flex-1 relative">
         <div ref={mapContainer} className="absolute inset-0" />
         
-        {/* Map controls */}
-        <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
+        {/* Map controls - Repositioned GPS button to avoid overlap */}
+        <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
           <Button
             size="sm"
             variant="outline"
@@ -410,6 +409,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         </div>
       )}
 
+      {/* Keep existing style block */}
       <style>
         {`
           @keyframes pulse {
