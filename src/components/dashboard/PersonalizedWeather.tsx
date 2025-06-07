@@ -25,7 +25,7 @@ const PersonalizedWeather = () => {
 
   useEffect(() => {
     if (userLocation) {
-      fetchWeatherByCoordinates(userLocation.lat, userLocation.lng);
+      setFallbackWeatherByCoordinates(userLocation.lat, userLocation.lng);
     } else {
       fetchUserProfileLocation();
     }
@@ -40,17 +40,16 @@ const PersonalizedWeather = () => {
             lng: position.coords.longitude
           };
           setUserLocation(location);
-          console.log('Got GPS location:', location);
+          console.log('Got GPS location for weather:', location);
         },
         (error) => {
           console.error('Error getting GPS location:', error);
-          // Fallback to profile location or default
           fetchUserProfileLocation();
         },
         {
           enableHighAccuracy: true,
           timeout: 10000,
-          maximumAge: 300000 // 5 minutes
+          maximumAge: 300000
         }
       );
     } else {
@@ -61,79 +60,49 @@ const PersonalizedWeather = () => {
   const fetchUserProfileLocation = async () => {
     if (!user) {
       setLocationName('Rimini');
-      fetchWeatherByLocation('Rimini');
+      setFallbackWeatherByLocation('Rimini');
       return;
     }
     
-    const { data } = await supabase
-      .from('user_profiles')
-      .select('arrival_location')
-      .eq('id', user.id)
-      .maybeSingle();
-    
-    const location = data?.arrival_location || 'Rimini';
-    setLocationName(location);
-    fetchWeatherByLocation(location);
-  };
-
-  const fetchWeatherByCoordinates = async (lat: number, lng: number) => {
-    setLoading(true);
     try {
-      // Using OpenWeatherMap API (free tier)
-      const API_KEY = '8f4e8e8f8c8f8f8f8f8f8f8f8f8f8f8f'; // Placeholder - user needs to get their own
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${API_KEY}&units=metric&lang=it`
-      );
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('arrival_location')
+        .eq('id', user.id)
+        .maybeSingle();
       
-      if (response.ok) {
-        const data = await response.json();
-        
-        setWeather({
-          location: data.name,
-          temperature: Math.round(data.main.temp),
-          condition: translateCondition(data.weather[0].main),
-          humidity: data.main.humidity,
-          wind: Math.round(data.wind.speed * 3.6), // Convert m/s to km/h
-          description: data.weather[0].description
-        });
-        setLocationName(data.name);
-      } else {
-        // Fallback to mock data based on coordinates
-        setFallbackWeatherByCoordinates(lat, lng);
-      }
-    } catch (error) {
-      console.error('Error fetching weather by coordinates:', error);
-      setFallbackWeatherByCoordinates(lat, lng);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchWeatherByLocation = async (location: string) => {
-    setLoading(true);
-    try {
-      // Mock weather data for fallback
+      const location = data?.arrival_location || 'Rimini';
+      setLocationName(location);
       setFallbackWeatherByLocation(location);
     } catch (error) {
-      console.error('Error fetching weather:', error);
-      setFallbackWeatherByLocation(location);
-    } finally {
-      setLoading(false);
+      console.error('Error fetching user profile location:', error);
+      setFallbackWeatherByLocation('Rimini');
     }
   };
 
   const setFallbackWeatherByCoordinates = (lat: number, lng: number) => {
+    setLoading(true);
+    
     // Determine location based on coordinates
     let locationName = 'Romagna';
     let mockData = { temp: 22, condition: 'Soleggiato', humidity: 65, wind: 8 };
 
-    // Check if coordinates are in known areas
+    // Check if coordinates are in known areas of Romagna
     if (lat >= 44.0 && lat <= 44.1 && lng >= 12.5 && lng <= 12.6) {
       locationName = 'Rimini';
       mockData = { temp: 24, condition: 'Soleggiato', humidity: 68, wind: 12 };
     } else if (lat >= 44.0 && lat <= 44.1 && lng >= 12.6 && lng <= 12.7) {
       locationName = 'Riccione';
       mockData = { temp: 23, condition: 'Soleggiato', humidity: 70, wind: 10 };
+    } else if (lat >= 44.15 && lat <= 44.25 && lng >= 12.3 && lng <= 12.4) {
+      locationName = 'Cesenatico';
+      mockData = { temp: 22, condition: 'Nuvoloso', humidity: 72, wind: 8 };
+    } else if (lat >= 44.4 && lat <= 44.5 && lng >= 12.1 && lng <= 12.2) {
+      locationName = 'Ravenna';
+      mockData = { temp: 21, condition: 'Nuvoloso', humidity: 75, wind: 6 };
+    } else if (lat >= 44.2 && lat <= 44.3 && lng >= 12.0 && lng <= 12.1) {
+      locationName = 'Forlì';
+      mockData = { temp: 25, condition: 'Soleggiato', humidity: 65, wind: 14 };
     }
 
     setWeather({
@@ -142,12 +111,15 @@ const PersonalizedWeather = () => {
       condition: mockData.condition,
       humidity: mockData.humidity,
       wind: mockData.wind,
-      description: `${mockData.condition} nella tua posizione`
+      description: `${mockData.condition} nella tua posizione GPS`
     });
     setLocationName(locationName);
+    setLoading(false);
   };
 
   const setFallbackWeatherByLocation = (location: string) => {
+    setLoading(true);
+    
     const mockWeatherData = {
       Rimini: { temp: 24, condition: 'Soleggiato', humidity: 68, wind: 12 },
       Riccione: { temp: 23, condition: 'Soleggiato', humidity: 70, wind: 10 },
@@ -166,20 +138,7 @@ const PersonalizedWeather = () => {
       wind: locationData.wind,
       description: `${locationData.condition} con temperatura piacevole`
     });
-  };
-
-  const translateCondition = (condition: string) => {
-    const translations: { [key: string]: string } = {
-      'Clear': 'Soleggiato',
-      'Clouds': 'Nuvoloso',
-      'Rain': 'Pioggia',
-      'Drizzle': 'Pioggerella',
-      'Thunderstorm': 'Temporale',
-      'Snow': 'Neve',
-      'Mist': 'Nebbia',
-      'Fog': 'Nebbia'
-    };
-    return translations[condition] || condition;
+    setLoading(false);
   };
 
   const getWeatherIcon = (condition: string) => {
@@ -261,7 +220,6 @@ const PersonalizedWeather = () => {
           </div>
         </div>
 
-        {/* GPS Status indicator */}
         {userLocation && (
           <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
             📍 Posizione rilevata tramite GPS
