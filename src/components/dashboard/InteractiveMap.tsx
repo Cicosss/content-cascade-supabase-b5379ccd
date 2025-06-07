@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
@@ -44,37 +45,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   const userMarker = useRef<mapboxgl.Marker | null>(null);
   const { toast } = useToast();
 
+  // Initialize map only once
   useEffect(() => {
-    initializeMap();
-    return () => {
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    fetchPOIs();
-  }, [filters]);
-
-  useEffect(() => {
-    if (mapLoaded && pois.length > 0) {
-      addPOIMarkers();
-    }
-  }, [pois, mapLoaded]);
-
-  useEffect(() => {
-    if (mapLoaded && userLocation) {
-      addUserLocationMarker();
-      // Comunica la posizione al componente padre (meteo)
-      if (onLocationChange) {
-        onLocationChange(userLocation);
-      }
-    }
-  }, [userLocation, mapLoaded, onLocationChange]);
-
-  const initializeMap = () => {
     if (!mapContainer.current || map.current) return;
     
     try {
@@ -95,7 +67,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         console.log('Mapbox map loaded successfully');
         setMapLoaded(true);
         setLoading(false);
-        // Ottieni la posizione solo dopo che la mappa è caricata
         getCurrentLocation();
       });
 
@@ -118,7 +89,37 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         variant: "destructive"
       });
     }
-  };
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
+  }, []); // Solo dipendenza vuota
+
+  // Fetch POIs when filters change
+  useEffect(() => {
+    if (mapLoaded) {
+      fetchPOIs();
+    }
+  }, [filters, mapLoaded]);
+
+  // Add POI markers when pois change
+  useEffect(() => {
+    if (mapLoaded && pois.length > 0) {
+      addPOIMarkers();
+    }
+  }, [pois, mapLoaded]);
+
+  // Add user location marker when location changes
+  useEffect(() => {
+    if (mapLoaded && userLocation) {
+      addUserLocationMarker();
+      // Notify parent component about location change
+      onLocationChange?.(userLocation);
+    }
+  }, [userLocation, mapLoaded]); // Removed onLocationChange from dependencies
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -141,7 +142,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         },
         (error) => {
           console.error('Error getting location:', error);
-          // Fallback a Rimini
           const fallbackLocation = {
             lat: 44.0646,
             lng: 12.5736
@@ -234,28 +234,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         latitude: 44.0712,
         longitude: 12.6015,
         address: 'Colline Riminesi',
-        target_audience: 'families'
-      },
-      {
-        id: '4',
-        name: 'La Vera Piadineria 1952',
-        description: 'Street Food Romagnolo Tradizionale',
-        poi_type: 'restaurant',
-        category: 'cibo',
-        latitude: 44.0587,
-        longitude: 12.5741,
-        address: 'Borgo San Giuliano, Rimini',
-        target_audience: 'everyone'
-      },
-      {
-        id: '5',
-        name: 'Grotte di Onferno',
-        description: 'Meraviglia sotterranea con pipistrelli',
-        poi_type: 'experience',
-        category: 'parchi e natura',
-        latitude: 43.9542,
-        longitude: 12.4856,
-        address: 'Gemmano (RN)',
         target_audience: 'families'
       }
     ];
