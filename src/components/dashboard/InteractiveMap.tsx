@@ -35,11 +35,13 @@ interface InteractiveMapProps {
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
+  const loadingStartTime = useRef<number>(Date.now());
   
   console.log('🗺️ InteractiveMap render:', {
     hasContainer: !!mapContainer.current,
     selectedPoi: !!selectedPoi,
-    filters: filters.activityTypes
+    filters: filters.activityTypes,
+    loadingTime: `${Date.now() - loadingStartTime.current}ms`
   });
 
   // Hook principali
@@ -47,15 +49,15 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const { pois, fetchPOIs } = usePOIData();
   const { map, mapLoaded, loading: mapLoading, mapboxError, retry } = useMapbox(mapContainer);
   
-  console.log('🔍 Stati hooks:', {
-    userLocation: !!userLocation,
+  console.log('🔍 Stati hooks dettagliati:', {
+    userLocation: userLocation ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}` : null,
     isLoadingLocation,
     poisCount: pois.length,
     map: !!map,
     mapLoaded,
     mapLoading,
-    mapboxError,
-    locationError
+    mapboxError: mapboxError ? mapboxError.substring(0, 50) + '...' : null,
+    locationError: locationError ? locationError.substring(0, 50) + '...' : null
   });
 
   // Hook per i marker
@@ -70,6 +72,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   useEffect(() => {
     console.log('🗺️ Effect: Caricamento POI iniziale...');
     fetchPOIs(filters);
+    loadingStartTime.current = Date.now();
   }, []); // Dipendenza vuota intenzionale
 
   // Aggiornamento POI per filtri
@@ -81,7 +84,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   // Centratura mappa su posizione utente
   useEffect(() => {
     if (map && mapLoaded && userLocation) {
-      console.log('🎯 Effect: Centratura mappa sulla posizione utente:', userLocation);
+      console.log('🎯 Effect: Centratura mappa sulla posizione utente');
       try {
         map.flyTo({
           center: [userLocation.lng, userLocation.lat],
@@ -95,24 +98,32 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     }
   }, [map, mapLoaded, userLocation]);
 
-  // Stati finali
+  // Stati finali consolidati
   const isLoading = mapLoading || isLoadingLocation;
   const hasErrors = mapboxError || locationError;
+  const loadingTime = Date.now() - loadingStartTime.current;
 
-  console.log('📊 Stati finali componente:', {
+  console.log('📊 Stati finali consolidati:', {
     isLoading,
     hasErrors,
     mapLoading,
     isLoadingLocation,
     mapLoaded,
-    poisCount: pois.length,
-    userLocation: !!userLocation,
-    mapboxError,
-    locationError
+    loadingTime: `${loadingTime}ms`,
+    shouldShowLoading: isLoading && !hasErrors,
+    shouldShowError: hasErrors,
+    shouldShowMap: !isLoading && !hasErrors && mapLoaded
   });
 
-  if (isLoading) {
-    console.log('⏳ Rendering stato loading...');
+  // Timeout di sicurezza per forzare la visualizzazione se il loading dura troppo
+  useEffect(() => {
+    if (isLoading && loadingTime > 15000) {
+      console.log('⚠️ Loading troppo lungo, potrebbe esserci un problema');
+    }
+  }, [isLoading, loadingTime]);
+
+  if (isLoading && !hasErrors) {
+    console.log('⏳ Rendering stato loading...', { loadingTime: `${loadingTime}ms` });
     return (
       <div className="relative">
         <MapLoadingState 
@@ -139,13 +150,19 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     );
   }
 
-  console.log('✅ Rendering mappa principale...');
+  console.log('✅ Rendering mappa principale...', { 
+    mapLoaded, 
+    loadingTime: `${loadingTime}ms`,
+    poisCount: pois.length 
+  });
+  
   return (
     <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg relative">
       <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
         <h3 className="font-bold text-lg">🗺️ Mappa GPS Romagna</h3>
         <p className="text-blue-100 text-sm">
           {userLocation ? '📍 Posizione GPS attiva' : '🔍 Ricerca posizione...'} • {pois.length} punti di interesse
+          {loadingTime > 1000 && ` • Caricata in ${Math.round(loadingTime/1000)}s`}
         </p>
       </div>
 
