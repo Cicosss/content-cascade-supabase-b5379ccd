@@ -3,6 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Euro, MapPin } from 'lucide-react';
+import FavoriteButton from './FavoriteButton';
 
 interface RestaurantCardProps {
   name: string;
@@ -23,8 +24,19 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   image,
   specialty
 }) => {
+  const itemId = `${name}-${location}`.toLowerCase().replace(/\s+/g, '-');
+  const itemData = {
+    name,
+    cuisine,
+    rating,
+    priceRange,
+    location,
+    image,
+    specialty
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group relative">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
@@ -32,6 +44,11 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900">
           {cuisine}
         </Badge>
+        <FavoriteButton 
+          itemType="restaurant"
+          itemId={itemId}
+          itemData={itemData}
+        />
       </div>
       
       <div className="p-4">

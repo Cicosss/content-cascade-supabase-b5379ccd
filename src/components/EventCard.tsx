@@ -3,6 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Clock } from 'lucide-react';
+import FavoriteButton from './FavoriteButton';
 
 interface EventCardProps {
   title: string;
@@ -21,8 +22,18 @@ const EventCard: React.FC<EventCardProps> = ({
   category,
   image
 }) => {
+  const itemId = `${title}-${date}`.toLowerCase().replace(/\s+/g, '-');
+  const itemData = {
+    title,
+    date,
+    time,
+    location,
+    category,
+    image
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group relative">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
@@ -30,6 +41,11 @@ const EventCard: React.FC<EventCardProps> = ({
         <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900">
           {category}
         </Badge>
+        <FavoriteButton 
+          itemType="event"
+          itemId={itemId}
+          itemData={itemData}
+        />
       </div>
       
       <div className="p-4">
