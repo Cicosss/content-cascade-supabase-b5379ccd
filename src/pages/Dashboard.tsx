@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -29,6 +29,20 @@ const Dashboard = () => {
       navigate('/auth');
     }
   }, [user, loading, navigate]);
+
+  // Memoize the location change handler to prevent unnecessary re-renders
+  const handleLocationChange = useCallback((location: {lat: number; lng: number}) => {
+    console.log('Dashboard: Location changed to', location);
+    setMapLocation(prevLocation => {
+      // Only update if the location actually changed
+      if (!prevLocation || 
+          Math.abs(prevLocation.lat - location.lat) > 0.001 || 
+          Math.abs(prevLocation.lng - location.lng) > 0.001) {
+        return location;
+      }
+      return prevLocation;
+    });
+  }, []);
 
   if (loading) {
     return (
@@ -95,7 +109,7 @@ const Dashboard = () => {
               <div className="h-[calc(100%-4rem)]">
                 <InteractiveMap 
                   filters={filters} 
-                  onLocationChange={setMapLocation}
+                  onLocationChange={handleLocationChange}
                 />
               </div>
             </Card>

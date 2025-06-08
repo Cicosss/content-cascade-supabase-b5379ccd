@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,15 +43,23 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
   const userMarker = useRef<mapboxgl.Marker | null>(null);
+  const isInitialized = useRef(false);
   const { toast } = useToast();
 
-  // Initialize map only once
+  // Memoize the location change callback to prevent re-renders
+  const handleLocationChange = useCallback((location: {lat: number; lng: number}) => {
+    console.log('Location changed:', location);
+    onLocationChange?.(location);
+  }, [onLocationChange]);
+
+  // Initialize map only once - no dependencies
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    if (isInitialized.current || !mapContainer.current) return;
+    
+    console.log('Initializing map...');
+    isInitialized.current = true;
     
     try {
-      console.log('Initializing Mapbox map...');
-      
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -64,30 +72,20 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
       map.current.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right');
 
       map.current.on('load', () => {
-        console.log('Mapbox map loaded successfully');
+        console.log('Map loaded');
         setMapLoaded(true);
         setLoading(false);
         getCurrentLocation();
       });
 
       map.current.on('error', (e) => {
-        console.error('Mapbox error:', e);
+        console.error('Map error:', e);
         setLoading(false);
-        toast({
-          title: "Errore Mappa",
-          description: "Impossibile caricare la mappa",
-          variant: "destructive"
-        });
       });
 
     } catch (error) {
       console.error('Error initializing map:', error);
       setLoading(false);
-      toast({
-        title: "Errore Mappa",
-        description: "Impossibile inizializzare la mappa",
-        variant: "destructive"
-      });
     }
 
     return () => {
@@ -95,33 +93,38 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         map.current.remove();
         map.current = null;
       }
+      isInitialized.current = false;
     };
-  }, []); // Solo dipendenza vuota
+  }, []);
 
-  // Fetch POIs when filters change
+  // Handle user location changes - only when location actually changes
   useEffect(() => {
-    if (mapLoaded) {
-      fetchPOIs();
-    }
-  }, [filters, mapLoaded]);
+    if (!userLocation || !mapLoaded) return;
+    
+    console.log('Adding user location marker for:', userLocation);
+    addUserLocationMarker();
+    handleLocationChange(userLocation);
+  }, [userLocation?.lat, userLocation?.lng, mapLoaded, handleLocationChange]);
 
-  // Add POI markers when pois change
+  // Handle POI changes when filters change
   useEffect(() => {
-    if (mapLoaded && pois.length > 0) {
-      addPOIMarkers();
-    }
+    if (!mapLoaded) return;
+    
+    console.log('Fetching POIs for filters:', filters);
+    fetchPOIs();
+  }, [mapLoaded, filters.activityTypes.join(','), filters.withChildren, filters.zone]);
+
+  // Handle POI markers when POIs change
+  useEffect(() => {
+    if (!mapLoaded || pois.length === 0) return;
+    
+    console.log('Adding POI markers for', pois.length, 'POIs');
+    addPOIMarkers();
   }, [pois, mapLoaded]);
 
-  // Add user location marker when location changes
-  useEffect(() => {
-    if (mapLoaded && userLocation) {
-      addUserLocationMarker();
-      // Notify parent component about location change
-      onLocationChange?.(userLocation);
-    }
-  }, [userLocation, mapLoaded]); // Removed onLocationChange from dependencies
-
   const getCurrentLocation = () => {
+    console.log('Getting current location...');
+    
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -129,8 +132,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          setUserLocation(location);
           console.log('GPS location obtained:', location);
+          setUserLocation(location);
           
           if (map.current && mapLoaded) {
             map.current.flyTo({
