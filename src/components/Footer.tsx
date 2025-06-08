@@ -144,9 +144,8 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center">
-            <div className="text-2xl font-bold text-white mr-2">ROMAGNA</div>
-            <div className="bg-blue-600 text-white px-3 py-1 text-sm font-semibold rounded">
-              PRUDENZA<br />IN
+            <div className="text-lg font-semibold text-white">
+              Mia Romagna – made with love
             </div>
           </div>
         </div>
