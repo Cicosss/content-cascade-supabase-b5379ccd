@@ -14,13 +14,13 @@ interface POI {
   target_audience: string;
 }
 
-interface MapMarkersProps {
+interface UseMapMarkersProps {
   map: mapboxgl.Map | null;
   pois: POI[];
   onPOISelect: (poi: POI) => void;
 }
 
-export const MapMarkers: React.FC<MapMarkersProps> = ({ map, pois, onPOISelect }) => {
+export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) => {
   const markers = useRef<mapboxgl.Marker[]>([]);
   const userMarker = useRef<mapboxgl.Marker | null>(null);
 

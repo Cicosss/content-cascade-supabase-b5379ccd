@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useMapbox } from '@/hooks/useMapbox';
 import { useUserLocation } from '@/hooks/useUserLocation';
 import { usePOIData } from '@/hooks/usePOIData';
-import { MapMarkers } from './map/MapMarkers';
+import { useMapMarkers } from '@/hooks/useMapMarkers';
 import { MapControls } from './map/MapControls';
 import { SelectedPOICard } from './map/SelectedPOICard';
 import { MapLoadingState } from './map/MapLoadingState';
@@ -40,7 +40,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   const { userLocation, getCurrentLocation } = useUserLocation();
   const { pois, fetchPOIs } = usePOIData();
   
-  const { addUserLocationMarker, addPOIMarkers } = MapMarkers({ 
+  const { addUserLocationMarker, addPOIMarkers } = useMapMarkers({ 
     map, 
     pois, 
     onPOISelect: setSelectedPoi 
