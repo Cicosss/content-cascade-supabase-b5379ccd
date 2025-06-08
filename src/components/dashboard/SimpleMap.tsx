@@ -3,11 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Navigation, RotateCcw } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import { Loader } from '@googlemaps/js-api-loader';
 
-// Token Mapbox pubblico - per produzione dovresti usare variabili d'ambiente
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+// Google Maps API Key (sostituisci con la tua chiave privata)
+const GOOGLE_MAPS_API_KEY = 'AIzaSyBYu9y2Rig3ueioFfy-Ait65lRcOTIIR6A';
 
 interface POI {
   id: string;
@@ -80,9 +79,9 @@ const STATIC_POIS: POI[] = [
 
 const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const markers = useRef<mapboxgl.Marker[]>([]);
-  const userMarker = useRef<mapboxgl.Marker | null>(null);
+  const map = useRef<google.maps.Map | null>(null);
+  const markers = useRef<google.maps.Marker[]>([]);
+  const userMarker = useRef<google.maps.Marker | null>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -116,44 +115,50 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
     );
   };
 
-  // Inizializzazione mappa Mapbox
+  // Inizializzazione Google Maps
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    console.log('🚀 Inizializzazione mappa Mapbox...');
+    console.log('🚀 Inizializzazione Google Maps...');
     
-    // Imposta il token di accesso
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-
-    // Crea la mappa
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12', // Stile mappa stradale
-      center: [12.5736, 44.0646], // Rimini
-      zoom: 11,
-      pitch: 0,
-      bearing: 0
+    const loader = new Loader({
+      apiKey: GOOGLE_MAPS_API_KEY,
+      version: 'weekly',
+      libraries: ['places']
     });
 
-    // Aggiungi controlli di navigazione
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    loader.load().then(() => {
+      if (!mapContainer.current) return;
 
-    // Event listeners
-    map.current.on('load', () => {
-      console.log('✅ Mappa Mapbox caricata con successo');
+      // Crea la mappa Google Maps
+      map.current = new google.maps.Map(mapContainer.current, {
+        center: { lat: 44.0646, lng: 12.5736 }, // Rimini
+        zoom: 11,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: [
+          {
+            featureType: 'poi',
+            elementType: 'labels',
+            stylers: [{ visibility: 'off' }]
+          }
+        ]
+      });
+
+      console.log('✅ Google Maps caricata con successo');
       setMapLoaded(true);
       setLoading(false);
-    });
-
-    map.current.on('error', (e) => {
-      console.error('❌ Errore mappa Mapbox:', e);
+    }).catch((error) => {
+      console.error('❌ Errore caricamento Google Maps:', error);
       setLoading(false);
     });
 
     return () => {
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
+      // Cleanup se necessario
+      markers.current.forEach(marker => marker.setMap(null));
+      markers.current = [];
+      if (userMarker.current) {
+        userMarker.current.setMap(null);
+        userMarker.current = null;
       }
     };
   }, []);
@@ -165,7 +170,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
     console.log('📍 Aggiornamento marker POI...');
 
     // Rimuovi marker esistenti
-    markers.current.forEach(marker => marker.remove());
+    markers.current.forEach(marker => marker.setMap(null));
     markers.current = [];
 
     const filteredPOIs = getFilteredPOIs();
@@ -173,26 +178,28 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
     // Aggiungi nuovi marker
     filteredPOIs.forEach(poi => {
-      // Crea elemento custom per il marker
-      const el = document.createElement('div');
-      el.className = 'w-8 h-8 bg-white border-2 border-red-500 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform';
-      el.innerHTML = getCategoryEmoji(poi.category);
-      el.title = poi.name;
-
-      // Crea il marker Mapbox
-      const marker = new mapboxgl.Marker(el)
-        .setLngLat([poi.longitude, poi.latitude])
-        .addTo(map.current!);
+      const marker = new google.maps.Marker({
+        position: { lat: poi.latitude, lng: poi.longitude },
+        map: map.current,
+        title: poi.name,
+        icon: {
+          url: `data:image/svg+xml,${encodeURIComponent(`
+            <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="14" fill="white" stroke="#ef4444" stroke-width="2"/>
+              <text x="16" y="20" text-anchor="middle" font-size="14">${getCategoryEmoji(poi.category)}</text>
+            </svg>
+          `)}`,
+          scaledSize: new google.maps.Size(32, 32),
+          anchor: new google.maps.Point(16, 16)
+        }
+      });
 
       // Aggiungi evento click
-      el.addEventListener('click', () => {
+      marker.addListener('click', () => {
         console.log('🎯 POI selezionato:', poi.name);
         setSelectedPoi(poi);
-        map.current?.flyTo({
-          center: [poi.longitude, poi.latitude],
-          zoom: 16,
-          duration: 1500
-        });
+        map.current?.panTo({ lat: poi.latitude, lng: poi.longitude });
+        map.current?.setZoom(16);
       });
 
       markers.current.push(marker);
@@ -217,24 +224,28 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         if (map.current) {
           // Rimuovi marker utente precedente
           if (userMarker.current) {
-            userMarker.current.remove();
+            userMarker.current.setMap(null);
           }
 
-          // Crea elemento per marker utente
-          const userEl = document.createElement('div');
-          userEl.className = 'w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-lg animate-pulse';
-
           // Aggiungi marker utente
-          userMarker.current = new mapboxgl.Marker(userEl)
-            .setLngLat([longitude, latitude])
-            .addTo(map.current);
+          userMarker.current = new google.maps.Marker({
+            position: { lat: latitude, lng: longitude },
+            map: map.current,
+            title: 'La tua posizione',
+            icon: {
+              url: `data:image/svg+xml,${encodeURIComponent(`
+                <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="10" cy="10" r="8" fill="#3b82f6" stroke="white" stroke-width="3"/>
+                </svg>
+              `)}`,
+              scaledSize: new google.maps.Size(20, 20),
+              anchor: new google.maps.Point(10, 10)
+            }
+          });
 
           // Centra la mappa sulla posizione utente
-          map.current.flyTo({
-            center: [longitude, latitude],
-            zoom: 14,
-            duration: 1500
-          });
+          map.current.panTo({ lat: latitude, lng: longitude });
+          map.current.setZoom(14);
         }
       },
       (error) => {
@@ -246,11 +257,8 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
   // Reset mappa
   const resetMap = () => {
     if (map.current) {
-      map.current.flyTo({
-        center: [12.5736, 44.0646],
-        zoom: 11,
-        duration: 1500
-      });
+      map.current.panTo({ lat: 44.0646, lng: 12.5736 });
+      map.current.setZoom(11);
       setSelectedPoi(null);
     }
   };
@@ -261,7 +269,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
           <p className="text-gray-700 font-medium">Caricamento mappa...</p>
-          <p className="text-gray-500 text-sm">Mapbox GL JS</p>
+          <p className="text-gray-500 text-sm">Google Maps</p>
         </div>
       </div>
     );
@@ -277,7 +285,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         </p>
       </div>
 
-      {/* Mappa Mapbox */}
+      {/* Mappa Google Maps */}
       <div className="flex-1 relative">
         <div ref={mapContainer} className="absolute inset-0" />
 
