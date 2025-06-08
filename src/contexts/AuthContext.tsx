@@ -2,8 +2,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 
 interface AuthContextType {
   user: User | null;
@@ -24,12 +22,62 @@ export const useAuth = () => {
   return context;
 };
 
+const createProfile = async (profileData: any) => {
+  try {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .insert(profileData)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating profile:', error);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error creating profile:', error);
+    return null;
+  }
+};
+
+const uploadAvatar = async (file: File, userId: string): Promise<string | null> => {
+  if (!file) return null;
+
+  try {
+    // Create unique filename
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${userId}/avatar.${fileExt}`;
+
+    // Upload file to Supabase Storage
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(fileName, file, {
+        upsert: true // This will replace existing file
+      });
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      return null;
+    }
+
+    // Get public URL
+    const { data } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(fileName);
+
+    return data.publicUrl;
+  } catch (error) {
+    console.error('Error uploading avatar:', error);
+    return null;
+  }
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const { createProfile } = useUserProfile();
-  const { uploadAvatar } = useAvatarUpload();
 
   useEffect(() => {
     // Set up auth state listener
@@ -59,6 +107,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 
                 // Create profile
                 await createProfile({
+                  id: session.user.id,
+                  email: session.user.email,
                   first_name: pendingData.firstName,
                   last_name: pendingData.lastName,
                   avatar_url: avatarUrl,
@@ -84,7 +134,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => subscription.unsubscribe();
-  }, [createProfile, uploadAvatar]);
+  }, []);
 
   const signUp = async (email: string, password: string, userData?: any) => {
     const redirectUrl = `${window.location.origin}/`;
