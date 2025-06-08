@@ -5,7 +5,7 @@ import { MapPin, Navigation, RotateCcw } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Loader } from '@googlemaps/js-api-loader';
 
-// Google Maps API Key (sostituisci con la tua chiave privata)
+// Google Maps API Key
 const GOOGLE_MAPS_API_KEY = 'AIzaSyBYu9y2Rig3ueioFfy-Ait65lRcOTIIR6A';
 
 interface POI {
@@ -131,10 +131,10 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
       if (!mapContainer.current) return;
 
       // Crea la mappa Google Maps
-      map.current = new google.maps.Map(mapContainer.current, {
+      map.current = new window.google.maps.Map(mapContainer.current, {
         center: { lat: 44.0646, lng: 12.5736 }, // Rimini
         zoom: 11,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
         styles: [
           {
             featureType: 'poi',
@@ -178,7 +178,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
     // Aggiungi nuovi marker
     filteredPOIs.forEach(poi => {
-      const marker = new google.maps.Marker({
+      const marker = new window.google.maps.Marker({
         position: { lat: poi.latitude, lng: poi.longitude },
         map: map.current,
         title: poi.name,
@@ -189,8 +189,8 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
               <text x="16" y="20" text-anchor="middle" font-size="14">${getCategoryEmoji(poi.category)}</text>
             </svg>
           `)}`,
-          scaledSize: new google.maps.Size(32, 32),
-          anchor: new google.maps.Point(16, 16)
+          scaledSize: new window.google.maps.Size(32, 32),
+          anchor: new window.google.maps.Point(16, 16)
         }
       });
 
@@ -228,7 +228,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
           }
 
           // Aggiungi marker utente
-          userMarker.current = new google.maps.Marker({
+          userMarker.current = new window.google.maps.Marker({
             position: { lat: latitude, lng: longitude },
             map: map.current,
             title: 'La tua posizione',
@@ -238,8 +238,8 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
                   <circle cx="10" cy="10" r="8" fill="#3b82f6" stroke="white" stroke-width="3"/>
                 </svg>
               `)}`,
-              scaledSize: new google.maps.Size(20, 20),
-              anchor: new google.maps.Point(10, 10)
+              scaledSize: new window.google.maps.Size(20, 20),
+              anchor: new window.google.maps.Point(10, 10)
             }
           });
 
