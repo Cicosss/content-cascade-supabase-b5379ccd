@@ -3,20 +3,24 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AvatarUpload } from '@/components/AvatarUpload';
 import { Mountain, Mail, Lock, User, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Auth = () => {
   const { user, signIn, signUp, loading } = useAuth();
   const { createProfile } = useUserProfile();
+  const { uploadAvatar } = useAvatarUpload();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -107,16 +111,32 @@ const Auth = () => {
         } else {
           toast.error('Errore durante la registrazione: ' + error.message);
         }
-      } else {
-        // Crea il profilo utente
-        await createProfile({
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-        });
-        
-        toast.success('Registrazione completata! Benvenuto in Mia Romagna!');
-        navigate('/dashboard');
+        return;
       }
+
+      // Handle avatar upload after successful registration
+      let avatarUrl = selectedAvatar;
+      
+      // Check if there's a pending file upload
+      const pendingFile = (window as any).pendingAvatarFile;
+      if (pendingFile && user) {
+        const uploadedUrl = await uploadAvatar(pendingFile, user.id);
+        if (uploadedUrl) {
+          avatarUrl = uploadedUrl;
+        }
+        // Clean up
+        (window as any).pendingAvatarFile = null;
+      }
+
+      // Create the user profile with avatar
+      await createProfile({
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        avatar_url: avatarUrl,
+      });
+      
+      toast.success('Registrazione completata! Benvenuto in Mia Romagna!');
+      navigate('/dashboard');
     } catch (error) {
       toast.error('Errore durante la registrazione');
     } finally {
@@ -222,6 +242,12 @@ const Auth = () => {
 
               <TabsContent value="signup">
                 <form onSubmit={handleSignUp} className="space-y-4">
+                  {/* Avatar Upload Section */}
+                  <AvatarUpload 
+                    selectedAvatar={selectedAvatar}
+                    onAvatarChange={setSelectedAvatar}
+                  />
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">Nome *</Label>

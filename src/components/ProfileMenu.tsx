@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { User, LogOut, Settings, Heart, LayoutDashboard } from 'lucide-react';
 import {
   DropdownMenu,
@@ -10,10 +11,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import { useNavigate } from 'react-router-dom';
 
 const ProfileMenu = () => {
   const { user, signOut } = useAuth();
+  const { profile } = useUserProfile();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -30,11 +33,14 @@ const ProfileMenu = () => {
           variant="outline" 
           className="flex items-center space-x-2 px-4 py-2 bg-white hover:bg-emerald-50 border-emerald-200 hover:border-emerald-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
         >
-          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
-            <User className="h-4 w-4 text-white" />
-          </div>
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={profile?.avatar_url || undefined} alt="Avatar" />
+            <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-600">
+              <User className="h-4 w-4 text-white" />
+            </AvatarFallback>
+          </Avatar>
           <span className="hidden sm:block font-medium text-gray-700">
-            {user.user_metadata?.first_name || user.email?.split('@')[0]}
+            {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
           </span>
         </Button>
       </DropdownMenuTrigger>
