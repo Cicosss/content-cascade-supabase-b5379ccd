@@ -6,8 +6,7 @@ import { MapLoadingState } from './map/MapLoadingState';
 import { MapContainer } from './map/MapContainer';
 import { useMapbox } from '@/hooks/useMapbox';
 import { useMapMarkers } from '@/hooks/useMapMarkers';
-import { useUserLocation } from '@/hooks/useUserLocation';
-import { usePOIData } from '@/hooks/usePOIData';
+import { useMapWithWeather } from '@/hooks/useMapWithWeather';
 
 interface POI {
   id: string;
@@ -35,73 +34,58 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
   
-  // Custom hooks
-  const { map, mapLoaded, loading, mapboxError, setMapboxError, setLoading } = useMapbox(mapContainer);
-  const { userLocation, getCurrentLocation } = useUserLocation();
-  const { pois, fetchPOIs } = usePOIData();
-  const { addUserLocationMarker, addPOIMarkers } = useMapMarkers({
-    map,
+  // Usa il nuovo hook combinato
+  const { 
+    userLocation, 
+    isLoadingLocation, 
+    getCurrentLocation,
     pois,
-    onPOISelect: setSelectedPoi
+    isReady,
+    hasError 
+  } = useMapWithWeather({ filters });
+  
+  // Hook per Mapbox
+  const { map, mapLoaded, loading: mapLoading, mapboxError, retry } = useMapbox(mapContainer);
+  
+  // Hook per i marker
+  useMapMarkers({ 
+    map, 
+    pois, 
+    onPOISelect: setSelectedPoi,
+    userLocation 
   });
 
-  // Handle location change - only when map is ready and location changes
+  // Centra la mappa sulla posizione dell'utente quando è disponibile
   useEffect(() => {
-    if (userLocation && map && mapLoaded) {
-      console.log('📍 Aggiornamento posizione utente sulla mappa:', userLocation);
-      addUserLocationMarker(userLocation);
+    if (map && mapLoaded && userLocation && isReady) {
+      console.log('🎯 Centratura mappa sulla posizione utente:', userLocation);
       map.flyTo({
         center: [userLocation.lng, userLocation.lat],
         zoom: 14,
         duration: 2000
       });
     }
-  }, [userLocation, map, mapLoaded]); // Removed addUserLocationMarker to prevent loops
+  }, [map, mapLoaded, userLocation, isReady]);
 
-  // Fetch POIs and get location when map loads - only once
-  useEffect(() => {
-    if (mapLoaded && !userLocation) {
-      console.log('🗺️ Mappa caricata, avvio operazioni...');
-      getCurrentLocation();
-      fetchPOIs(filters);
-    }
-  }, [mapLoaded]); // Only depend on mapLoaded
+  const isLoading = mapLoading || isLoadingLocation;
+  const hasErrors = mapboxError || hasError;
 
-  // Add POI markers when data changes
-  useEffect(() => {
-    if (map && mapLoaded && pois.length > 0) {
-      console.log('📍 Aggiunta markers POI:', pois.length);
-      addPOIMarkers(pois);
-    }
-  }, [map, mapLoaded, pois]); // Removed addPOIMarkers to prevent loops
-
-  const handleRetry = () => {
-    console.log('🔄 Tentativo di ripristino mappa...');
-    setMapboxError(null);
-    setLoading(true);
-    
-    // Force reload after a brief delay
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
       <MapLoadingState 
         loading={true} 
         mapboxError={null} 
-        onRetry={handleRetry} 
+        onRetry={retry} 
       />
     );
   }
 
-  if (mapboxError) {
+  if (hasErrors) {
     return (
       <MapLoadingState 
         loading={false} 
-        mapboxError={mapboxError} 
-        onRetry={handleRetry} 
+        mapboxError={mapboxError || 'Errore nel caricamento dei dati'} 
+        onRetry={retry} 
       />
     );
   }

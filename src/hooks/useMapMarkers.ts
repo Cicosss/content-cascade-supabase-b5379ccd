@@ -1,5 +1,5 @@
 
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 
 interface POI {
@@ -18,14 +18,25 @@ interface UseMapMarkersProps {
   map: mapboxgl.Map | null;
   pois: POI[];
   onPOISelect: (poi: POI) => void;
+  userLocation: {lat: number; lng: number} | null;
 }
 
-export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) => {
-  const markers = useRef<mapboxgl.Marker[]>([]);
+export const useMapMarkers = ({ map, pois, onPOISelect, userLocation }: UseMapMarkersProps) => {
+  const poiMarkers = useRef<mapboxgl.Marker[]>([]);
   const userMarker = useRef<mapboxgl.Marker | null>(null);
 
-  const addUserLocationMarker = useCallback((location: {lat: number; lng: number}) => {
-    if (!map) return;
+  const clearAllMarkers = useCallback(() => {
+    poiMarkers.current.forEach(marker => marker.remove());
+    poiMarkers.current = [];
+    
+    if (userMarker.current) {
+      userMarker.current.remove();
+      userMarker.current = null;
+    }
+  }, []);
+
+  const addUserLocationMarker = useCallback(() => {
+    if (!map || !userLocation) return;
 
     if (userMarker.current) {
       userMarker.current.remove();
@@ -35,20 +46,20 @@ export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) =>
     el.className = 'w-6 h-6 bg-blue-500 border-3 border-white rounded-full shadow-lg animate-pulse';
 
     userMarker.current = new mapboxgl.Marker(el)
-      .setLngLat([location.lng, location.lat])
+      .setLngLat([userLocation.lng, userLocation.lat])
       .addTo(map);
 
-    console.log('📍 User marker added at:', location);
-  }, [map]);
+    console.log('📍 User marker aggiunto:', userLocation);
+  }, [map, userLocation]);
 
-  const addPOIMarkers = useCallback((poisData: POI[]) => {
-    if (!map) return;
+  const addPOIMarkers = useCallback(() => {
+    if (!map || pois.length === 0) return;
 
-    // Remove existing markers
-    markers.current.forEach(marker => marker.remove());
-    markers.current = [];
+    // Rimuovi marker POI esistenti
+    poiMarkers.current.forEach(marker => marker.remove());
+    poiMarkers.current = [];
 
-    poisData.forEach(poi => {
+    pois.forEach(poi => {
       const el = document.createElement('div');
       el.className = 'w-8 h-8 bg-white border-2 border-red-500 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform';
       el.innerHTML = getPoiIcon(poi.category);
@@ -66,11 +77,11 @@ export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) =>
         });
       });
       
-      markers.current.push(marker);
+      poiMarkers.current.push(marker);
     });
 
-    console.log('📍 Added', poisData.length, 'POI markers');
-  }, [map, onPOISelect]);
+    console.log('📍 Aggiunti', pois.length, 'POI markers');
+  }, [map, pois, onPOISelect]);
 
   const getPoiIcon = (category: string) => {
     const icons: Record<string, string> = {
@@ -85,8 +96,17 @@ export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) =>
     return icons[category] || '📍';
   };
 
+  // Auto-aggiorna user marker quando cambia la posizione
+  useEffect(() => {
+    addUserLocationMarker();
+  }, [addUserLocationMarker]);
+
+  // Auto-aggiorna POI markers quando cambiano i POI
+  useEffect(() => {
+    addPOIMarkers();
+  }, [addPOIMarkers]);
+
   return {
-    addUserLocationMarker,
-    addPOIMarkers
+    clearAllMarkers
   };
 };

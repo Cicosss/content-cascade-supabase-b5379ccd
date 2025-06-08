@@ -2,15 +2,16 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, MapPin } from 'lucide-react';
-import { useUserLocation } from '@/hooks/useUserLocation';
+import { useLocation } from '@/contexts/LocationContext';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 
 const PersonalizedWeather: React.FC = () => {
-  const { userLocation } = useUserLocation();
-  const { weather, loading, error } = useWeatherAPI(userLocation);
+  const { userLocation, isLoadingLocation } = useLocation();
+  const { weather, loading: weatherLoading, error } = useWeatherAPI(userLocation);
+
+  const loading = isLoadingLocation || weatherLoading;
 
   const getWeatherIcon = (condition: string, iconCode?: string) => {
-    // Use OpenWeatherMap icon codes for more accurate icons
     if (iconCode) {
       if (iconCode.includes('01')) return <Sun className="h-8 w-8 text-yellow-400" />;
       if (iconCode.includes('02') || iconCode.includes('03') || iconCode.includes('04')) 
@@ -19,7 +20,6 @@ const PersonalizedWeather: React.FC = () => {
         return <CloudRain className="h-8 w-8 text-blue-400" />;
     }
 
-    // Fallback to condition-based icons
     switch (condition) {
       case 'Clear':
         return <Sun className="h-8 w-8 text-yellow-400" />;

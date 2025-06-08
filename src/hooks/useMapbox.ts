@@ -1,9 +1,8 @@
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-// Set token only once at module level
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
 
 export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
@@ -12,21 +11,40 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
   const [loading, setLoading] = useState(true);
   const [mapboxError, setMapboxError] = useState<string | null>(null);
   const initialized = useRef(false);
+  const retryCount = useRef(0);
+  const maxRetries = 3;
 
-  useEffect(() => {
-    // Prevent multiple initializations
+  const cleanup = useCallback(() => {
+    if (map.current) {
+      console.log('🧹 Pulizia mappa Mapbox...');
+      map.current.remove();
+      map.current = null;
+    }
+    initialized.current = false;
+    setMapLoaded(false);
+    setLoading(true);
+    setMapboxError(null);
+  }, []);
+
+  const initializeMap = useCallback(() => {
     if (!mapContainer.current || map.current || initialized.current) {
       return;
     }
-    
+
+    if (retryCount.current >= maxRetries) {
+      setMapboxError('Troppi tentativi falliti. Ricarica la pagina.');
+      setLoading(false);
+      return;
+    }
+
     initialized.current = true;
-    console.log('🔄 Inizializzazione mappa Mapbox - UNICA...');
-    
+    console.log(`🔄 Inizializzazione mappa Mapbox (tentativo ${retryCount.current + 1})...`);
+
     try {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: [12.5736, 44.0646], // Rimini center
+        center: [12.5736, 44.0646],
         zoom: 11,
         attributionControl: true,
         antialias: true,
@@ -41,8 +59,8 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
         setMapLoaded(true);
         setLoading(false);
         setMapboxError(null);
-        
-        // Force resize after load
+        retryCount.current = 0;
+
         setTimeout(() => {
           if (map.current) {
             map.current.resize();
@@ -52,51 +70,37 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
 
       map.current.on('error', (e) => {
         console.error('❌ Errore mappa:', e);
-        setMapboxError('Errore di caricamento della mappa. Verifica la connessione internet.');
+        retryCount.current++;
+        setMapboxError(`Errore di caricamento mappa (${retryCount.current}/${maxRetries})`);
         setLoading(false);
-        initialized.current = false; // Allow retry
+        initialized.current = false;
       });
 
     } catch (error) {
       console.error('❌ Errore inizializzazione mappa:', error);
-      setMapboxError(`Errore di inizializzazione: ${error instanceof Error ? error.message : 'Errore sconosciuto'}`);
+      retryCount.current++;
+      setMapboxError(`Errore inizializzazione (${retryCount.current}/${maxRetries})`);
       setLoading(false);
-      initialized.current = false; // Allow retry
-    }
-
-    return () => {
-      if (map.current) {
-        console.log('🧹 Pulizia mappa...');
-        map.current.remove();
-        map.current = null;
-      }
       initialized.current = false;
-    };
-  }, []); // Empty dependency array to prevent re-initialization
+    }
+  }, [mapContainer]);
 
-  // Handle resize separately
   useEffect(() => {
-    const handleResize = () => {
-      if (map.current && mapLoaded) {
-        map.current.resize();
-      }
-    };
+    initializeMap();
+    return cleanup;
+  }, [initializeMap, cleanup]);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [mapLoaded]);
+  const retry = useCallback(() => {
+    console.log('🔄 Retry mappa...');
+    cleanup();
+    setTimeout(initializeMap, 1000);
+  }, [cleanup, initializeMap]);
 
   return {
     map: map.current,
     mapLoaded,
     loading,
     mapboxError,
-    setMapboxError: (error: string | null) => {
-      setMapboxError(error);
-      if (error === null) {
-        initialized.current = false; // Allow retry
-      }
-    },
-    setLoading
+    retry
   };
 };
