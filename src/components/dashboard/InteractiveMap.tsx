@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
@@ -66,7 +65,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
             });
           }
           
-          toast.success('📍 Posizione GPS aggiornata!');
+          toast({
+            title: "📍 Posizione GPS aggiornata!",
+            description: "La tua posizione è stata rilevata con successo",
+          });
         },
         (error) => {
           console.error('GPS error:', error);
@@ -78,7 +80,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
             addUserLocationMarker(fallback);
           }
           
-          toast.error('Impossibile ottenere la posizione GPS, usando Rimini come fallback');
+          toast({
+            title: "❌ Errore GPS",
+            description: "Impossibile ottenere la posizione GPS, usando Rimini come fallback",
+            variant: "destructive",
+          });
         },
         {
           enableHighAccuracy: true,
@@ -96,7 +102,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         addUserLocationMarker(fallback);
       }
     }
-  }, [onLocationChange, mapLoaded]);
+  }, [onLocationChange, mapLoaded, toast]);
 
   const fetchPOIs = useCallback(async () => {
     console.log('Fetching POIs with filters:', filters);
