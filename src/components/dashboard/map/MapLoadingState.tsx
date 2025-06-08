@@ -12,7 +12,12 @@ export const MapLoadingState: React.FC<MapLoadingStateProps> = ({ loading, mapbo
   const [loadingTime, setLoadingTime] = useState(0);
   const [dots, setDots] = useState('');
 
-  console.log('🔄 MapLoadingState render:', { loading, mapboxError, loadingTime });
+  console.log('🔄 MapLoadingState render FINALE:', { 
+    loading, 
+    mapboxError, 
+    loadingTime,
+    timestamp: new Date().toISOString()
+  });
 
   // Timer per il loading time
   useEffect(() => {
@@ -44,7 +49,10 @@ export const MapLoadingState: React.FC<MapLoadingStateProps> = ({ loading, mapbo
 
   if (loading && !mapboxError) {
     const seconds = Math.floor(loadingTime / 1000);
-    console.log('⏳ Rendering loading state...', { seconds });
+    console.log('⏳ Rendering loading state VELOCE...', { 
+      seconds,
+      timestamp: new Date().toISOString()
+    });
     
     return (
       <div className="h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl">
@@ -54,29 +62,29 @@ export const MapLoadingState: React.FC<MapLoadingStateProps> = ({ loading, mapbo
             Caricamento mappa GPS{dots}
           </p>
           <p className="text-gray-500 text-sm mb-4">
-            Connessione a Mapbox in corso...
+            Connessione a Mapbox ultrarapida...
           </p>
           
           {seconds > 0 && (
             <p className="text-gray-400 text-xs mb-4">
-              ⏱️ Tempo trascorso: {seconds}s
+              ⏱️ Tempo: {seconds}s {seconds >= 3 && '(forzando caricamento...)'}
             </p>
           )}
           
           <div className="text-xs text-gray-400 space-y-1">
-            <div>🔍 Verifica token Mapbox...</div>
-            <div>🌐 Test connettività di rete...</div>
-            <div>🖥️ Controllo supporto WebGL...</div>
-            <div>🗺️ Inizializzazione mappa...</div>
+            <div>🚀 Timeout aggressivo: 3s massimo</div>
+            <div>💥 Cache busting attivo</div>
+            <div>🔥 Fallback di emergenza</div>
+            <div>⚡ Force load automatico</div>
           </div>
           
-          {seconds > 10 && (
-            <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-              <p className="text-yellow-700 text-xs font-medium">
-                ⚠️ Caricamento più lento del normale
+          {seconds >= 2 && (
+            <div className="mt-4 p-3 bg-orange-50 rounded-lg border border-orange-200">
+              <p className="text-orange-700 text-xs font-medium">
+                🚨 Caricamento in corso con fallback
               </p>
-              <p className="text-yellow-600 text-xs mt-1">
-                Questo può accadere con connessioni lente o problemi temporanei
+              <p className="text-orange-600 text-xs mt-1">
+                Sistema di recovery automatico attivo
               </p>
             </div>
           )}
@@ -86,7 +94,7 @@ export const MapLoadingState: React.FC<MapLoadingStateProps> = ({ loading, mapbo
   }
 
   if (mapboxError) {
-    console.log('❌ Rendering error state:', mapboxError);
+    console.log('❌ Rendering error state FINALE:', mapboxError);
     return (
       <div className="h-full flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-100 rounded-2xl">
         <div className="text-center p-6 max-w-md">
@@ -99,15 +107,15 @@ export const MapLoadingState: React.FC<MapLoadingStateProps> = ({ loading, mapbo
               onClick={onRetry}
               className="bg-red-600 hover:bg-red-700 text-white w-full"
             >
-              🔄 Riprova Caricamento
+              🔄 Riprova Caricamento Rapido
             </Button>
             
             <div className="text-xs text-red-500 space-y-1 bg-red-50 p-3 rounded-lg border border-red-200">
-              <div className="font-medium mb-2">🔧 Possibili soluzioni:</div>
-              <div>• Verifica la connessione internet</div>
-              <div>• Ricarica la pagina (F5)</div>
-              <div>• Controlla se WebGL è supportato</div>
-              <div>• Il token Mapbox potrebbe essere scaduto</div>
+              <div className="font-medium mb-2">🔧 Sistema ultra-aggressivo:</div>
+              <div>• Timeout ridotto a 3 secondi</div>
+              <div>• Cache busting automatico</div>
+              <div>• Force load di emergenza</div>
+              <div>• Recovery istantaneo</div>
             </div>
           </div>
         </div>

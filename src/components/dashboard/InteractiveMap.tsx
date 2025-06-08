@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { MapControls } from './map/MapControls';
 import { SelectedPOICard } from './map/SelectedPOICard';
@@ -37,19 +36,20 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const loadingStartTime = useRef<number>(Date.now());
   
-  console.log('🗺️ InteractiveMap render:', {
+  console.log('🗺️ InteractiveMap render FINALE:', {
     hasContainer: !!mapContainer.current,
     selectedPoi: !!selectedPoi,
     filters: filters.activityTypes,
-    loadingTime: `${Date.now() - loadingStartTime.current}ms`
+    loadingTime: `${Date.now() - loadingStartTime.current}ms`,
+    timestamp: new Date().toISOString()
   });
 
   // Hook principali
   const { userLocation, isLoadingLocation, getCurrentLocation, locationError } = useLocation();
   const { pois, fetchPOIs } = usePOIData();
-  const { map, mapLoaded, loading: mapLoading, mapboxError, retry } = useMapbox(mapContainer);
+  const { map, mapLoaded, loading: mapLoading, mapboxError, retry, forceLoad } = useMapbox(mapContainer);
   
-  console.log('🔍 Stati hooks dettagliati:', {
+  console.log('🔍 Stati hooks FINALI:', {
     userLocation: userLocation ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}` : null,
     isLoadingLocation,
     poisCount: pois.length,
@@ -57,7 +57,8 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     mapLoaded,
     mapLoading,
     mapboxError: mapboxError ? mapboxError.substring(0, 50) + '...' : null,
-    locationError: locationError ? locationError.substring(0, 50) + '...' : null
+    locationError: locationError ? locationError.substring(0, 50) + '...' : null,
+    timestamp: new Date().toISOString()
   });
 
   // Hook per i marker
@@ -103,7 +104,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const hasErrors = mapboxError || locationError;
   const loadingTime = Date.now() - loadingStartTime.current;
 
-  console.log('📊 Stati finali consolidati:', {
+  console.log('📊 Stati finali DEFINITIVI:', {
     isLoading,
     hasErrors,
     mapLoading,
@@ -112,18 +113,25 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     loadingTime: `${loadingTime}ms`,
     shouldShowLoading: isLoading && !hasErrors,
     shouldShowError: hasErrors,
-    shouldShowMap: !isLoading && !hasErrors && mapLoaded
+    shouldShowMap: !isLoading && !hasErrors && mapLoaded,
+    timestamp: new Date().toISOString()
   });
 
-  // Timeout di sicurezza per forzare la visualizzazione se il loading dura troppo
+  // Timeout di emergenza con force load
   useEffect(() => {
-    if (isLoading && loadingTime > 15000) {
-      console.log('⚠️ Loading troppo lungo, potrebbe esserci un problema');
+    if (isLoading && loadingTime > 4000) {
+      console.log('🚨 Loading troppo lungo (4s), attivando force load di emergenza');
+      if (forceLoad) {
+        forceLoad();
+      }
     }
-  }, [isLoading, loadingTime]);
+  }, [isLoading, loadingTime, forceLoad]);
 
   if (isLoading && !hasErrors) {
-    console.log('⏳ Rendering stato loading...', { loadingTime: `${loadingTime}ms` });
+    console.log('⏳ Rendering stato loading FINALE...', { 
+      loadingTime: `${loadingTime}ms`,
+      timestamp: new Date().toISOString()
+    });
     return (
       <div className="relative">
         <MapLoadingState 
@@ -137,7 +145,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   }
 
   if (hasErrors) {
-    console.log('❌ Rendering stato errore:', { mapboxError, locationError });
+    console.log('❌ Rendering stato errore FINALE:', { 
+      mapboxError, 
+      locationError,
+      timestamp: new Date().toISOString()
+    });
     return (
       <div className="relative">
         <MapLoadingState 
@@ -150,10 +162,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     );
   }
 
-  console.log('✅ Rendering mappa principale...', { 
+  console.log('✅ Rendering mappa principale FINALE...', { 
     mapLoaded, 
     loadingTime: `${loadingTime}ms`,
-    poisCount: pois.length 
+    poisCount: pois.length,
+    timestamp: new Date().toISOString()
   });
   
   return (
@@ -179,8 +192,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
           onClose={() => setSelectedPoi(null)}
         />
       )}
-
-      <MapDebugPanel />
     </div>
   );
 };
