@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
-import { Loader2, MapPin, Navigation } from 'lucide-react';
+import { Loader2, MapPin, Navigation, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import FavoriteButton from '@/components/FavoriteButton';
 
 interface GoogleMapProps {
   filters: {
@@ -169,6 +170,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
     }
   };
 
+  const handleGetDirections = (poi: any) => {
+    const destination = `${poi.latitude},${poi.longitude}`;
+    const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+    window.open(mapsUrl, '_blank');
+  };
+
   if (!isLoaded) {
     return (
       <div className="h-full flex items-center justify-center bg-slate-50 rounded-xl">
@@ -208,19 +215,44 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
             <CardTitle className="text-lg flex items-center gap-2">
               <MapPin className="h-5 w-5 text-blue-600" />
               {selectedPOI.name}
+              <div className="ml-auto">
+                <FavoriteButton 
+                  itemType="experience"
+                  itemId={selectedPOI.id}
+                  itemData={{
+                    name: selectedPOI.name,
+                    description: selectedPOI.description,
+                    address: selectedPOI.address,
+                    category: selectedPOI.category,
+                    poi_type: selectedPOI.poi_type
+                  }}
+                  className="relative top-0 right-0"
+                  size="md"
+                />
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <p className="text-slate-600 text-sm mb-2">{selectedPOI.description}</p>
-            <p className="text-slate-500 text-xs">📍 {selectedPOI.address}</p>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setSelectedPOI(null)}
-              className="mt-3 w-full"
-            >
-              Chiudi
-            </Button>
+            <p className="text-slate-500 text-xs mb-4">📍 {selectedPOI.address}</p>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                onClick={() => handleGetDirections(selectedPOI)}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Raggiungi
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setSelectedPOI(null)}
+                className="flex-1"
+              >
+                Chiudi
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
