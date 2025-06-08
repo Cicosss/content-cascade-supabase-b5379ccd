@@ -1,18 +1,11 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { Button } from '@/components/ui/button';
 import { MapPin, Navigation, RotateCcw } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
-// Fix per le icone di Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+// Dynamic import for Leaflet to avoid SSR issues
+let L: any = null;
 
 interface POI {
   id: string;
@@ -85,12 +78,13 @@ const STATIC_POIS: POI[] = [
 
 const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<L.Map | null>(null);
-  const markersRef = useRef<L.Marker[]>([]);
-  const userMarkerRef = useRef<L.Marker | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markersRef = useRef<any[]>([]);
+  const userMarkerRef = useRef<any>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [leafletLoaded, setLeafletLoaded] = useState(false);
 
   console.log('🗺️ SimpleMap render:', { filters, selectedPoi: !!selectedPoi });
 
@@ -120,9 +114,38 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
     );
   };
 
+  // Load Leaflet dynamically
+  useEffect(() => {
+    const loadLeaflet = async () => {
+      try {
+        console.log('🚀 Loading Leaflet...');
+        const leafletModule = await import('leaflet');
+        await import('leaflet/dist/leaflet.css');
+        
+        L = leafletModule.default;
+        
+        // Fix per le icone di Leaflet
+        delete (L.Icon.Default.prototype as any)._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+        });
+        
+        setLeafletLoaded(true);
+        console.log('✅ Leaflet caricato con successo');
+      } catch (error) {
+        console.error('❌ Errore caricamento Leaflet:', error);
+        setIsLoading(false);
+      }
+    };
+
+    loadLeaflet();
+  }, []);
+
   // Inizializzazione mappa
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
+    if (!mapRef.current || mapInstanceRef.current || !leafletLoaded || !L) return;
 
     console.log('🚀 Inizializzazione mappa Leaflet...');
     setIsLoading(true);
@@ -156,11 +179,11 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         mapInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [leafletLoaded]);
 
   // Aggiornamento marker POI
   useEffect(() => {
-    if (!mapInstanceRef.current) return;
+    if (!mapInstanceRef.current || !L) return;
 
     console.log('📍 Aggiornamento marker POI...');
 
@@ -190,7 +213,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
       markersRef.current.push(marker);
     });
-  }, [filters.activityTypes]);
+  }, [filters.activityTypes, leafletLoaded]);
 
   // Geolocalizzazione
   const getCurrentLocation = () => {
@@ -207,7 +230,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         
         setUserLocation({ lat: latitude, lng: longitude });
         
-        if (mapInstanceRef.current) {
+        if (mapInstanceRef.current && L) {
           // Rimuovi marker utente precedente
           if (userMarkerRef.current) {
             userMarkerRef.current.remove();
