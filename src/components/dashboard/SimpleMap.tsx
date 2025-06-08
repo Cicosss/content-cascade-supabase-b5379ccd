@@ -171,6 +171,15 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
   const filteredPOIs = getFilteredPOIs();
 
+  // Stile per il background mappa che simula OpenStreetMap
+  const mapBackgroundStyle = {
+    background: `
+      linear-gradient(0deg, #f8f9fa 0%, #e9ecef 100%),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='grid' width='20' height='20' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 20 0 L 0 0 0 20' fill='none' stroke='%23dee2e6' stroke-width='0.5'/%3E%3C/pattern%3E%3Cpattern id='roads' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Cpath d='M 0 20 L 40 20 M 20 0 L 20 40' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Cpath d='M 0 10 L 40 10 M 0 30 L 40 30 M 10 0 L 10 40 M 30 0 L 30 40' fill='none' stroke='%23f8f9fa' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23grid)'/%3E%3Crect width='100' height='100' fill='url(%23roads)' opacity='0.6'/%3E%3C/svg%3E")
+    `,
+    backgroundBlendMode: 'multiply' as const
+  };
+
   return (
     <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg relative">
       {/* Header */}
@@ -181,14 +190,12 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         </p>
       </div>
 
-      {/* Mappa Custom */}
-      <div className="flex-1 relative bg-gradient-to-br from-blue-100 to-green-100">
+      {/* Mappa Custom con strade simulate */}
+      <div className="flex-1 relative">
         <div 
           ref={mapRef}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}
+          className="absolute inset-0"
+          style={mapBackgroundStyle}
         >
           {/* Marker POI */}
           {filteredPOIs.map(poi => {
@@ -220,6 +227,22 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
               <div className="w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-lg animate-pulse"></div>
             </div>
           )}
+
+          {/* Elementi stradali aggiuntivi per realismo */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Strade principali simulate */}
+            <div className="absolute top-1/3 left-0 right-0 h-1 bg-yellow-400 opacity-30"></div>
+            <div className="absolute top-2/3 left-0 right-0 h-0.5 bg-gray-400 opacity-40"></div>
+            <div className="absolute left-1/4 top-0 bottom-0 w-0.5 bg-gray-400 opacity-40"></div>
+            <div className="absolute left-3/4 top-0 bottom-0 w-1 bg-yellow-400 opacity-30"></div>
+            
+            {/* Aree verdi simulate */}
+            <div className="absolute top-1/4 left-1/5 w-16 h-12 bg-green-200 opacity-50 rounded-lg"></div>
+            <div className="absolute bottom-1/4 right-1/5 w-20 h-16 bg-green-300 opacity-40 rounded-full"></div>
+            
+            {/* Costa mare simulata */}
+            <div className="absolute bottom-0 right-0 w-full h-8 bg-gradient-to-l from-blue-200 to-transparent opacity-60"></div>
+          </div>
         </div>
 
         {/* Controlli */}
@@ -253,15 +276,6 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
             </div>
           </div>
         )}
-
-        {/* Griglia di riferimento */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="grid grid-cols-6 grid-rows-4 h-full w-full opacity-20">
-            {Array.from({ length: 24 }).map((_, i) => (
-              <div key={i} className="border border-gray-400"></div>
-            ))}
-          </div>
-        </div>
 
         {/* Etichette geografiche */}
         <div className="absolute top-4 right-4 text-xs text-gray-600 bg-white/80 px-2 py-1 rounded">
