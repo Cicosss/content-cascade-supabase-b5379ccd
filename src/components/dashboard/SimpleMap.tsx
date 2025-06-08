@@ -4,9 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Navigation, RotateCcw } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
-// Dynamic import for Leaflet to avoid SSR issues
-let L: any = null;
-
+// We'll use a different approach - create a simple custom map without external libraries
 interface POI {
   id: string;
   name: string;
@@ -78,13 +76,10 @@ const STATIC_POIS: POI[] = [
 
 const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const markersRef = useRef<any[]>([]);
-  const userMarkerRef = useRef<any>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [leafletLoaded, setLeafletLoaded] = useState(false);
+  const [mapCenter, setMapCenter] = useState({ lat: 44.0646, lng: 12.5736 });
+  const [zoom, setZoom] = useState(12);
 
   console.log('🗺️ SimpleMap render:', { filters, selectedPoi: !!selectedPoi });
 
@@ -114,106 +109,28 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
     );
   };
 
-  // Load Leaflet dynamically
-  useEffect(() => {
-    const loadLeaflet = async () => {
-      try {
-        console.log('🚀 Loading Leaflet...');
-        const leafletModule = await import('leaflet');
-        await import('leaflet/dist/leaflet.css');
-        
-        L = leafletModule.default;
-        
-        // Fix per le icone di Leaflet
-        delete (L.Icon.Default.prototype as any)._getIconUrl;
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-        });
-        
-        setLeafletLoaded(true);
-        console.log('✅ Leaflet caricato con successo');
-      } catch (error) {
-        console.error('❌ Errore caricamento Leaflet:', error);
-        setIsLoading(false);
-      }
+  // Funzione per convertire coordinate geografiche in posizione pixel sulla mappa
+  const latLngToPixel = (lat: number, lng: number) => {
+    if (!mapRef.current) return { x: 0, y: 0 };
+    
+    const mapRect = mapRef.current.getBoundingClientRect();
+    const mapWidth = mapRect.width;
+    const mapHeight = mapRect.height;
+    
+    // Area geografica di riferimento per la Romagna
+    const bounds = {
+      north: 44.3,
+      south: 43.8,
+      east: 12.8,
+      west: 12.3
     };
-
-    loadLeaflet();
-  }, []);
-
-  // Inizializzazione mappa
-  useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current || !leafletLoaded || !L) return;
-
-    console.log('🚀 Inizializzazione mappa Leaflet...');
-    setIsLoading(true);
-
-    try {
-      // Crea mappa
-      const map = L.map(mapRef.current).setView([44.0646, 12.5736], 12);
-
-      // Aggiungi tile layer OpenStreetMap
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 19,
-      }).addTo(map);
-
-      mapInstanceRef.current = map;
-      
-      // Simula un breve caricamento per l'esperienza utente
-      setTimeout(() => {
-        setIsLoading(false);
-        console.log('✅ Mappa Leaflet caricata con successo');
-      }, 500);
-
-    } catch (error) {
-      console.error('❌ Errore inizializzazione mappa:', error);
-      setIsLoading(false);
-    }
-
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
-        mapInstanceRef.current = null;
-      }
-    };
-  }, [leafletLoaded]);
-
-  // Aggiornamento marker POI
-  useEffect(() => {
-    if (!mapInstanceRef.current || !L) return;
-
-    console.log('📍 Aggiornamento marker POI...');
-
-    // Rimuovi marker esistenti
-    markersRef.current.forEach(marker => marker.remove());
-    markersRef.current = [];
-
-    const filteredPOIs = getFilteredPOIs();
-    console.log('📍 POI filtrati:', filteredPOIs.length);
-
-    // Aggiungi nuovi marker
-    filteredPOIs.forEach(poi => {
-      const customIcon = L.divIcon({
-        html: `<div style="background: white; border: 2px solid #ef4444; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">${getCategoryEmoji(poi.category)}</div>`,
-        className: '',
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
-      });
-
-      const marker = L.marker([poi.latitude, poi.longitude], { icon: customIcon })
-        .addTo(mapInstanceRef.current!)
-        .on('click', () => {
-          console.log('🎯 POI selezionato:', poi.name);
-          setSelectedPoi(poi);
-          mapInstanceRef.current?.setView([poi.latitude, poi.longitude], 16);
-        });
-
-      markersRef.current.push(marker);
-    });
-  }, [filters.activityTypes, leafletLoaded]);
+    
+    // Calcolo delle posizioni relative
+    const x = ((lng - bounds.west) / (bounds.east - bounds.west)) * mapWidth;
+    const y = ((bounds.north - lat) / (bounds.north - bounds.south)) * mapHeight;
+    
+    return { x: Math.max(0, Math.min(mapWidth, x)), y: Math.max(0, Math.min(mapHeight, y)) };
+  };
 
   // Geolocalizzazione
   const getCurrentLocation = () => {
@@ -229,27 +146,8 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
         console.log('✅ Posizione ottenuta:', { latitude, longitude });
         
         setUserLocation({ lat: latitude, lng: longitude });
-        
-        if (mapInstanceRef.current && L) {
-          // Rimuovi marker utente precedente
-          if (userMarkerRef.current) {
-            userMarkerRef.current.remove();
-          }
-
-          // Aggiungi nuovo marker utente
-          const userIcon = L.divIcon({
-            html: '<div style="background: #3b82f6; border: 3px solid white; border-radius: 50%; width: 20px; height: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
-            className: '',
-            iconSize: [20, 20],
-            iconAnchor: [10, 10]
-          });
-
-          userMarkerRef.current = L.marker([latitude, longitude], { icon: userIcon })
-            .addTo(mapInstanceRef.current);
-
-          // Centra la mappa sulla posizione utente
-          mapInstanceRef.current.setView([latitude, longitude], 14);
-        }
+        setMapCenter({ lat: latitude, lng: longitude });
+        setZoom(14);
       },
       (error) => {
         console.error('❌ Errore geolocalizzazione:', error);
@@ -259,23 +157,19 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
   // Reset mappa
   const resetMap = () => {
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.setView([44.0646, 12.5736], 12);
-      setSelectedPoi(null);
-    }
+    setMapCenter({ lat: 44.0646, lng: 12.5736 });
+    setZoom(12);
+    setSelectedPoi(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl">
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-700 font-medium">Caricamento mappa...</p>
-          <p className="text-gray-500 text-sm">OpenStreetMap + Leaflet</p>
-        </div>
-      </div>
-    );
-  }
+  const handlePOIClick = (poi: POI) => {
+    console.log('🎯 POI selezionato:', poi.name);
+    setSelectedPoi(poi);
+    setMapCenter({ lat: poi.latitude, lng: poi.longitude });
+    setZoom(16);
+  };
+
+  const filteredPOIs = getFilteredPOIs();
 
   return (
     <div className="h-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg relative">
@@ -283,16 +177,53 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
       <div className="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
         <h3 className="font-bold text-lg">🗺️ Mappa Interattiva Romagna</h3>
         <p className="text-blue-100 text-sm">
-          {userLocation ? '📍 Posizione GPS attiva' : '🔍 Tocca GPS per la posizione'} • {getFilteredPOIs().length} luoghi
+          {userLocation ? '📍 Posizione GPS attiva' : '🔍 Tocca GPS per la posizione'} • {filteredPOIs.length} luoghi
         </p>
       </div>
 
-      {/* Mappa */}
-      <div className="flex-1 relative">
-        <div ref={mapRef} className="absolute inset-0" />
-        
+      {/* Mappa Custom */}
+      <div className="flex-1 relative bg-gradient-to-br from-blue-100 to-green-100">
+        <div 
+          ref={mapRef}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}
+        >
+          {/* Marker POI */}
+          {filteredPOIs.map(poi => {
+            const { x, y } = latLngToPixel(poi.latitude, poi.longitude);
+            return (
+              <div
+                key={poi.id}
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-transform z-10"
+                style={{ left: x, top: y }}
+                onClick={() => handlePOIClick(poi)}
+                title={poi.name}
+              >
+                <div className="w-8 h-8 bg-white border-2 border-red-500 rounded-full flex items-center justify-center shadow-lg text-lg">
+                  {getCategoryEmoji(poi.category)}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Marker Utente */}
+          {userLocation && (
+            <div
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
+              style={{ 
+                left: latLngToPixel(userLocation.lat, userLocation.lng).x, 
+                top: latLngToPixel(userLocation.lat, userLocation.lng).y 
+              }}
+            >
+              <div className="w-4 h-4 bg-blue-500 border-2 border-white rounded-full shadow-lg animate-pulse"></div>
+            </div>
+          )}
+        </div>
+
         {/* Controlli */}
-        <div className="absolute bottom-4 left-4 z-[1000] space-y-2">
+        <div className="absolute bottom-4 left-4 z-30 space-y-2">
           <Button
             size="sm"
             variant="outline"
@@ -315,18 +246,32 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
         {/* Info posizione */}
         {userLocation && (
-          <div className="absolute top-4 left-4 z-[1000] bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+          <div className="absolute top-4 left-4 z-30 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
             <div className="text-xs text-gray-600">📍 La tua posizione</div>
             <div className="text-sm font-medium text-gray-900">
               {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
             </div>
           </div>
         )}
+
+        {/* Griglia di riferimento */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="grid grid-cols-6 grid-rows-4 h-full w-full opacity-20">
+            {Array.from({ length: 24 }).map((_, i) => (
+              <div key={i} className="border border-gray-400"></div>
+            ))}
+          </div>
+        </div>
+
+        {/* Etichette geografiche */}
+        <div className="absolute top-4 right-4 text-xs text-gray-600 bg-white/80 px-2 py-1 rounded">
+          Rimini • Riccione • Romagna
+        </div>
       </div>
 
       {/* Card POI selezionato */}
       {selectedPoi && (
-        <Card className="absolute bottom-4 right-4 z-[1000] w-80 p-4 bg-white/95 backdrop-blur-sm shadow-xl">
+        <Card className="absolute bottom-4 right-4 z-30 w-80 p-4 bg-white/95 backdrop-blur-sm shadow-xl">
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center">
               <div className="text-2xl mr-3">{getCategoryEmoji(selectedPoi.category)}</div>
