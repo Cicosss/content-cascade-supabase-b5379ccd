@@ -45,63 +45,135 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   
   const { toast } = useToast();
 
+  // Check WebGL support
+  const checkWebGLSupport = () => {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        throw new Error('WebGL non supportato');
+      }
+      console.log('✅ WebGL supportato');
+      return true;
+    } catch (error) {
+      console.error('❌ WebGL non supportato:', error);
+      setMapboxError('WebGL non è supportato dal tuo browser. Aggiorna il browser o controlla le impostazioni.');
+      setLoading(false);
+      return false;
+    }
+  };
+
   // Initialize map
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
     
-    console.log('Initializing Mapbox map...');
+    console.log('🔄 Inizializzazione mappa Mapbox...');
+    
+    // Check WebGL support first
+    if (!checkWebGLSupport()) {
+      return;
+    }
     
     try {
       // Set the access token
-      mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+      const accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+      mapboxgl.accessToken = accessToken;
+      
+      console.log('🔑 Token Mapbox impostato');
+      
+      // Test token validity by checking if it starts with 'pk.'
+      if (!accessToken.startsWith('pk.')) {
+        throw new Error('Token Mapbox non valido - deve iniziare con "pk."');
+      }
       
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
         center: [12.5736, 44.0646], // Rimini center
         zoom: 11,
-        attributionControl: false
+        attributionControl: false,
+        antialias: true,
+        maxZoom: 18,
+        minZoom: 8
       });
 
-      console.log('Map instance created, waiting for load event...');
+      console.log('🗺️ Istanza mappa creata');
 
       // Add navigation controls
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
+      // Timeout di sicurezza
+      const timeout = setTimeout(() => {
+        if (loading) {
+          console.error('⏰ Timeout caricamento mappa (20s)');
+          setMapboxError('Timeout caricamento mappa. Verifica la connessione internet e riprova.');
+          setLoading(false);
+        }
+      }, 20000);
+
       // Set up event listeners
       map.current.on('load', () => {
-        console.log('✅ Map loaded successfully!');
+        clearTimeout(timeout);
+        console.log('✅ Mappa caricata con successo!');
         setLoading(false);
         setMapboxError(null);
+        
+        // Resize map to ensure proper display
+        setTimeout(() => {
+          if (map.current) {
+            map.current.resize();
+            console.log('📐 Mappa ridimensionata');
+          }
+        }, 100);
+        
         getCurrentLocation();
         fetchPOIs();
       });
 
       map.current.on('error', (e) => {
-        console.error('❌ Map error:', e);
-        setMapboxError(`Errore Mapbox: ${e.error?.message || 'Connessione fallita'}`);
+        clearTimeout(timeout);
+        console.error('❌ Errore mappa:', e);
+        
+        let errorMessage = 'Errore di connessione a Mapbox';
+        
+        if (e.error) {
+          const errorStr = e.error.toString().toLowerCase();
+          if (errorStr.includes('401') || errorStr.includes('unauthorized')) {
+            errorMessage = 'Token Mapbox non valido o scaduto. Verifica il token di accesso.';
+          } else if (errorStr.includes('403') || errorStr.includes('forbidden')) {
+            errorMessage = 'Accesso negato. Verifica i permessi del token Mapbox.';
+          } else if (errorStr.includes('network') || errorStr.includes('fetch')) {
+            errorMessage = 'Errore di rete. Verifica la connessione internet.';
+          }
+        }
+        
+        setMapboxError(errorMessage);
         setLoading(false);
       });
 
       map.current.on('styledata', () => {
-        console.log('Map style loaded');
+        console.log('🎨 Stile mappa caricato');
       });
 
       map.current.on('sourcedata', (e) => {
         if (e.isSourceLoaded) {
-          console.log('Map source data loaded');
+          console.log('📊 Dati sorgente caricati');
         }
       });
 
+      map.current.on('idle', () => {
+        console.log('⏸️ Mappa in stato idle');
+      });
+
     } catch (error) {
-      console.error('❌ Error initializing map:', error);
-      setMapboxError('Errore di inizializzazione: Token Mapbox non valido o scaduto');
+      console.error('❌ Errore inizializzazione mappa:', error);
+      setMapboxError(`Errore di inizializzazione: ${error instanceof Error ? error.message : 'Errore sconosciuto'}`);
       setLoading(false);
     }
 
     // Cleanup
     return () => {
-      console.log('Cleaning up map...');
+      console.log('🧹 Pulizia mappa...');
       if (map.current) {
         map.current.remove();
         map.current = null;
@@ -109,8 +181,22 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
     };
   }, []);
 
+  // Handle container resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (map.current) {
+        setTimeout(() => {
+          map.current?.resize();
+        }, 100);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const getCurrentLocation = () => {
-    console.log('🔍 Getting current location...');
+    console.log('🔍 Ricerca posizione GPS...');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -118,7 +204,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          console.log('📍 GPS location obtained:', location);
+          console.log('📍 Posizione GPS ottenuta:', location);
           setUserLocation(location);
           onLocationChange?.(location);
           
@@ -137,7 +223,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
           });
         },
         (error) => {
-          console.error('❌ GPS error:', error);
+          console.error('❌ Errore GPS:', error);
           const fallback = { lat: 44.0646, lng: 12.5736 };
           setUserLocation(fallback);
           onLocationChange?.(fallback);
@@ -154,12 +240,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         },
         {
           enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 60000
+          timeout: 15000,
+          maximumAge: 300000
         }
       );
     } else {
-      console.log('Geolocation not supported');
+      console.log('Geolocation non supportato');
       const fallback = { lat: 44.0646, lng: 12.5736 };
       setUserLocation(fallback);
       onLocationChange?.(fallback);
@@ -169,7 +255,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   const addUserLocationMarker = (location: {lat: number; lng: number}) => {
     if (!map.current) return;
 
-    console.log('📍 Adding user location marker at:', location);
+    console.log('📍 Aggiunta marker posizione utente:', location);
 
     if (userMarker.current) {
       userMarker.current.remove();
@@ -184,7 +270,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   };
 
   const fetchPOIs = () => {
-    console.log('🗺️ Loading POIs...');
+    console.log('🗺️ Caricamento POI...');
     const fallbackData = [
       {
         id: '1',
@@ -248,11 +334,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
 
   const addPOIMarkers = (poisData: POI[]) => {
     if (!map.current) {
-      console.log('❌ Cannot add POI markers: map not ready');
+      console.log('❌ Impossibile aggiungere marker POI: mappa non pronta');
       return;
     }
 
-    console.log('📍 Adding', poisData.length, 'POI markers');
+    console.log('📍 Aggiunta', poisData.length, 'marker POI');
 
     // Remove existing markers
     markers.current.forEach(marker => marker.remove());
@@ -268,7 +354,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         .addTo(map.current!);
 
       el.addEventListener('click', () => {
-        console.log('🎯 POI clicked:', poi.name);
+        console.log('🎯 POI cliccato:', poi.name);
         setSelectedPoi(poi);
         map.current!.flyTo({
           center: [poi.longitude, poi.latitude],
@@ -280,7 +366,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
       markers.current.push(marker);
     });
 
-    console.log('✅ All POI markers added successfully');
+    console.log('✅ Tutti i marker POI aggiunti');
   };
 
   const getPoiIcon = (category: string) => {
@@ -297,7 +383,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   };
 
   const handleRetry = () => {
-    console.log('🔄 Retrying map initialization...');
+    console.log('🔄 Tentativo di ripristino mappa...');
     setMapboxError(null);
     setLoading(true);
     
@@ -307,10 +393,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
       map.current = null;
     }
     
-    // Trigger re-initialization
+    // Trigger re-initialization after a brief delay
     setTimeout(() => {
-      window.location.reload();
-    }, 500);
+      // Component will re-initialize due to useEffect dependency
+      setLoading(true);
+    }, 1000);
   };
 
   if (loading) {
