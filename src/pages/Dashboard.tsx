@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -30,19 +30,10 @@ const Dashboard = () => {
     }
   }, [user, loading, navigate]);
 
-  // Memoize the location change handler to prevent unnecessary re-renders
-  const handleLocationChange = useCallback((location: {lat: number; lng: number}) => {
+  const handleLocationChange = (location: {lat: number; lng: number}) => {
     console.log('Dashboard: Location changed to', location);
-    setMapLocation(prevLocation => {
-      // Only update if the location actually changed
-      if (!prevLocation || 
-          Math.abs(prevLocation.lat - location.lat) > 0.001 || 
-          Math.abs(prevLocation.lng - location.lng) > 0.001) {
-        return location;
-      }
-      return prevLocation;
-    });
-  }, []);
+    setMapLocation(location);
+  };
 
   if (loading) {
     return (
@@ -58,7 +49,6 @@ const Dashboard = () => {
 
   return (
     <Layout showSidebar={true}>
-      {/* Dashboard Header */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
@@ -84,19 +74,14 @@ const Dashboard = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Filter Panel */}
         {showFilters && (
           <div className="mb-8">
             <FilterPanel filters={filters} setFilters={setFilters} />
           </div>
         )}
 
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-          
-          {/* Left Column - Map and Advanced Filters */}
           <div className="xl:col-span-2 space-y-6">
-            {/* Interactive Map */}
             <Card className="h-[600px] p-6 rounded-3xl border-0 shadow-xl">
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-400 rounded-xl flex items-center justify-center mr-3">
@@ -114,17 +99,14 @@ const Dashboard = () => {
               </div>
             </Card>
 
-            {/* Advanced Filters */}
             <AdvancedFilters filters={filters} setFilters={setFilters} />
           </div>
 
-          {/* Right Column - Weather */}
           <div className="space-y-6">
             <PersonalizedWeather gpsLocation={mapLocation} />
           </div>
         </div>
 
-        {/* Personalized Content Carousels */}
         <div className="mt-12">
           <PersonalizedContent filters={filters} />
         </div>
