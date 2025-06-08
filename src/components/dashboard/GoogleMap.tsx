@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
@@ -185,8 +184,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
     <div className="relative h-full">
       <div ref={mapRef} className="w-full h-full rounded-xl" />
       
-      {/* Controlli mappa */}
-      <div className="absolute top-4 right-4 space-y-2">
+      {/* Controlli mappa - spostato in alto a sinistra */}
+      <div className="absolute top-4 left-4 space-y-2">
         <Button
           size="sm"
           variant="secondary"
