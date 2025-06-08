@@ -86,7 +86,7 @@ export const useFavorites = () => {
         created_at: new Date().toISOString()
       }, ...prev]);
 
-      toast.success('✨ Salvato nei preferiti! Puoi ritrovarlo nel tuo profilo quando vuoi', {
+      toast.success('✨ Salvato nei preferiti! Puoi ritrovarlo nella pagina dei preferiti cliccando sul tasto col tuo nome', {
         duration: 3000,
       });
       
