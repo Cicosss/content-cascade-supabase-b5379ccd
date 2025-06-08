@@ -61,17 +61,21 @@ export const MapDebugPanel: React.FC = () => {
       errors.push(`Token Error: ${error}`);
     }
 
-    // Test WebGL - con timing
+    // Test WebGL - con timing e typing corretto
     let webglSupported = false;
     const webglStart = performance.now();
     try {
       const canvas = document.createElement('canvas');
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       webglSupported = !!gl;
-      if (gl) {
+      
+      if (gl && gl instanceof WebGLRenderingContext) {
         const renderer = gl.getParameter(gl.RENDERER);
         console.log('🖥️ WebGL supportato:', webglSupported, 'Renderer:', renderer);
+      } else {
+        console.log('🖥️ WebGL supportato:', webglSupported);
       }
+      
       metrics.webglCheck = performance.now() - webglStart;
     } catch (error) {
       metrics.webglCheck = performance.now() - webglStart;
