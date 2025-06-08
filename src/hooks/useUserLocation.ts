@@ -7,7 +7,7 @@ export const useUserLocation = () => {
   const { toast } = useToast();
 
   const getCurrentLocation = useCallback(() => {
-    console.log('Getting current location...');
+    console.log('🔍 Ricerca posizione GPS...');
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -15,7 +15,7 @@ export const useUserLocation = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          console.log('GPS location obtained:', location);
+          console.log('📍 Posizione GPS ottenuta:', location);
           setUserLocation(location);
           
           toast({
@@ -24,7 +24,7 @@ export const useUserLocation = () => {
           });
         },
         (error) => {
-          console.error('GPS error:', error);
+          console.error('❌ Errore GPS:', error);
           const fallback = { lat: 44.0646, lng: 12.5736 };
           setUserLocation(fallback);
           
@@ -41,7 +41,7 @@ export const useUserLocation = () => {
         }
       );
     } else {
-      console.log('Geolocation not supported');
+      console.log('Geolocation non supportato');
       const fallback = { lat: 44.0646, lng: 12.5736 };
       setUserLocation(fallback);
     }

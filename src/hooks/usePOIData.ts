@@ -1,6 +1,5 @@
 
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface POI {
   id: string;
@@ -22,30 +21,9 @@ export const usePOIData = () => {
   const [pois, setPois] = useState<POI[]>([]);
 
   const fetchPOIs = useCallback(async (filters: Filters) => {
-    console.log('Fetching POIs with filters:', filters);
-    try {
-      let query = supabase.from('points_of_interest').select('*');
-
-      if (filters.activityTypes.length > 0 && !filters.activityTypes.includes('tutto')) {
-        query = query.in('category', filters.activityTypes);
-      }
-
-      const { data, error } = await query;
-      
-      if (error || !data) {
-        console.log('Using fallback POIs');
-        setFallbackPOIs();
-      } else {
-        console.log('POIs fetched:', data.length);
-        setPois(data);
-      }
-    } catch (error) {
-      console.error('Error fetching POIs:', error);
-      setFallbackPOIs();
-    }
-  }, []);
-
-  const setFallbackPOIs = useCallback(() => {
+    console.log('🗺️ Caricamento POI...');
+    
+    // Per ora uso dati fallback, poi si può collegare al database
     const fallbackData = [
       {
         id: '1',
@@ -79,8 +57,31 @@ export const usePOIData = () => {
         longitude: 12.6578,
         address: 'Lungomare di Riccione',
         target_audience: 'everyone'
+      },
+      {
+        id: '4',
+        name: 'Ponte di Tiberio',
+        description: 'Ponte Romano storico',
+        poi_type: 'monument',
+        category: 'arte e cultura',
+        latitude: 44.0632,
+        longitude: 12.5645,
+        address: 'Corso d\'Augusto, Rimini',
+        target_audience: 'everyone'
+      },
+      {
+        id: '5',
+        name: 'Parco Federico Fellini',
+        description: 'Verde pubblico nel centro',
+        poi_type: 'park',
+        category: 'parchi e natura',
+        latitude: 44.0598,
+        longitude: 12.5712,
+        address: 'Rimini Centro',
+        target_audience: 'everyone'
       }
     ];
+    
     setPois(fallbackData);
   }, []);
 

@@ -38,7 +38,7 @@ export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) =>
       .setLngLat([location.lng, location.lat])
       .addTo(map);
 
-    console.log('User marker added at:', location);
+    console.log('📍 User marker added at:', location);
   }, [map]);
 
   const addPOIMarkers = useCallback((poisData: POI[]) => {
@@ -69,7 +69,7 @@ export const useMapMarkers = ({ map, pois, onPOISelect }: UseMapMarkersProps) =>
       markers.current.push(marker);
     });
 
-    console.log('Added', poisData.length, 'POI markers');
+    console.log('📍 Added', poisData.length, 'POI markers');
   }, [map, onPOISelect]);
 
   const getPoiIcon = (category: string) => {
