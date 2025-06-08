@@ -3,21 +3,26 @@ import { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+// Set token only once at module level
+mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+
 export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
   const map = useRef<mapboxgl.Map | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mapboxError, setMapboxError] = useState<string | null>(null);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    // Prevent multiple initializations
+    if (!mapContainer.current || map.current || initialized.current) {
+      return;
+    }
     
-    console.log('🔄 Inizializzazione mappa Mapbox...');
+    initialized.current = true;
+    console.log('🔄 Inizializzazione mappa Mapbox - UNICA...');
     
     try {
-      const accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
-      mapboxgl.accessToken = accessToken;
-      
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -49,35 +54,27 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
         console.error('❌ Errore mappa:', e);
         setMapboxError('Errore di caricamento della mappa. Verifica la connessione internet.');
         setLoading(false);
-      });
-
-      map.current.on('sourcedata', (e) => {
-        if (e.sourceId && e.isSourceLoaded) {
-          console.log('📍 Fonte dati caricata:', e.sourceId);
-        }
-      });
-
-      map.current.on('data', (e) => {
-        if (e.dataType === 'source') {
-          console.log('🗺️ Dati mappa caricati');
-        }
+        initialized.current = false; // Allow retry
       });
 
     } catch (error) {
       console.error('❌ Errore inizializzazione mappa:', error);
       setMapboxError(`Errore di inizializzazione: ${error instanceof Error ? error.message : 'Errore sconosciuto'}`);
       setLoading(false);
+      initialized.current = false; // Allow retry
     }
 
     return () => {
       if (map.current) {
+        console.log('🧹 Pulizia mappa...');
         map.current.remove();
         map.current = null;
       }
+      initialized.current = false;
     };
-  }, []);
+  }, []); // Empty dependency array to prevent re-initialization
 
-  // Handle resize
+  // Handle resize separately
   useEffect(() => {
     const handleResize = () => {
       if (map.current && mapLoaded) {
@@ -94,7 +91,12 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
     mapLoaded,
     loading,
     mapboxError,
-    setMapboxError,
+    setMapboxError: (error: string | null) => {
+      setMapboxError(error);
+      if (error === null) {
+        initialized.current = false; // Allow retry
+      }
+    },
     setLoading
   };
 };

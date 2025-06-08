@@ -45,10 +45,10 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     onPOISelect: setSelectedPoi
   });
 
-  // Handle location change
+  // Handle location change - only when map is ready and location changes
   useEffect(() => {
-    if (userLocation && map) {
-      console.log('📍 Aggiornamento posizione utente:', userLocation);
+    if (userLocation && map && mapLoaded) {
+      console.log('📍 Aggiornamento posizione utente sulla mappa:', userLocation);
       addUserLocationMarker(userLocation);
       map.flyTo({
         center: [userLocation.lng, userLocation.lat],
@@ -56,33 +56,29 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         duration: 2000
       });
     }
-  }, [userLocation, map, addUserLocationMarker]);
+  }, [userLocation, map, mapLoaded]); // Removed addUserLocationMarker to prevent loops
 
-  // Fetch POIs when map loads
+  // Fetch POIs and get location when map loads - only once
   useEffect(() => {
-    if (mapLoaded) {
+    if (mapLoaded && !userLocation) {
       console.log('🗺️ Mappa caricata, avvio operazioni...');
       getCurrentLocation();
       fetchPOIs(filters);
     }
-  }, [mapLoaded, getCurrentLocation, fetchPOIs, filters]);
+  }, [mapLoaded]); // Only depend on mapLoaded
 
   // Add POI markers when data changes
   useEffect(() => {
-    if (map && pois.length > 0) {
+    if (map && mapLoaded && pois.length > 0) {
       console.log('📍 Aggiunta markers POI:', pois.length);
       addPOIMarkers(pois);
     }
-  }, [map, pois, addPOIMarkers]);
+  }, [map, mapLoaded, pois]); // Removed addPOIMarkers to prevent loops
 
   const handleRetry = () => {
     console.log('🔄 Tentativo di ripristino mappa...');
     setMapboxError(null);
     setLoading(true);
-    
-    if (map) {
-      map.remove();
-    }
     
     // Force reload after a brief delay
     setTimeout(() => {
