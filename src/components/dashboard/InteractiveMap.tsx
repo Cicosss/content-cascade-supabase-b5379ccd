@@ -3,7 +3,6 @@ import { MapControls } from './map/MapControls';
 import { SelectedPOICard } from './map/SelectedPOICard';
 import { MapLoadingState } from './map/MapLoadingState';
 import { MapContainer } from './map/MapContainer';
-import { MapDebugPanel } from './map/MapDebugPanel';
 import { useMapbox } from '@/hooks/useMapbox';
 import { useMapMarkers } from '@/hooks/useMapMarkers';
 import { useLocation } from '@/contexts/LocationContext';
@@ -133,14 +132,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       timestamp: new Date().toISOString()
     });
     return (
-      <div className="relative">
-        <MapLoadingState 
-          loading={true} 
-          mapboxError={null} 
-          onRetry={retry} 
-        />
-        <MapDebugPanel />
-      </div>
+      <MapLoadingState 
+        loading={true} 
+        mapboxError={null} 
+        onRetry={retry} 
+      />
     );
   }
 
@@ -151,14 +147,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
       timestamp: new Date().toISOString()
     });
     return (
-      <div className="relative">
-        <MapLoadingState 
-          loading={false} 
-          mapboxError={mapboxError || locationError || 'Errore nel caricamento'} 
-          onRetry={retry} 
-        />
-        <MapDebugPanel />
-      </div>
+      <MapLoadingState 
+        loading={false} 
+        mapboxError={mapboxError || locationError || 'Errore nel caricamento'} 
+        onRetry={retry} 
+      />
     );
   }
 
