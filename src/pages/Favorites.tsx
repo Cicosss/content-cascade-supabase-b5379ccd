@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Heart, MapPin, Calendar, Star } from 'lucide-react';
 
@@ -36,20 +36,18 @@ const Favorites = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <Card className="p-6 text-center">
             <p>Devi effettuare l'accesso per vedere i tuoi preferiti.</p>
           </Card>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center mb-6">
@@ -99,7 +97,7 @@ const Favorites = () => {
           )}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

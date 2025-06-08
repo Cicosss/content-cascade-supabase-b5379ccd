@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -86,9 +86,7 @@ const Itineraries = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
+    <Layout>
       {/* Hero Section */}
       <div className="hero-gradient text-white py-16">
         <div className="container mx-auto px-4 text-center">
@@ -154,7 +152,7 @@ const Itineraries = () => {
           ))}
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

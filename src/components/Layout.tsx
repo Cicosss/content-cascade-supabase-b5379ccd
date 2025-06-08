@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import AppSidebar from './AppSidebar';
 import Header from './Header';
+import Footer from './Footer';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,30 +18,34 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   if (showSidebar) {
     return (
       <SidebarProvider defaultOpen={false}>
-        <div className="min-h-screen flex w-full">
-          <AppSidebar />
-          <SidebarInset className="flex-1">
-            <div className="flex items-center gap-2 p-4 border-b border-slate-200/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <SidebarTrigger className="h-8 w-8 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors" />
-              <div className="flex-1">
-                <Header />
+        <div className="min-h-screen flex w-full flex-col">
+          <div className="flex flex-1">
+            <AppSidebar />
+            <SidebarInset className="flex-1">
+              <div className="flex items-center gap-2 p-4 border-b border-slate-200/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <SidebarTrigger className="h-8 w-8 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors" />
+                <div className="flex-1">
+                  <Header />
+                </div>
               </div>
-            </div>
-            <main className="flex-1 p-4">
-              {children}
-            </main>
-          </SidebarInset>
+              <main className="flex-1 p-4">
+                {children}
+              </main>
+            </SidebarInset>
+          </div>
+          <Footer />
         </div>
       </SidebarProvider>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <Header />
-      <main>
+      <main className="flex-1">
         {children}
       </main>
+      <Footer />
     </div>
   );
 };
