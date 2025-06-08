@@ -4,12 +4,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import InteractiveMap from '@/components/dashboard/InteractiveMap';
-import FilterPanel from '@/components/dashboard/FilterPanel';
 import AdvancedFilters from '@/components/dashboard/AdvancedFilters';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import { Card } from '@/components/ui/card';
-import { MapPin, Filter } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
@@ -21,7 +20,6 @@ const Dashboard = () => {
     period: null,
     isFirstVisit: true
   });
-  const [showFilters, setShowFilters] = useState(false);
   const [mapLocation, setMapLocation] = useState<{lat: number; lng: number} | null>(null);
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const Dashboard = () => {
   }, [user, loading, navigate]);
 
   const handleLocationChange = (location: {lat: number; lng: number}) => {
-    console.log('Dashboard: Location changed to', location);
     setMapLocation(location);
   };
 
@@ -60,26 +57,11 @@ const Dashboard = () => {
                 Esplora la tua Romagna personalizzata
               </p>
             </div>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-xl transition-all duration-200"
-              >
-                <Filter className="h-4 w-4" />
-                <span>Filtri Base</span>
-              </button>
-            </div>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {showFilters && (
-          <div className="mb-8">
-            <FilterPanel filters={filters} setFilters={setFilters} />
-          </div>
-        )}
-
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           <div className="xl:col-span-2 space-y-6">
             <Card className="h-[600px] p-6 rounded-3xl border-0 shadow-xl">

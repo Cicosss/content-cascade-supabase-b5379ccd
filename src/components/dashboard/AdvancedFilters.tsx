@@ -2,15 +2,8 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Users, MapPin, Star } from 'lucide-react';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
+import { MapPin, Users, Calendar as CalendarIcon, Filter, Clock, Star, Heart } from 'lucide-react';
 
 interface AdvancedFiltersProps {
   filters: {
@@ -24,16 +17,11 @@ interface AdvancedFiltersProps {
 }
 
 const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }) => {
+  const zones = ['tutto', 'centro', 'nord', 'sud', 'ovest', 'est'];
+  const childrenOptions = ['no', 'sì'];
   const activityTypes = [
-    { id: 'tutto', label: 'Tutto', icon: '🎯' },
-    { id: 'cibo', label: 'Cibo', icon: '🍝' },
-    { id: 'sport', label: 'Sport', icon: '⚽' },
-    { id: 'arte e cultura', label: 'Arte e Cultura', icon: '🎭' },
-    { id: 'musica', label: 'Musica', icon: '🎵' },
-    { id: 'parchi e natura', label: 'Parchi e Natura', icon: '🌳' },
-    { id: 'vita notturna', label: 'Vita Notturna', icon: '🌙' },
-    { id: 'intrattenimento', label: 'Intrattenimento', icon: '🎪' },
-    { id: 'altro', label: 'Altro', icon: '📍' }
+    'tutto', 'cibo', 'sport', 'arte e cultura', 'musica', 
+    'parchi e natura', 'vita notturna', 'intrattenimento', 'altro'
   ];
 
   const updateFilter = (key: string, value: any) => {
@@ -58,170 +46,201 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
   };
 
   return (
-    <Card className="mt-6 p-6 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-white to-blue-50/30">
-      <div className="flex items-center mb-6">
-        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-3">
-          <MapPin className="h-5 w-5 text-white" />
+    <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/95 backdrop-blur-sm">
+      <div className="flex items-center mb-8">
+        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mr-4">
+          <Filter className="h-6 w-6 text-white" />
         </div>
-        <h3 className="text-2xl font-bold text-slate-900">
+        <div>
+          <h2 className="text-3xl font-bold text-slate-900">
+            Personalizza la tua Esperienza
+          </h2>
+          <p className="text-slate-600 mt-1">
+            Filtra e scopri la Romagna su misura per te
+          </p>
+        </div>
+      </div>
+
+      {/* Filtri Base */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        
+        {/* Zone della Romagna */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <MapPin className="h-5 w-5 text-red-500" />
+            <Label className="font-bold text-gray-800 text-lg">Zone della Romagna</Label>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {zones.map((zone) => (
+              <Button
+                key={zone}
+                size="sm"
+                variant={filters.zone === zone ? "default" : "outline"}
+                onClick={() => updateFilter('zone', zone)}
+                className={`text-sm capitalize font-medium ${
+                  filters.zone === zone 
+                    ? 'bg-red-500 hover:bg-red-600 shadow-lg' 
+                    : 'hover:bg-red-50 hover:border-red-300 border-2'
+                }`}
+              >
+                {zone}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Con bambini */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Users className="h-5 w-5 text-blue-500" />
+            <Label className="font-bold text-gray-800 text-lg">Con bambini</Label>
+          </div>
+          <div className="flex gap-3">
+            {childrenOptions.map((option) => (
+              <Button
+                key={option}
+                size="sm"
+                variant={filters.withChildren === option ? "default" : "outline"}
+                onClick={() => updateFilter('withChildren', option)}
+                className={`text-sm font-medium flex-1 ${
+                  filters.withChildren === option 
+                    ? 'bg-blue-500 hover:bg-blue-600 shadow-lg' 
+                    : 'hover:bg-blue-50 hover:border-blue-300 border-2'
+                }`}
+              >
+                {option}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tipi di attività */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="text-green-500 text-xl">🎯</span>
+            <Label className="font-bold text-gray-800 text-lg">Tipi di attività</Label>
+          </div>
+          <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
+            {activityTypes.map((type) => (
+              <Button
+                key={type}
+                size="sm"
+                variant={filters.activityTypes.includes(type) ? "default" : "outline"}
+                onClick={() => toggleActivityType(type)}
+                className={`text-sm font-medium justify-start ${
+                  filters.activityTypes.includes(type)
+                    ? 'bg-green-500 hover:bg-green-600 shadow-lg' 
+                    : 'hover:bg-green-50 hover:border-green-300 border-2'
+                }`}
+              >
+                {type}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Esperienza */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <CalendarIcon className="h-5 w-5 text-purple-500" />
+            <Label className="font-bold text-gray-800 text-lg">Esperienza</Label>
+          </div>
+          <div className="space-y-3">
+            <Button
+              size="sm"
+              variant={filters.isFirstVisit ? "default" : "outline"}
+              onClick={() => updateFilter('isFirstVisit', true)}
+              className={`w-full text-sm font-medium ${
+                filters.isFirstVisit 
+                  ? 'bg-purple-500 hover:bg-purple-600 shadow-lg' 
+                  : 'hover:bg-purple-50 hover:border-purple-300 border-2'
+              }`}
+            >
+              Prima visita
+            </Button>
+            <Button
+              size="sm"
+              variant={!filters.isFirstVisit ? "default" : "outline"}
+              onClick={() => updateFilter('isFirstVisit', false)}
+              className={`w-full text-sm font-medium ${
+                !filters.isFirstVisit 
+                  ? 'bg-purple-500 hover:bg-purple-600 shadow-lg' 
+                  : 'hover:bg-purple-50 hover:border-purple-300 border-2'
+              }`}
+            >
+              Locale/Esperto
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Filtri Avanzati */}
+      <div className="border-t border-gray-200 pt-8">
+        <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+          <Star className="h-5 w-5 text-yellow-500" />
           Filtri Avanzati
         </h3>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Con Bambini */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-blue-500" />
-            <Label className="font-semibold text-gray-700">Con bambini</Label>
-          </div>
-          <RadioGroup 
-            value={filters.withChildren} 
-            onValueChange={(value) => updateFilter('withChildren', value)}
-            className="flex gap-4"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="no" id="no-children" />
-              <Label htmlFor="no-children" className="text-sm font-medium">No</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="sì" id="with-children" />
-              <Label htmlFor="with-children" className="text-sm font-medium">Sì</Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        {/* Periodo */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <CalendarIcon className="h-4 w-4 text-green-500" />
-            <Label className="font-semibold text-gray-700">Periodo</Label>
-          </div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  "w-full justify-start text-left font-normal",
-                  !filters.period && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {filters.period ? (
-                  filters.period.from ? (
-                    filters.period.to ? (
-                      <>
-                        {format(filters.period.from, "dd LLL")} -{" "}
-                        {format(filters.period.to, "dd LLL y")}
-                      </>
-                    ) : (
-                      format(filters.period.from, "dd LLL y")
-                    )
-                  ) : (
-                    "Seleziona periodo"
-                  )
-                ) : (
-                  "Seleziona periodo"
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={filters.period?.from}
-                selected={filters.period}
-                onSelect={(range) => updateFilter('period', range)}
-                numberOfMonths={2}
-                className="pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        {/* Prima Visita */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 text-yellow-500" />
-            <Label className="font-semibold text-gray-700">Tipo di esperienza</Label>
-          </div>
-          <div className="flex items-center space-x-3 bg-white p-4 rounded-xl border border-gray-200">
-            <Switch
-              checked={filters.isFirstVisit}
-              onCheckedChange={(checked) => updateFilter('isFirstVisit', checked)}
-            />
-            <div>
-              <Label className="text-sm font-medium">
-                {filters.isFirstVisit ? 'Prima visita' : 'Locale/Esperto'}
-              </Label>
-              <p className="text-xs text-gray-500 mt-1">
-                {filters.isFirstVisit 
-                  ? 'Mostra attrazioni turistiche principali' 
-                  : 'Mostra esperienze autentiche e locali'
-                }
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          {/* Fascia oraria preferita */}
+          <div className="space-y-3">
+            <Label className="font-semibold text-gray-700 flex items-center gap-2">
+              <Clock className="h-4 w-4 text-indigo-500" />
+              Fascia oraria preferita
+            </Label>
+            <div className="grid grid-cols-1 gap-2">
+              {['Mattina (6-12)', 'Pomeriggio (12-18)', 'Sera (18-24)', 'Notte (24-6)'].map((time) => (
+                <Button
+                  key={time}
+                  size="sm"
+                  variant="outline"
+                  className="justify-start text-sm hover:bg-indigo-50 hover:border-indigo-300"
+                >
+                  {time}
+                </Button>
+              ))}
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Tipi di Attività */}
-      <div className="mt-8">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-purple-500">🎯</span>
-          <Label className="font-semibold text-gray-700">Tipi di attività</Label>
-        </div>
-        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-3">
-          {activityTypes.map((type) => (
-            <div key={type.id} className="flex flex-col items-center">
-              <Button
-                variant={filters.activityTypes.includes(type.id) ? "default" : "outline"}
-                size="sm"
-                onClick={() => toggleActivityType(type.id)}
-                className={cn(
-                  "w-full h-16 flex-col gap-1 text-xs transition-all duration-200",
-                  filters.activityTypes.includes(type.id)
-                    ? "bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg" 
-                    : "hover:bg-purple-50 hover:border-purple-300 hover:shadow-md"
-                )}
-              >
-                <span className="text-lg">{type.icon}</span>
-                <span className="leading-tight">{type.label}</span>
-              </Button>
+          {/* Budget */}
+          <div className="space-y-3">
+            <Label className="font-semibold text-gray-700 flex items-center gap-2">
+              💰 Budget per persona
+            </Label>
+            <div className="grid grid-cols-1 gap-2">
+              {['€0-25', '€25-50', '€50-100', '€100+'].map((budget) => (
+                <Button
+                  key={budget}
+                  size="sm"
+                  variant="outline"
+                  className="justify-start text-sm hover:bg-emerald-50 hover:border-emerald-300"
+                >
+                  {budget}
+                </Button>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* Filtri Attivi */}
-      <div className="mt-6 pt-6 border-t border-gray-200">
-        <div className="flex flex-wrap gap-2">
-          <span className="text-sm font-medium text-gray-600">Filtri attivi:</span>
-          
-          {filters.withChildren === 'sì' && (
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-              Con bambini
-            </span>
-          )}
-          
-          {filters.activityTypes.length > 0 && !filters.activityTypes.includes('tutto') && (
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-              {filters.activityTypes.length} attività selezionate
-            </span>
-          )}
-          
-          {filters.period?.from && (
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              Periodo selezionato
-            </span>
-          )}
-          
-          {filters.isFirstVisit && (
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-              Prima visita
-            </span>
-          )}
+          {/* Preferenze speciali */}
+          <div className="space-y-3">
+            <Label className="font-semibold text-gray-700 flex items-center gap-2">
+              <Heart className="h-4 w-4 text-pink-500" />
+              Preferenze speciali
+            </Label>
+            <div className="grid grid-cols-1 gap-2">
+              {['Accessibile', 'Pet-friendly', 'Vegano/Vegetariano', 'Sostenibile'].map((pref) => (
+                <Button
+                  key={pref}
+                  size="sm"
+                  variant="outline"
+                  className="justify-start text-sm hover:bg-pink-50 hover:border-pink-300"
+                >
+                  {pref}
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </Card>
