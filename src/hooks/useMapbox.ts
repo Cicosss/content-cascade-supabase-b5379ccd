@@ -35,9 +35,9 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
     console.log('🗺️ Inizializzazione Mapbox...');
 
     try {
-      // Verifica token
-      if (!MAPBOX_TOKEN || MAPBOX_TOKEN === 'your-mapbox-token') {
-        throw new Error('Token Mapbox non valido');
+      // Verifica token - controllo semplificato
+      if (!MAPBOX_TOKEN || MAPBOX_TOKEN.length < 10) {
+        throw new Error('Token Mapbox non valido o mancante');
       }
 
       mapboxgl.accessToken = MAPBOX_TOKEN;
