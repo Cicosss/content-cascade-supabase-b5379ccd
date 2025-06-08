@@ -48,22 +48,22 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
 
   // Handle location change
   useEffect(() => {
-    if (userLocation) {
+    if (userLocation && map) {
+      console.log('📍 Aggiornamento posizione utente:', userLocation);
       onLocationChange?.(userLocation);
-      if (map) {
-        addUserLocationMarker(userLocation);
-        map.flyTo({
-          center: [userLocation.lng, userLocation.lat],
-          zoom: 14,
-          duration: 2000
-        });
-      }
+      addUserLocationMarker(userLocation);
+      map.flyTo({
+        center: [userLocation.lng, userLocation.lat],
+        zoom: 14,
+        duration: 2000
+      });
     }
   }, [userLocation, map, onLocationChange, addUserLocationMarker]);
 
   // Fetch POIs when map loads
   useEffect(() => {
     if (mapLoaded) {
+      console.log('🗺️ Mappa caricata, avvio operazioni...');
       getCurrentLocation();
       fetchPOIs(filters);
     }
@@ -72,6 +72,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   // Add POI markers when data changes
   useEffect(() => {
     if (map && pois.length > 0) {
+      console.log('📍 Aggiunta markers POI:', pois.length);
       addPOIMarkers(pois);
     }
   }, [map, pois, addPOIMarkers]);
@@ -85,8 +86,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
       map.remove();
     }
     
+    // Force reload after a brief delay
     setTimeout(() => {
-      setLoading(true);
+      window.location.reload();
     }, 1000);
   };
 

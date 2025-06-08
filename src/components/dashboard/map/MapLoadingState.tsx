@@ -27,13 +27,18 @@ export const MapLoadingState: React.FC<MapLoadingStateProps> = ({ loading, mapbo
         <div className="text-center p-6">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
           <h3 className="text-xl font-bold text-red-700 mb-2">Errore Mappa</h3>
-          <p className="text-red-600 mb-4">{mapboxError}</p>
-          <Button 
-            onClick={onRetry}
-            className="bg-red-600 hover:bg-red-700 text-white"
-          >
-            Riprova
-          </Button>
+          <p className="text-red-600 mb-4 max-w-md">{mapboxError}</p>
+          <div className="space-y-2">
+            <Button 
+              onClick={onRetry}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Ricarica Pagina
+            </Button>
+            <p className="text-xs text-red-500">
+              Se il problema persiste, verifica la connessione internet
+            </p>
+          </div>
         </div>
       </div>
     );
