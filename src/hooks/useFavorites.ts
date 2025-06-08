@@ -35,7 +35,14 @@ export const useFavorites = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setFavorites(data || []);
+      
+      // Cast the data to our expected type
+      const typedFavorites = (data || []).map(item => ({
+        ...item,
+        item_type: item.item_type as 'restaurant' | 'experience' | 'event'
+      }));
+      
+      setFavorites(typedFavorites);
     } catch (error) {
       console.error('Error fetching favorites:', error);
     } finally {
