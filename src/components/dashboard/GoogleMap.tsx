@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
@@ -30,7 +31,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
   const [selectedPOI, setSelectedPOI] = useState<any>(null);
   
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
-  const { pois, fetchPOIs } = usePOIData();
+  const { pois, fetchPOIs, isLoading: isLoadingPOIs } = usePOIData();
 
   // Carica Google Maps API
   useEffect(() => {
@@ -86,16 +87,19 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
     console.log('🗺️ Google Maps inizializzata');
   }, [isLoaded, userLocation]);
 
-  // Aggiorna i marker quando cambiano i POI o i filtri
+  // Carica POI quando la mappa è pronta o cambiano i filtri
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    fetchPOIs(filters);
+  }, [mapInstanceRef.current, filters, fetchPOIs]);
+
+  // Aggiorna i marker quando cambiano i POI
   useEffect(() => {
     if (!mapInstanceRef.current) return;
 
     // Rimuovi marker esistenti
     markersRef.current.forEach(marker => marker.setMap(null));
     markersRef.current = [];
-
-    // Fetch POI con filtri
-    fetchPOIs(filters);
 
     // Aggiungi marker per ogni POI
     pois.forEach(poi => {
@@ -131,7 +135,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
     });
 
     console.log('🏷️ Marker aggiornati:', pois.length);
-  }, [pois, filters, fetchPOIs]);
+  }, [pois]);
 
   // Aggiungi marker per la posizione utente
   useEffect(() => {
@@ -190,6 +194,16 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
   return (
     <div className="relative h-full">
       <div ref={mapRef} className="w-full h-full rounded-xl" />
+      
+      {/* Indicatore di caricamento POI */}
+      {isLoadingPOIs && (
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+          <div className="flex items-center gap-2 text-sm text-slate-600">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Caricamento POI...
+          </div>
+        </div>
+      )}
       
       {/* Controlli mappa - spostato in alto a sinistra */}
       <div className="absolute top-4 left-4 space-y-2">
