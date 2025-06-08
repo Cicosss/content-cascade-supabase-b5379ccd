@@ -236,10 +236,9 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
         }, 500);
       });
 
-      // Eventi di debug dettagliati
-      map.current.on('styledata', (e) => {
+      // Eventi di debug dettagliati - CORRETTI
+      map.current.on('styledata', () => {
         console.log('🎨 Stile caricato:', {
-          isSourceLoaded: e.isSourceLoaded,
           timestamp: new Date().toISOString()
         });
       });
