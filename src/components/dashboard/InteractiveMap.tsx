@@ -35,7 +35,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
   
-  // Hooks separati per evitare interferenze
+  // Hooks principali
   const { userLocation, isLoadingLocation, getCurrentLocation, locationError } = useLocation();
   const { pois, fetchPOIs } = usePOIData();
   const { map, mapLoaded, loading: mapLoading, mapboxError, retry } = useMapbox(mapContainer);
@@ -48,13 +48,19 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     userLocation 
   });
 
-  // Inizializza POI una sola volta
+  // Inizializzazione POI - solo una volta
   useEffect(() => {
     console.log('🗺️ Caricamento POI iniziale...');
     fetchPOIs(filters);
   }, []); // Dipendenza vuota intenzionale
 
-  // Centra la mappa sulla posizione dell'utente quando disponibile
+  // Aggiorna POI quando cambiano i filtri (escluso il primo caricamento)
+  useEffect(() => {
+    console.log('🔄 Aggiornamento POI per filtri:', filters.activityTypes);
+    fetchPOIs(filters);
+  }, [filters.activityTypes, fetchPOIs]);
+
+  // Centra la mappa sulla posizione dell'utente
   useEffect(() => {
     if (map && mapLoaded && userLocation) {
       console.log('🎯 Centratura mappa sulla posizione utente:', userLocation);
@@ -66,9 +72,18 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     }
   }, [map, mapLoaded, userLocation]);
 
-  // Stati di loading e errore
+  // Stati di caricamento e errore
   const isLoading = mapLoading || isLoadingLocation;
   const hasErrors = mapboxError || locationError;
+
+  console.log('🗺️ Stati mappa:', {
+    mapLoading,
+    isLoadingLocation,
+    mapLoaded,
+    hasErrors,
+    poisCount: pois.length,
+    userLocation: !!userLocation
+  });
 
   if (isLoading) {
     return (

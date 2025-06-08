@@ -11,8 +11,9 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mapboxError, setMapboxError] = useState<string | null>(null);
-  const initAttempted = useRef(false);
+  const initialized = useRef(false);
 
+  // Cleanup stabile - non cambia mai
   const cleanup = useCallback(() => {
     console.log('🧹 Cleanup mappa Mapbox');
     if (map.current) {
@@ -22,22 +23,42 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
     setMapLoaded(false);
     setLoading(true);
     setMapboxError(null);
+    initialized.current = false;
   }, []);
 
-  const initializeMap = useCallback(() => {
-    // Evita inizializzazioni multiple
-    if (initAttempted.current || !mapContainer.current || map.current) {
-      console.log('🔄 Inizializzazione già tentata o container non disponibile');
+  // Test di connettività Mapbox
+  const testMapboxConnection = useCallback(async (): Promise<boolean> => {
+    try {
+      const response = await fetch(`https://api.mapbox.com/styles/v1/mapbox/streets-v12?access_token=${MAPBOX_TOKEN}`);
+      return response.ok;
+    } catch (error) {
+      console.error('❌ Test connettività Mapbox fallito:', error);
+      return false;
+    }
+  }, []);
+
+  // Inizializzazione mappa stabile
+  const initializeMap = useCallback(async () => {
+    if (initialized.current || !mapContainer.current || map.current) {
       return;
     }
 
-    initAttempted.current = true;
+    initialized.current = true;
     console.log('🗺️ Inizializzazione Mapbox...');
+    setLoading(true);
+    setMapboxError(null);
 
     try {
-      // Verifica token - controllo semplificato
-      if (!MAPBOX_TOKEN || MAPBOX_TOKEN.length < 10) {
+      // Verifica token
+      if (!MAPBOX_TOKEN || MAPBOX_TOKEN.length < 50) {
         throw new Error('Token Mapbox non valido o mancante');
+      }
+
+      // Test connettività
+      console.log('🔍 Test connettività Mapbox...');
+      const isConnected = await testMapboxConnection();
+      if (!isConnected) {
+        throw new Error('Impossibile connettersi ai server Mapbox');
       }
 
       mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -50,10 +71,11 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
         attributionControl: true,
         antialias: true,
         maxZoom: 18,
-        minZoom: 8
+        minZoom: 8,
+        preserveDrawingBuffer: true
       });
 
-      // Aggiungi controlli di navigazione
+      // Controlli di navigazione
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
       // Event listeners
@@ -63,7 +85,7 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
         setLoading(false);
         setMapboxError(null);
 
-        // Forza resize dopo un breve delay
+        // Resize dopo caricamento
         setTimeout(() => {
           if (map.current) {
             map.current.resize();
@@ -72,10 +94,10 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
       });
 
       map.current.on('error', (e) => {
-        console.error('❌ Errore Mapbox:', e);
-        setMapboxError('Errore di caricamento della mappa');
+        console.error('❌ Errore Mapbox:', e.error);
+        setMapboxError(`Errore mappa: ${e.error?.message || 'Errore sconosciuto'}`);
         setLoading(false);
-        initAttempted.current = false;
+        initialized.current = false;
       });
 
       map.current.on('style.load', () => {
@@ -84,27 +106,28 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
 
     } catch (error) {
       console.error('❌ Errore inizializzazione Mapbox:', error);
-      setMapboxError(error instanceof Error ? error.message : 'Errore sconosciuto');
+      const errorMessage = error instanceof Error ? error.message : 'Errore sconosciuto';
+      setMapboxError(errorMessage);
       setLoading(false);
-      initAttempted.current = false;
+      initialized.current = false;
     }
-  }, [mapContainer]);
+  }, [mapContainer, testMapboxConnection]);
 
+  // Retry con backoff
   const retry = useCallback(() => {
     console.log('🔄 Retry inizializzazione mappa...');
-    initAttempted.current = false;
     cleanup();
-    setTimeout(initializeMap, 1000);
+    setTimeout(() => {
+      initializeMap();
+    }, 2000);
   }, [cleanup, initializeMap]);
 
+  // Effetto di inizializzazione - una sola volta
   useEffect(() => {
     console.log('🚀 Hook useMapbox montato');
     initializeMap();
     
-    return () => {
-      console.log('🛑 Hook useMapbox smontato');
-      cleanup();
-    };
+    return cleanup;
   }, [initializeMap, cleanup]);
 
   return {

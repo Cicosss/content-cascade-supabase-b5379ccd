@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, MapPin } from 'lucide-react';
+import { Cloud, Sun, CloudRain, Wind, Droplets, MapPin } from 'lucide-react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 
@@ -10,6 +10,14 @@ const PersonalizedWeather: React.FC = () => {
   const { weather, loading: weatherLoading, error } = useWeatherAPI(userLocation);
 
   const loading = isLoadingLocation || weatherLoading;
+
+  console.log('🌤️ Stati meteo:', {
+    userLocation: !!userLocation,
+    isLoadingLocation,
+    weatherLoading,
+    hasWeather: !!weather,
+    error
+  });
 
   const getWeatherIcon = (condition: string, iconCode?: string) => {
     if (iconCode) {

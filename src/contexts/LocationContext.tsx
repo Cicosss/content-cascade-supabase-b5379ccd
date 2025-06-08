@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 interface LocationData {
@@ -35,7 +35,9 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children }) 
   const [locationError, setLocationError] = useState<string | null>(null);
   const { toast } = useToast();
   const isGettingLocation = useRef(false);
+  const autoLocationRequested = useRef(false);
 
+  // Funzione per ottenere la posizione GPS
   const getCurrentLocation = useCallback(() => {
     if (isGettingLocation.current) {
       console.log('🔄 Richiesta GPS già in corso...');
@@ -59,33 +61,37 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children }) 
           setIsLoadingLocation(false);
           isGettingLocation.current = false;
           
-          toast({
-            title: "📍 Posizione GPS aggiornata!",
-            description: "La tua posizione è stata rilevata con successo",
-          });
+          if (!autoLocationRequested.current) {
+            toast({
+              title: "📍 Posizione GPS aggiornata!",
+              description: "La tua posizione è stata rilevata con successo",
+            });
+          }
         },
         (error) => {
           console.error('❌ Errore GPS:', error);
-          const fallback = { lat: 44.0646, lng: 12.5736 };
+          const fallback = { lat: 44.0646, lng: 12.5736 }; // Rimini
           setUserLocation(fallback);
           setLocationError('Impossibile ottenere la posizione GPS');
           setIsLoadingLocation(false);
           isGettingLocation.current = false;
           
-          toast({
-            title: "❌ Errore GPS",
-            description: "Usando Rimini come posizione predefinita",
-            variant: "destructive",
-          });
+          if (!autoLocationRequested.current) {
+            toast({
+              title: "❌ Errore GPS",
+              description: "Usando Rimini come posizione predefinita",
+              variant: "destructive",
+            });
+          }
         },
         {
           enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 60000
+          timeout: 15000,
+          maximumAge: 300000 // 5 minuti
         }
       );
     } else {
-      console.log('Geolocation non supportato');
+      console.log('❌ Geolocation non supportato');
       const fallback = { lat: 44.0646, lng: 12.5736 };
       setUserLocation(fallback);
       setLocationError('GPS non supportato dal browser');
@@ -94,11 +100,21 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({ children }) 
     }
   }, [toast]);
 
+  // Aggiornamento manuale della posizione
   const updateLocation = useCallback((location: LocationData) => {
     console.log('📍 Aggiornamento posizione manuale:', location);
     setUserLocation(location);
     setLocationError(null);
   }, []);
+
+  // Richiesta automatica della posizione all'avvio - solo una volta
+  useEffect(() => {
+    if (!autoLocationRequested.current) {
+      autoLocationRequested.current = true;
+      console.log('🚀 Richiesta automatica posizione GPS all\'avvio');
+      getCurrentLocation();
+    }
+  }, [getCurrentLocation]);
 
   const value = {
     userLocation,
