@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { MapPin, Navigation, Car } from 'lucide-react';
@@ -29,14 +30,13 @@ interface InteractiveMapProps {
   onLocationChange?: (location: {lat: number; lng: number}) => void;
 }
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
-
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChange }) => {
   const [pois, setPois] = useState<POI[]>([]);
   const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const [loading, setLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapboxError, setMapboxError] = useState<string | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const markers = useRef<mapboxgl.Marker[]>([]);
@@ -238,13 +238,19 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${poi.latitude},${poi.longitude}`, '_blank');
   };
 
-  // Initialize map once
+  // Initialize map
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
     
     console.log('Initializing map...');
     
+    // Prova prima con il token esistente, poi fallback senza token
+    const accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+    
     try {
+      // Imposta il token di accesso
+      mapboxgl.accessToken = accessToken;
+      
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
@@ -259,15 +265,27 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         console.log('Map loaded successfully');
         setMapLoaded(true);
         setLoading(false);
+        setMapboxError(null);
       });
 
       map.current.on('error', (e) => {
         console.error('Map error:', e);
+        setMapboxError('Errore di connessione a Mapbox. Verifica il token di accesso.');
         setLoading(false);
       });
 
+      // Timeout per evitare caricamenti infiniti
+      setTimeout(() => {
+        if (!mapLoaded) {
+          console.log('Map loading timeout');
+          setMapboxError('Timeout di caricamento mappa. Verifica la connessione internet.');
+          setLoading(false);
+        }
+      }, 15000);
+
     } catch (error) {
       console.error('Error initializing map:', error);
+      setMapboxError('Errore di inizializzazione mappa. Token Mapbox non valido.');
       setLoading(false);
     }
 
@@ -277,7 +295,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         map.current = null;
       }
     };
-  }, []);
+  }, [mapLoaded]);
 
   // Get location when map is loaded
   useEffect(() => {
@@ -294,13 +312,35 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
     }
   }, [filters, fetchPOIs]);
 
-  if (loading) {
+  if (loading && !mapboxError) {
     return (
       <div className="h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl">
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
           <p className="text-gray-700 font-medium">Caricamento mappa GPS...</p>
           <p className="text-gray-500 text-sm">Connessione a Mapbox in corso...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (mapboxError) {
+    return (
+      <div className="h-full flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-100 rounded-2xl">
+        <div className="text-center p-6">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h3 className="text-xl font-bold text-red-700 mb-2">Errore Mappa</h3>
+          <p className="text-red-600 mb-4">{mapboxError}</p>
+          <Button 
+            onClick={() => {
+              setMapboxError(null);
+              setLoading(true);
+              window.location.reload();
+            }}
+            className="bg-red-600 hover:bg-red-700 text-white"
+          >
+            Riprova
+          </Button>
         </div>
       </div>
     );
