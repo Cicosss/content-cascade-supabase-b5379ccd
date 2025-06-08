@@ -12,23 +12,29 @@ export const useMapWithWeather = ({ filters }: UseMapWithWeatherProps) => {
   const { userLocation, isLoadingLocation, getCurrentLocation, locationError } = useLocation();
   const { weather, loading: weatherLoading, error: weatherError } = useWeatherAPI(userLocation);
   const { pois, fetchPOIs } = usePOIData();
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  // Inizializzazione: ottieni posizione e POI solo una volta
-  useEffect(() => {
-    if (!isInitialized && !isLoadingLocation && !userLocation) {
+  // Inizializzazione una sola volta
+  const initialize = useCallback(() => {
+    if (!initialized) {
       console.log('🚀 Inizializzazione mappa e meteo...');
-      setIsInitialized(true);
+      setInitialized(true);
       getCurrentLocation();
       fetchPOIs(filters);
     }
-  }, [isInitialized, isLoadingLocation, userLocation, getCurrentLocation, fetchPOIs, filters]);
+  }, [initialized, getCurrentLocation, fetchPOIs, filters]);
 
-  // Aggiorna POI quando cambiano i filtri
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  // Aggiorna POI quando cambiano i filtri (ma non all'inizializzazione)
   const updatePOIs = useCallback(() => {
-    console.log('🔄 Aggiornamento POI per nuovi filtri...');
-    fetchPOIs(filters);
-  }, [fetchPOIs, filters]);
+    if (initialized) {
+      console.log('🔄 Aggiornamento POI per nuovi filtri...');
+      fetchPOIs(filters);
+    }
+  }, [initialized, fetchPOIs, filters]);
 
   return {
     // Location data
@@ -48,6 +54,6 @@ export const useMapWithWeather = ({ filters }: UseMapWithWeatherProps) => {
     
     // Combined state
     isReady: !isLoadingLocation && userLocation !== null,
-    hasError: locationError || weatherError
+    hasError: locationError !== null
   };
 };

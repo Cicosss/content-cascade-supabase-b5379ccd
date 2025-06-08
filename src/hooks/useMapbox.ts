@@ -3,48 +3,49 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
+// Token Mapbox - in produzione dovrebbe essere in una variabile d'ambiente
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiY2ljb3NzcyIsImEiOiJjbWJtczMzODAxZTNyMmpyMWJuZjY4MHB4In0.RJk9iLhC91gD4iFv32z0VA';
 
 export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
   const map = useRef<mapboxgl.Map | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mapboxError, setMapboxError] = useState<string | null>(null);
-  const initialized = useRef(false);
-  const retryCount = useRef(0);
-  const maxRetries = 3;
+  const initAttempted = useRef(false);
 
   const cleanup = useCallback(() => {
+    console.log('🧹 Cleanup mappa Mapbox');
     if (map.current) {
-      console.log('🧹 Pulizia mappa Mapbox...');
       map.current.remove();
       map.current = null;
     }
-    initialized.current = false;
     setMapLoaded(false);
     setLoading(true);
     setMapboxError(null);
   }, []);
 
   const initializeMap = useCallback(() => {
-    if (!mapContainer.current || map.current || initialized.current) {
+    // Evita inizializzazioni multiple
+    if (initAttempted.current || !mapContainer.current || map.current) {
+      console.log('🔄 Inizializzazione già tentata o container non disponibile');
       return;
     }
 
-    if (retryCount.current >= maxRetries) {
-      setMapboxError('Troppi tentativi falliti. Ricarica la pagina.');
-      setLoading(false);
-      return;
-    }
-
-    initialized.current = true;
-    console.log(`🔄 Inizializzazione mappa Mapbox (tentativo ${retryCount.current + 1})...`);
+    initAttempted.current = true;
+    console.log('🗺️ Inizializzazione Mapbox...');
 
     try {
+      // Verifica token
+      if (!MAPBOX_TOKEN || MAPBOX_TOKEN === 'your-mapbox-token') {
+        throw new Error('Token Mapbox non valido');
+      }
+
+      mapboxgl.accessToken = MAPBOX_TOKEN;
+
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: [12.5736, 44.0646],
+        center: [12.5736, 44.0646], // Rimini
         zoom: 11,
         attributionControl: true,
         antialias: true,
@@ -52,15 +53,17 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
         minZoom: 8
       });
 
+      // Aggiungi controlli di navigazione
       map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
+      // Event listeners
       map.current.on('load', () => {
-        console.log('✅ Mappa caricata con successo!');
+        console.log('✅ Mappa Mapbox caricata con successo!');
         setMapLoaded(true);
         setLoading(false);
         setMapboxError(null);
-        retryCount.current = 0;
 
+        // Forza resize dopo un breve delay
         setTimeout(() => {
           if (map.current) {
             map.current.resize();
@@ -69,32 +72,40 @@ export const useMapbox = (mapContainer: React.RefObject<HTMLDivElement>) => {
       });
 
       map.current.on('error', (e) => {
-        console.error('❌ Errore mappa:', e);
-        retryCount.current++;
-        setMapboxError(`Errore di caricamento mappa (${retryCount.current}/${maxRetries})`);
+        console.error('❌ Errore Mapbox:', e);
+        setMapboxError('Errore di caricamento della mappa');
         setLoading(false);
-        initialized.current = false;
+        initAttempted.current = false;
+      });
+
+      map.current.on('style.load', () => {
+        console.log('🎨 Stile mappa caricato');
       });
 
     } catch (error) {
-      console.error('❌ Errore inizializzazione mappa:', error);
-      retryCount.current++;
-      setMapboxError(`Errore inizializzazione (${retryCount.current}/${maxRetries})`);
+      console.error('❌ Errore inizializzazione Mapbox:', error);
+      setMapboxError(error instanceof Error ? error.message : 'Errore sconosciuto');
       setLoading(false);
-      initialized.current = false;
+      initAttempted.current = false;
     }
   }, [mapContainer]);
 
-  useEffect(() => {
-    initializeMap();
-    return cleanup;
-  }, [initializeMap, cleanup]);
-
   const retry = useCallback(() => {
-    console.log('🔄 Retry mappa...');
+    console.log('🔄 Retry inizializzazione mappa...');
+    initAttempted.current = false;
     cleanup();
     setTimeout(initializeMap, 1000);
   }, [cleanup, initializeMap]);
+
+  useEffect(() => {
+    console.log('🚀 Hook useMapbox montato');
+    initializeMap();
+    
+    return () => {
+      console.log('🛑 Hook useMapbox smontato');
+      cleanup();
+    };
+  }, [initializeMap, cleanup]);
 
   return {
     map: map.current,

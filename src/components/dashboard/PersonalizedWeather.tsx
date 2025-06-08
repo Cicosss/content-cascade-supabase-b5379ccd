@@ -59,12 +59,23 @@ const PersonalizedWeather: React.FC = () => {
     );
   }
 
-  if (error || !weather) {
+  if (error && !weather) {
     return (
       <Card className="p-6 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-red-500 to-red-600 text-white">
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2">Errore Meteo</h3>
-          <p className="text-red-100 text-sm">{error || 'Dati meteo non disponibili'}</p>
+          <p className="text-red-100 text-sm">{error}</p>
+        </div>
+      </Card>
+    );
+  }
+
+  if (!weather) {
+    return (
+      <Card className="p-6 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-gray-500 to-gray-600 text-white">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold mb-2">Meteo non disponibile</h3>
+          <p className="text-gray-100 text-sm">Dati meteo in caricamento...</p>
         </div>
       </Card>
     );
@@ -109,9 +120,15 @@ const PersonalizedWeather: React.FC = () => {
           </div>
         </div>
 
-        {userLocation && (
+        {error && (
           <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
-            🛰️ Meteo aggiornato in tempo reale dalla tua posizione GPS via OpenWeatherMap
+            ⚠️ Usando dati fallback - {error}
+          </div>
+        )}
+
+        {userLocation && !error && (
+          <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
+            🛰️ Meteo aggiornato in tempo reale dalla tua posizione GPS
           </div>
         )}
       </div>

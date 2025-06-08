@@ -6,7 +6,8 @@ import { MapLoadingState } from './map/MapLoadingState';
 import { MapContainer } from './map/MapContainer';
 import { useMapbox } from '@/hooks/useMapbox';
 import { useMapMarkers } from '@/hooks/useMapMarkers';
-import { useMapWithWeather } from '@/hooks/useMapWithWeather';
+import { useLocation } from '@/contexts/LocationContext';
+import { usePOIData } from '@/hooks/usePOIData';
 
 interface POI {
   id: string;
@@ -34,17 +35,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
   
-  // Usa il nuovo hook combinato
-  const { 
-    userLocation, 
-    isLoadingLocation, 
-    getCurrentLocation,
-    pois,
-    isReady,
-    hasError 
-  } = useMapWithWeather({ filters });
-  
-  // Hook per Mapbox
+  // Hooks separati per evitare interferenze
+  const { userLocation, isLoadingLocation, getCurrentLocation, locationError } = useLocation();
+  const { pois, fetchPOIs } = usePOIData();
   const { map, mapLoaded, loading: mapLoading, mapboxError, retry } = useMapbox(mapContainer);
   
   // Hook per i marker
@@ -55,9 +48,15 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     userLocation 
   });
 
-  // Centra la mappa sulla posizione dell'utente quando è disponibile
+  // Inizializza POI una sola volta
   useEffect(() => {
-    if (map && mapLoaded && userLocation && isReady) {
+    console.log('🗺️ Caricamento POI iniziale...');
+    fetchPOIs(filters);
+  }, []); // Dipendenza vuota intenzionale
+
+  // Centra la mappa sulla posizione dell'utente quando disponibile
+  useEffect(() => {
+    if (map && mapLoaded && userLocation) {
       console.log('🎯 Centratura mappa sulla posizione utente:', userLocation);
       map.flyTo({
         center: [userLocation.lng, userLocation.lat],
@@ -65,10 +64,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
         duration: 2000
       });
     }
-  }, [map, mapLoaded, userLocation, isReady]);
+  }, [map, mapLoaded, userLocation]);
 
+  // Stati di loading e errore
   const isLoading = mapLoading || isLoadingLocation;
-  const hasErrors = mapboxError || hasError;
+  const hasErrors = mapboxError || locationError;
 
   if (isLoading) {
     return (
@@ -84,7 +84,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
     return (
       <MapLoadingState 
         loading={false} 
-        mapboxError={mapboxError || 'Errore nel caricamento dei dati'} 
+        mapboxError={mapboxError || locationError || 'Errore nel caricamento'} 
         onRetry={retry} 
       />
     );
