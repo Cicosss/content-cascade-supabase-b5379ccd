@@ -27,8 +27,15 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
   const zones = ['tutto', 'centro', 'nord', 'sud', 'ovest', 'est'];
   const childrenOptions = ['no', 'sì'];
   const activityTypes = [
-    'tutto', 'cibo', 'sport', 'arte e cultura', 'musica', 
-    'parchi e natura', 'vita notturna', 'intrattenimento', 'altro'
+    { id: 'tutto', label: 'tutto', icon: '🎯' },
+    { id: 'cibo', label: 'cibo', icon: '🍝' },
+    { id: 'sport', label: 'sport', icon: '⚽' },
+    { id: 'arte e cultura', label: 'arte e cultura', icon: '🎨' },
+    { id: 'musica', label: 'musica', icon: '🎵' },
+    { id: 'parchi e natura', label: 'parchi e natura', icon: '🌳' },
+    { id: 'vita notturna', label: 'vita notturna', icon: '🌙' },
+    { id: 'intrattenimento', label: 'intrattenimento', icon: '🎪' },
+    { id: 'altro', label: 'altro', icon: '🔮' }
   ];
 
   const updateFilter = (key: string, value: any) => {
@@ -69,7 +76,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
       </div>
 
       {/* Filtri Base */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         
         {/* Zone della Romagna */}
         <div className="space-y-4">
@@ -185,30 +192,31 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
             </Button>
           </div>
         </div>
+      </div>
 
-        {/* Tipi di attività - Colonna intera */}
-        <div className="space-y-4 lg:col-span-1">
-          <div className="flex items-center gap-3">
-            <span className="text-green-500 text-xl">🎯</span>
-            <Label className="font-bold text-gray-800 text-lg">Tipi di attività</Label>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {activityTypes.map((type) => (
-              <Button
-                key={type}
-                size="sm"
-                variant={filters.activityTypes.includes(type) ? "default" : "outline"}
-                onClick={() => toggleActivityType(type)}
-                className={`text-sm font-medium ${
-                  filters.activityTypes.includes(type)
-                    ? 'bg-green-500 hover:bg-green-600 shadow-lg' 
-                    : 'hover:bg-green-50 hover:border-green-300 border-2'
-                }`}
-              >
-                {type}
-              </Button>
-            ))}
-          </div>
+      {/* Tipi di attività - Sezione orizzontale */}
+      <div className="space-y-4 mb-8">
+        <div className="flex items-center gap-3">
+          <span className="text-green-500 text-xl">🎯</span>
+          <Label className="font-bold text-gray-800 text-lg">Tipi di attività</Label>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          {activityTypes.map((type) => (
+            <Button
+              key={type.id}
+              size="sm"
+              variant={filters.activityTypes.includes(type.id) ? "default" : "outline"}
+              onClick={() => toggleActivityType(type.id)}
+              className={`text-sm font-medium flex items-center gap-2 ${
+                filters.activityTypes.includes(type.id)
+                  ? 'bg-green-500 hover:bg-green-600 shadow-lg' 
+                  : 'hover:bg-green-50 hover:border-green-300 border-2'
+              }`}
+            >
+              <span className="text-base">{type.icon}</span>
+              {type.label}
+            </Button>
+          ))}
         </div>
       </div>
 
