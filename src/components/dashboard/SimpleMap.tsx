@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Navigation, RotateCcw } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { Loader } from '@googlemaps/js-api-loader';
 
 // Google Maps API Key
 const GOOGLE_MAPS_API_KEY = 'AIzaSyBYu9y2Rig3ueioFfy-Ait65lRcOTIIR6A';
@@ -117,40 +116,49 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
   // Inizializzazione Google Maps
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    const initMap = async () => {
+      if (!mapContainer.current || map.current) return;
 
-    console.log('🚀 Inizializzazione Google Maps...');
-    
-    const loader = new Loader({
-      apiKey: GOOGLE_MAPS_API_KEY,
-      version: 'weekly',
-      libraries: ['places']
-    });
+      console.log('🚀 Inizializzazione Google Maps...');
 
-    loader.load().then(() => {
-      if (!mapContainer.current) return;
+      try {
+        // Carica Google Maps API direttamente
+        if (!window.google) {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+          script.async = true;
+          
+          await new Promise<void>((resolve, reject) => {
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error('Failed to load Google Maps'));
+            document.head.appendChild(script);
+          });
+        }
 
-      // Crea la mappa Google Maps
-      map.current = new window.google.maps.Map(mapContainer.current, {
-        center: { lat: 44.0646, lng: 12.5736 }, // Rimini
-        zoom: 11,
-        mapTypeId: window.google.maps.MapTypeId.ROADMAP,
-        styles: [
-          {
-            featureType: 'poi',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }]
-          }
-        ]
-      });
+        // Crea la mappa
+        map.current = new google.maps.Map(mapContainer.current, {
+          center: { lat: 44.0646, lng: 12.5736 }, // Rimini
+          zoom: 11,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: [
+            {
+              featureType: 'poi',
+              elementType: 'labels',
+              stylers: [{ visibility: 'off' }]
+            }
+          ]
+        });
 
-      console.log('✅ Google Maps caricata con successo');
-      setMapLoaded(true);
-      setLoading(false);
-    }).catch((error) => {
-      console.error('❌ Errore caricamento Google Maps:', error);
-      setLoading(false);
-    });
+        console.log('✅ Google Maps caricata con successo');
+        setMapLoaded(true);
+        setLoading(false);
+      } catch (error) {
+        console.error('❌ Errore caricamento Google Maps:', error);
+        setLoading(false);
+      }
+    };
+
+    initMap();
 
     return () => {
       // Cleanup se necessario
@@ -178,7 +186,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
 
     // Aggiungi nuovi marker
     filteredPOIs.forEach(poi => {
-      const marker = new window.google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: { lat: poi.latitude, lng: poi.longitude },
         map: map.current,
         title: poi.name,
@@ -189,8 +197,8 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
               <text x="16" y="20" text-anchor="middle" font-size="14">${getCategoryEmoji(poi.category)}</text>
             </svg>
           `)}`,
-          scaledSize: new window.google.maps.Size(32, 32),
-          anchor: new window.google.maps.Point(16, 16)
+          scaledSize: new google.maps.Size(32, 32),
+          anchor: new google.maps.Point(16, 16)
         }
       });
 
@@ -228,7 +236,7 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
           }
 
           // Aggiungi marker utente
-          userMarker.current = new window.google.maps.Marker({
+          userMarker.current = new google.maps.Marker({
             position: { lat: latitude, lng: longitude },
             map: map.current,
             title: 'La tua posizione',
@@ -238,8 +246,8 @@ const SimpleMap: React.FC<SimpleMapProps> = ({ filters }) => {
                   <circle cx="10" cy="10" r="8" fill="#3b82f6" stroke="white" stroke-width="3"/>
                 </svg>
               `)}`,
-              scaledSize: new window.google.maps.Size(20, 20),
-              anchor: new window.google.maps.Point(10, 10)
+              scaledSize: new google.maps.Size(20, 20),
+              anchor: new google.maps.Point(10, 10)
             }
           });
 
