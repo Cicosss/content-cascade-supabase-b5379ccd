@@ -2,6 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useAvatarUpload } from '@/hooks/useAvatarUpload';
 
 interface AuthContextType {
   user: User | null;
@@ -26,6 +28,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const { createProfile } = useUserProfile();
+  const { uploadAvatar } = useAvatarUpload();
 
   useEffect(() => {
     // Set up auth state listener
@@ -35,6 +39,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        // Handle email confirmation
+        if (event === 'SIGNED_IN' && session?.user && session.user.email_confirmed_at) {
+          // User just confirmed their email, create profile if needed
+          setTimeout(async () => {
+            try {
+              const pendingData = (window as any).pendingAvatarData;
+              if (pendingData) {
+                let avatarUrl = pendingData.url;
+                
+                // Upload file if there's one
+                if (pendingData.file) {
+                  const uploadedUrl = await uploadAvatar(pendingData.file, session.user.id);
+                  if (uploadedUrl) {
+                    avatarUrl = uploadedUrl;
+                  }
+                }
+                
+                // Create profile
+                await createProfile({
+                  first_name: pendingData.firstName,
+                  last_name: pendingData.lastName,
+                  avatar_url: avatarUrl,
+                });
+                
+                // Clean up
+                (window as any).pendingAvatarData = null;
+                (window as any).pendingAvatarFile = null;
+              }
+            } catch (error) {
+              console.error('Error creating profile after email confirmation:', error);
+            }
+          }, 0);
+        }
       }
     );
 
@@ -46,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [createProfile, uploadAvatar]);
 
   const signUp = async (email: string, password: string, userData?: any) => {
     const redirectUrl = `${window.location.origin}/`;

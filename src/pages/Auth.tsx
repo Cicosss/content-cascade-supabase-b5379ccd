@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -10,8 +9,10 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AvatarUpload } from '@/components/AvatarUpload';
+import { EmailConfirmationDialog } from '@/components/EmailConfirmationDialog';
 import { Mountain, Mail, Lock, User, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
   const { user, signIn, signUp, loading } = useAuth();
@@ -21,6 +22,9 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+  const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState('');
+  const [isResendingEmail, setIsResendingEmail] = useState(false);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -35,7 +39,14 @@ const Auth = () => {
 
   useEffect(() => {
     if (!loading && user) {
-      navigate('/dashboard');
+      // Check if user email is confirmed
+      if (user.email_confirmed_at) {
+        navigate('/dashboard');
+      } else {
+        // User exists but email not confirmed, show confirmation dialog
+        setPendingEmail(user.email || '');
+        setShowEmailConfirmation(true);
+      }
     }
   }, [user, loading, navigate]);
 
@@ -65,13 +76,16 @@ const Auth = () => {
       const { error } = await signIn(formData.email, formData.password);
       if (error) {
         if (error.message.includes('Invalid login credentials')) {
-          toast.error('Credenziali non valide. Verifica email e password.');
+          toast.error('Credenziali non valide o email non confermata. Verifica email e password.');
+        } else if (error.message.includes('Email not confirmed')) {
+          setPendingEmail(formData.email);
+          setShowEmailConfirmation(true);
+          toast.info('Devi confermare la tua email prima di accedere');
         } else {
           toast.error('Errore durante il login: ' + error.message);
         }
       } else {
         toast.success('Login effettuato con successo!');
-        navigate('/dashboard');
       }
     } catch (error) {
       toast.error('Errore durante il login');
@@ -114,33 +128,71 @@ const Auth = () => {
         return;
       }
 
-      // Handle avatar upload after successful registration
-      let avatarUrl = selectedAvatar;
-      
-      // Check if there's a pending file upload
-      const pendingFile = (window as any).pendingAvatarFile;
-      if (pendingFile && user) {
-        const uploadedUrl = await uploadAvatar(pendingFile, user.id);
-        if (uploadedUrl) {
-          avatarUrl = uploadedUrl;
+      // Store avatar for later use
+      if (selectedAvatar) {
+        const pendingFile = (window as any).pendingAvatarFile;
+        if (pendingFile) {
+          (window as any).pendingAvatarData = {
+            file: pendingFile,
+            url: selectedAvatar,
+            firstName: formData.firstName,
+            lastName: formData.lastName
+          };
+        } else {
+          (window as any).pendingAvatarData = {
+            url: selectedAvatar,
+            firstName: formData.firstName,
+            lastName: formData.lastName
+          };
         }
-        // Clean up
-        (window as any).pendingAvatarFile = null;
+      } else {
+        (window as any).pendingAvatarData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName
+        };
       }
 
-      // Create the user profile with avatar
-      await createProfile({
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        avatar_url: avatarUrl,
-      });
+      // Show email confirmation dialog
+      setPendingEmail(formData.email);
+      setShowEmailConfirmation(true);
+      toast.success('Registrazione completata! Controlla la tua email per confermare l\'account.');
       
-      toast.success('Registrazione completata! Benvenuto in Mia Romagna!');
-      navigate('/dashboard');
+      // Clear form
+      setFormData({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        firstName: '',
+        lastName: '',
+      });
+      setSelectedAvatar(null);
+      
     } catch (error) {
       toast.error('Errore durante la registrazione');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleResendEmail = async () => {
+    if (!pendingEmail) return;
+    
+    setIsResendingEmail(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: pendingEmail
+      });
+      
+      if (error) {
+        toast.error('Errore nel reinvio dell\'email: ' + error.message);
+      } else {
+        toast.success('Email di conferma reinviata!');
+      }
+    } catch (error) {
+      toast.error('Errore nel reinvio dell\'email');
+    } finally {
+      setIsResendingEmail(false);
     }
   };
 
@@ -152,7 +204,7 @@ const Auth = () => {
     );
   }
 
-  if (user) {
+  if (user && user.email_confirmed_at) {
     return null;
   }
 
@@ -351,6 +403,15 @@ const Auth = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Email Confirmation Dialog */}
+      <EmailConfirmationDialog
+        open={showEmailConfirmation}
+        onClose={() => setShowEmailConfirmation(false)}
+        email={pendingEmail}
+        onResendEmail={handleResendEmail}
+        isResending={isResendingEmail}
+      />
     </div>
   );
 };
