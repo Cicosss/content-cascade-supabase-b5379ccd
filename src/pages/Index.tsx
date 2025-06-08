@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -128,8 +129,8 @@ const Index = () => {
     }
   ];
 
-  // Esperienze culturali più dettagliate
-  const culturalExperiences = [
+  // Esperienze del territorio unificate (culturali + marittime)
+  const territoryExperiences = [
     {
       title: "Tour Guidato Tempio Malatestiano - Capolavoro Rinascimentale",
       image: "🏛️ Tempio Malatestiano",
@@ -158,6 +159,15 @@ const Index = () => {
       category: "Tradizione Marinara"
     },
     {
+      title: "Corso di Vela Base - Scuola Nautica Certificata",
+      image: "⛵ Corso Vela",
+      rating: 4.9,
+      duration: "6h",
+      groupSize: "Max 8 persone",
+      price: "€85",
+      category: "Sport Acquatici"
+    },
+    {
       title: "Trekking Patrimonio UNESCO - San Leo e San Marino",
       image: "🥾 Trekking UNESCO",
       rating: 4.8,
@@ -167,6 +177,15 @@ const Index = () => {
       category: "Natura e Storia"
     },
     {
+      title: "Immersione Guidata - Relitti dell'Adriatico",
+      image: "🤿 Diving",
+      rating: 4.8,
+      duration: "4h",
+      groupSize: "Max 6 persone",
+      price: "€65",
+      category: "Subacquea"
+    },
+    {
       title: "Visita alle Grotte di Onferno - Meraviglia Sotterranea",
       image: "🦇 Grotte Onferno",
       rating: 4.6,
@@ -174,6 +193,15 @@ const Index = () => {
       groupSize: "Max 20 persone",
       price: "€22",
       category: "Natura Selvaggia"
+    },
+    {
+      title: "Escursione in Kayak - Costa Adriatica",
+      image: "🚣 Kayak",
+      rating: 4.7,
+      duration: "3h",
+      groupSize: "Max 10 persone",
+      price: "€35",
+      category: "Eco-turismo"
     }
   ];
 
@@ -226,46 +254,6 @@ const Index = () => {
     }
   ];
 
-  // Attività marittime specifiche
-  const maritimeExperiences = [
-    {
-      title: "Corso di Vela Base - Scuola Nautica Certificata",
-      image: "⛵ Corso Vela",
-      rating: 4.9,
-      duration: "6h",
-      groupSize: "Max 8 persone",
-      price: "€85",
-      category: "Sport Acquatici"
-    },
-    {
-      title: "Immersione Guidata - Relitti dell'Adriatico",
-      image: "🤿 Diving",
-      rating: 4.8,
-      duration: "4h",
-      groupSize: "Max 6 persone",
-      price: "€65",
-      category: "Subacquea"
-    },
-    {
-      title: "Escursione in Kayak - Costa Adriatica",
-      image: "🚣 Kayak",
-      rating: 4.7,
-      duration: "3h",
-      groupSize: "Max 10 persone",
-      price: "€35",
-      category: "Eco-turismo"
-    },
-    {
-      title: "Pesca Sportiva in Alto Mare - Esperienza Autentica",
-      image: "🎣 Pesca Sportiva",
-      rating: 4.6,
-      duration: "8h",
-      groupSize: "Max 12 persone",
-      price: "€75",
-      category: "Tradizione Marinara"
-    }
-  ];
-
   return (
     <Layout showSidebar={true}>
       <HeroSection />
@@ -290,22 +278,12 @@ const Index = () => {
             ))}
           </ContentCarousel>
 
-          {/* Esperienze Culturali */}
+          {/* Esperienze del Territorio Unificate */}
           <ContentCarousel 
-            title="Esperienze Culturali Uniche" 
-            subtitle="Immergiti nella storia millenaria e nell'arte della Provincia di Rimini"
+            title="Esperienze del Territorio" 
+            subtitle="Scopri la cultura, la storia e le tradizioni marinare della Provincia di Rimini"
           >
-            {culturalExperiences.map((exp, index) => (
-              <ExperienceCard key={index} {...exp} />
-            ))}
-          </ContentCarousel>
-
-          {/* Attività Marittime */}
-          <ContentCarousel 
-            title="Attività Marittime Adriatiche" 
-            subtitle="Vivi il mare come un vero romagnolo con esperienze autentiche"
-          >
-            {maritimeExperiences.map((exp, index) => (
+            {territoryExperiences.map((exp, index) => (
               <ExperienceCard key={index} {...exp} />
             ))}
           </ContentCarousel>

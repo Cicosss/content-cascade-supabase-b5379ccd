@@ -53,10 +53,7 @@ const Header = () => {
               Tradizione Culinaria
             </Link>
             <Link to="/restaurants" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Esperienze Culturali
-            </Link>
-            <Link to="/itineraries" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Attività Marittime
+              Esperienze del Territorio
             </Link>
             <Link to="/events" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
               Eventi Speciali
@@ -137,14 +134,7 @@ const Header = () => {
                 className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Esperienze Culturali
-              </Link>
-              <Link 
-                to="/itineraries" 
-                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Attività Marittime
+                Esperienze del Territorio
               </Link>
               <Link 
                 to="/events" 
