@@ -17,6 +17,9 @@ interface AdvancedFiltersProps {
     activityTypes: string[];
     period: any;
     isFirstVisit: boolean;
+    timeSlots?: string[];
+    budgets?: string[];
+    specialPreferences?: string[];
   };
   setFilters: (filters: any) => void;
 }
@@ -38,6 +41,10 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
     { id: 'altro', label: 'altro', icon: '🔮' }
   ];
 
+  const timeSlots = ['Mattina (6-12)', 'Pomeriggio (12-18)', 'Sera (18-24)', 'Notte (24-6)'];
+  const budgetOptions = ['€0-25', '€25-50', '€50-100', '€100+'];
+  const specialPreferences = ['Accessibile', 'Pet-friendly', 'Vegano/Vegetariano', 'Sostenibile'];
+
   const updateFilter = (key: string, value: any) => {
     setFilters({ ...filters, [key]: value });
   };
@@ -57,6 +64,19 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
       }
       updateFilter('activityTypes', newTypes);
     }
+  };
+
+  const toggleAdvancedFilter = (filterType: 'timeSlots' | 'budgets' | 'specialPreferences', value: string) => {
+    const currentValues = filters[filterType] || [];
+    let newValues;
+    
+    if (currentValues.includes(value)) {
+      newValues = currentValues.filter((v: string) => v !== value);
+    } else {
+      newValues = [...currentValues, value];
+    }
+    
+    updateFilter(filterType, newValues);
   };
 
   return (
@@ -251,12 +271,17 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
               Fascia oraria preferita
             </Label>
             <div className="grid grid-cols-1 gap-2">
-              {['Mattina (6-12)', 'Pomeriggio (12-18)', 'Sera (18-24)', 'Notte (24-6)'].map((time) => (
+              {timeSlots.map((time) => (
                 <Button
                   key={time}
                   size="sm"
-                  variant="outline"
-                  className="justify-start text-sm hover:bg-indigo-50 hover:border-indigo-300"
+                  variant={(filters.timeSlots || []).includes(time) ? "default" : "outline"}
+                  onClick={() => toggleAdvancedFilter('timeSlots', time)}
+                  className={`justify-start text-sm ${
+                    (filters.timeSlots || []).includes(time)
+                      ? 'bg-indigo-500 hover:bg-indigo-600 text-white shadow-lg'
+                      : 'hover:bg-indigo-50 hover:border-indigo-300 border-2'
+                  }`}
                 >
                   {time}
                 </Button>
@@ -270,12 +295,17 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
               💰 Budget per persona
             </Label>
             <div className="grid grid-cols-1 gap-2">
-              {['€0-25', '€25-50', '€50-100', '€100+'].map((budget) => (
+              {budgetOptions.map((budget) => (
                 <Button
                   key={budget}
                   size="sm"
-                  variant="outline"
-                  className="justify-start text-sm hover:bg-emerald-50 hover:border-emerald-300"
+                  variant={(filters.budgets || []).includes(budget) ? "default" : "outline"}
+                  onClick={() => toggleAdvancedFilter('budgets', budget)}
+                  className={`justify-start text-sm ${
+                    (filters.budgets || []).includes(budget)
+                      ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg'
+                      : 'hover:bg-emerald-50 hover:border-emerald-300 border-2'
+                  }`}
                 >
                   {budget}
                 </Button>
@@ -290,12 +320,17 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
               Preferenze speciali
             </Label>
             <div className="grid grid-cols-1 gap-2">
-              {['Accessibile', 'Pet-friendly', 'Vegano/Vegetariano', 'Sostenibile'].map((pref) => (
+              {specialPreferences.map((pref) => (
                 <Button
                   key={pref}
                   size="sm"
-                  variant="outline"
-                  className="justify-start text-sm hover:bg-pink-50 hover:border-pink-300"
+                  variant={(filters.specialPreferences || []).includes(pref) ? "default" : "outline"}
+                  onClick={() => toggleAdvancedFilter('specialPreferences', pref)}
+                  className={`justify-start text-sm ${
+                    (filters.specialPreferences || []).includes(pref)
+                      ? 'bg-pink-500 hover:bg-pink-600 text-white shadow-lg'
+                      : 'hover:bg-pink-50 hover:border-pink-300 border-2'
+                  }`}
                 >
                   {pref}
                 </Button>
