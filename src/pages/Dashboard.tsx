@@ -20,17 +20,12 @@ const Dashboard = () => {
     period: null,
     isFirstVisit: true
   });
-  const [mapLocation, setMapLocation] = useState<{lat: number; lng: number} | null>(null);
 
   useEffect(() => {
     if (!loading && !user) {
       navigate('/auth');
     }
   }, [user, loading, navigate]);
-
-  const handleLocationChange = (location: {lat: number; lng: number}) => {
-    setMapLocation(location);
-  };
 
   if (loading) {
     return (
@@ -74,10 +69,7 @@ const Dashboard = () => {
                 </h2>
               </div>
               <div className="h-[calc(100%-4rem)]">
-                <InteractiveMap 
-                  filters={filters} 
-                  onLocationChange={handleLocationChange}
-                />
+                <InteractiveMap filters={filters} />
               </div>
             </Card>
 
@@ -85,7 +77,7 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-6">
-            <PersonalizedWeather gpsLocation={mapLocation} />
+            <PersonalizedWeather />
           </div>
         </div>
 

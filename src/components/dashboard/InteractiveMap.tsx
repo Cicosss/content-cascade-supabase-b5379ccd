@@ -29,10 +29,9 @@ interface InteractiveMapProps {
     period: any;
     isFirstVisit: boolean;
   };
-  onLocationChange?: (location: {lat: number; lng: number}) => void;
 }
 
-const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChange }) => {
+const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters }) => {
   const [selectedPoi, setSelectedPoi] = useState<POI | null>(null);
   const mapContainer = useRef<HTMLDivElement>(null);
   
@@ -50,7 +49,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
   useEffect(() => {
     if (userLocation && map) {
       console.log('📍 Aggiornamento posizione utente:', userLocation);
-      onLocationChange?.(userLocation);
       addUserLocationMarker(userLocation);
       map.flyTo({
         center: [userLocation.lng, userLocation.lat],
@@ -58,7 +56,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ filters, onLocationChan
         duration: 2000
       });
     }
-  }, [userLocation, map, onLocationChange, addUserLocationMarker]);
+  }, [userLocation, map, addUserLocationMarker]);
 
   // Fetch POIs when map loads
   useEffect(() => {

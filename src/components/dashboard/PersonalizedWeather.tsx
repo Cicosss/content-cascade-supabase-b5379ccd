@@ -1,15 +1,13 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, MapPin, Satellite } from 'lucide-react';
+import { Cloud, Sun, CloudRain, Wind, Thermometer, Droplets, MapPin } from 'lucide-react';
+import { useUserLocation } from '@/hooks/useUserLocation';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 
-interface PersonalizedWeatherProps {
-  gpsLocation?: {lat: number; lng: number} | null;
-}
-
-const PersonalizedWeather: React.FC<PersonalizedWeatherProps> = ({ gpsLocation }) => {
-  const { weather, loading, error } = useWeatherAPI(gpsLocation);
+const PersonalizedWeather: React.FC = () => {
+  const { userLocation } = useUserLocation();
+  const { weather, loading, error } = useWeatherAPI(userLocation);
 
   const getWeatherIcon = (condition: string, iconCode?: string) => {
     // Use OpenWeatherMap icon codes for more accurate icons
@@ -79,18 +77,9 @@ const PersonalizedWeather: React.FC<PersonalizedWeatherProps> = ({ gpsLocation }
           <div>
             <h3 className="text-lg font-semibold">Meteo Locale</h3>
             <div className="flex items-center gap-1 text-white/80 text-sm">
-              {gpsLocation ? (
-                <>
-                  <Satellite className="h-3 w-3" />
-                  <span>{weather.location}</span>
-                  <span className="text-xs ml-1">(GPS Live)</span>
-                </>
-              ) : (
-                <>
-                  <MapPin className="h-3 w-3" />
-                  <span>{weather.location}</span>
-                </>
-              )}
+              <MapPin className="h-3 w-3" />
+              <span>{weather.location}</span>
+              {userLocation && <span className="text-xs ml-1">(GPS Live)</span>}
             </div>
           </div>
           {getWeatherIcon(weather.condition, weather.icon)}
@@ -120,7 +109,7 @@ const PersonalizedWeather: React.FC<PersonalizedWeatherProps> = ({ gpsLocation }
           </div>
         </div>
 
-        {gpsLocation && (
+        {userLocation && (
           <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
             🛰️ Meteo aggiornato in tempo reale dalla tua posizione GPS via OpenWeatherMap
           </div>
