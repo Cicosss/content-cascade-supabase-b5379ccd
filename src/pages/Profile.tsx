@@ -9,11 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { User, MapPin, Calendar, Users } from 'lucide-react';
+import { AvatarUpload } from '@/components/AvatarUpload';
 
 const Profile = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [profile, setProfile] = useState({
     first_name: '',
     last_name: '',
@@ -51,6 +53,86 @@ const Profile = () => {
         number_of_people: data.number_of_people || 1,
         children_ages: data.children_ages || []
       });
+      setAvatarUrl(data.avatar_url);
+    }
+  };
+
+  const uploadAvatar = async (file: File): Promise<string | null> => {
+    if (!file || !user) return null;
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/avatar.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, {
+          upsert: true
+        });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        toast({
+          title: "Errore",
+          description: "Errore durante il caricamento dell'immagine",
+          variant: "destructive"
+        });
+        return null;
+      }
+
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast({
+        title: "Errore",
+        description: "Errore durante il caricamento dell'immagine",
+        variant: "destructive"
+      });
+      return null;
+    }
+  };
+
+  const handleAvatarChange = async (newAvatarUrl: string | null) => {
+    if (!user) return;
+
+    // If it's a file (blob URL), upload it
+    if (newAvatarUrl && newAvatarUrl.startsWith('blob:')) {
+      const pendingFile = (window as any).pendingAvatarFile;
+      if (pendingFile) {
+        const uploadedUrl = await uploadAvatar(pendingFile);
+        if (uploadedUrl) {
+          setAvatarUrl(uploadedUrl);
+          // Update profile in database
+          await supabase
+            .from('user_profiles')
+            .update({ avatar_url: uploadedUrl })
+            .eq('id', user.id);
+          
+          toast({
+            title: "Successo",
+            description: "Immagine del profilo aggiornata"
+          });
+        }
+        // Clean up
+        (window as any).pendingAvatarFile = null;
+      }
+    } else {
+      // It's a predefined avatar URL
+      setAvatarUrl(newAvatarUrl);
+      // Update profile in database
+      await supabase
+        .from('user_profiles')
+        .update({ avatar_url: newAvatarUrl })
+        .eq('id', user.id);
+      
+      toast({
+        title: "Successo",
+        description: "Immagine del profilo aggiornata"
+      });
     }
   };
 
@@ -69,7 +151,8 @@ const Profile = () => {
         departure_location: profile.departure_location,
         vacation_type: profile.vacation_type,
         number_of_people: profile.number_of_people,
-        children_ages: profile.children_ages
+        children_ages: profile.children_ages,
+        avatar_url: avatarUrl
       });
 
     if (error) {
@@ -116,6 +199,14 @@ const Profile = () => {
             </div>
 
             <div className="space-y-8">
+              {/* Avatar Upload Section */}
+              <div className="bg-gray-50 p-6 rounded-2xl">
+                <AvatarUpload 
+                  selectedAvatar={avatarUrl} 
+                  onAvatarChange={handleAvatarChange}
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="first_name" className="text-sm font-semibold text-gray-700">Nome</Label>
