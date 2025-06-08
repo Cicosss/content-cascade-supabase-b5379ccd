@@ -1,9 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { MapPin, Users, Calendar as CalendarIcon, Filter, Clock, Star, Heart } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface AdvancedFiltersProps {
   filters: {
@@ -17,6 +22,8 @@ interface AdvancedFiltersProps {
 }
 
 const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }) => {
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  
   const zones = ['tutto', 'centro', 'nord', 'sud', 'ovest', 'est'];
   const childrenOptions = ['no', 'sì'];
   const activityTypes = [
@@ -62,7 +69,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
       </div>
 
       {/* Filtri Base */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
         
         {/* Zone della Romagna */}
         <div className="space-y-4">
@@ -114,35 +121,41 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
           </div>
         </div>
 
-        {/* Tipi di attività */}
+        {/* Periodo */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <span className="text-green-500 text-xl">🎯</span>
-            <Label className="font-bold text-gray-800 text-lg">Tipi di attività</Label>
+            <CalendarIcon className="h-5 w-5 text-orange-500" />
+            <Label className="font-bold text-gray-800 text-lg">Periodo</Label>
           </div>
-          <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto">
-            {activityTypes.map((type) => (
+          <Popover>
+            <PopoverTrigger asChild>
               <Button
-                key={type}
-                size="sm"
-                variant={filters.activityTypes.includes(type) ? "default" : "outline"}
-                onClick={() => toggleActivityType(type)}
-                className={`text-sm font-medium justify-start ${
-                  filters.activityTypes.includes(type)
-                    ? 'bg-green-500 hover:bg-green-600 shadow-lg' 
-                    : 'hover:bg-green-50 hover:border-green-300 border-2'
-                }`}
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !filters.period && "text-muted-foreground"
+                )}
               >
-                {type}
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {filters.period ? format(filters.period, "PPP") : <span>Seleziona data</span>}
               </Button>
-            ))}
-          </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={filters.period}
+                onSelect={(date) => updateFilter('period', date)}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Esperienza */}
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <CalendarIcon className="h-5 w-5 text-purple-500" />
+            <Star className="h-5 w-5 text-purple-500" />
             <Label className="font-bold text-gray-800 text-lg">Esperienza</Label>
           </div>
           <div className="space-y-3">
@@ -172,15 +185,55 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
             </Button>
           </div>
         </div>
+
+        {/* Tipi di attività - Colonna intera */}
+        <div className="space-y-4 lg:col-span-1">
+          <div className="flex items-center gap-3">
+            <span className="text-green-500 text-xl">🎯</span>
+            <Label className="font-bold text-gray-800 text-lg">Tipi di attività</Label>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {activityTypes.map((type) => (
+              <Button
+                key={type}
+                size="sm"
+                variant={filters.activityTypes.includes(type) ? "default" : "outline"}
+                onClick={() => toggleActivityType(type)}
+                className={`text-sm font-medium ${
+                  filters.activityTypes.includes(type)
+                    ? 'bg-green-500 hover:bg-green-600 shadow-lg' 
+                    : 'hover:bg-green-50 hover:border-green-300 border-2'
+                }`}
+              >
+                {type}
+              </Button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Filtri Avanzati */}
-      <div className="border-t border-gray-200 pt-8">
-        <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-          <Star className="h-5 w-5 text-yellow-500" />
-          Filtri Avanzati
-        </h3>
-        
+      {/* Switch per Filtri Avanzati */}
+      <div className="border-t border-gray-200 pt-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Star className="h-5 w-5 text-yellow-500" />
+            <Label className="text-xl font-bold text-slate-900">Filtri Avanzati</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="advanced-filters" className="text-sm font-medium">
+              Mostra filtri avanzati
+            </Label>
+            <Switch
+              id="advanced-filters"
+              checked={showAdvanced}
+              onCheckedChange={setShowAdvanced}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Filtri Avanzati - Condizionali */}
+      {showAdvanced && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           {/* Fascia oraria preferita */}
@@ -242,7 +295,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
             </div>
           </div>
         </div>
-      </div>
+      )}
     </Card>
   );
 };
