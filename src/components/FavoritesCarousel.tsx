@@ -2,11 +2,12 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, Clock, Users, Calendar, MapPin, Euro, Heart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Star, Clock, Users, Calendar, MapPin, Euro, Heart, Trash2 } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
 
 const FavoritesCarousel = () => {
-  const { favorites, loading } = useFavorites();
+  const { favorites, loading, removeFromFavorites } = useFavorites();
 
   if (loading) {
     return (
@@ -32,11 +33,16 @@ const FavoritesCarousel = () => {
     );
   }
 
+  const handleRemoveFromFavorites = async (favorite: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    await removeFromFavorites(favorite.item_type, favorite.item_id);
+  };
+
   const renderFavoriteCard = (favorite: any) => {
     const { item_type, item_data } = favorite;
 
     return (
-      <Card key={favorite.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+      <Card key={favorite.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group relative">
         <div className="aspect-[4/3] relative overflow-hidden">
           <div className={`w-full h-full bg-gradient-to-br flex items-center justify-center ${
             item_type === 'restaurant' ? 'from-green-400 to-blue-400' :
@@ -51,6 +57,14 @@ const FavoritesCarousel = () => {
           <div className="absolute top-2 right-2 bg-yellow-500 rounded-full p-1">
             <Star className="h-3 w-3 text-white fill-current" />
           </div>
+          <Button
+            variant="destructive"
+            size="icon"
+            className="absolute top-2 right-10 h-6 w-6 rounded-full bg-red-500 hover:bg-red-600 shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            onClick={(e) => handleRemoveFromFavorites(favorite, e)}
+          >
+            <Trash2 className="h-3 w-3" />
+          </Button>
         </div>
         
         <div className="p-4">
