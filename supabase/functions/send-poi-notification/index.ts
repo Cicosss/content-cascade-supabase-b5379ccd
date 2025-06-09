@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8'
 
@@ -116,14 +117,15 @@ serve(async (req) => {
                 <strong>ID Submission:</strong> ${submission.id}
               </p>
               <div style="margin: 15px 0;">
-                <a href="https://supabase.com/dashboard/project/jxkelzoxxsixqfblnjwj/editor?schema=public&table=poi_submissions" 
+                <a href="https://supabase.com/dashboard/project/jxkelzoxxsixqfblnjwj/editor/19074?schema=public" 
                    style="background: #2563eb; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 5px;">
                   📋 Modera in Supabase
                 </a>
               </div>
               <p style="color: #64748b; font-size: 14px; margin-top: 15px;">
                 Cerca il record con ID: <strong>${submission.id}</strong><br/>
-                Per approvare: modifica il campo <strong>status</strong> da "pending" a "approved", "rejected" o "edited"<br/>
+                Per moderare: clicca sulla tabella <strong>poi_submissions</strong> e trova il record<br/>
+                Modifica il campo <strong>status</strong> scegliendo tra "approved", "rejected" o "edited"<br/>
                 Aggiungi eventuali note nel campo <strong>admin_notes</strong>
               </p>
             </div>

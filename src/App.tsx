@@ -18,6 +18,7 @@ import Experiences from "./pages/Experiences";
 import Itineraries from "./pages/Itineraries";
 import Family from "./pages/Family";
 import TerritoryPromoter from "./pages/TerritoryPromoter";
+import AdminModerationPage from "./pages/AdminModerationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/itineraries" element={<Itineraries />} />
               <Route path="/family" element={<Family />} />
               <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
+              <Route path="/admin/moderazione" element={<AdminModerationPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </LocationProvider>
