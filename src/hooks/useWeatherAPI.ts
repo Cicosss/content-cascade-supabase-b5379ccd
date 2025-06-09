@@ -11,8 +11,6 @@ interface WeatherData {
   icon: string;
 }
 
-const WEATHER_API_KEY = '894c76d3f5b13b9c7d2b756c89f3ff9b';
-
 export const useWeatherAPI = (location: {lat: number; lng: number} | null) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,8 +22,9 @@ export const useWeatherAPI = (location: {lat: number; lng: number} | null) => {
     setError(null);
 
     try {
+      // Usa Open-Meteo API (gratuita, senza API key)
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lng}&appid=${WEATHER_API_KEY}&units=metric&lang=it`,
+        `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lng}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=Europe/Rome`,
         {
           method: 'GET',
           headers: {
@@ -39,33 +38,59 @@ export const useWeatherAPI = (location: {lat: number; lng: number} | null) => {
       }
 
       const data = await response.json();
-      console.log('✅ Dati meteo ricevuti:', data);
+      console.log('✅ Dati meteo ricevuti da Open-Meteo:', data);
       
-      // Prova a ottenere il nome della città
+      // Prova a ottenere il nome della città usando un servizio di geocoding gratuito
       let cityName = 'Posizione corrente';
       try {
         const geoResponse = await fetch(
-          `https://api.openweathermap.org/geo/1.0/reverse?lat=${coords.lat}&lon=${coords.lng}&limit=1&appid=${WEATHER_API_KEY}`
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coords.lat}&longitude=${coords.lng}&localityLanguage=it`
         );
         
         if (geoResponse.ok) {
           const geoData = await geoResponse.json();
-          if (geoData.length > 0) {
-            cityName = geoData[0].local_names?.it || geoData[0].name || 'Posizione corrente';
-          }
+          cityName = geoData.city || geoData.locality || geoData.principalSubdivision || 'Posizione corrente';
         }
       } catch (geoError) {
         console.warn('⚠️ Errore geocoding:', geoError);
       }
 
+      // Mappa i codici meteo WMO alle descrizioni
+      const getWeatherDescription = (code: number) => {
+        const weatherCodes: { [key: number]: { description: string; condition: string; icon: string } } = {
+          0: { description: 'cielo sereno', condition: 'Clear', icon: '01d' },
+          1: { description: 'prevalentemente sereno', condition: 'Clear', icon: '02d' },
+          2: { description: 'parzialmente nuvoloso', condition: 'Clouds', icon: '03d' },
+          3: { description: 'coperto', condition: 'Clouds', icon: '04d' },
+          45: { description: 'nebbia', condition: 'Clouds', icon: '50d' },
+          48: { description: 'nebbia con brina', condition: 'Clouds', icon: '50d' },
+          51: { description: 'pioggerellina leggera', condition: 'Drizzle', icon: '09d' },
+          53: { description: 'pioggerellina moderata', condition: 'Drizzle', icon: '09d' },
+          55: { description: 'pioggerellina intensa', condition: 'Drizzle', icon: '09d' },
+          61: { description: 'pioggia leggera', condition: 'Rain', icon: '10d' },
+          63: { description: 'pioggia moderata', condition: 'Rain', icon: '10d' },
+          65: { description: 'pioggia intensa', condition: 'Rain', icon: '10d' },
+          71: { description: 'neve leggera', condition: 'Snow', icon: '13d' },
+          73: { description: 'neve moderata', condition: 'Snow', icon: '13d' },
+          75: { description: 'neve intensa', condition: 'Snow', icon: '13d' },
+          95: { description: 'temporale', condition: 'Thunderstorm', icon: '11d' },
+          96: { description: 'temporale con grandine leggera', condition: 'Thunderstorm', icon: '11d' },
+          99: { description: 'temporale con grandine intensa', condition: 'Thunderstorm', icon: '11d' }
+        };
+
+        return weatherCodes[code] || { description: 'tempo variabile', condition: 'Clear', icon: '01d' };
+      };
+
+      const weatherInfo = getWeatherDescription(data.current.weather_code);
+
       setWeather({
         location: cityName,
-        temperature: Math.round(data.main.temp),
-        condition: data.weather[0].main,
-        humidity: data.main.humidity,
-        wind: Math.round(data.wind.speed * 3.6),
-        description: data.weather[0].description,
-        icon: data.weather[0].icon
+        temperature: Math.round(data.current.temperature_2m),
+        condition: weatherInfo.condition,
+        humidity: data.current.relative_humidity_2m,
+        wind: Math.round(data.current.wind_speed_10m),
+        description: weatherInfo.description,
+        icon: weatherInfo.icon
       });
 
     } catch (err) {

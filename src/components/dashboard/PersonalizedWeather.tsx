@@ -36,6 +36,10 @@ const PersonalizedWeather: React.FC = () => {
       case 'Rain':
       case 'Drizzle':
         return <CloudRain className="h-8 w-8 text-blue-400" />;
+      case 'Snow':
+        return <Cloud className="h-8 w-8 text-blue-200" />;
+      case 'Thunderstorm':
+        return <CloudRain className="h-8 w-8 text-purple-400" />;
       default:
         return <Sun className="h-8 w-8 text-yellow-400" />;
     }
@@ -50,6 +54,10 @@ const PersonalizedWeather: React.FC = () => {
       case 'Rain':
       case 'Drizzle':
         return 'from-blue-500 to-indigo-600';
+      case 'Snow':
+        return 'from-blue-300 to-blue-500';
+      case 'Thunderstorm':
+        return 'from-purple-500 to-indigo-600';
       default:
         return 'from-blue-500 to-cyan-600';
     }
@@ -136,7 +144,7 @@ const PersonalizedWeather: React.FC = () => {
 
         {userLocation && !error && (
           <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
-            🛰️ Meteo aggiornato in tempo reale dalla tua posizione GPS
+            🛰️ Meteo aggiornato dalla tua posizione GPS tramite Open-Meteo
           </div>
         )}
       </div>
