@@ -67,108 +67,107 @@ const Webcams = () => {
       isLive: true,
       viewers: 203,
       htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/riccione-maranobeach.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/446.jpg" alt="【LIVE】 Riccione - MaranoBeach | SkylineWebcams"></a>`
-    }
+    },
     {
-  id: 7,
-  name: "Cesenatico Porto",
-  location: "Porto Canale di Cesenatico",
-  description: "Vista panoramica sul famoso porto canale progettato da Leonardo da Vinci",
-  category: "Centro Storico",
-  isLive: true,
-  viewers: 198,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-teal-400 to-cyan-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Cesenatico Porto</div>`
-},
-{
-  id: 8,
-  name: "Cattolica Spiaggia",
-  location: "Lungomare di Cattolica",
-  description: "Veduta della spiaggia e del lungomare della Regina dell'Adriatico",
-  category: "Spiaggia",
-  isLive: true,
-  viewers: 267,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-orange-400 to-red-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Cattolica</div>`
-},
-{
-  id: 9,
-  name: "San Marino Centro",
-  location: "Città di San Marino",
-  description: "Vista sulla Prima Torre e il centro storico della Repubblica di San Marino",
-  category: "Centro Storico",
-  isLive: true,
-  viewers: 342,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-emerald-400 to-green-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam San Marino</div>`
-},
-{
-  id: 10,
-  name: "Gabicce Mare",
-  location: "Spiaggia di Gabicce Mare",
-  description: "Panorama sulla baia di Gabicce e le colline del Parco San Bartolo",
-  category: "Spiaggia",
-  isLive: true,
-  viewers: 156,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-pink-400 to-rose-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Gabicce</div>`
-},
-{
-  id: 11,
-  name: "Ravenna Porto",
-  location: "Porto di Ravenna",
-  description: "Vista sul porto industriale e commerciale di Ravenna",
-  category: "Mare",
-  isLive: true,
-  viewers: 89,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-slate-400 to-gray-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Ravenna Porto</div>`
-},
-{
-  id: 12,
-  name: "Comacchio Valli",
-  location: "Valli di Comacchio",
-  description: "Panorama sulle famose valli di Comacchio e i fenicotteri rosa",
-  category: "Mare",
-  isLive: true,
-  viewers: 134,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-amber-400 to-yellow-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Comacchio</div>`
-},
-{
-  id: 13,
-  name: "Faenza Centro",
-  location: "Piazza del Popolo, Faenza",
-  description: "Vista sulla storica Piazza del Popolo nel cuore di Faenza",
-  category: "Centro Storico",
-  isLive: true,
-  viewers: 167,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-indigo-400 to-purple-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Faenza</div>`
-},
-{
-  id: 14,
-  name: "Misano Adriatico",
-  location: "Spiaggia di Misano",
-  description: "Veduta della spiaggia di Misano Adriatico e del suo lungomare",
-  category: "Spiaggia",
-  isLive: true,
-  viewers: 223,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-lime-400 to-green-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Misano</div>`
-},
-{
-  id: 15,
-  name: "Forlì Piazza Saffi",
-  location: "Piazza Aurelio Saffi, Forlì",
-  description: "Vista panoramica sulla maestosa Piazza Saffi nel centro di Forlì",
-  category: "Centro Storico",
-  isLive: true,
-  viewers: 145,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-violet-400 to-purple-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Forlì</div>`
-},
-{
-  id: 16,
-  name: "Cervia Milano Marittima",
-  location: "Lungomare di Milano Marittima",
-  description: "Vista sulla elegante spiaggia di Milano Marittima e le sue terme",
-  category: "Spiaggia",
-  isLive: true,
-  viewers: 289,
-  htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-cyan-400 to-blue-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Milano Marittima</div>`
-}
-
+      id: 7,
+      name: "Cesenatico Porto",
+      location: "Porto Canale di Cesenatico",
+      description: "Vista panoramica sul famoso porto canale progettato da Leonardo da Vinci",
+      category: "Centro Storico",
+      isLive: true,
+      viewers: 198,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-teal-400 to-cyan-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Cesenatico Porto</div>`
+    },
+    {
+      id: 8,
+      name: "Cattolica Spiaggia",
+      location: "Lungomare di Cattolica",
+      description: "Veduta della spiaggia e del lungomare della Regina dell'Adriatico",
+      category: "Spiaggia",
+      isLive: true,
+      viewers: 267,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-orange-400 to-red-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Cattolica</div>`
+    },
+    {
+      id: 9,
+      name: "San Marino Centro",
+      location: "Città di San Marino",
+      description: "Vista sulla Prima Torre e il centro storico della Repubblica di San Marino",
+      category: "Centro Storico",
+      isLive: true,
+      viewers: 342,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-emerald-400 to-green-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam San Marino</div>`
+    },
+    {
+      id: 10,
+      name: "Gabicce Mare",
+      location: "Spiaggia di Gabicce Mare",
+      description: "Panorama sulla baia di Gabicce e le colline del Parco San Bartolo",
+      category: "Spiaggia",
+      isLive: true,
+      viewers: 156,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-pink-400 to-rose-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Gabicce</div>`
+    },
+    {
+      id: 11,
+      name: "Ravenna Porto",
+      location: "Porto di Ravenna",
+      description: "Vista sul porto industriale e commerciale di Ravenna",
+      category: "Mare",
+      isLive: true,
+      viewers: 89,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-slate-400 to-gray-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Ravenna Porto</div>`
+    },
+    {
+      id: 12,
+      name: "Comacchio Valli",
+      location: "Valli di Comacchio",
+      description: "Panorama sulle famose valli di Comacchio e i fenicotteri rosa",
+      category: "Mare",
+      isLive: true,
+      viewers: 134,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-amber-400 to-yellow-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Comacchio</div>`
+    },
+    {
+      id: 13,
+      name: "Faenza Centro",
+      location: "Piazza del Popolo, Faenza",
+      description: "Vista sulla storica Piazza del Popolo nel cuore di Faenza",
+      category: "Centro Storico",
+      isLive: true,
+      viewers: 167,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-indigo-400 to-purple-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Faenza</div>`
+    },
+    {
+      id: 14,
+      name: "Misano Adriatico",
+      location: "Spiaggia di Misano",
+      description: "Veduta della spiaggia di Misano Adriatico e del suo lungomare",
+      category: "Spiaggia",
+      isLive: true,
+      viewers: 223,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-lime-400 to-green-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Misano</div>`
+    },
+    {
+      id: 15,
+      name: "Forlì Piazza Saffi",
+      location: "Piazza Aurelio Saffi, Forlì",
+      description: "Vista panoramica sulla maestosa Piazza Saffi nel centro di Forlì",
+      category: "Centro Storico",
+      isLive: true,
+      viewers: 145,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-violet-400 to-purple-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Forlì</div>`
+    },
+    {
+      id: 16,
+      name: "Cervia Milano Marittima",
+      location: "Lungomare di Milano Marittima",
+      description: "Vista sulla elegante spiaggia di Milano Marittima e le sue terme",
+      category: "Spiaggia",
+      isLive: true,
+      viewers: 289,
+      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-cyan-400 to-blue-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Milano Marittima</div>`
+    }
   ];
 
   const categories = ["Tutti", "Spiaggia", "Centro Storico", "Mare"];
@@ -298,7 +297,7 @@ const Webcams = () => {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-blue-600 mb-1">6</div>
+                    <div className="text-2xl font-bold text-blue-600 mb-1">16</div>
                     <div className="text-sm text-slate-600">Webcam Attive</div>
                   </div>
                   <div>
