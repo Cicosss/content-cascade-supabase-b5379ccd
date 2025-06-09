@@ -11,13 +11,13 @@ const Webcams = () => {
     {
       id: 1,
       name: "Rimini",
-      location: "Spiaggia e lungomare di Viserbella",
-      description: "Veduta sulla spiaggia e sul lungomare di Viserbella",
+      location: "Viserbella di Rimini",
+      description: "Veduta sulla spiaggia e sul lungomare di Viserbella di Rimini",
       category: "Spiaggia",
       isLive: true,
       viewers: 245,
       // Qui inseriremo il tuo codice HTML per ogni webcam
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-blue-400 to-blue-600 h-full w-full flex items-center justify-center text-white">Webcam Rimini</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/598.jpg" alt="【LIVE】 Rimini | SkylineWebcams"></a>`
     },
     {
       id: 2,
