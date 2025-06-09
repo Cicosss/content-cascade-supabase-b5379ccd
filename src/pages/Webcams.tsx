@@ -70,103 +70,93 @@ const Webcams = () => {
     },
     {
       id: 7,
-      name: "Cesenatico Porto",
-      location: "Porto Canale di Cesenatico",
-      description: "Vista panoramica sul famoso porto canale progettato da Leonardo da Vinci",
+      name: "Cattolica",
+      location: "Centro di Cattolica",
+      description: "Veduta della Fontana delle Sirene a Cattolica",
       category: "Centro Storico",
       isLive: true,
       viewers: 198,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-teal-400 to-cyan-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Cesenatico Porto</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/cattolica.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/1375.jpg" alt="【LIVE】 Cattolica | SkylineWebcams"></a>`
     },
     {
       id: 8,
-      name: "Cattolica Spiaggia",
-      location: "Lungomare di Cattolica",
-      description: "Veduta della spiaggia e del lungomare della Regina dell'Adriatico",
+      name: "Misano Adriatico",
+      location: "Spiaggia Misano Adriatico",
+      description: "Veduta della spiaggia nella zona centrale di Misano Adriatico",
       category: "Spiaggia",
       isLive: true,
       viewers: 267,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-orange-400 to-red-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Cattolica</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/misano-adriatico-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/2975.jpg" alt="【LIVE】 Misano Adriatico - Rimini | SkylineWebcams"></a>`
     },
     {
       id: 9,
-      name: "San Marino Centro",
-      location: "Città di San Marino",
-      description: "Vista sulla Prima Torre e il centro storico della Repubblica di San Marino",
-      category: "Centro Storico",
+      name: "Misano Adriatico",
+      location: "piaggia nella zona sud",
+      description: "Misano Adriatico, veduta della spiaggia nella zona sud, sullo sfondo Gabicce Monte",
+      category: "Spiaggia",
       isLive: true,
       viewers: 342,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-emerald-400 to-green-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam San Marino</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/misano-adriatico.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/2976.jpg" alt="【LIVE】 Rimini - Misano Adriatico | SkylineWebcams"></a>`
     },
     {
       id: 10,
-      name: "Gabicce Mare",
-      location: "Spiaggia di Gabicce Mare",
-      description: "Panorama sulla baia di Gabicce e le colline del Parco San Bartolo",
+      name: "Spiaggia di Riccione",
+      location: "Spiaggia di Riccione",
+      description: "Veduta sulla spiaggia di Riccione",
       category: "Spiaggia",
       isLive: true,
       viewers: 156,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-pink-400 to-rose-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Gabicce</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/spiaggia-di-riccione-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/2380.jpg" alt="【LIVE】 Spiaggia di Riccione - Rimini | SkylineWebcams"></a>`
     },
     {
       id: 11,
-      name: "Ravenna Porto",
-      location: "Porto di Ravenna",
-      description: "Vista sul porto industriale e commerciale di Ravenna",
+      name: "Spiaggia di Cattolica",
+      location: "Spiaggia di Cattolica",
+      description: "Veduta panoramica sulla spiaggia centrale di Cattolica",
       category: "Mare",
       isLive: true,
       viewers: 89,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-slate-400 to-gray-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Ravenna Porto</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/spiaggia-di-cattolica.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/1703.jpg" alt="【LIVE】 Spiaggia di Cattolica | SkylineWebcams"></a>`
     },
     {
       id: 12,
-      name: "Comacchio Valli",
-      location: "Valli di Comacchio",
-      description: "Panorama sulle famose valli di Comacchio e i fenicotteri rosa",
-      category: "Mare",
+      name: "Cattolica",
+      location: "Piazza I Maggio",
+      description: "Veduta su Piazza I Maggio con le Fontane Danzanti, sullo sfondo Viale Bovio, ideale per lo shopping",
+      category: "Centro Storico",
       isLive: true,
       viewers: 134,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-amber-400 to-yellow-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Comacchio</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/cattolica-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/2900.jpg" alt="【LIVE】 Cattolica - Rimini | SkylineWebcams"></a>`
     },
     {
       id: 13,
-      name: "Faenza Centro",
-      location: "Piazza del Popolo, Faenza",
-      description: "Vista sulla storica Piazza del Popolo nel cuore di Faenza",
+      name: "Porto di Cattolica",
+      location: "Porto Storico",
+      description: "Veduta della darsena e della zona porto di Cattolica",
       category: "Centro Storico",
       isLive: true,
       viewers: 167,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-indigo-400 to-purple-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Faenza</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/porto-di-cattolica.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/1732.jpg" alt="【LIVE】 Porto di Cattolica | SkylineWebcams"></a>`
     },
     {
       id: 14,
-      name: "Misano Adriatico",
-      location: "Spiaggia di Misano",
-      description: "Veduta della spiaggia di Misano Adriatico e del suo lungomare",
+      name: "Riccione",
+      location: "Piazzale San Martino",
+      description: "Veduta di Piazzale San Martino e della spiaggia di Riccione",
       category: "Spiaggia",
       isLive: true,
       viewers: 223,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-lime-400 to-green-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Misano</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/piazzale-san-martino-riccione.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/1678.jpg" alt="【LIVE】 Piazzale San Martino - Riccione | SkylineWebcams"></a>`
     },
     {
       id: 15,
-      name: "Forlì Piazza Saffi",
-      location: "Piazza Aurelio Saffi, Forlì",
-      description: "Vista panoramica sulla maestosa Piazza Saffi nel centro di Forlì",
+      name: "Cattolica",
+      location: "Spiaggia di Cattolica",
+      description: "Veduta della spiaggia nella zona centrale di Cattolica, Misano Adriatico e Riccione sullo sfondo",
       category: "Centro Storico",
       isLive: true,
       viewers: 145,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-violet-400 to-purple-600 h-full w-full flex items-center justify-center text-white font-medium">Webcam Forlì</div>`
-    },
-    {
-      id: 16,
-      name: "Cervia Milano Marittima",
-      location: "Lungomare di Milano Marittima",
-      description: "Vista sulla elegante spiaggia di Milano Marittima e le sue terme",
-      category: "Spiaggia",
-      isLive: true,
-      viewers: 289,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-cyan-400 to-blue-500 h-full w-full flex items-center justify-center text-white font-medium">Webcam Milano Marittima</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/spiaggia-di-cattolica-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/2901.jpg" alt="【LIVE】 Spiaggia di Cattolica - Rimini | SkylineWebcams"></a>`
     }
   ];
 
