@@ -40,33 +40,33 @@ const Webcams = () => {
     },
     {
       id: 4,
-      name: "Milano Marittima - Cervia",
-      location: "Spiaggia di Milano Marittima",
-      description: "Veduta della spiaggia di Milano Marittima",
-      category: "Spiaggia",
-      isLive: true,
-      viewers: 278,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-yellow-400 to-yellow-600 h-full w-full flex items-center justify-center text-white">Webcam Cervia</div>`
-    },
-    {
-      id: 5,
-      name: "Parco acquatico di Rimini",
-      location: "Rimini",
-      description: "Veduta della spiaggia e del mare di Rimini",
-      category: "Mare",
-      isLive: true,
-      viewers: 156,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-purple-400 to-purple-600 h-full w-full flex items-center justify-center text-white">Webcam Parco</div>`
-    },
-    {
-      id: 6,
       name: "Miramare di Rimini",
-      location: "Rimini",
+      location: "spiaggia di Miramare di Rimini",
       description: "Veduta sulla spiaggia di Miramare di Rimini",
       category: "Spiaggia",
       isLive: true,
+      viewers: 278,
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/miramare-di-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/2886.jpg" alt="【LIVE】 Miramare di Rimini | SkylineWebcams"></a>`
+    },
+    {
+      id: 5,
+      name: "Rimini - Torre Pedrera",
+      location: "Rimini",
+      description: "Rimini, veduta sulla spiaggia del borgo marinaro di Torre Pedrera",
+      category: "Mare",
+      isLive: true,
+      viewers: 156,
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/torre-pedrera.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/3668.jpg" alt="【LIVE】 Rimini - Torre Pedrera | SkylineWebcams"></a>`
+    },
+    {
+      id: 6,
+      name: "Riccione - MaranoBeach Live webcam",
+      location: "Riccione",
+      description: "Vista sulla Spiaggia dei Bimbi Allegri",
+      category: "Spiaggia",
+      isLive: true,
       viewers: 203,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-indigo-400 to-indigo-600 h-full w-full flex items-center justify-center text-white">Webcam Miramare</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/riccione-maranobeach.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/446.jpg" alt="【LIVE】 Riccione - MaranoBeach | SkylineWebcams"></a>`
     }
   ];
 
