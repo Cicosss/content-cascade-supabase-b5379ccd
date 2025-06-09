@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -37,7 +36,7 @@ const Webcams = () => {
       category: "Spiaggia",
       isLive: true,
       viewers: 189,
-      htmlCode: <a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/parco-acquatico-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/704.jpg" alt="【LIVE】 Parco acquatico di Rimini | SkylineWebcams"></a>
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/parco-acquatico-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/704.jpg" alt="【LIVE】 Parco acquatico di Rimini | SkylineWebcams"></a>`
     },
     {
       id: 4,
