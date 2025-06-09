@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import POISubmissionCard from './POISubmissionCard';
 import ModerationModal from './ModerationModal';
+import ExperienceUploadForm from './ExperienceUploadForm';
 
 interface POISubmission {
   id: string;
@@ -142,6 +143,13 @@ const POIModerationPanel = () => {
     setSelectedSubmission(null);
   };
 
+  const handleExperienceAdded = () => {
+    // Ricarica le submissions per aggiornare la vista
+    // (anche se le esperienze vanno direttamente in points_of_interest)
+    fetchSubmissions();
+    toast.success('Vista aggiornata!');
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -154,6 +162,9 @@ const POIModerationPanel = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">🏛️ Panel di Moderazione POI</h1>
+      
+      {/* Nuovo form per aggiungere esperienze */}
+      <ExperienceUploadForm onExperienceAdded={handleExperienceAdded} />
       
       <div className="grid gap-6">
         {submissions.length === 0 ? (
