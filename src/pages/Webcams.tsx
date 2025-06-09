@@ -22,8 +22,8 @@ const Webcams = () => {
     {
       id: 2,
       name: "Bellaria-Igea Marina",
-      location: "Bellaria-Igea Marina",
-      description: "Veduta della località turistica di Bellaria-Igea Marina",
+      location: "Lidi",
+      description: "Veduta della spiaggia e del mare di Rimini",
       category: "Spiaggia",
       isLive: true,
       viewers: 312,
@@ -31,13 +31,13 @@ const Webcams = () => {
     },
     {
       id: 3,
-      name: "Bellaria-Igea Marina",
-      location: "Località turistica",
+      name: "Parco acquatico di Rimini",
+      location: "Parco acquatico",
       description: "Veduta della località turistica di Bellaria-Igea Marina",
       category: "Spiaggia",
       isLive: true,
       viewers: 189,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-green-400 to-green-600 h-full w-full flex items-center justify-center text-white">Webcam Bellaria</div>`
+      htmlCode: <a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/parco-acquatico-rimini.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/704.jpg" alt="【LIVE】 Parco acquatico di Rimini | SkylineWebcams"></a>
     },
     {
       id: 4,
