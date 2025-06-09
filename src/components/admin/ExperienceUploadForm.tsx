@@ -219,8 +219,8 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
               break;
             case 'images':
             case 'immagini':
-              // Parse images as comma-separated URLs within the field
-              experience.images = value ? value.split('|').map(img => img.trim()) : [];
+              // Parse images as pipe-separated URLs (up to 4 images)
+              experience.images = value ? value.split('|').map(img => img.trim()).slice(0, 4) : [];
               break;
             case 'video_url':
             case 'video':
@@ -466,8 +466,9 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
               <p className="text-xs text-blue-600 mt-2">
                 * I campi obbligatori sono: name, category<br/>
                 * Le coordinate latitude/longitude sono opzionali ma consigliate per la mappa<br/>
-                * Per le immagini: separa più URL con il carattere | (es: url1.jpg|url2.jpg|url3.jpg)<br/>
-                * Per i video: inserisci l'URL completo (YouTube, Vimeo, etc.)
+                * <strong>Per le immagini (max 4):</strong> separa gli URL con il carattere | (es: url1.jpg|url2.jpg|url3.jpg|url4.jpg)<br/>
+                * Per i video: inserisci l'URL completo (YouTube, Vimeo, etc.)<br/>
+                * Formato encoding: UTF-8
               </p>
             </div>
 

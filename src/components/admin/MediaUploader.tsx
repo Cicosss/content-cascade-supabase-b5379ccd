@@ -33,6 +33,10 @@ const MediaUploader: React.FC<MediaUploaderProps> = ({
   };
 
   const addImageInput = () => {
+    if (imageInputs.length >= 4) {
+      toast.error('Puoi aggiungere massimo 4 immagini');
+      return;
+    }
     setImageInputs([...imageInputs, '']);
   };
 
@@ -49,7 +53,7 @@ const MediaUploader: React.FC<MediaUploaderProps> = ({
       <div>
         <Label className="flex items-center gap-2 mb-2">
           <Image className="h-4 w-4" />
-          Immagini (URL)
+          Immagini (URL) - Max 4 immagini
         </Label>
         <div className="space-y-2">
           {imageInputs.map((url, index) => (
@@ -57,7 +61,7 @@ const MediaUploader: React.FC<MediaUploaderProps> = ({
               <Input
                 value={url}
                 onChange={(e) => handleImageUrlChange(index, e.target.value)}
-                placeholder="https://esempio.com/immagine.jpg"
+                placeholder={`https://esempio.com/immagine${index + 1}.jpg`}
                 type="url"
               />
               {imageInputs.length > 1 && (
@@ -72,16 +76,18 @@ const MediaUploader: React.FC<MediaUploaderProps> = ({
               )}
             </div>
           ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={addImageInput}
-            className="w-full"
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            Aggiungi Immagine
-          </Button>
+          {imageInputs.length < 4 && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addImageInput}
+              className="w-full"
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Aggiungi Immagine ({imageInputs.length}/4)
+            </Button>
+          )}
         </div>
       </div>
 
