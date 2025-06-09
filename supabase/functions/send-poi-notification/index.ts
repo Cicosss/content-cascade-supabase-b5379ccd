@@ -1,4 +1,5 @@
 
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.8'
 
@@ -117,7 +118,7 @@ serve(async (req) => {
                 <strong>ID Submission:</strong> ${submission.id}
               </p>
               <div style="margin: 15px 0;">
-                <a href="https://supabase.com/dashboard/project/jxkelzoxxsixqfblnjwj/editor?schema=public&table=poi_submissions&filter=id%3Aeq%3A${submission.id}" 
+                <a href="https://supabase.com/dashboard/project/jxkelzoxxsixqfblnjwj/editor/29386?schema=public&table=poi_submissions&view=2&filter=%5B%7B%22column%22%3A%22id%22%2C%22operator%22%3A%22eq%22%2C%22value%22%3A%22${submission.id}%22%7D%5D" 
                    style="background: #2563eb; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 5px;">
                   📋 Modera in Supabase
                 </a>
@@ -253,3 +254,4 @@ serve(async (req) => {
     })
   }
 })
+
