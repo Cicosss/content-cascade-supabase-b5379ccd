@@ -21,13 +21,13 @@ const Webcams = () => {
     },
     {
       id: 2,
-      name: "Bologna - Torre degli Asinelli",
-      location: "Piazza di Porta Ravegnana",
-      description: "Veduta della Piazza di Porta Ravegnana con la Torre degli Asinelli e la Garisenda",
-      category: "Centro Storico",
+      name: "Bellaria-Igea Marina",
+      location: "Bellaria-Igea Marina",
+      description: "Veduta della località turistica di Bellaria-Igea Marina",
+      category: "Spiaggia",
       isLive: true,
       viewers: 312,
-      htmlCode: `<div class="webcam-placeholder bg-gradient-to-br from-red-400 to-red-600 h-full w-full flex items-center justify-center text-white">Webcam Bologna</div>`
+      htmlCode: `<a href="https://www.skylinewebcams.com/it/webcam/italia/emilia-romagna/rimini/bellaria-igea-marina.html" target="_blank"><img src="https://embed.skylinewebcams.com/img/1058.jpg" alt="【LIVE】 Bellaria-Igea Marina | SkylineWebcams"></a>`
     },
     {
       id: 3,
