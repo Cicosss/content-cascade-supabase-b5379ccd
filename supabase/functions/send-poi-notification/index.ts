@@ -61,10 +61,10 @@ serve(async (req) => {
         console.log('⚠️ Error fetching user profile:', error)
       }
 
-      // Email al team per nuova submission
+      // Email al team per nuova submission - TEMPORANEAMENTE uso luca.litti@gmail.com
       emailData = {
         from: 'Mia Romagna <onboarding@resend.dev>',
-        to: ['luca.litti@miaromagna.it'],
+        to: ['luca.litti@gmail.com'], // Cambiato temporaneamente per testing
         subject: `🏛️ Nuova POI da Promotore del Territorio: ${submission.name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -119,18 +119,19 @@ serve(async (req) => {
               <div style="margin: 15px 0;">
                 <a href="https://supabase.com/dashboard/project/jxkelzoxxsixqfblnjwj/editor?schema=public&table=poi_submissions&filter=id%3Aeq%3A${submission.id}" 
                    style="background: #2563eb; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 5px;">
-                  📋 Visualizza in Supabase
+                  📋 Modera in Supabase
                 </a>
               </div>
               <p style="color: #64748b; font-size: 14px; margin-top: 15px;">
-                Per moderare: modifica il campo <strong>status</strong> da "pending" a "approved", "rejected" o "edited"<br/>
+                Per approvare: modifica il campo <strong>status</strong> da "pending" a "approved", "rejected" o "edited"<br/>
                 Aggiungi eventuali note nel campo <strong>admin_notes</strong>
               </p>
             </div>
 
             <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; color: #64748b; font-size: 14px;">
-              <p>📧 Inviato automaticamente dal sistema Mia Romagna</p>
+              <p>📧 Email inviata automaticamente dal sistema Mia Romagna</p>
               <p>🕒 ${new Date().toLocaleString('it-IT')}</p>
+              <p style="color: #f59e0b; font-weight: bold;">⚠️ NOTA: Email temporaneamente inviata a luca.litti@gmail.com per testing</p>
             </div>
           </div>
         `
