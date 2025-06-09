@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Upload, Plus, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import MediaUploader from './MediaUploader';
 
 interface ExperienceUploadFormProps {
   onExperienceAdded: () => void;
@@ -32,7 +33,9 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
     target_audience: 'everyone',
     website_url: '',
     phone: '',
-    email: ''
+    email: '',
+    images: [] as string[],
+    video_url: ''
   });
 
   const categories = [
@@ -59,17 +62,36 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleImagesChange = (images: string[]) => {
+    setFormData(prev => ({ ...prev, images }));
+  };
+
+  const handleVideoUrlChange = (url: string) => {
+    setFormData(prev => ({ ...prev, video_url: url }));
+  };
+
   const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const experienceData = {
-        ...formData,
-        poi_type: 'experience',
+        name: formData.name,
+        description: formData.description,
+        category: formData.category,
+        address: formData.address,
         latitude: formData.latitude ? parseFloat(formData.latitude) : null,
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
-        status: 'approved' // Inserimento diretto da admin
+        price_info: formData.price_info,
+        duration_info: formData.duration_info,
+        target_audience: formData.target_audience,
+        website_url: formData.website_url,
+        phone: formData.phone,
+        email: formData.email,
+        images: formData.images,
+        video_url: formData.video_url,
+        poi_type: 'experience',
+        status: 'approved'
       };
 
       const { error } = await supabase
@@ -97,7 +119,9 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
         target_audience: 'everyone',
         website_url: '',
         phone: '',
-        email: ''
+        email: '',
+        images: [],
+        video_url: ''
       });
 
       onExperienceAdded();
@@ -192,6 +216,15 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
               break;
             case 'email':
               experience.email = value;
+              break;
+            case 'images':
+            case 'immagini':
+              // Parse images as comma-separated URLs within the field
+              experience.images = value ? value.split('|').map(img => img.trim()) : [];
+              break;
+            case 'video_url':
+            case 'video':
+              experience.video_url = value;
               break;
           }
         });
@@ -396,6 +429,13 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
               />
             </div>
 
+            <MediaUploader
+              images={formData.images}
+              videoUrl={formData.video_url}
+              onImagesChange={handleImagesChange}
+              onVideoUrlChange={handleVideoUrlChange}
+            />
+
             <Button type="submit" disabled={loading} className="w-full">
               {loading ? 'Inserimento...' : 'Inserisci Esperienza'}
             </Button>
@@ -421,11 +461,13 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
                 Il file CSV deve contenere le seguenti colonne (nell'ordine che preferisci):
               </p>
               <code className="text-xs bg-white p-2 rounded block overflow-x-auto">
-                name,description,category,address,latitude,longitude,price_info,duration_info,target_audience,website_url,phone,email
+                name,description,category,address,latitude,longitude,price_info,duration_info,target_audience,website_url,phone,email,images,video_url
               </code>
               <p className="text-xs text-blue-600 mt-2">
                 * I campi obbligatori sono: name, category<br/>
-                * Le coordinate latitude/longitude sono opzionali ma consigliate per la mappa
+                * Le coordinate latitude/longitude sono opzionali ma consigliate per la mappa<br/>
+                * Per le immagini: separa più URL con il carattere | (es: url1.jpg|url2.jpg|url3.jpg)<br/>
+                * Per i video: inserisci l'URL completo (YouTube, Vimeo, etc.)
               </p>
             </div>
 
