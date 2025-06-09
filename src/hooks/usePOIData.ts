@@ -29,6 +29,7 @@ export const usePOIData = () => {
     setIsLoading(true);
     
     try {
+      // Carica POI sia da points_of_interest che da poi_submissions approvate
       let query = supabase
         .from('points_of_interest')
         .select('*');
@@ -66,11 +67,76 @@ export const usePOIData = () => {
         query = query.or('target_audience.eq.families,target_audience.eq.everyone');
       }
 
-      const { data, error } = await query;
+      const { data: standardPOIs, error: standardError } = await query;
 
-      if (error) {
-        console.error('❌ Errore nel caricamento POI:', error);
-        // Fallback ai dati statici in caso di errore
+      if (standardError) {
+        console.error('❌ Errore nel caricamento POI standard:', standardError);
+      }
+
+      // Carica anche le POI approvate dalle submissions
+      let approvedQuery = supabase
+        .from('poi_submissions')
+        .select('*')
+        .eq('status', 'approved');
+
+      // Applica gli stessi filtri alle POI approvate
+      if (filters.activityTypes && !filters.activityTypes.includes('tutto')) {
+        const categoryMapping: { [key: string]: string[] } = {
+          'cibo': ['cibo', 'restaurant'],
+          'arte e cultura': ['arte e cultura', 'monument', 'museum'],
+          'parchi e natura': ['parchi e natura', 'park', 'beach', 'nature'],
+          'divertimento': ['divertimento', 'entertainment', 'amusement'],
+          'sport': ['sport', 'sports'],
+          'shopping': ['shopping'],
+          'vita notturna': ['vita notturna', 'nightlife']
+        };
+
+        const categoriesForFilter: string[] = [];
+        filters.activityTypes.forEach(filterType => {
+          const mappedCategories = categoryMapping[filterType.toLowerCase()];
+          if (mappedCategories) {
+            categoriesForFilter.push(...mappedCategories);
+          }
+        });
+
+        if (categoriesForFilter.length > 0) {
+          approvedQuery = approvedQuery.or(
+            categoriesForFilter.map(cat => `category.ilike.%${cat}%,poi_type.ilike.%${cat}%`).join(',')
+          );
+        }
+      }
+
+      if (filters.withChildren === 'si') {
+        approvedQuery = approvedQuery.or('target_audience.eq.families,target_audience.eq.everyone');
+      }
+
+      const { data: approvedPOIs, error: approvedError } = await approvedQuery;
+
+      if (approvedError) {
+        console.error('❌ Errore nel caricamento POI approvate:', approvedError);
+      }
+
+      // Combina le POI standard con quelle approvate
+      const allPOIs = [
+        ...(standardPOIs || []),
+        ...(approvedPOIs || []).map(poi => ({
+          id: poi.id,
+          name: poi.name,
+          description: poi.description || '',
+          poi_type: poi.poi_type,
+          category: poi.category,
+          latitude: poi.latitude || 44.0646,
+          longitude: poi.longitude || 12.5736,
+          address: poi.address || '',
+          target_audience: poi.target_audience || 'everyone'
+        }))
+      ];
+
+      console.log('✅ POI caricati:', allPOIs.length, '(Standard:', standardPOIs?.length || 0, ', Approvate:', approvedPOIs?.length || 0, ')');
+      setPois(allPOIs);
+
+      // Fallback ai dati statici se non ci sono POI
+      if (allPOIs.length === 0) {
         setPois([
           {
             id: '1',
@@ -106,11 +172,7 @@ export const usePOIData = () => {
             target_audience: 'everyone'
           }
         ]);
-        return;
       }
-
-      console.log('✅ POI caricati dal database:', data?.length || 0);
-      setPois(data || []);
       
     } catch (error) {
       console.error('❌ Errore inaspettato nel caricamento POI:', error);

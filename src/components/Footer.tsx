@@ -70,6 +70,11 @@ const Footer = () => {
                   Scrivi al webmaster
                 </a>
               </li>
+              <li>
+                <Link to="/promotore-territorio" className="text-slate-400 hover:text-white transition-colors text-sm">
+                  Promotore del Territorio
+                </Link>
+              </li>
             </ul>
           </div>
 

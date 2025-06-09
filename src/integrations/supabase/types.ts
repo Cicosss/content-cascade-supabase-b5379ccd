@@ -275,6 +275,96 @@ export type Database = {
           },
         ]
       }
+      poi_submissions: {
+        Row: {
+          address: string | null
+          admin_notes: string | null
+          category: string
+          created_at: string | null
+          description: string | null
+          duration_info: string | null
+          email: string | null
+          end_datetime: string | null
+          id: string
+          images: string[] | null
+          latitude: number | null
+          location_name: string | null
+          longitude: number | null
+          moderated_at: string | null
+          moderated_by: string | null
+          name: string
+          organizer_info: string | null
+          phone: string | null
+          poi_type: string
+          price_info: string | null
+          start_datetime: string | null
+          status: string | null
+          submitter_email: string
+          target_audience: string | null
+          updated_at: string | null
+          video_url: string | null
+          website_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          admin_notes?: string | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          duration_info?: string | null
+          email?: string | null
+          end_datetime?: string | null
+          id?: string
+          images?: string[] | null
+          latitude?: number | null
+          location_name?: string | null
+          longitude?: number | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          name: string
+          organizer_info?: string | null
+          phone?: string | null
+          poi_type: string
+          price_info?: string | null
+          start_datetime?: string | null
+          status?: string | null
+          submitter_email: string
+          target_audience?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          admin_notes?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          duration_info?: string | null
+          email?: string | null
+          end_datetime?: string | null
+          id?: string
+          images?: string[] | null
+          latitude?: number | null
+          location_name?: string | null
+          longitude?: number | null
+          moderated_at?: string | null
+          moderated_by?: string | null
+          name?: string
+          organizer_info?: string | null
+          phone?: string | null
+          poi_type?: string
+          price_info?: string | null
+          start_datetime?: string | null
+          status?: string | null
+          submitter_email?: string
+          target_audience?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       points_of_interest: {
         Row: {
           address: string | null
