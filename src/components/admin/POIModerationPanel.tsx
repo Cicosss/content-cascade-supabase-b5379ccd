@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -64,7 +63,13 @@ const POIModerationPanel = () => {
         return;
       }
 
-      setSubmissions(data || []);
+      // Type cast to ensure status is properly typed
+      const typedData = (data || []).map(item => ({
+        ...item,
+        status: item.status as 'pending' | 'approved' | 'rejected' | 'edited'
+      }));
+
+      setSubmissions(typedData);
     } catch (error) {
       console.error('Error:', error);
       toast.error('Errore nel caricamento delle proposte');
@@ -96,7 +101,7 @@ const POIModerationPanel = () => {
       setSubmissions(prev => 
         prev.map(sub => 
           sub.id === submissionId 
-            ? { ...sub, status: status as any, admin_notes: notes }
+            ? { ...sub, status: status as 'pending' | 'approved' | 'rejected' | 'edited', admin_notes: notes }
             : sub
         )
       );
