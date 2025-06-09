@@ -66,6 +66,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/webcams" className="text-slate-400 hover:text-white transition-colors text-sm">
+                  Webcam Live
+                </Link>
+              </li>
+              <li>
                 <a href="mailto:info@miaromagna.it" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Scrivi al webmaster
                 </a>

@@ -19,6 +19,7 @@ import Itineraries from "./pages/Itineraries";
 import Family from "./pages/Family";
 import TerritoryPromoter from "./pages/TerritoryPromoter";
 import AdminModerationPage from "./pages/AdminModerationPage";
+import Webcams from "./pages/Webcams";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
               <Route path="/family" element={<Family />} />
               <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
               <Route path="/admin/moderazione" element={<AdminModerationPage />} />
+              <Route path="/webcams" element={<Webcams />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </LocationProvider>
