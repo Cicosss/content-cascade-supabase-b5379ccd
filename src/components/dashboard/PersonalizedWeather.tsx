@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Cloud, Sun, CloudRain, Wind, Droplets, MapPin } from 'lucide-react';
+import { Cloud, Sun, CloudRain, Wind, Droplets, MapPin, Crosshair } from 'lucide-react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 
@@ -104,10 +103,18 @@ const PersonalizedWeather: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold">Meteo Locale</h3>
             <div className="flex items-center gap-1 text-white/80 text-sm">
-              <MapPin className="h-3 w-3" />
-              <span>{weather.location}</span>
-              {userLocation && <span className="text-xs ml-1">(GPS Live)</span>}
+              {userLocation ? (
+                <Crosshair className="h-3 w-3" />
+              ) : (
+                <MapPin className="h-3 w-3" />
+              )}
+              <span className="font-medium">{weather.location}</span>
             </div>
+            {userLocation && (
+              <div className="text-xs text-white/60 mt-1">
+                📍 {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+              </div>
+            )}
           </div>
           {getWeatherIcon(weather.condition, weather.icon)}
         </div>
@@ -144,7 +151,7 @@ const PersonalizedWeather: React.FC = () => {
 
         {userLocation && !error && (
           <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
-            🛰️ Meteo aggiornato dalla tua posizione GPS tramite Open-Meteo
+            🛰️ Meteo preciso dalla tua posizione GPS tramite Open-Meteo + OpenStreetMap
           </div>
         )}
       </div>

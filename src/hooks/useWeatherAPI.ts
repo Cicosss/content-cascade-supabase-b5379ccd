@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 
 interface WeatherData {
@@ -40,19 +39,68 @@ export const useWeatherAPI = (location: {lat: number; lng: number} | null) => {
       const data = await response.json();
       console.log('✅ Dati meteo ricevuti da Open-Meteo:', data);
       
-      // Prova a ottenere il nome della città usando un servizio di geocoding gratuito
+      // Ottieni il nome della città usando un servizio di geocoding più preciso
       let cityName = 'Posizione corrente';
       try {
-        const geoResponse = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coords.lat}&longitude=${coords.lng}&localityLanguage=it`
+        // Prima prova con Nominatim (OpenStreetMap) per maggiore precisione
+        const nominatimResponse = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords.lat}&lon=${coords.lng}&zoom=18&addressdetails=1&accept-language=it`
         );
         
-        if (geoResponse.ok) {
-          const geoData = await geoResponse.json();
-          cityName = geoData.city || geoData.locality || geoData.principalSubdivision || 'Posizione corrente';
+        if (nominatimResponse.ok) {
+          const nominatimData = await nominatimResponse.json();
+          console.log('📍 Dati Nominatim:', nominatimData);
+          
+          // Costruisci un nome di località più preciso
+          const address = nominatimData.address || {};
+          const parts = [];
+          
+          // Aggiungi il quartiere o la frazione se disponibile
+          if (address.suburb) parts.push(address.suburb);
+          else if (address.quarter) parts.push(address.quarter);
+          else if (address.neighbourhood) parts.push(address.neighbourhood);
+          
+          // Aggiungi la città
+          if (address.city) parts.push(address.city);
+          else if (address.town) parts.push(address.town);
+          else if (address.village) parts.push(address.village);
+          else if (address.municipality) parts.push(address.municipality);
+          
+          // Aggiungi la provincia se diversa dalla città
+          if (address.county && !parts.includes(address.county)) {
+            parts.push(`(${address.county})`);
+          }
+          
+          if (parts.length > 0) {
+            cityName = parts.join(', ');
+          } else if (nominatimData.display_name) {
+            // Fallback al display_name ma più pulito
+            const displayParts = nominatimData.display_name.split(',').slice(0, 3);
+            cityName = displayParts.join(', ');
+          }
+        } else {
+          // Fallback a BigDataCloud se Nominatim non funziona
+          const geoResponse = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${coords.lat}&longitude=${coords.lng}&localityLanguage=it`
+          );
+          
+          if (geoResponse.ok) {
+            const geoData = await geoResponse.json();
+            const parts = [];
+            
+            if (geoData.locality && geoData.locality !== geoData.city) {
+              parts.push(geoData.locality);
+            }
+            if (geoData.city) parts.push(geoData.city);
+            else if (geoData.principalSubdivision) parts.push(geoData.principalSubdivision);
+            
+            cityName = parts.length > 0 ? parts.join(', ') : 'Posizione corrente';
+          }
         }
       } catch (geoError) {
         console.warn('⚠️ Errore geocoding:', geoError);
+        // Usa coordinate come fallback finale
+        cityName = `${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}`;
       }
 
       // Mappa i codici meteo WMO alle descrizioni
