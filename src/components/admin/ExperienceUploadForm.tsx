@@ -34,6 +34,10 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
     website_url: '',
     phone: '',
     email: '',
+    start_datetime: '',
+    end_datetime: '',
+    location_name: '',
+    organizer_info: '',
     images: [] as string[],
     video_url: ''
   });
@@ -88,6 +92,10 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
         website_url: formData.website_url,
         phone: formData.phone,
         email: formData.email,
+        start_datetime: formData.start_datetime || null,
+        end_datetime: formData.end_datetime || null,
+        location_name: formData.location_name,
+        organizer_info: formData.organizer_info,
         images: formData.images,
         video_url: formData.video_url,
         poi_type: 'experience',
@@ -120,6 +128,10 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
         website_url: '',
         phone: '',
         email: '',
+        start_datetime: '',
+        end_datetime: '',
+        location_name: '',
+        organizer_info: '',
         images: [],
         video_url: ''
       });
@@ -216,6 +228,22 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
               break;
             case 'email':
               experience.email = value;
+              break;
+            case 'start_datetime':
+            case 'data_inizio':
+              experience.start_datetime = value || null;
+              break;
+            case 'end_datetime':
+            case 'data_fine':
+              experience.end_datetime = value || null;
+              break;
+            case 'location_name':
+            case 'nome_location':
+              experience.location_name = value;
+              break;
+            case 'organizer_info':
+            case 'organizzatore':
+              experience.organizer_info = value;
               break;
             case 'images':
             case 'immagini':
@@ -325,6 +353,50 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
                 onChange={(e) => handleInputChange('description', e.target.value)}
                 rows={3}
               />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="start_datetime">Data e Ora Inizio</Label>
+                <Input
+                  id="start_datetime"
+                  type="datetime-local"
+                  value={formData.start_datetime}
+                  onChange={(e) => handleInputChange('start_datetime', e.target.value)}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="end_datetime">Data e Ora Fine</Label>
+                <Input
+                  id="end_datetime"
+                  type="datetime-local"
+                  value={formData.end_datetime}
+                  onChange={(e) => handleInputChange('end_datetime', e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="location_name">Nome Location</Label>
+                <Input
+                  id="location_name"
+                  value={formData.location_name}
+                  onChange={(e) => handleInputChange('location_name', e.target.value)}
+                  placeholder="es. Teatro Comunale"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="organizer_info">Informazioni Organizzatore</Label>
+                <Input
+                  id="organizer_info"
+                  value={formData.organizer_info}
+                  onChange={(e) => handleInputChange('organizer_info', e.target.value)}
+                  placeholder="es. Associazione Culturale XYZ"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -461,11 +533,12 @@ const ExperienceUploadForm: React.FC<ExperienceUploadFormProps> = ({ onExperienc
                 Il file CSV deve contenere le seguenti colonne (nell'ordine che preferisci):
               </p>
               <code className="text-xs bg-white p-2 rounded block overflow-x-auto">
-                name,description,category,address,latitude,longitude,price_info,duration_info,target_audience,website_url,phone,email,images,video_url
+                name,description,category,address,latitude,longitude,price_info,duration_info,target_audience,website_url,phone,email,start_datetime,end_datetime,location_name,organizer_info,images,video_url
               </code>
               <p className="text-xs text-blue-600 mt-2">
                 * I campi obbligatori sono: name, category<br/>
                 * Le coordinate latitude/longitude sono opzionali ma consigliate per la mappa<br/>
+                * <strong>Date e ore:</strong> usa il formato ISO 8601 (es: 2024-12-25T15:30:00)<br/>
                 * <strong>Per le immagini (max 4):</strong> separa gli URL con il carattere | (es: url1.jpg|url2.jpg|url3.jpg|url4.jpg)<br/>
                 * Per i video: inserisci l'URL completo (YouTube, Vimeo, etc.)<br/>
                 * Formato encoding: UTF-8

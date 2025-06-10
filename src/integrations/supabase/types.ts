@@ -76,6 +76,90 @@ export type Database = {
           },
         ]
       }
+      eventi_passati: {
+        Row: {
+          address: string | null
+          avg_rating: number | null
+          category: string
+          description: string | null
+          duration_info: string | null
+          email: string | null
+          end_datetime: string | null
+          id: string
+          images: string[] | null
+          latitude: number | null
+          location_name: string | null
+          longitude: number | null
+          moved_at: string | null
+          name: string
+          organizer_info: string | null
+          original_created_at: string | null
+          original_updated_at: string | null
+          phone: string | null
+          poi_type: string
+          price_info: string | null
+          start_datetime: string | null
+          status: string | null
+          target_audience: string | null
+          video_url: string | null
+          website_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          avg_rating?: number | null
+          category: string
+          description?: string | null
+          duration_info?: string | null
+          email?: string | null
+          end_datetime?: string | null
+          id: string
+          images?: string[] | null
+          latitude?: number | null
+          location_name?: string | null
+          longitude?: number | null
+          moved_at?: string | null
+          name: string
+          organizer_info?: string | null
+          original_created_at?: string | null
+          original_updated_at?: string | null
+          phone?: string | null
+          poi_type: string
+          price_info?: string | null
+          start_datetime?: string | null
+          status?: string | null
+          target_audience?: string | null
+          video_url?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          avg_rating?: number | null
+          category?: string
+          description?: string | null
+          duration_info?: string | null
+          email?: string | null
+          end_datetime?: string | null
+          id?: string
+          images?: string[] | null
+          latitude?: number | null
+          location_name?: string | null
+          longitude?: number | null
+          moved_at?: string | null
+          name?: string
+          organizer_info?: string | null
+          original_created_at?: string | null
+          original_updated_at?: string | null
+          phone?: string | null
+          poi_type?: string
+          price_info?: string | null
+          start_datetime?: string | null
+          status?: string | null
+          target_audience?: string | null
+          video_url?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           address: string | null
@@ -373,15 +457,23 @@ export type Database = {
           created_at: string | null
           description: string | null
           duration_info: string | null
+          email: string | null
+          end_datetime: string | null
           id: string
           images: string[] | null
           latitude: number
+          location_name: string | null
           longitude: number
           name: string
+          organizer_info: string | null
+          phone: string | null
           poi_type: string
           price_info: string | null
+          start_datetime: string | null
+          status: string | null
           target_audience: string | null
           updated_at: string | null
+          video_url: string | null
         }
         Insert: {
           address?: string | null
@@ -390,15 +482,23 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           duration_info?: string | null
+          email?: string | null
+          end_datetime?: string | null
           id?: string
           images?: string[] | null
           latitude: number
+          location_name?: string | null
           longitude: number
           name: string
+          organizer_info?: string | null
+          phone?: string | null
           poi_type: string
           price_info?: string | null
+          start_datetime?: string | null
+          status?: string | null
           target_audience?: string | null
           updated_at?: string | null
+          video_url?: string | null
         }
         Update: {
           address?: string | null
@@ -407,15 +507,23 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           duration_info?: string | null
+          email?: string | null
+          end_datetime?: string | null
           id?: string
           images?: string[] | null
           latitude?: number
+          location_name?: string | null
           longitude?: number
           name?: string
+          organizer_info?: string | null
+          phone?: string | null
           poi_type?: string
           price_info?: string | null
+          start_datetime?: string | null
+          status?: string | null
           target_audience?: string | null
           updated_at?: string | null
+          video_url?: string | null
         }
         Relationships: []
       }
@@ -551,7 +659,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      move_expired_events: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
