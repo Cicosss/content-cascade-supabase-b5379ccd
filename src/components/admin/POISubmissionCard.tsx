@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Eye, MapPin, Calendar, Globe, Phone } from 'lucide-react';
+import { Eye, MapPin, Calendar, Globe, Phone, Trash2 } from 'lucide-react';
 
 interface POISubmission {
   id: string;
@@ -38,6 +38,7 @@ interface POISubmission {
 interface POISubmissionCardProps {
   submission: POISubmission;
   onModerate: (submission: POISubmission) => void;
+  onDelete: (submissionId: string) => void;
 }
 
 const getStatusBadgeVariant = (status: string) => {
@@ -59,7 +60,13 @@ const getStatusLabel = (status: string) => {
   }
 };
 
-const POISubmissionCard = ({ submission, onModerate }: POISubmissionCardProps) => {
+const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCardProps) => {
+  const handleDelete = () => {
+    if (window.confirm(`Sei sicuro di voler eliminare la proposta "${submission.name}"? Questa azione non può essere annullata.`)) {
+      onDelete(submission.id);
+    }
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -73,9 +80,19 @@ const POISubmissionCard = ({ submission, onModerate }: POISubmissionCardProps) =
               ID: {submission.id}
             </p>
           </div>
-          <Badge variant={getStatusBadgeVariant(submission.status)}>
-            {getStatusLabel(submission.status)}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant={getStatusBadgeVariant(submission.status)}>
+              {getStatusLabel(submission.status)}
+            </Badge>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDelete}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
       

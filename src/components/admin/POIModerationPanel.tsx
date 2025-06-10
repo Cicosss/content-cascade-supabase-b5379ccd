@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -139,6 +138,27 @@ const POIModerationPanel = () => {
     }
   };
 
+  const deleteSubmission = async (submissionId: string) => {
+    try {
+      const { error } = await supabase
+        .from('poi_submissions')
+        .delete()
+        .eq('id', submissionId);
+
+      if (error) {
+        console.error('Error deleting submission:', error);
+        toast.error('Errore nell\'eliminazione della proposta');
+        return;
+      }
+
+      setSubmissions(prev => prev.filter(sub => sub.id !== submissionId));
+      toast.success('Proposta eliminata con successo');
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Errore nell\'eliminazione della proposta');
+    }
+  };
+
   const handleModerationClose = () => {
     setSelectedSubmission(null);
   };
@@ -179,6 +199,7 @@ const POIModerationPanel = () => {
               key={submission.id}
               submission={submission}
               onModerate={setSelectedSubmission}
+              onDelete={deleteSubmission}
             />
           ))
         )}
