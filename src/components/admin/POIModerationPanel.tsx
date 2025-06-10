@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import POISubmissionCard from './POISubmissionCard';
 import ModerationModal from './ModerationModal';
 import ExperienceUploadForm from './ExperienceUploadForm';
 import ModerationFilters from './ModerationFilters';
+import ApprovedExperiencesPanel from './ApprovedExperiencesPanel';
 
 interface POISubmission {
   id: string;
@@ -238,54 +240,69 @@ const POIModerationPanel = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">🏛️ Panel di Moderazione POI</h1>
       
-      {/* Nuovo form per aggiungere esperienze */}
-      <ExperienceUploadForm onExperienceAdded={handleExperienceAdded} />
-      
-      {/* Filtri di moderazione */}
-      <ModerationFilters filters={filters} setFilters={setFilters} />
-      
-      {/* Riepilogo filtri e contatori */}
-      <Card className="mb-6 p-4 bg-blue-50 border-blue-200">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-sm text-gray-600">Filtri attivi: {getFilterSummary()}</p>
-            <p className="text-lg font-semibold text-blue-800">
-              Mostrando {filteredSubmissions.length} di {submissions.length} proposte
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-600">
-              In attesa: {submissions.filter(s => s.status === 'pending').length} • 
-              Approvate: {submissions.filter(s => s.status === 'approved').length} • 
-              Rifiutate: {submissions.filter(s => s.status === 'rejected').length}
-            </p>
-          </div>
-        </div>
-      </Card>
-      
-      <div className="grid gap-6">
-        {filteredSubmissions.length === 0 ? (
-          <Card>
-            <CardContent className="text-center py-12">
-              <p className="text-muted-foreground">
-                {submissions.length === 0 
-                  ? 'Nessuna proposta POI trovata' 
-                  : 'Nessuna proposta corrisponde ai filtri selezionati'
-                }
-              </p>
-            </CardContent>
+      <Tabs defaultValue="submissions" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="submissions">Proposte da Moderare</TabsTrigger>
+          <TabsTrigger value="approved">Esperienze Approvate</TabsTrigger>
+          <TabsTrigger value="upload">Aggiungi Nuova</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="submissions" className="space-y-6">
+          {/* Filtri di moderazione */}
+          <ModerationFilters filters={filters} setFilters={setFilters} />
+          
+          {/* Riepilogo filtri e contatori */}
+          <Card className="p-4 bg-blue-50 border-blue-200">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-gray-600">Filtri attivi: {getFilterSummary()}</p>
+                <p className="text-lg font-semibold text-blue-800">
+                  Mostrando {filteredSubmissions.length} di {submissions.length} proposte
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-600">
+                  In attesa: {submissions.filter(s => s.status === 'pending').length} • 
+                  Approvate: {submissions.filter(s => s.status === 'approved').length} • 
+                  Rifiutate: {submissions.filter(s => s.status === 'rejected').length}
+                </p>
+              </div>
+            </div>
           </Card>
-        ) : (
-          filteredSubmissions.map((submission) => (
-            <POISubmissionCard
-              key={submission.id}
-              submission={submission}
-              onModerate={setSelectedSubmission}
-              onDelete={deleteSubmission}
-            />
-          ))
-        )}
-      </div>
+          
+          <div className="grid gap-6">
+            {filteredSubmissions.length === 0 ? (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <p className="text-muted-foreground">
+                    {submissions.length === 0 
+                      ? 'Nessuna proposta POI trovata' 
+                      : 'Nessuna proposta corrisponde ai filtri selezionati'
+                    }
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              filteredSubmissions.map((submission) => (
+                <POISubmissionCard
+                  key={submission.id}
+                  submission={submission}
+                  onModerate={setSelectedSubmission}
+                  onDelete={deleteSubmission}
+                />
+              ))
+            )}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="approved">
+          <ApprovedExperiencesPanel />
+        </TabsContent>
+        
+        <TabsContent value="upload">
+          <ExperienceUploadForm onExperienceAdded={handleExperienceAdded} />
+        </TabsContent>
+      </Tabs>
 
       <ModerationModal
         submission={selectedSubmission}
