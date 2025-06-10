@@ -6,6 +6,7 @@ import { Loader2 } from 'lucide-react';
 import POISubmissionCard from './POISubmissionCard';
 import ModerationModal from './ModerationModal';
 import ExperienceUploadForm from './ExperienceUploadForm';
+import ModerationFilters from './ModerationFilters';
 
 interface POISubmission {
   id: string;
@@ -39,13 +40,25 @@ interface POISubmission {
 
 const POIModerationPanel = () => {
   const [submissions, setSubmissions] = useState<POISubmission[]>([]);
+  const [filteredSubmissions, setFilteredSubmissions] = useState<POISubmission[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState<POISubmission | null>(null);
   const [updating, setUpdating] = useState(false);
+  
+  const [filters, setFilters] = useState({
+    status: 'tutti',
+    category: 'tutti',
+    poiType: 'tutti',
+    searchTerm: ''
+  });
 
   useEffect(() => {
     fetchSubmissions();
   }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [submissions, filters]);
 
   const fetchSubmissions = async () => {
     try {
@@ -72,6 +85,38 @@ const POIModerationPanel = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const applyFilters = () => {
+    let filtered = [...submissions];
+
+    // Filtro per status
+    if (filters.status !== 'tutti') {
+      filtered = filtered.filter(sub => sub.status === filters.status);
+    }
+
+    // Filtro per categoria
+    if (filters.category !== 'tutti') {
+      filtered = filtered.filter(sub => sub.category === filters.category);
+    }
+
+    // Filtro per tipo POI
+    if (filters.poiType !== 'tutti') {
+      filtered = filtered.filter(sub => sub.poi_type === filters.poiType);
+    }
+
+    // Filtro per ricerca testuale
+    if (filters.searchTerm.trim()) {
+      const searchLower = filters.searchTerm.toLowerCase();
+      filtered = filtered.filter(sub => 
+        sub.name.toLowerCase().includes(searchLower) ||
+        (sub.description && sub.description.toLowerCase().includes(searchLower)) ||
+        sub.submitter_email.toLowerCase().includes(searchLower) ||
+        (sub.address && sub.address.toLowerCase().includes(searchLower))
+      );
+    }
+
+    setFilteredSubmissions(filtered);
   };
 
   const updateSubmissionStatus = async (submissionId: string, status: string, notes: string) => {
@@ -170,6 +215,16 @@ const POIModerationPanel = () => {
     toast.success('Vista aggiornata!');
   };
 
+  const getFilterSummary = () => {
+    const activeFilters = [];
+    if (filters.status !== 'tutti') activeFilters.push(`Status: ${filters.status}`);
+    if (filters.category !== 'tutti') activeFilters.push(`Categoria: ${filters.category}`);
+    if (filters.poiType !== 'tutti') activeFilters.push(`Tipo: ${filters.poiType}`);
+    if (filters.searchTerm) activeFilters.push(`Ricerca: "${filters.searchTerm}"`);
+    
+    return activeFilters.length > 0 ? activeFilters.join(' • ') : 'Nessun filtro attivo';
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -186,15 +241,42 @@ const POIModerationPanel = () => {
       {/* Nuovo form per aggiungere esperienze */}
       <ExperienceUploadForm onExperienceAdded={handleExperienceAdded} />
       
+      {/* Filtri di moderazione */}
+      <ModerationFilters filters={filters} setFilters={setFilters} />
+      
+      {/* Riepilogo filtri e contatori */}
+      <Card className="mb-6 p-4 bg-blue-50 border-blue-200">
+        <div className="flex justify-between items-center">
+          <div>
+            <p className="text-sm text-gray-600">Filtri attivi: {getFilterSummary()}</p>
+            <p className="text-lg font-semibold text-blue-800">
+              Mostrando {filteredSubmissions.length} di {submissions.length} proposte
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-gray-600">
+              In attesa: {submissions.filter(s => s.status === 'pending').length} • 
+              Approvate: {submissions.filter(s => s.status === 'approved').length} • 
+              Rifiutate: {submissions.filter(s => s.status === 'rejected').length}
+            </p>
+          </div>
+        </div>
+      </Card>
+      
       <div className="grid gap-6">
-        {submissions.length === 0 ? (
+        {filteredSubmissions.length === 0 ? (
           <Card>
             <CardContent className="text-center py-12">
-              <p className="text-muted-foreground">Nessuna proposta POI trovata</p>
+              <p className="text-muted-foreground">
+                {submissions.length === 0 
+                  ? 'Nessuna proposta POI trovata' 
+                  : 'Nessuna proposta corrisponde ai filtri selezionati'
+                }
+              </p>
             </CardContent>
           </Card>
         ) : (
-          submissions.map((submission) => (
+          filteredSubmissions.map((submission) => (
             <POISubmissionCard
               key={submission.id}
               submission={submission}
