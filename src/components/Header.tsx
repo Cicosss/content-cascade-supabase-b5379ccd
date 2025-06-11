@@ -19,29 +19,19 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
-import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 
 const Header = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Try to get sidebar context, but don't throw if it doesn't exist
-  let sidebarContext = null;
-  try {
-    sidebarContext = useSidebar();
-  } catch (error) {
-    // Sidebar context doesn't exist, that's fine
-  }
-
   return (
     <header className="sticky top-0 z-50 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
-          {/* Left section with sidebar trigger and logo */}
+          {/* Left section with logo */}
           <div className="flex items-center space-x-3">
-            {user && sidebarContext && <SidebarTrigger />}
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
                 <Mountain className="h-5 w-5 text-white" />
