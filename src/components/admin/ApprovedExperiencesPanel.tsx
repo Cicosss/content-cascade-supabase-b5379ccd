@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Loader2, Eye, Trash2, MapPin, Calendar, Globe, Phone, Edit } from 'lucide-react';
 import ModerationFilters from './ModerationFilters';
+import EditExperienceModal from './EditExperienceModal';
 
 interface ApprovedExperience {
   id: string;
@@ -37,6 +37,7 @@ const ApprovedExperiencesPanel = () => {
   const [experiences, setExperiences] = useState<ApprovedExperience[]>([]);
   const [filteredExperiences, setFilteredExperiences] = useState<ApprovedExperience[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingExperience, setEditingExperience] = useState<ApprovedExperience | null>(null);
   
   const [filters, setFilters] = useState({
     status: 'tutti',
@@ -127,6 +128,23 @@ const ApprovedExperiencesPanel = () => {
     }
   };
 
+  const handleEdit = (experience: ApprovedExperience) => {
+    setEditingExperience(experience);
+  };
+
+  const handleEditClose = () => {
+    setEditingExperience(null);
+  };
+
+  const handleEditSave = (updatedExperience: ApprovedExperience) => {
+    setExperiences(prev => 
+      prev.map(exp => 
+        exp.id === updatedExperience.id ? updatedExperience : exp
+      )
+    );
+    setEditingExperience(null);
+  };
+
   const handleDelete = (experience: ApprovedExperience) => {
     if (window.confirm(`Sei sicuro di voler eliminare l'esperienza "${experience.name}"? Questa azione non può essere annullata.`)) {
       deleteExperience(experience.id);
@@ -214,6 +232,14 @@ const ApprovedExperiencesPanel = () => {
                     <Button
                       variant="outline"
                       size="sm"
+                      onClick={() => handleEdit(experience)}
+                      className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
                       onClick={() => handleDelete(experience)}
                       className="text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
@@ -274,6 +300,13 @@ const ApprovedExperiencesPanel = () => {
           ))
         )}
       </div>
+
+      <EditExperienceModal
+        experience={editingExperience}
+        isOpen={!!editingExperience}
+        onClose={handleEditClose}
+        onSave={handleEditSave}
+      />
     </div>
   );
 };
