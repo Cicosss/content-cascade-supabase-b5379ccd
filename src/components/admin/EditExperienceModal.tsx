@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import ExperienceFormFields from './ExperienceFormFields';
+import MediaUploader from './MediaUploader';
 
 interface ApprovedExperience {
   id: string;
@@ -66,7 +67,8 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         location_name: experience.location_name || '',
         organizer_info: experience.organizer_info || '',
         website_url: experience.video_url || '',
-        images: experience.images || []
+        images: experience.images || [],
+        video_url: experience.video_url || ''
       });
     }
   }, [experience]);
@@ -75,6 +77,20 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
     setFormData((prev: any) => ({
       ...prev,
       [field]: value
+    }));
+  };
+
+  const handleImagesChange = (images: string[]) => {
+    setFormData((prev: any) => ({
+      ...prev,
+      images
+    }));
+  };
+
+  const handleVideoUrlChange = (videoUrl: string) => {
+    setFormData((prev: any) => ({
+      ...prev,
+      video_url: videoUrl
     }));
   };
 
@@ -100,7 +116,8 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         end_datetime: formData.end_datetime ? new Date(formData.end_datetime).toISOString() : null,
         location_name: formData.location_name,
         organizer_info: formData.organizer_info,
-        video_url: formData.website_url,
+        images: formData.images,
+        video_url: formData.video_url,
         updated_at: new Date().toISOString()
       };
 
@@ -146,6 +163,13 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
           <ExperienceFormFields
             formData={formData}
             onInputChange={handleInputChange}
+          />
+          
+          <MediaUploader
+            images={formData.images || []}
+            videoUrl={formData.video_url || ''}
+            onImagesChange={handleImagesChange}
+            onVideoUrlChange={handleVideoUrlChange}
           />
           
           <div className="flex justify-end gap-3 pt-4 border-t">
