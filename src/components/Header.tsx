@@ -39,38 +39,20 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
-          {/* Left section with sidebar trigger or logo */}
+          {/* Left section with sidebar trigger and logo */}
           <div className="flex items-center space-x-3">
-            {user && sidebarContext ? (
-              <>
-                <SidebarTrigger className="text-white hover:bg-slate-700/50" />
-                {sidebarContext.open && (
-                  <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
-                      <Mountain className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="hidden sm:block">
-                      <h1 className="text-xl font-bold text-white">
-                        Mia Romagna
-                      </h1>
-                      <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
-                  <Mountain className="h-5 w-5 text-white" />
-                </div>
-                <div className="hidden sm:block">
-                  <h1 className="text-xl font-bold text-white">
-                    Mia Romagna
-                  </h1>
-                  <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
-                </div>
+            {user && sidebarContext && <SidebarTrigger />}
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
+                <Mountain className="h-5 w-5 text-white" />
               </div>
-            )}
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold text-white">
+                  Mia Romagna
+                </h1>
+                <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
+              </div>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
