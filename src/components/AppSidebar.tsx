@@ -14,10 +14,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
-  CheckCircle,
   Inbox, 
   Calendar,
   LayoutDashboard,
@@ -106,9 +106,7 @@ const AppSidebar = () => {
     >
       <SidebarHeader className="p-6 bg-gradient-to-r from-blue-50/80 via-indigo-50/60 to-purple-50/40 backdrop-blur-sm border-b border-white/20">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
-            <CheckCircle className="h-5 w-5 text-white" />
-          </div>
+          <SidebarTrigger className="w-8 h-8 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:bg-gradient-to-br hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600" />
           <span className="text-xl font-semibold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent group-data-[collapsible=icon]:hidden">Board</span>
         </div>
       </SidebarHeader>
