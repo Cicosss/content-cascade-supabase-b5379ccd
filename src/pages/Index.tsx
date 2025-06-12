@@ -12,6 +12,9 @@ import EventCard from '@/components/EventCard';
 import RestaurantCard from '@/components/RestaurantCard';
 import ServicesSection from '@/components/ServicesSection';
 import ExperienceCard from '@/components/ExperienceCard';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Car, Zap, ParkingCircle, AlertTriangle, MessageCircle } from 'lucide-react';
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -254,6 +257,12 @@ const Index = () => {
     }
   ];
 
+  const services = [
+    { icon: Car, label: 'Taxi', desc: 'Chiama un taxi' },
+    { icon: Zap, label: 'Ricarica EV', desc: 'Stazioni di ricarica' },
+    { icon: ParkingCircle, label: 'Parcheggi', desc: 'Trova parcheggio' },
+  ];
+
   return (
     <Layout showSidebar={true}>
       <HeroSection />
@@ -278,6 +287,20 @@ const Index = () => {
             ))}
           </ContentCarousel>
 
+          {/* Servizi Vicini Card */}
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Servizi Vicini</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {services.map((service, index) => (
+                <Card key={index} className="p-6 text-center hover:shadow-lg transition-shadow cursor-pointer">
+                  <service.icon className="h-12 w-12 mx-auto mb-4 text-blue-600" />
+                  <div className="font-semibold text-lg mb-2">{service.label}</div>
+                  <div className="text-gray-600">{service.desc}</div>
+                </Card>
+              ))}
+            </div>
+          </section>
+
           {/* Esperienze del Territorio Unificate */}
           <ContentCarousel 
             title="Esperienze del Territorio" 
@@ -288,6 +311,20 @@ const Index = () => {
             ))}
           </ContentCarousel>
 
+          {/* Prudenza in Mare Card */}
+          <Card className="p-6 bg-amber-50 border-amber-200 mb-16">
+            <div className="flex items-start space-x-4">
+              <AlertTriangle className="h-8 w-8 text-amber-600 mt-1 flex-shrink-0" />
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-amber-900 mb-3">Prudenza in Mare</h3>
+                <p className="text-amber-800 leading-relaxed">
+                  Controlla sempre le condizioni meteo marine prima di entrare in acqua. Rispetta le bandiere di sicurezza 
+                  e segui le indicazioni del personale di salvataggio. La tua sicurezza e quella degli altri è la priorità.
+                </p>
+              </div>
+            </div>
+          </Card>
+
           {/* Eventi Speciali */}
           <ContentCarousel 
             title="Eventi Speciali e Manifestazioni" 
@@ -297,6 +334,19 @@ const Index = () => {
               <EventCard key={index} {...event} />
             ))}
           </ContentCarousel>
+
+          {/* Hai bisogno di aiuto? Card */}
+          <Card className="p-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-center mb-16">
+            <MessageCircle className="h-12 w-12 mx-auto mb-4" />
+            <h3 className="text-2xl font-semibold mb-4">Hai bisogno di aiuto?</h3>
+            <p className="text-green-100 mb-6 text-lg leading-relaxed">
+              I nostri esperti locali sono sempre disponibili per consigli personalizzati, 
+              informazioni aggiornate e supporto durante la tua visita in Romagna.
+            </p>
+            <Button variant="secondary" className="px-8 py-3 text-lg font-semibold">
+              Contattaci Subito
+            </Button>
+          </Card>
 
           {/* Sezione Family */}
           <ContentCarousel 
@@ -309,7 +359,7 @@ const Index = () => {
           </ContentCarousel>
         </div>
 
-        {/* Services Section */}
+        {/* Services Section mantiene solo le funzionalità base */}
         <div className="mt-16">
           <ServicesSection />
         </div>
