@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Youtube, Twitter } from 'lucide-react';
+import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const Footer = () => {
   return (
@@ -153,10 +154,9 @@ const Footer = () => {
             </a>
           </div>
 
-          <div className="flex items-center">
-            <div className="text-lg font-semibold text-white">
-              Mia Romagna – made with love
-            </div>
+          <div className="flex items-center space-x-2">
+            <MiaRomagnaLogo width={100} height={33} />
+            <span className="text-slate-400 text-sm">– made with love</span>
           </div>
         </div>
 
