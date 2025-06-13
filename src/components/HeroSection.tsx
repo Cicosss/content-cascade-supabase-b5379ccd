@@ -61,8 +61,8 @@ const HeroSection = () => {
 
           {/* CTA Buttons - Redesigned for better harmony with video */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-10">
-            <Button className="bg-white/90 hover:bg-white text-slate-900 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-sm border-2 border-white/20 hover:border-white/40">
-              <Download className="h-6 w-6 mr-3 text-orange-500" />
+            <Button className="border-2 border-orange-400/60 bg-orange-500/20 text-white hover:bg-orange-500/30 hover:border-orange-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md">
+              <Download className="h-6 w-6 mr-3 text-orange-300" />
               Scarica l'App Gratis
             </Button>
             <Button 
