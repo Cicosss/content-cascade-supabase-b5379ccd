@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -81,14 +80,14 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={getStatusBadgeVariant(submission.status)}>
+            <Badge variant={getStatusBadgeVariant(submission.status)} className="rounded-xl">
               {getStatusLabel(submission.status)}
             </Badge>
             <Button
               variant="outline"
               size="sm"
               onClick={handleDelete}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -150,12 +149,13 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
             variant="outline" 
             size="sm"
             onClick={() => onModerate(submission)}
+            className="rounded-xl"
           >
             <Eye className="h-4 w-4 mr-1" />
             Modera
           </Button>
           
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className="text-xs rounded-xl">
             <Calendar className="h-3 w-3 mr-1" />
             {new Date(submission.created_at).toLocaleDateString('it-IT')}
           </Badge>

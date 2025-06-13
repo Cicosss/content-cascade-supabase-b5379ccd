@@ -12,7 +12,7 @@ const GuestCard = () => {
           <CreditCard className="h-6 w-6 mr-3" />
           <h3 className="text-lg font-semibold">Romagna Guest Card</h3>
         </div>
-        <Button variant="secondary" size="sm">
+        <Button variant="secondary" size="sm" className="rounded-xl">
           Attiva
         </Button>
       </div>

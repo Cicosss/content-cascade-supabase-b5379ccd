@@ -13,7 +13,7 @@ const FavoritesCarousel = () => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[...Array(4)].map((_, i) => (
-          <Card key={i} className="h-80 bg-gray-200 animate-pulse rounded-lg" />
+          <Card key={i} className="h-80 bg-gray-200 animate-pulse" />
         ))}
       </div>
     );
@@ -42,7 +42,7 @@ const FavoritesCarousel = () => {
     const { item_type, item_data } = favorite;
 
     return (
-      <Card key={favorite.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group relative">
+      <Card key={favorite.id} className="overflow-hidden cursor-pointer group relative">
         <div className="aspect-[4/3] relative overflow-hidden">
           <div className={`w-full h-full bg-gradient-to-br flex items-center justify-center ${
             item_type === 'restaurant' ? 'from-green-400 to-blue-400' :
@@ -51,7 +51,7 @@ const FavoritesCarousel = () => {
           }`}>
             <span className="text-white text-sm">{item_data.image}</span>
           </div>
-          <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900">
+          <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900 rounded-xl">
             {item_data.category || item_data.cuisine}
           </Badge>
           <div className="absolute top-2 right-2 bg-yellow-500 rounded-full p-1">
