@@ -68,9 +68,9 @@ const HeroSection = () => {
             <Button 
               variant="outline" 
               onClick={() => navigate('/experiences')} 
-              className="border-2 border-white/60 bg-black/20 text-white hover:bg-white/10 hover:border-white/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md"
+              className="border-2 border-red-400/60 bg-red-500/20 text-white hover:bg-red-500/30 hover:border-red-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md"
             >
-              <Heart className="h-6 w-6 mr-3 text-red-400" />
+              <Heart className="h-6 w-6 mr-3 text-red-300" />
               Scopri le Esperienze
             </Button>
           </div>
