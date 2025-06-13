@@ -12,8 +12,8 @@ const MiaRomagnaLogo: React.FC<MiaRomagnaLogoProps> = ({
   height = 40, 
   className = "" 
 }) => {
-  // Using the official Mia Romagna logo uploaded by the user
-  const logoUrl = "/lovable-uploads/mia-romagna-logo-official.png";
+  // Using the correct Mia Romagna logo provided by the user
+  const logoUrl = "/lovable-uploads/673fa174-b69d-4246-a652-97158e041630.png";
   
   return (
     <img
