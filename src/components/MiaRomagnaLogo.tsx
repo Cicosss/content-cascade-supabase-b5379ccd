@@ -12,7 +12,7 @@ const MiaRomagnaLogo: React.FC<MiaRomagnaLogoProps> = ({
   height = 40, 
   className = "" 
 }) => {
-  const logoUrl = "https://jxkelzoxxsixqfblnjwj.supabase.co/storage/v1/object/public/assets/mia-romagna-logo.png";
+  const logoUrl = "/lovable-uploads/db347919-ab50-44ae-8ccc-d4e5eb44eb89.png";
   
   return (
     <img
