@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -6,7 +5,6 @@ import {
   User, 
   Menu,
   X,
-  Mountain,
   UserPlus
 } from 'lucide-react';
 import {
@@ -19,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
+import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const Header = () => {
   const { user } = useAuth();
@@ -33,9 +32,7 @@ const Header = () => {
           {/* Left section with logo */}
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-md">
-                <Mountain className="h-5 w-5 text-white" />
-              </div>
+              <MiaRomagnaLogo width={40} height={40} />
               <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-white">
                   Mia Romagna

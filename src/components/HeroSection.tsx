@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Heart, Smartphone } from 'lucide-react';
+import { Download, Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const HeroSection = () => {
   const { user } = useAuth();
@@ -35,9 +35,7 @@ const HeroSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Brand Section */}
           <div className="flex items-center justify-center space-x-4 mb-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 shadow-2xl">
-              <Smartphone className="h-8 w-8 text-white drop-shadow-lg" />
-            </div>
+            <MiaRomagnaLogo width={64} height={64} className="drop-shadow-2xl" />
             <div>
               <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-2xl text-shadow-lg">
                 Mia Romagna
