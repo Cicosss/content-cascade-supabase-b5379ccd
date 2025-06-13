@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Heart } from 'lucide-react';
@@ -35,11 +36,8 @@ const HeroSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Brand Section */}
           <div className="flex items-center justify-center space-x-4 mb-6">
-            <MiaRomagnaLogo width={64} height={64} className="drop-shadow-2xl" />
+            <MiaRomagnaLogo width={160} height={53} className="drop-shadow-2xl" />
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-2xl text-shadow-lg">
-                Mia Romagna
-              </h1>
               <p className="text-orange-300 font-semibold text-lg italic drop-shadow-2xl">"Il territorio è tra le Tue mani"</p>
             </div>
           </div>

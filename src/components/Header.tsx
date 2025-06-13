@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -32,11 +33,8 @@ const Header = () => {
           {/* Left section with logo */}
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-              <MiaRomagnaLogo width={40} height={40} />
+              <MiaRomagnaLogo width={120} height={40} />
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-white">
-                  Mia Romagna
-                </h1>
                 <p className="text-xs text-slate-300 italic">"Il territorio è tra le Tue mani"</p>
               </div>
             </div>
