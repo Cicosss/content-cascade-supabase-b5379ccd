@@ -14,7 +14,7 @@ const PartnerHero = () => {
     <div 
       className="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-fixed"
       style={{
-        backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://images.unsplash.com/photo-1533651180-10ddbe4a3e5a?q=80&w=2070")'
+        backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://i.ibb.co/1JRNxJpY/Progetto-senza-titolo-6.png")'
       }}
     >
       <div className="container mx-auto px-4 text-center text-white">
