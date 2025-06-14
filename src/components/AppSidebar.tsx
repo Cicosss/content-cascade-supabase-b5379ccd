@@ -195,28 +195,30 @@ const AppSidebar = () => {
       <SidebarFooter className="p-4 border-t border-white/20 bg-gradient-to-t from-slate-50/80 via-white/40 to-transparent backdrop-blur-sm">
         {user ? (
           <>
-            {/* User Profile Avatar (cliccabile e sempre aggiornato) */}
-            <a
-              href="/profile"
-              className="flex items-center space-x-3 mb-4 group-data-[collapsible=icon]:justify-center bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm hover:bg-blue-50/70 transition"
-              title="Modifica il profilo"
-            >
-              <Avatar className="h-12 w-12 ring-2 ring-blue-200/50 shadow-md transition">
-                <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url || undefined} alt="Avatar" />
-                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-200 text-blue-700 font-semibold">
-                  {profile?.first_name?.[0] 
-                    || user.user_metadata?.first_name?.[0] 
-                    || user.email?.[0]?.toUpperCase()
-                    || <User className="h-5 w-5" />}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                <p className="text-sm font-medium text-slate-900 truncate">
-                  {profile?.first_name || user.user_metadata?.first_name || 'Utente'}
-                </p>
-                <p className="text-xs text-slate-500">Vai al profilo</p>
-              </div>
-            </a>
+            {/* User Profile Avatar - nascosto quando collapsed */}
+            <div className="group-data-[collapsible=icon]:hidden">
+              <a
+                href="/profile"
+                className="flex items-center space-x-3 mb-4 bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm hover:bg-blue-50/70 transition"
+                title="Modifica il profilo"
+              >
+                <Avatar className="h-12 w-12 ring-2 ring-blue-200/50 shadow-md transition">
+                  <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url || undefined} alt="Avatar" />
+                  <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-200 text-blue-700 font-semibold">
+                    {profile?.first_name?.[0] 
+                      || user.user_metadata?.first_name?.[0] 
+                      || user.email?.[0]?.toUpperCase()
+                      || <User className="h-5 w-5" />}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-900 truncate">
+                    {profile?.first_name || user.user_metadata?.first_name || 'Utente'}
+                  </p>
+                  <p className="text-xs text-slate-500">Vai al profilo</p>
+                </div>
+              </a>
+            </div>
 
             {/* Logout */}
             <SidebarMenuButton 
@@ -229,18 +231,20 @@ const AppSidebar = () => {
           </>
         ) : (
           <>
-            {/* Login for guests */}
-            <div className="flex items-center space-x-3 mb-4 group-data-[collapsible=icon]:justify-center bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm">
-              <Avatar className="h-10 w-10 ring-2 ring-slate-200/50 shadow-md">
-                <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600">
-                  <User className="h-5 w-5" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                <p className="text-sm font-medium text-slate-900 truncate">
-                  Ospite
-                </p>
-                <p className="text-xs text-slate-500">Non loggato</p>
+            {/* Login for guests - nascosto quando collapsed */}
+            <div className="group-data-[collapsible=icon]:hidden">
+              <div className="flex items-center space-x-3 mb-4 bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm">
+                <Avatar className="h-10 w-10 ring-2 ring-slate-200/50 shadow-md">
+                  <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600">
+                    <User className="h-5 w-5" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-900 truncate">
+                    Ospite
+                  </p>
+                  <p className="text-xs text-slate-500">Non loggato</p>
+                </div>
               </div>
             </div>
 
