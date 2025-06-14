@@ -4,11 +4,11 @@ import { Download, Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
-
 const HeroSection = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const navigate = useNavigate();
-
   const getUserGreeting = () => {
     if (user?.user_metadata?.first_name) {
       return `Benvenuto ${user.user_metadata.first_name}!`;
@@ -18,17 +18,9 @@ const HeroSection = () => {
     }
     return 'Benvenuto in Romagna!';
   };
-
-  return (
-    <div className="relative w-full h-screen overflow-hidden">
+  return <div className="relative w-full h-screen overflow-hidden">
       {/* Video Background */}
-      <iframe 
-        src="https://www.youtube.com/embed/0ZhNqBN9ZfQ?autoplay=1&loop=1&mute=1&playsinline=1&controls=0&showinfo=0&autohide=1&modestbranding=1&playlist=0ZhNqBN9ZfQ" 
-        className="absolute top-1/2 left-1/2 w-[177.77vh] h-screen transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[1]"
-        frameBorder="0" 
-        allow="autoplay; encrypted-media" 
-        allowFullScreen
-      />
+      <iframe src="https://www.youtube.com/embed/0ZhNqBN9ZfQ?autoplay=1&loop=1&mute=1&playsinline=1&controls=0&showinfo=0&autohide=1&modestbranding=1&playlist=0ZhNqBN9ZfQ" className="absolute top-1/2 left-1/2 w-[177.77vh] h-screen transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[1]" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen />
 
       {/* Content Overlay */}
       <div className="relative z-[2] text-white text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4">
@@ -48,7 +40,7 @@ const HeroSection = () => {
             <p className="text-2xl md:text-3xl text-slate-200 font-light leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
               L'applicazione ufficiale per scoprire le autentiche meraviglie della Provincia di Rimini
             </p>
-            <p className="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
+            <p className="text-xl leading-relaxed max-w-3xl mx-auto drop-shadow-lg text-slate-50">
               Dalla tradizione culinaria ai tesori nascosti, dalle esperienze culturali alle attività marittime. 
               Vivi la Romagna come un locale con guide certificate e itinerari personalizzati.
             </p>
@@ -60,11 +52,7 @@ const HeroSection = () => {
               <Download className="h-6 w-6 mr-3 text-orange-300" />
               Scarica l'App Gratis
             </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/experiences')} 
-              className="border-2 border-red-400/60 bg-red-500/20 text-white hover:bg-red-500/30 hover:border-red-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md drop-shadow-lg"
-            >
+            <Button variant="outline" onClick={() => navigate('/experiences')} className="border-2 border-red-400/60 bg-red-500/20 text-white hover:bg-red-500/30 hover:border-red-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md drop-shadow-lg">
               <Heart className="h-6 w-6 mr-3 text-red-300" />
               Scopri le Esperienze
             </Button>
@@ -87,8 +75,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default HeroSection;
