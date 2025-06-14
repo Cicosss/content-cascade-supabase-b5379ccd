@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -10,9 +11,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AvatarUpload } from '@/components/AvatarUpload';
 import { EmailConfirmationDialog } from '@/components/EmailConfirmationDialog';
-import { Mountain, Mail, Lock, User, UserPlus, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import MiaRomagnaLogo from '@/components/MiaRomagnaLogo';
 
 const Auth = () => {
   const { user, signIn, signUp, loading } = useAuth();
@@ -214,8 +216,8 @@ const Auth = () => {
         <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
           <CardHeader className="text-center pb-6">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 rounded-2xl flex items-center justify-center shadow-lg">
-                <Mountain className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 rounded-2xl flex items-center justify-center shadow-lg p-2">
+                <MiaRomagnaLogo width={48} height={48} />
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-slate-900">
