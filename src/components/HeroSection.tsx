@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Heart } from 'lucide-react';
@@ -12,12 +11,12 @@ const HeroSection = () => {
 
   const getUserGreeting = () => {
     if (user?.user_metadata?.first_name) {
-      return `Benvenuto ${user.user_metadata.first_name}! 👋`;
+      return `Benvenuto ${user.user_metadata.first_name}!`;
     } else if (user?.email) {
       const emailName = user.email.split('@')[0];
-      return `Benvenuto ${emailName}! 👋`;
+      return `Benvenuto ${emailName}!`;
     }
-    return 'Benvenuto in Romagna! 👋';
+    return 'Benvenuto in Romagna!';
   };
 
   return (
