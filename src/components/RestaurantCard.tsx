@@ -36,7 +36,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
+    <Card className="overflow-hidden cursor-pointer group relative">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
           <span className="text-white typography-body-small">{image}</span>
