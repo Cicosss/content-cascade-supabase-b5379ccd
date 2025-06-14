@@ -1,8 +1,8 @@
 
 
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Youtube } from 'lucide-react';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const Footer = () => {
@@ -157,9 +157,6 @@ const Footer = () => {
                 className="w-full h-full object-cover" 
               />
             </div>
-            <a href="#" className="w-10 h-10 rounded-xl bg-red-600 hover:bg-red-500 flex items-center justify-center transition-colors duration-300 hover:scale-105 transform shadow-lg shadow-red-500/25 hover:shadow-red-500/40">
-              <Youtube className="h-5 w-5 text-white" />
-            </a>
           </div>
 
           <div className="flex items-center space-x-2">
@@ -178,4 +175,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
 
