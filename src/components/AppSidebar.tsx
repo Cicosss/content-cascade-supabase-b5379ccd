@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -108,7 +107,7 @@ const AppSidebar = () => {
       <SidebarHeader className="p-6 bg-gradient-to-r from-blue-50/80 via-indigo-50/60 to-purple-50/40 backdrop-blur-sm border-b border-white/20">
         <div className="flex items-center space-x-3">
           <SidebarTrigger className="w-8 h-8 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:bg-gradient-to-br hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600" />
-          <MiaRomagnaLogo width={32} height={32} className="group-data-[collapsible=icon]:hidden" />
+          <MiaRomagnaLogo width={48} height={48} className="group-data-[collapsible=icon]:hidden" />
         </div>
       </SidebarHeader>
 
