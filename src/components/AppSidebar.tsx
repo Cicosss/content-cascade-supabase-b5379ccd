@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -260,8 +261,8 @@ const AppSidebar = () => {
           <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
             <span className="text-white text-sm font-bold">I</span>
           </div>
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
-            <span className="text-white text-sm font-bold">f</span>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm overflow-hidden">
+            <img src="https://i.ibb.co/QjzpyXVF/2.png" alt="2" className="w-full h-full object-cover" />
           </div>
           <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
             <span className="text-white text-sm font-bold">G</span>
