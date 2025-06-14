@@ -91,6 +91,33 @@
   }
 }
 
+/* Scala Tipografica Coerente */
+@layer components {
+  .typography-h1 {
+    @apply text-5xl font-bold leading-tight;
+  }
+  
+  .typography-h2 {
+    @apply text-3xl font-semibold leading-snug;
+  }
+  
+  .typography-h3 {
+    @apply text-2xl font-semibold leading-normal;
+  }
+  
+  .typography-body {
+    @apply text-base font-normal leading-relaxed;
+  }
+  
+  .typography-body-small {
+    @apply text-sm font-normal leading-relaxed;
+  }
+  
+  .typography-caption {
+    @apply text-xs font-medium leading-normal;
+  }
+}
+
 .romagna-gradient {
   background: linear-gradient(135deg, hsl(var(--romagna-blue)) 0%, hsl(var(--romagna-green)) 100%);
 }

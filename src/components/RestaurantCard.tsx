@@ -39,7 +39,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
     <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
-          <span className="text-white text-sm">{image}</span>
+          <span className="text-white typography-body-small">{image}</span>
         </div>
         <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900 rounded-xl">
           {cuisine}
@@ -55,23 +55,23 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" strokeWidth={1.5} />
-            <span className="text-sm font-medium">{rating}</span>
+            <span className="typography-body-small font-medium">{rating}</span>
           </div>
-          <div className="flex items-center text-sm text-gray-600">
+          <div className="flex items-center typography-body-small text-gray-600">
             <Euro className="h-4 w-4 mr-1" strokeWidth={1.5} />
             {priceRange}
           </div>
         </div>
         
-        <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="typography-h3 text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
           {name}
         </h3>
         
-        <p className="text-sm text-gray-600 mb-3">
+        <p className="typography-body-small text-gray-600 mb-3">
           Specialità: {specialty}
         </p>
         
-        <div className="flex items-center text-sm text-gray-500">
+        <div className="flex items-center typography-body-small text-gray-500">
           <MapPin className="h-4 w-4 mr-1" strokeWidth={1.5} />
           {location}
         </div>

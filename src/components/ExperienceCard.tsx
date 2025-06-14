@@ -39,7 +39,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-          <span className="text-white text-sm">{image}</span>
+          <span className="text-white typography-body-small">{image}</span>
         </div>
         <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900 rounded-xl">
           {category}
@@ -54,14 +54,14 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       <div className="p-4">
         <div className="flex items-center mb-2">
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" strokeWidth={1.5} />
-          <span className="text-sm font-medium">{rating}</span>
+          <span className="typography-body-small font-medium">{rating}</span>
         </div>
         
-        <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
+        <h3 className="typography-h3 text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
           {title}
         </h3>
         
-        <div className="flex items-center text-sm text-gray-600 mb-3 space-x-4">
+        <div className="flex items-center typography-body-small text-gray-600 mb-3 space-x-4">
           <div className="flex items-center">
             <Clock className="h-4 w-4 mr-1" strokeWidth={1.5} />
             {duration}
@@ -73,10 +73,10 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="text-lg font-semibold text-gray-900">
+          <div className="typography-body font-semibold text-gray-900">
             {price}
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="typography-body-small text-gray-500">
             a persona
           </div>
         </div>
