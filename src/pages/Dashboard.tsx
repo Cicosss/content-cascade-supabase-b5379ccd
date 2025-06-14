@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +50,7 @@ const Dashboard = () => {
                   Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}! 👋
                 </h1>
                 <p className="text-slate-200 text-lg">
-                  Esplora la tua Romagna personalizzata
+                  Iniziamo? Filtra le esperienze o cerca sulla mappa
                 </p>
               </div>
             </div>
