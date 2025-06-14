@@ -36,20 +36,20 @@ const HeroSection = () => {
         <div className="max-w-5xl mx-auto">
           {/* Brand Section */}
           <div className="flex items-center justify-center space-x-4 mb-6">
-            <MiaRomagnaLogo width={160} height={53} className="drop-shadow-2xl" />
+            <MiaRomagnaLogo width={160} height={53} className="drop-shadow-lg" />
             <div>
-              <p className="text-orange-300 font-semibold text-lg italic drop-shadow-2xl">"Il territorio è tra le Tue mani"</p>
+              <p className="text-orange-300 font-semibold text-lg italic drop-shadow-lg">"Il territorio è tra le Tue mani"</p>
             </div>
           </div>
           
           <div className="space-y-6 mb-10">
-            <h2 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-2xl text-shadow-2xl">
+            <h2 className="text-5xl md:text-7xl font-bold leading-tight drop-shadow-lg">
               {getUserGreeting()}
             </h2>
-            <p className="text-2xl md:text-3xl text-slate-200 font-light leading-relaxed max-w-4xl mx-auto drop-shadow-2xl text-shadow-lg">
+            <p className="text-2xl md:text-3xl text-slate-200 font-light leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
               L'applicazione ufficiale per scoprire le autentiche meraviglie della Provincia di Rimini
             </p>
-            <p className="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto drop-shadow-2xl text-shadow-md">
+            <p className="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
               Dalla tradizione culinaria ai tesori nascosti, dalle esperienze culturali alle attività marittime. 
               Vivi la Romagna come un locale con guide certificate e itinerari personalizzati.
             </p>
@@ -57,14 +57,14 @@ const HeroSection = () => {
 
           {/* CTA Buttons - Redesigned for better harmony with video */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-10">
-            <Button className="border-2 border-orange-400/60 bg-orange-500/20 text-white hover:bg-orange-500/30 hover:border-orange-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md">
+            <Button className="border-2 border-orange-400/60 bg-orange-500/20 text-white hover:bg-orange-500/30 hover:border-orange-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md drop-shadow-lg">
               <Download className="h-6 w-6 mr-3 text-orange-300" />
               Scarica l'App Gratis
             </Button>
             <Button 
               variant="outline" 
               onClick={() => navigate('/experiences')} 
-              className="border-2 border-red-400/60 bg-red-500/20 text-white hover:bg-red-500/30 hover:border-red-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md"
+              className="border-2 border-red-400/60 bg-red-500/20 text-white hover:bg-red-500/30 hover:border-red-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md drop-shadow-lg"
             >
               <Heart className="h-6 w-6 mr-3 text-red-300" />
               Scopri le Esperienze
