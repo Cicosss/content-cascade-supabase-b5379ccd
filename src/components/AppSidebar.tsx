@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -268,8 +266,8 @@ const AppSidebar = () => {
           </div>
           <div className="w-8 h-8 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
             <img 
-              src="https://i.ibb.co/QjzpyXVF/2.png" 
-              alt="2" 
+              src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
+              alt="Progetto-senza-titolo-2" 
               className="w-full h-full object-cover" 
             />
           </div>
@@ -287,4 +285,3 @@ const AppSidebar = () => {
 };
 
 export default AppSidebar;
-
