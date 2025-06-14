@@ -55,15 +55,15 @@ const EventCard: React.FC<EventCardProps> = ({
         
         <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center">
-            <Calendar className="h-4 w-4 mr-2" />
+            <Calendar className="h-4 w-4 mr-2" strokeWidth={1.5} />
             {date}
           </div>
           <div className="flex items-center">
-            <Clock className="h-4 w-4 mr-2" />
+            <Clock className="h-4 w-4 mr-2" strokeWidth={1.5} />
             {time}
           </div>
           <div className="flex items-center">
-            <MapPin className="h-4 w-4 mr-2" />
+            <MapPin className="h-4 w-4 mr-2" strokeWidth={1.5} />
             {location}
           </div>
         </div>

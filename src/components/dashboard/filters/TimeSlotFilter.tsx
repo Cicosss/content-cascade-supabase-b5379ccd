@@ -25,7 +25,7 @@ const TimeSlotFilter: React.FC<TimeSlotFilterProps> = ({ selectedSlots, onSlotsC
   return (
     <div className="space-y-3">
       <Label className="font-semibold text-gray-700 flex items-center gap-2">
-        <Clock className="h-4 w-4 text-indigo-500" />
+        <Clock className="h-4 w-4 text-indigo-500" strokeWidth={1.5} />
         Fascia oraria preferita
       </Label>
       <div className="grid grid-cols-1 gap-2">

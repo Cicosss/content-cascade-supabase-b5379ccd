@@ -63,7 +63,7 @@ const Dashboard = () => {
             <div className="xl:col-span-2 space-y-6">
               <Card className="h-[600px] p-6 rounded-3xl border-0 shadow-xl">
                 <div className="flex items-center mb-4">
-                  <MapPin className="h-8 w-8 text-red-600 mr-3" />
+                  <MapPin className="h-8 w-8 text-red-600 mr-3" strokeWidth={1.5} />
                   <h2 className="text-2xl font-bold text-slate-900">
                     Mappa Interattiva
                   </h2>

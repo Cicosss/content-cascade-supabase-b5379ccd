@@ -42,7 +42,7 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
     <Card className="p-6 mb-6 rounded-2xl border-0 shadow-lg bg-white/95 backdrop-blur-sm">
       <div className="flex items-center mb-4">
         <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-3">
-          <Filter className="h-5 w-5 text-white" />
+          <Filter className="h-5 w-5 text-white" strokeWidth={1.5} />
         </div>
         <h3 className="text-xl font-bold text-slate-900">
           Filtri di Moderazione
@@ -54,7 +54,7 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
         {/* Ricerca testuale */}
         <div className="space-y-2">
           <Label className="font-semibold text-gray-700 flex items-center gap-2">
-            <Search className="h-4 w-4" />
+            <Search className="h-4 w-4" strokeWidth={1.5} />
             Cerca
           </Label>
           <Input

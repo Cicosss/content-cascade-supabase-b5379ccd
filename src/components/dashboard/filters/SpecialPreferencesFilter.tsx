@@ -28,7 +28,7 @@ const SpecialPreferencesFilter: React.FC<SpecialPreferencesFilterProps> = ({
   return (
     <div className="space-y-3">
       <Label className="font-semibold text-gray-700 flex items-center gap-2">
-        <Heart className="h-4 w-4 text-pink-500" />
+        <Heart className="h-4 w-4 text-pink-500" strokeWidth={1.5} />
         Preferenze speciali
       </Label>
       <div className="grid grid-cols-1 gap-2">

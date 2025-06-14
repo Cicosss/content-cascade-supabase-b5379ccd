@@ -36,7 +36,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden cursor-pointer group relative">
+    <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
@@ -54,11 +54,11 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
       <div className="p-4">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" strokeWidth={1.5} />
             <span className="text-sm font-medium">{rating}</span>
           </div>
           <div className="flex items-center text-sm text-gray-600">
-            <Euro className="h-4 w-4 mr-1" />
+            <Euro className="h-4 w-4 mr-1" strokeWidth={1.5} />
             {priceRange}
           </div>
         </div>
@@ -72,7 +72,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         </p>
         
         <div className="flex items-center text-sm text-gray-500">
-          <MapPin className="h-4 w-4 mr-1" />
+          <MapPin className="h-4 w-4 mr-1" strokeWidth={1.5} />
           {location}
         </div>
       </div>

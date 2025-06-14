@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -89,7 +90,7 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
               onClick={handleDelete}
               className="text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" strokeWidth={1.5} />
             </Button>
           </div>
         </div>
@@ -103,7 +104,7 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
             <p><strong>Target:</strong> {submission.target_audience}</p>
             {submission.address && (
               <p className="flex items-center gap-1">
-                <MapPin className="h-4 w-4" />
+                <MapPin className="h-4 w-4" strokeWidth={1.5} />
                 {submission.address}
               </p>
             )}
@@ -114,13 +115,13 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
             {submission.duration_info && <p><strong>Durata:</strong> {submission.duration_info}</p>}
             {submission.phone && (
               <p className="flex items-center gap-1">
-                <Phone className="h-4 w-4" />
+                <Phone className="h-4 w-4" strokeWidth={1.5} />
                 {submission.phone}
               </p>
             )}
             {submission.website_url && (
               <p className="flex items-center gap-1">
-                <Globe className="h-4 w-4" />
+                <Globe className="h-4 w-4" strokeWidth={1.5} />
                 <a href={submission.website_url} target="_blank" rel="noopener noreferrer" 
                    className="text-blue-600 hover:underline truncate">
                   {submission.website_url}
@@ -151,12 +152,12 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
             onClick={() => onModerate(submission)}
             className="rounded-xl"
           >
-            <Eye className="h-4 w-4 mr-1" />
+            <Eye className="h-4 w-4 mr-1" strokeWidth={1.5} />
             Modera
           </Button>
           
           <Badge variant="outline" className="text-xs rounded-xl">
-            <Calendar className="h-3 w-3 mr-1" />
+            <Calendar className="h-3 w-3 mr-1" strokeWidth={1.5} />
             {new Date(submission.created_at).toLocaleDateString('it-IT')}
           </Badge>
         </div>

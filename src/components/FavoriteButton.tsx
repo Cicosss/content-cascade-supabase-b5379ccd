@@ -74,6 +74,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
           'transition-all duration-200',
           favorite ? 'fill-current' : 'fill-none'
         )} 
+        strokeWidth={1.5}
       />
     </Button>
   );

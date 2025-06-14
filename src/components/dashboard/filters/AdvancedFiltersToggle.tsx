@@ -14,7 +14,7 @@ const AdvancedFiltersToggle: React.FC<AdvancedFiltersToggleProps> = ({ showAdvan
     <div className="border-t border-gray-200 pt-6 mb-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Star className="h-5 w-5 text-yellow-500" />
+          <Star className="h-5 w-5 text-yellow-500" strokeWidth={1.5} />
           <Label className="text-xl font-bold text-slate-900">Filtri Avanzati</Label>
         </div>
         <div className="flex items-center space-x-2">

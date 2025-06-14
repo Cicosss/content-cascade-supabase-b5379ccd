@@ -15,7 +15,7 @@ const ChildrenFilter: React.FC<ChildrenFilterProps> = ({ selectedOption, onOptio
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <Users className="h-5 w-5 text-blue-500" />
+        <Users className="h-5 w-5 text-blue-500" strokeWidth={1.5} />
         <Label className="font-bold text-gray-800 text-lg">Con bambini</Label>
       </div>
       <div className="flex gap-3">

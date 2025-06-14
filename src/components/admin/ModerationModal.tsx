@@ -103,7 +103,7 @@ const ModerationModal = ({ submission, onClose, onSave, updating }: ModerationMo
               onClick={handleSave}
               disabled={!newStatus || updating}
             >
-              {updating && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              {updating && <Loader2 className="h-4 w-4 mr-2 animate-spin" strokeWidth={1.5} />}
               Salva Moderazione
             </Button>
           </div>

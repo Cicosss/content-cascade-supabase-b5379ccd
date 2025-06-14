@@ -36,7 +36,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden cursor-pointer group relative">
+    <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
@@ -53,7 +53,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       
       <div className="p-4">
         <div className="flex items-center mb-2">
-          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
+          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" strokeWidth={1.5} />
           <span className="text-sm font-medium">{rating}</span>
         </div>
         
@@ -63,11 +63,11 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         
         <div className="flex items-center text-sm text-gray-600 mb-3 space-x-4">
           <div className="flex items-center">
-            <Clock className="h-4 w-4 mr-1" />
+            <Clock className="h-4 w-4 mr-1" strokeWidth={1.5} />
             {duration}
           </div>
           <div className="flex items-center">
-            <Users className="h-4 w-4 mr-1" />
+            <Users className="h-4 w-4 mr-1" strokeWidth={1.5} />
             {groupSize}
           </div>
         </div>

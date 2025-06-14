@@ -8,7 +8,7 @@ const HelpBanner: React.FC = () => {
   return (
     <Card className="p-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-3xl border-0 shadow-xl">
       <div className="flex items-center mb-4">
-        <HelpCircle className="h-8 w-8 mr-3" />
+        <HelpCircle className="h-8 w-8 mr-3" strokeWidth={1.5} />
         <h3 className="text-2xl font-bold">Hai bisogno d'aiuto?</h3>
       </div>
       <p className="text-green-100 mb-6 text-lg">

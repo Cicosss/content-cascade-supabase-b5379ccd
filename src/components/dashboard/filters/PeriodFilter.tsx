@@ -17,7 +17,7 @@ const PeriodFilter: React.FC<PeriodFilterProps> = ({ selectedPeriod, onPeriodCha
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <CalendarIcon className="h-5 w-5 text-orange-500" />
+        <CalendarIcon className="h-5 w-5 text-orange-500" strokeWidth={1.5} />
         <Label className="font-bold text-gray-800 text-lg">Periodo</Label>
       </div>
       <Popover>
@@ -29,7 +29,7 @@ const PeriodFilter: React.FC<PeriodFilterProps> = ({ selectedPeriod, onPeriodCha
               !selectedPeriod && "text-muted-foreground"
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className="mr-2 h-4 w-4" strokeWidth={1.5} />
             {selectedPeriod ? format(selectedPeriod, "PPP") : <span>Seleziona data</span>}
           </Button>
         </PopoverTrigger>

@@ -13,7 +13,7 @@ const ExperienceFilter: React.FC<ExperienceFilterProps> = ({ isFirstVisit, onExp
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <Star className="h-5 w-5 text-purple-500" />
+        <Star className="h-5 w-5 text-purple-500" strokeWidth={1.5} />
         <Label className="font-bold text-gray-800 text-lg">Esperienza</Label>
       </div>
       <div className="space-y-3">

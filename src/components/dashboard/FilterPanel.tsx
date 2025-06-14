@@ -50,7 +50,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
     <Card className="p-6 rounded-3xl border-0 shadow-lg bg-white/80 backdrop-blur-sm">
       <div className="flex items-center mb-6">
         <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mr-3">
-          <Filter className="h-5 w-5 text-white" />
+          <Filter className="h-5 w-5 text-white" strokeWidth={1.5} />
         </div>
         <h2 className="text-2xl font-bold text-slate-900">
           Personalizza la tua Esperienza
@@ -62,7 +62,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
         {/* Zone della Romagna */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-red-500" />
+            <MapPin className="h-4 w-4 text-red-500" strokeWidth={1.5} />
             <Label className="font-semibold text-gray-700">Zone della Romagna</Label>
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -87,7 +87,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
         {/* Con bambini */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-blue-500" />
+            <Users className="h-4 w-4 text-blue-500" strokeWidth={1.5} />
             <Label className="font-semibold text-gray-700">Con bambini</Label>
           </div>
           <div className="flex gap-2">
@@ -137,7 +137,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, setFilters }) => {
         {/* Prima visita */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <CalendarIcon className="h-4 w-4 text-purple-500" />
+            <CalendarIcon className="h-4 w-4 text-purple-500" strokeWidth={1.5} />
             <Label className="font-semibold text-gray-700">Esperienza</Label>
           </div>
           <div className="space-y-2">
