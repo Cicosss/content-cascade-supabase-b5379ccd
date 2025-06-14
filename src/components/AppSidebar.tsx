@@ -273,8 +273,12 @@ const AppSidebar = () => {
               className="w-full h-full object-cover" 
             />
           </div>
-          <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
-            <span className="text-white text-sm font-bold">G</span>
+          <div className="w-8 h-8 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <img 
+              src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
+              alt="Progetto-senza-titolo" 
+              className="w-full h-full object-cover" 
+            />
           </div>
         </div>
       </SidebarFooter>
