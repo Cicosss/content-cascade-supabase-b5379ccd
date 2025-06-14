@@ -10,11 +10,11 @@ export const AuthHeader = () => {
         <MiaRomagnaLogo width={180} height={180} />
       </div>
       <div className="flex flex-col items-center space-y-3">
-        <div className="w-20 h-px bg-blue-900"></div>
-        <CardDescription className="text-blue-900 uppercase tracking-wider font-medium">
+        <div className="w-20 h-px" style={{ backgroundColor: '#0377f9' }}></div>
+        <CardDescription className="uppercase tracking-wider font-medium" style={{ color: '#0377f9' }}>
           Il territorio è tra le tue mani
         </CardDescription>
-        <div className="w-20 h-px bg-blue-900"></div>
+        <div className="w-20 h-px" style={{ backgroundColor: '#0377f9' }}></div>
       </div>
     </CardHeader>
   );
