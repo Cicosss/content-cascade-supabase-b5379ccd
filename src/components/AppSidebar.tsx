@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import { useNavigate } from 'react-router-dom';
 import {
   Sidebar,
@@ -34,6 +35,7 @@ import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const AppSidebar = () => {
   const { user, signOut } = useAuth();
+  const { profile } = useUserProfile();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -200,16 +202,17 @@ const AppSidebar = () => {
               title="Modifica il profilo"
             >
               <Avatar className="h-12 w-12 ring-2 ring-blue-200/50 shadow-md transition">
-                <AvatarImage src={user.user_metadata?.avatar_url || undefined} alt="Avatar" />
+                <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url || undefined} alt="Avatar" />
                 <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-200 text-blue-700 font-semibold">
-                  {user.user_metadata?.first_name?.[0] 
+                  {profile?.first_name?.[0] 
+                    || user.user_metadata?.first_name?.[0] 
                     || user.email?.[0]?.toUpperCase()
                     || <User className="h-5 w-5" />}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
                 <p className="text-sm font-medium text-slate-900 truncate">
-                  {user.user_metadata?.first_name || 'Utente'}
+                  {profile?.first_name || user.user_metadata?.first_name || 'Utente'}
                 </p>
                 <p className="text-xs text-slate-500">Vai al profilo</p>
               </div>
