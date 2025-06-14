@@ -134,27 +134,21 @@ const Footer = () => {
         {/* Social Media e Logo */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-700">
           <div className="flex space-x-3 mb-4 md:mb-0">
-            <div className="w-10 h-10 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden" style={{ backgroundColor: '#0F172A' }}>
-              <img 
-                src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
-                alt="Instagram" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="w-10 h-10 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden" style={{ backgroundColor: '#0F172A' }}>
-              <img 
-                src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
-                alt="Facebook" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="w-10 h-10 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden" style={{ backgroundColor: '#0F172A' }}>
-              <img 
-                src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
-                alt="LinkedIn" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
+            <img 
+              src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
+              alt="Instagram" 
+              className="w-10 h-10 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
+            />
+            <img 
+              src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
+              alt="Facebook" 
+              className="w-10 h-10 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
+            />
+            <img 
+              src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
+              alt="LinkedIn" 
+              className="w-10 h-10 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
+            />
           </div>
 
           <div className="flex items-center space-x-2">
