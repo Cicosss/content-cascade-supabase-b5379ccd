@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { CreditCard, Bus, Ticket, Percent } from 'lucide-react';
 
 const GuestCard = () => {
   return (
-    <Card className="p-6 sunset-gradient text-white">
+    <Card className="p-6 brand-blue-gradient text-white">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
           <CreditCard className="h-6 w-6 mr-3" />
