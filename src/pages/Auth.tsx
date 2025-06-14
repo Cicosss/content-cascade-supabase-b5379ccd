@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -216,9 +215,7 @@ const Auth = () => {
         <Card className="shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
           <CardHeader className="text-center pb-6">
             <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-500 via-orange-400 to-yellow-300 rounded-2xl flex items-center justify-center shadow-lg p-2">
-                <MiaRomagnaLogo width={48} height={48} />
-              </div>
+              <MiaRomagnaLogo width={80} height={80} />
             </div>
             <CardTitle className="text-2xl font-bold text-slate-900">
               Mia Romagna
