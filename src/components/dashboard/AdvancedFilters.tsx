@@ -83,7 +83,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
     <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/95 backdrop-blur-sm">
       <div className="flex items-center mb-8">
         <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mr-4">
-          <Filter className="h-6 w-6 text-white" />
+          <Filter className="h-6 w-6 text-white" strokeWidth={1.5} fill="none" />
         </div>
         <div>
           <h2 className="text-3xl font-bold text-slate-900">
