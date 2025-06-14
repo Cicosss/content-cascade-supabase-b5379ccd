@@ -54,17 +54,17 @@ const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, chil
     <section className="py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="typography-h2 text-gray-900">{title}</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
           {subtitle && (
-            <p className="text-gray-600 mt-1 typography-body">{subtitle}</p>
+            <p className="text-gray-600 mt-1">{subtitle}</p>
           )}
         </div>
         <div className="flex space-x-2">
           <Button variant="outline" size="icon" className="rounded-full">
-            <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
+            <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button variant="outline" size="icon" className="rounded-full">
-            <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
+            <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
