@@ -35,17 +35,17 @@ const PartnerBenefits = () => {
           {benefits.map((benefit, index) => {
             const IconComponent = benefit.icon;
             return (
-              <Card key={index} className="p-8 text-center hover:shadow-xl transition-all duration-300 border-0 bg-white">
+              <Card key={index} className="p-8 hover:shadow-xl transition-all duration-300 border-0 bg-white">
                 <CardContent className="p-0">
                   <div className="flex justify-center mb-6">
                     <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center">
                       <IconComponent className="h-8 w-8 text-white" strokeWidth={1.5} />
                     </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-4">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4 text-left">
                     {benefit.title}
                   </h3>
-                  <p className="text-slate-600 leading-relaxed">
+                  <p className="text-slate-600 leading-relaxed text-left">
                     {benefit.description}
                   </p>
                 </CardContent>
