@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Youtube, Twitter } from 'lucide-react';
@@ -135,32 +136,32 @@ const Footer = () => {
         {/* Social Media e Logo */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-700">
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <div className="w-6 h-6 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <div className="w-8 h-8 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
               <img 
                 src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
                 alt="Progetto-senza-titolo-1" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="w-6 h-6 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
-              <img 
-                src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
-                alt="Progetto-senza-titolo" 
-                className="w-full h-full object-cover" 
-              />
-            </div>
-            <div className="w-6 h-6 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <div className="w-8 h-8 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
               <img 
                 src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
                 alt="Progetto-senza-titolo-2" 
                 className="w-full h-full object-cover" 
               />
             </div>
+            <div className="w-8 h-8 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+              <img 
+                src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
+                alt="Progetto-senza-titolo" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
             <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Twitter className="h-6 w-6" />
+              <Twitter className="h-8 w-8" />
             </a>
             <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Youtube className="h-6 w-6" />
+              <Youtube className="h-8 w-8" />
             </a>
           </div>
 
@@ -180,3 +181,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
