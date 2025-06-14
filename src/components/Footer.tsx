@@ -1,6 +1,3 @@
-
-
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
@@ -136,21 +133,21 @@ const Footer = () => {
         {/* Social Media e Logo */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-700">
           <div className="flex space-x-3 mb-4 md:mb-0">
-            <div className="w-10 h-10 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
               <img 
                 src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
                 alt="Instagram" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="w-10 h-10 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
               <img 
                 src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
                 alt="Facebook" 
                 className="w-full h-full object-cover" 
               />
             </div>
-            <div className="w-10 h-10 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <div className="w-10 h-10 rounded-xl bg-slate-900 shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
               <img 
                 src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
                 alt="LinkedIn" 
@@ -175,5 +172,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
