@@ -70,7 +70,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
       <Button 
         type="submit" 
-        className="w-full bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white font-semibold"
+        className="w-full bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-700 hover:to-orange-500 text-white font-semibold"
         disabled={isSubmitting}
       >
         {isSubmitting ? 'Accesso in corso...' : 'Accedi'}
