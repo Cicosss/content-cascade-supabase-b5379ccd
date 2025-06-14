@@ -72,9 +72,13 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
         onToggle={setShowAdvanced} 
       />
 
-      {/* Filtri Avanzati - Condizionali */}
-      {showAdvanced && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Filtri Avanzati - Con animazione slide-down */}
+      <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        showAdvanced 
+          ? 'max-h-96 opacity-100' 
+          : 'max-h-0 opacity-0'
+      }`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
           <TimeSlotFilter 
             selectedSlots={filters.timeSlots || []} 
             onSlotsChange={(slots) => updateFilter('timeSlots', slots)} 
@@ -90,7 +94,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
             onPreferencesChange={(preferences) => updateFilter('specialPreferences', preferences)} 
           />
         </div>
-      )}
+      </div>
     </Card>
   );
 };

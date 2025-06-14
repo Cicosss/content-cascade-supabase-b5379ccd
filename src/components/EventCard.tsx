@@ -33,7 +33,7 @@ const EventCard: React.FC<EventCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden cursor-pointer group relative">
+    <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
