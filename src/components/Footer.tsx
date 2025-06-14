@@ -140,8 +140,8 @@ const Footer = () => {
               className="w-10 h-10 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
             />
             <img 
-              src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
-              alt="Facebook" 
+              src="https://i.ibb.co/3ythJs2P/Progetto-senza-titolo-4.png" 
+              alt="Progetto-senza-titolo-4" 
               className="w-10 h-10 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
             />
             <img 
