@@ -6,7 +6,7 @@ import MiaRomagnaLogo from '@/components/MiaRomagnaLogo';
 export const AuthHeader = () => {
   return (
     <CardHeader className="text-center pb-6">
-      <div className="flex justify-center items-center mb-6">
+      <div className="flex justify-center items-center mb-3">
         <MiaRomagnaLogo width={270} height={270} />
       </div>
       <div className="flex flex-col items-center space-y-3">
