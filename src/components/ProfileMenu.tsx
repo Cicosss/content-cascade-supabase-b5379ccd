@@ -30,46 +30,46 @@ const ProfileMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button 
-          variant="outline" 
-          className="flex items-center space-x-2 px-4 py-2 bg-white hover:bg-emerald-50 border-emerald-200 hover:border-emerald-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+          variant="ghost" 
+          className="flex items-center space-x-2 px-3 py-2 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600/50 hover:border-slate-500/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-slate-300 hover:text-white"
         >
           <Avatar className="w-8 h-8">
             <AvatarImage src={profile?.avatar_url || undefined} alt="Avatar" />
-            <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-600">
-              <User className="h-4 w-4 text-white" />
+            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+              <User className="h-4 w-4" />
             </AvatarFallback>
           </Avatar>
-          <span className="hidden sm:block font-medium text-gray-700">
+          <span className="hidden sm:block font-medium">
             {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 rounded-xl border-gray-200/50 shadow-lg">
+      <DropdownMenuContent align="end" className="w-48 rounded-xl border-slate-600 bg-slate-800/98 backdrop-blur-sm shadow-lg">
         <DropdownMenuItem 
           onClick={() => navigate('/dashboard')}
-          className="rounded-lg hover:bg-blue-50 cursor-pointer"
+          className="rounded-lg hover:bg-slate-700 cursor-pointer text-white"
         >
-          <LayoutDashboard className="h-4 w-4 mr-3 text-blue-600" />
+          <LayoutDashboard className="h-4 w-4 mr-3 text-blue-400" />
           Dashboard
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate('/profile')}
-          className="rounded-lg hover:bg-emerald-50 cursor-pointer"
+          className="rounded-lg hover:bg-slate-700 cursor-pointer text-white"
         >
-          <Settings className="h-4 w-4 mr-3 text-emerald-600" />
+          <Settings className="h-4 w-4 mr-3 text-emerald-400" />
           Il Mio Profilo
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate('/favorites')}
-          className="rounded-lg hover:bg-emerald-50 cursor-pointer"
+          className="rounded-lg hover:bg-slate-700 cursor-pointer text-white"
         >
-          <Heart className="h-4 w-4 mr-3 text-red-500" />
+          <Heart className="h-4 w-4 mr-3 text-red-400" />
           Preferiti
         </DropdownMenuItem>
-        <DropdownMenuSeparator className="bg-gray-200/50" />
+        <DropdownMenuSeparator className="bg-slate-600/50" />
         <DropdownMenuItem 
           onClick={handleSignOut}
-          className="rounded-lg hover:bg-red-50 text-red-600 cursor-pointer"
+          className="rounded-lg hover:bg-red-900/30 text-red-400 hover:text-red-300 cursor-pointer"
         >
           <LogOut className="h-4 w-4 mr-3" />
           Esci
