@@ -18,7 +18,7 @@ const PartnerHero = () => {
       }}
     >
       <div className="container mx-auto px-4 text-center text-white">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6">
+        <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
           Diventa Partner della Romagna Autentica
         </h1>
         <h2 className="text-2xl md:text-3xl mb-8 font-light max-w-4xl mx-auto">
