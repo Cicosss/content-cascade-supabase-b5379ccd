@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import { Card } from '@/components/ui/card';
@@ -140,11 +139,6 @@ const Family = () => {
       <div className="bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 text-white py-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="flex justify-center mb-6">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
-                <Users className="h-12 w-12 text-white" />
-              </div>
-            </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               👨‍👩‍👧‍👦 Sezione Family
             </h1>
