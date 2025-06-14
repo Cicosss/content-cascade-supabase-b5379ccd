@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -258,8 +259,12 @@ const AppSidebar = () => {
 
         {/* Social Icons */}
         <div className="flex space-x-3 mt-4 justify-center group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:space-x-0 group-data-[collapsible=icon]:space-y-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer backdrop-blur-sm">
-            <span className="text-white text-sm font-bold">I</span>
+          <div className="w-8 h-8 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+            <img 
+              src="https://i.ibb.co/TMd2cxGZ/1.png" 
+              alt="1" 
+              className="w-full h-full object-cover" 
+            />
           </div>
           <div className="w-8 h-8 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
             <img 
@@ -278,3 +283,4 @@ const AppSidebar = () => {
 };
 
 export default AppSidebar;
+
