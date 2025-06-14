@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Star, Clock, Users, Calendar, MapPin, Euro, Heart, Trash2 } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
+import EmptyState from './EmptyState';
 
 const FavoritesCarousel = () => {
   const { favorites, loading, removeFromFavorites } = useFavorites();
@@ -21,15 +21,13 @@ const FavoritesCarousel = () => {
 
   if (favorites.length === 0) {
     return (
-      <Card className="p-8 text-center bg-gradient-to-br from-slate-50 to-blue-50 border-dashed border-2 border-slate-200">
-        <Heart className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-        <h3 className="typography-h3 text-gray-900 mb-2">
-          Nessun preferito ancora
-        </h3>
-        <p className="text-gray-600 typography-body">
-          Inizia a esplorare e salva le tue esperienze preferite usando la stellina nelle schede!
-        </p>
-      </Card>
+      <EmptyState
+        icon={Heart}
+        title="Nessun preferito ancora"
+        description="Inizia a esplorare la Romagna e salva le tue esperienze preferite! Usa la stellina nelle schede per aggiungerle ai tuoi preferiti."
+        actionLabel="Esplora Esperienze"
+        onAction={() => window.location.href = '/experiences'}
+      />
     );
   }
 

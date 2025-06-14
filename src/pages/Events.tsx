@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
+import EmptyState from '@/components/EmptyState';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Calendar, Clock, MapPin, Search, Star } from 'lucide-react';
+import { Calendar, Clock, MapPin, Search, Star, CalendarX, RotateCcw } from 'lucide-react';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -48,22 +49,12 @@ const Events = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('it-IT', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
   };
 
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('it-IT', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
+  const hasActiveFilters = searchTerm.trim() !== '' || selectedCategory !== 'all';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -112,6 +103,27 @@ const Events = () => {
               <Card key={i} className="h-80 bg-gray-200 animate-pulse" />
             ))}
           </div>
+        ) : filteredEvents.length === 0 ? (
+          events.length === 0 ? (
+            <EmptyState
+              icon={CalendarX}
+              title="Nessun evento in programma"
+              description="Al momento non ci sono eventi futuri programmati. Controlla di nuovo presto per nuovi appuntamenti!"
+              actionLabel="Torna alla Home"
+              onAction={() => window.location.href = '/'}
+            />
+          ) : (
+            <EmptyState
+              icon={Search}
+              title="Nessun evento trovato"
+              description={hasActiveFilters 
+                ? "Non ci sono eventi che corrispondono ai tuoi filtri. Prova ad allargare la ricerca per non perdere nessun appuntamento!"
+                : "Non sono stati trovati eventi corrispondenti alla tua ricerca."
+              }
+              actionLabel={hasActiveFilters ? "Resetta i filtri" : "Vedi tutti gli eventi"}
+              onAction={handleResetFilters}
+            />
+          )
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEvents.map((event) => (
@@ -158,17 +170,6 @@ const Events = () => {
               </Card>
             ))}
           </div>
-        )}
-
-        {filteredEvents.length === 0 && !loading && (
-          <Card className="p-8 text-center">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Nessun evento trovato
-            </h3>
-            <p className="text-gray-600">
-              Prova a modificare i filtri di ricerca
-            </p>
-          </Card>
         )}
       </div>
     </div>

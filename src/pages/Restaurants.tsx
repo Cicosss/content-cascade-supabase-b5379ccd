@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
+import EmptyState from '@/components/EmptyState';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Star, MapPin, Search, Phone, Globe } from 'lucide-react';
+import { Star, MapPin, Search, Phone, Globe, ChefHat, RotateCcw } from 'lucide-react';
 
 const Restaurants = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -47,6 +48,13 @@ const Restaurants = () => {
     const matchesCategory = selectedCategory === 'all' || restaurant.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
+  };
+
+  const hasActiveFilters = searchTerm.trim() !== '' || selectedCategory !== 'all';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -95,6 +103,27 @@ const Restaurants = () => {
               <Card key={i} className="h-80 bg-gray-200 animate-pulse" />
             ))}
           </div>
+        ) : filteredRestaurants.length === 0 ? (
+          restaurants.length === 0 ? (
+            <EmptyState
+              icon={ChefHat}
+              title="Nessun ristorante disponibile"
+              description="Al momento non ci sono ristoranti nel nostro database. Stiamo raccogliendo i migliori locali della Romagna!"
+              actionLabel="Torna alla Home"
+              onAction={() => window.location.href = '/'}
+            />
+          ) : (
+            <EmptyState
+              icon={Search}
+              title="Nessun ristorante trovato"
+              description={hasActiveFilters 
+                ? "Non ci sono ristoranti che corrispondono ai tuoi filtri. Prova ad allargare la ricerca per scoprire nuovi sapori!"
+                : "Non sono stati trovati ristoranti corrispondenti alla tua ricerca."
+              }
+              actionLabel={hasActiveFilters ? "Resetta i filtri" : "Esplora tutti"}
+              onAction={handleResetFilters}
+            />
+          )
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRestaurants.map((restaurant) => (
@@ -157,17 +186,6 @@ const Restaurants = () => {
               </Card>
             ))}
           </div>
-        )}
-
-        {filteredRestaurants.length === 0 && !loading && (
-          <Card className="p-8 text-center">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Nessun ristorante trovato
-            </h3>
-            <p className="text-gray-600">
-              Prova a modificare i filtri di ricerca
-            </p>
-          </Card>
         )}
       </div>
     </div>

@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
+import EmptyState from '@/components/EmptyState';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Star, Clock, Users, MapPin, Search, Filter } from 'lucide-react';
+import { Star, Clock, Users, MapPin, Search, Filter, RotateCcw, Compass } from 'lucide-react';
 
 const Experiences = () => {
   const [experiences, setExperiences] = useState([]);
@@ -47,6 +48,13 @@ const Experiences = () => {
     const matchesCategory = selectedCategory === 'all' || exp.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handleResetFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
+  };
+
+  const hasActiveFilters = searchTerm.trim() !== '' || selectedCategory !== 'all';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -95,6 +103,27 @@ const Experiences = () => {
               <Card key={i} className="h-80 bg-gray-200 animate-pulse" />
             ))}
           </div>
+        ) : filteredExperiences.length === 0 ? (
+          experiences.length === 0 ? (
+            <EmptyState
+              icon={Compass}
+              title="Nessuna esperienza disponibile"
+              description="Al momento non ci sono esperienze nel nostro database. Stiamo lavorando per aggiungere contenuti emozionanti!"
+              actionLabel="Torna alla Home"
+              onAction={() => window.location.href = '/'}
+            />
+          ) : (
+            <EmptyState
+              icon={Search}
+              title="Nessuna esperienza trovata"
+              description={hasActiveFilters 
+                ? "Non ci sono esperienze che corrispondono ai tuoi filtri. Prova ad allargare la ricerca per scoprire nuove opportunità!"
+                : "Non sono state trovate esperienze corrispondenti alla tua ricerca."
+              }
+              actionLabel={hasActiveFilters ? "Resetta i filtri" : "Esplora tutte"}
+              onAction={handleResetFilters}
+            />
+          )
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredExperiences.map((experience) => (
@@ -139,17 +168,6 @@ const Experiences = () => {
               </Card>
             ))}
           </div>
-        )}
-
-        {filteredExperiences.length === 0 && !loading && (
-          <Card className="p-8 text-center">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Nessuna esperienza trovata
-            </h3>
-            <p className="text-gray-600">
-              Prova a modificare i filtri di ricerca
-            </p>
-          </Card>
         )}
       </div>
     </div>
