@@ -259,8 +259,8 @@ const AppSidebar = () => {
         <div className="flex space-x-3 mt-4 justify-center group-data-[collapsible=icon]:flex-col group-data-[collapsible=icon]:space-x-0 group-data-[collapsible=icon]:space-y-2">
           <div className="w-8 h-8 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
             <img 
-              src="https://i.ibb.co/TMd2cxGZ/1.png" 
-              alt="1" 
+              src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
+              alt="Progetto-senza-titolo-1" 
               className="w-full h-full object-cover" 
             />
           </div>
