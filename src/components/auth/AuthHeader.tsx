@@ -7,7 +7,7 @@ export const AuthHeader = () => {
   return (
     <CardHeader className="text-center pb-6">
       <div className="flex justify-center items-center mb-6">
-        <MiaRomagnaLogo width={180} height={180} />
+        <MiaRomagnaLogo width={270} height={270} />
       </div>
       <div className="flex flex-col items-center space-y-3">
         <div className="w-20 h-px" style={{ backgroundColor: '#ffdd0e' }}></div>
