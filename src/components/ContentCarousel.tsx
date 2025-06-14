@@ -54,9 +54,9 @@ const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, chil
     <section className="py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+          <h2 className="typography-h2 text-gray-900">{title}</h2>
           {subtitle && (
-            <p className="text-gray-600 mt-1">{subtitle}</p>
+            <p className="text-gray-600 mt-1 typography-body">{subtitle}</p>
           )}
         </div>
         <div className="flex space-x-2">

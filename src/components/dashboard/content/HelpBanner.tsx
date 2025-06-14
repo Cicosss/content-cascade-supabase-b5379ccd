@@ -9,9 +9,9 @@ const HelpBanner: React.FC = () => {
     <Card className="p-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-3xl border-0 shadow-xl">
       <div className="flex items-center mb-4">
         <HelpCircle className="h-8 w-8 mr-3" strokeWidth={1.5} />
-        <h3 className="text-2xl font-bold">Hai bisogno d'aiuto?</h3>
+        <h3 className="typography-h2">Hai bisogno d'aiuto?</h3>
       </div>
-      <p className="text-green-100 mb-6 text-lg">
+      <p className="text-green-100 mb-6 typography-body">
         Il nostro team di esperti locali è sempre disponibile per consigli personalizzati
       </p>
       <Button className="bg-white text-green-600 hover:bg-green-50 font-semibold px-8 py-3 rounded-xl">

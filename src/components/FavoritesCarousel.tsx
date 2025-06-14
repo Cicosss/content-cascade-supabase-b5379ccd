@@ -23,10 +23,10 @@ const FavoritesCarousel = () => {
     return (
       <Card className="p-8 text-center bg-gradient-to-br from-slate-50 to-blue-50 border-dashed border-2 border-slate-200">
         <Heart className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
+        <h3 className="typography-h3 text-gray-900 mb-2">
           Nessun preferito ancora
         </h3>
-        <p className="text-gray-600">
+        <p className="text-gray-600 typography-body">
           Inizia a esplorare e salva le tue esperienze preferite usando la stellina nelle schede!
         </p>
       </Card>
@@ -49,7 +49,7 @@ const FavoritesCarousel = () => {
             item_type === 'experience' ? 'from-blue-400 to-green-400' :
             'from-orange-400 to-red-400'
           }`}>
-            <span className="text-white text-sm">{item_data.image}</span>
+            <span className="text-white typography-body-small">{item_data.image}</span>
           </div>
           <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900 rounded-xl">
             {item_data.category || item_data.cuisine}
@@ -74,7 +74,7 @@ const FavoritesCarousel = () => {
           
           {item_type === 'restaurant' && (
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between typography-body-small">
                 <div className="flex items-center">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
                   <span className="font-medium">{item_data.rating}</span>
@@ -84,10 +84,10 @@ const FavoritesCarousel = () => {
                   {item_data.priceRange}
                 </div>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="typography-body-small text-gray-600">
                 {item_data.specialty}
               </p>
-              <div className="flex items-center text-sm text-gray-500">
+              <div className="flex items-center typography-body-small text-gray-500">
                 <MapPin className="h-4 w-4 mr-1" />
                 {item_data.location}
               </div>
@@ -96,11 +96,11 @@ const FavoritesCarousel = () => {
           
           {item_type === 'experience' && (
             <div className="space-y-2">
-              <div className="flex items-center text-sm">
+              <div className="flex items-center typography-body-small">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
                 <span className="font-medium">{item_data.rating}</span>
               </div>
-              <div className="flex items-center text-sm text-gray-600 space-x-4">
+              <div className="flex items-center typography-body-small text-gray-600 space-x-4">
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
                   {item_data.duration}
@@ -117,7 +117,7 @@ const FavoritesCarousel = () => {
           )}
           
           {item_type === 'event' && (
-            <div className="space-y-2 text-sm text-gray-600">
+            <div className="space-y-2 typography-body-small text-gray-600">
               <div className="flex items-center">
                 <Calendar className="h-4 w-4 mr-2" />
                 {item_data.date}

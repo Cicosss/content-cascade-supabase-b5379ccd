@@ -78,12 +78,12 @@ const AppFeaturesSection = () => {
       <div className="container mx-auto px-4">
         {/* Header Section migliorata */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-500 to-orange-400 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-500 to-orange-400 text-white px-6 py-2 rounded-full typography-body-small font-semibold mb-6">
             <Smartphone className="h-4 w-4" />
             <span>Tecnologia All'Avanguardia</span>
           </div>
-          <h2 className="text-5xl font-bold text-slate-900 mb-6">I Punti di Forza dell'App</h2>
-          <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+          <h2 className="typography-h1 text-slate-900 mb-6">I Punti di Forza dell'App</h2>
+          <p className="typography-body text-slate-600 max-w-4xl mx-auto leading-relaxed">
             Un compagno di viaggio intelligente che ti offre accesso privilegiato alle autentiche meraviglie della Romagna, 
             con tecnologie avanzate e il supporto di esperti locali per un'esperienza indimenticabile
           </p>
@@ -98,8 +98,8 @@ const AppFeaturesSection = () => {
                   <feature.icon className="h-8 w-8 text-white" />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="font-bold text-xl text-slate-900 group-hover:text-slate-700 transition-colors">{feature.title}</h3>
-                  <p className="text-slate-600 text-base leading-relaxed">{feature.description}</p>
+                  <h3 className="typography-h3 text-slate-900 group-hover:text-slate-700 transition-colors">{feature.title}</h3>
+                  <p className="text-slate-600 typography-body leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             </Card>
@@ -112,7 +112,7 @@ const AppFeaturesSection = () => {
             <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300 bg-slate-50 border-slate-200">
               <feature.icon className="h-10 w-10 mx-auto mb-4 text-slate-600" />
               <h4 className="font-semibold text-slate-900 mb-2">{feature.title}</h4>
-              <p className="text-sm text-slate-600">{feature.description}</p>
+              <p className="typography-body-small text-slate-600">{feature.description}</p>
             </Card>
           ))}
         </div>
@@ -127,8 +127,8 @@ const AppFeaturesSection = () => {
                   <span>100% Gratuita per Tutti</span>
                 </div>
               </div>
-              <h3 className="text-3xl font-bold mb-4">Disponibile su Android & iOS</h3>
-              <p className="text-xl text-slate-200 mb-8">
+              <h3 className="typography-h2 mb-4">Disponibile su Android & iOS</h3>
+              <p className="text-slate-200 mb-8 typography-body">
                 Unisciti a migliaia di esploratori che hanno già scoperto i segreti della Romagna
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -141,7 +141,7 @@ const AppFeaturesSection = () => {
                   Scarica per iOS
                 </Button>
               </div>
-              <p className="text-sm text-slate-300 mt-4">
+              <p className="typography-body-small text-slate-300 mt-4">
                 * Nessuna registrazione richiesta • Aggiornamenti gratuiti a vita • Supporto clienti 24/7
               </p>
             </div>

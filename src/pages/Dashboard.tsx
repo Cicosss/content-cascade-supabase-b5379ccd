@@ -47,10 +47,10 @@ const Dashboard = () => {
           <div className="container mx-auto px-4">
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
-                <h1 className="text-3xl font-bold mb-2">
+                <h1 className="typography-h1 mb-2">
                   Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}! 👋
                 </h1>
-                <p className="text-slate-200 text-lg">
+                <p className="text-slate-200 typography-body">
                   Iniziamo? Filtra le esperienze o cerca sulla mappa
                 </p>
               </div>
@@ -64,7 +64,7 @@ const Dashboard = () => {
               <Card className="h-[600px] p-6 rounded-3xl border-0 shadow-xl">
                 <div className="flex items-center mb-4">
                   <MapPin className="h-8 w-8 text-red-600 mr-3" strokeWidth={1.5} />
-                  <h2 className="text-2xl font-bold text-slate-900">
+                  <h2 className="typography-h2 text-slate-900">
                     Mappa Interattiva
                   </h2>
                 </div>

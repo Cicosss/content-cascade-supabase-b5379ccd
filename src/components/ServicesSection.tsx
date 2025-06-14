@@ -16,8 +16,8 @@ const ServicesSection = () => {
               <span>Scarica l'App Mia Romagna</span>
             </div>
           </div>
-          <h3 className="text-3xl font-bold mb-4">Porta la Romagna sempre con te</h3>
-          <p className="text-xl text-slate-200 mb-8">
+          <h3 className="typography-h2 mb-4">Porta la Romagna sempre con te</h3>
+          <p className="text-slate-200 mb-8 typography-body">
             Accesso offline, notifiche in tempo reale e funzionalità GPS avanzate
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

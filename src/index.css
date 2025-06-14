@@ -91,6 +91,33 @@
   }
 }
 
+/* Scala tipografica coerente */
+@layer utilities {
+  .typography-h1 {
+    @apply text-5xl font-bold;
+  }
+  
+  .typography-h2 {
+    @apply text-3xl font-semibold;
+  }
+  
+  .typography-h3 {
+    @apply text-2xl font-semibold;
+  }
+  
+  .typography-body {
+    @apply text-base font-normal;
+  }
+  
+  .typography-body-small {
+    @apply text-sm font-normal;
+  }
+  
+  .typography-caption {
+    @apply text-xs font-medium;
+  }
+}
+
 .romagna-gradient {
   background: linear-gradient(135deg, hsl(var(--romagna-blue)) 0%, hsl(var(--romagna-green)) 100%);
 }
