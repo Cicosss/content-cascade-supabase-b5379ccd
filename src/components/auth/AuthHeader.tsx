@@ -9,9 +9,13 @@ export const AuthHeader = () => {
       <div className="flex justify-center items-center mb-6">
         <MiaRomagnaLogo width={180} height={180} />
       </div>
-      <CardDescription className="text-slate-600">
-        Il territorio è tra le tue mani
-      </CardDescription>
+      <div className="flex flex-col items-center space-y-3">
+        <div className="w-20 h-px bg-blue-900"></div>
+        <CardDescription className="text-blue-900 uppercase tracking-wider font-medium">
+          Il territorio è tra le tue mani
+        </CardDescription>
+        <div className="w-20 h-px bg-blue-900"></div>
+      </div>
     </CardHeader>
   );
 };
