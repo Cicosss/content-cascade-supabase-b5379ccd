@@ -135,7 +135,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-700">
           <div className="flex space-x-3 mb-4 md:mb-0">
             <img 
-              src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
+              src="https://i.ibb.co/wZvxhPf8/Progetto-senza-titolo-3.png" 
               alt="Instagram" 
               className="w-10 h-10 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
             />
