@@ -83,8 +83,7 @@ const Header = () => {
               <div className="flex items-center space-x-2">
                 <Button 
                   onClick={() => navigate('/auth?mode=login')}
-                  variant="outline"
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white text-sm px-4 py-2 h-9 rounded-lg"
+                  className="brand-blue-gradient text-white hover:from-blue-800 hover:to-blue-600 text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-medium"
                 >
                   <User className="h-4 w-4 mr-2" />
                   Accedi Gratis
@@ -153,8 +152,7 @@ const Header = () => {
                     navigate('/auth?mode=login');
                     setIsMobileMenuOpen(false);
                   }}
-                  variant="outline"
-                  className="border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:text-white text-sm w-full"
+                  className="brand-blue-gradient text-white hover:from-blue-800 hover:to-blue-600 text-sm w-full shadow-md hover:shadow-lg transition-all duration-300 font-medium"
                 >
                   <User className="h-4 w-4 mr-2" />
                   Accedi Gratis
