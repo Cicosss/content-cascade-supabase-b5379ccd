@@ -17,6 +17,7 @@ import Events from "./pages/Events";
 import Experiences from "./pages/Experiences";
 import Itineraries from "./pages/Itineraries";
 import Family from "./pages/Family";
+import Partner from "./pages/Partner";
 import TerritoryPromoter from "./pages/TerritoryPromoter";
 import AdminModerationPage from "./pages/AdminModerationPage";
 import Webcams from "./pages/Webcams";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/experiences" element={<Experiences />} />
               <Route path="/itineraries" element={<Itineraries />} />
               <Route path="/family" element={<Family />} />
+              <Route path="/partner" element={<Partner />} />
               <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
               <Route path="/admin/moderazione" element={<AdminModerationPage />} />
               <Route path="/webcams" element={<Webcams />} />

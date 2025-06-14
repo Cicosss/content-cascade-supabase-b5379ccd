@@ -66,6 +66,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/partner" className="text-slate-400 hover:text-white transition-colors text-sm">
+                  Sei un'attività?
+                </Link>
+              </li>
+              <li>
                 <Link to="/webcams" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Webcam Live
                 </Link>
