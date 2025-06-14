@@ -222,7 +222,7 @@ const PartnerContact = () => {
                     <Button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-orange-400 to-yellow-400 hover:from-orange-500 hover:to-yellow-500 text-slate-900 text-lg py-4 h-auto rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-bold"
+                      className="w-full bg-orange-500 hover:bg-orange-600 text-white text-lg py-4 h-auto rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-bold"
                     >
                       {isSubmitting ? 'Invio in corso...' : 'Invia la Richiesta'}
                     </Button>
