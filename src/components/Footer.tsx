@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Youtube, Twitter } from 'lucide-react';
+import { Youtube, Twitter } from 'lucide-react';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const Footer = () => {
@@ -134,23 +134,33 @@ const Footer = () => {
 
         {/* Social Media e Logo */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-slate-700">
-          <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Instagram className="h-6 w-6" />
+          <div className="flex space-x-3 mb-4 md:mb-0">
+            <div className="w-10 h-10 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+              <img 
+                src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
+                alt="Instagram" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="w-10 h-10 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+              <img 
+                src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
+                alt="Facebook" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <div className="w-10 h-10 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
+              <img 
+                src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
+                alt="LinkedIn" 
+                className="w-full h-full object-cover" 
+              />
+            </div>
+            <a href="#" className="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition-colors duration-300 hover:scale-105 transform shadow-lg shadow-slate-500/25 hover:shadow-slate-500/40">
+              <Twitter className="h-5 w-5 text-white" />
             </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.042-3.441.219-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.888-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.357-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.013C24.007 5.367 18.641.001.017 0z"/>
-              </svg>
-            </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Facebook className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Twitter className="h-6 w-6" />
-            </a>
-            <a href="#" className="text-slate-400 hover:text-white transition-colors">
-              <Youtube className="h-6 w-6" />
+            <a href="#" className="w-10 h-10 rounded-xl bg-red-600 hover:bg-red-500 flex items-center justify-center transition-colors duration-300 hover:scale-105 transform shadow-lg shadow-red-500/25 hover:shadow-red-500/40">
+              <Youtube className="h-5 w-5 text-white" />
             </a>
           </div>
 
