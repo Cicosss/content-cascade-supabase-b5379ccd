@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -206,15 +205,15 @@ const Webcams = () => {
         <div className="container mx-auto px-6 py-12">
           {/* Category Filter */}
           <div className="flex justify-center mb-8">
-            <div className="flex flex-wrap gap-2 bg-white/60 backdrop-blur-sm p-2 rounded-xl border border-slate-200/60 shadow-sm">
+            <div className="flex flex-wrap gap-2 bg-white/60 backdrop-blur-sm p-3 rounded-xl border border-slate-300/70 shadow-sm">
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`px-8 py-3 rounded-lg font-medium transition-all duration-200 border-2 ${
                     selectedCategory === category
-                      ? 'bg-blue-500 text-white shadow-md'
-                      : 'text-slate-600 hover:bg-white/80 hover:text-slate-900'
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-lg hover:bg-slate-800'
+                      : 'text-slate-700 bg-white/80 border-slate-300 hover:bg-white hover:border-slate-400 hover:text-slate-900'
                   }`}
                 >
                   {category}
