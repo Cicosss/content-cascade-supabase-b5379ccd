@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -236,9 +235,9 @@ const Webcams = () => {
           {/* Webcams Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
             {filteredWebcams.map((webcam) => (
-              <Card key={webcam.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm border-slate-200/60 group">
+              <Card key={webcam.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-slate-900 backdrop-blur-sm border-slate-700 group">
                 {/* Webcam Video Container */}
-                <div className="aspect-video relative overflow-hidden bg-slate-100">
+                <div className="aspect-video relative overflow-hidden bg-slate-800">
                   {/* Placeholder for HTML code - sostituirai questo con il tuo codice */}
                   <div 
                     dangerouslySetInnerHTML={{ __html: webcam.htmlCode }}
@@ -252,7 +251,7 @@ const Webcams = () => {
                   </div>
 
                   {/* Category Badge - Unified Style with Brand Colors */}
-                  <div className="absolute top-3 right-3 bg-slate-900 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
+                  <div className="absolute top-3 right-3 bg-white text-slate-900 px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
                     {webcam.category}
                   </div>
 
@@ -265,25 +264,25 @@ const Webcams = () => {
 
                 {/* Card Content */}
                 <div className="p-5">
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
                     {webcam.name}
                   </h3>
                   
-                  <div className="flex items-start gap-2 text-sm text-slate-600 mb-3">
+                  <div className="flex items-start gap-2 text-sm text-slate-300 mb-3">
                     <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-slate-400" />
                     <span className="leading-relaxed">{webcam.location}</span>
                   </div>
 
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  <p className="text-sm text-slate-300 leading-relaxed mb-4">
                     {webcam.description}
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-xs text-slate-500">
+                    <div className="flex items-center gap-1 text-xs text-slate-400">
                       <Clock className="h-3 w-3" />
                       Aggiornato ora
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-slate-500">
+                    <div className="flex items-center gap-1 text-xs text-slate-400">
                       <Eye className="h-3 w-3" />
                       {webcam.viewers} spettatori
                     </div>
