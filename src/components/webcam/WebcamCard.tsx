@@ -18,22 +18,21 @@ interface WebcamCardProps {
 
 const WebcamCard: React.FC<WebcamCardProps> = ({ webcam }) => {
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-slate-900 backdrop-blur-sm group !border-0" style={{ border: 'none' }}>
+    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-slate-900 backdrop-blur-sm group !border-0">
       {/* Webcam Video Container */}
       <div className="aspect-video relative overflow-hidden bg-slate-800">
-        {/* Placeholder for HTML code - sostituirai questo con il tuo codice */}
         <div 
           dangerouslySetInnerHTML={{ __html: webcam.htmlCode }}
           className="w-full h-full"
         />
         
-        {/* Live Badge - Unified Style */}
+        {/* Live Badge */}
         <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
           <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
           LIVE
         </div>
 
-        {/* Category Badge - Unified Style with Brand Colors */}
+        {/* Category Badge */}
         <div className="absolute top-3 right-3 bg-white text-slate-900 px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
           {webcam.category}
         </div>
