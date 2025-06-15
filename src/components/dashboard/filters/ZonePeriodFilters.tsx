@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,6 +8,7 @@ import { useCalendarLogic } from "@/hooks/useCalendarLogic";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import CustomCalendar from "./CustomCalendar";
 
 interface ZonePeriodFiltersProps {
   zone: string;
@@ -95,23 +95,28 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
     onDateRangeChange: onPeriodChange,
   });
 
-  // Stato locale per i mesi visualizzati (sinistra/destra)
   const today = new Date();
-  const [calendarBase, setCalendarBase] = useState<{
+  const [calendarBase, setCalendarBase] = React.useState<{
     leftMonth: number;
     leftYear: number;
   }>(() => {
-    let m = selectedDateRange?.from ? selectedDateRange.from.getMonth() : today.getMonth();
-    let y = selectedDateRange?.from ? selectedDateRange.from.getFullYear() : today.getFullYear();
+    let m = selectedDateRange?.from
+      ? selectedDateRange.from.getMonth()
+      : today.getMonth();
+    let y = selectedDateRange?.from
+      ? selectedDateRange.from.getFullYear()
+      : today.getFullYear();
     return { leftMonth: m, leftYear: y };
   });
 
-  // Aggiorna il mese a sinistra e quello a destra verrà sempre il mese successivo
   function goToPreviousMonth() {
     setCalendarBase((prev) => {
       let month = prev.leftMonth - 1;
       let year = prev.leftYear;
-      if (month < 0) { month = 11; year -= 1; }
+      if (month < 0) {
+        month = 11;
+        year -= 1;
+      }
       return { leftMonth: month, leftYear: year };
     });
   }
@@ -119,20 +124,19 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
     setCalendarBase((prev) => {
       let month = prev.leftMonth + 1;
       let year = prev.leftYear;
-      if (month > 11) { month = 0; year += 1; }
+      if (month > 11) {
+        month = 0;
+        year += 1;
+      }
       return { leftMonth: month, leftYear: year };
     });
   }
 
-  // Set precise mesi-anni visualizzati
-  const leftMonth = calendarBase.leftMonth;
-  const leftYear = calendarBase.leftYear;
-  let rightMonth = leftMonth + 1;
-  let rightYear = leftYear;
-  if (rightMonth > 11) { rightMonth = 0; rightYear++; }
-
   function onDayClick(date: Date) {
-    if (!selectedDateRange?.from || (selectedDateRange?.from && selectedDateRange?.to)) {
+    if (
+      !selectedDateRange?.from ||
+      (selectedDateRange?.from && selectedDateRange?.to)
+    ) {
       handleDateRangeSelect({ from: date, to: undefined });
     } else if (selectedDateRange.from && !selectedDateRange.to) {
       if (date < selectedDateRange.from) {
@@ -143,95 +147,6 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
         handleDateRangeSelect({ from: date, to: undefined });
       }
     }
-  }
-
-  // Rimuove intestazione dei giorni settimana, e costruisce header con frecce
-  function renderMonth(month: number, year: number, isLeft: boolean) {
-    const daysMatrix = getDaysMatrix(month, year);
-    // Weekdays da LUN a DOM, abbreviazioni 1 lettera
-    const shortWeekdays = ["L", "M", "M", "G", "V", "S", "D"];
-
-    return (
-      <div className="flex-1 min-w-[310px] px-5 py-3 flex flex-col">
-        <div className="flex items-center justify-between mb-2">
-          {isLeft ? (
-            <button
-              onClick={goToPreviousMonth}
-              className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
-              aria-label="Mese precedente"
-              type="button"
-            >
-              <ArrowLeft size={20} />
-            </button>
-          ) : <span className="w-7"></span>}
-          <span className="text-base font-semibold text-gray-800 select-none">
-            {format(new Date(year, month), "LLLL yyyy", { locale: it })}
-          </span>
-          {isLeft ? (
-            <span className="w-7"></span>
-          ) : (
-            <button
-              onClick={goToNextMonth}
-              className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
-              aria-label="Mese successivo"
-              type="button"
-            >
-              <ArrowRight size={20} />
-            </button>
-          )}
-        </div>
-        <div className="grid grid-cols-7 mb-2 gap-y-1">
-          {shortWeekdays.map((wd, idx) => (
-            <div key={idx} className="text-xs text-gray-400 font-medium text-center h-5 select-none">
-              {wd}
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-1 overflow-visible">
-          {daysMatrix.map((week, i) => (
-            <div key={i} className="grid grid-cols-7 gap-0">
-              {week.map((date, j) => {
-                if (!date) {
-                  return <div key={j} className="h-9"></div>;
-                }
-                const isStart = isRangeStart(date, selectedDateRange);
-                const isEnd = isRangeEnd(date, selectedDateRange);
-                const inRange = !isStart && !isEnd && isInRange(date, selectedDateRange);
-                const isCurrToday = isToday(date);
-
-                let classNames =
-                  "flex items-center justify-center cursor-pointer select-none rounded-full w-9 h-9 text-sm transition-all duration-150 ";
-
-                if (isStart || isEnd) {
-                  classNames +=
-                    " bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 ";
-                } else if (inRange) {
-                  classNames +=
-                    " bg-blue-100 text-blue-900 rounded-full ";
-                } else if (isCurrToday) {
-                  classNames +=
-                    " border border-blue-500 text-blue-600 font-semibold bg-white ";
-                } else {
-                  classNames +=
-                    " text-gray-700 hover:bg-blue-50 ";
-                }
-
-                return (
-                  <div
-                    key={j}
-                    className={classNames}
-                    onClick={() => onDayClick(date)}
-                    data-today={isCurrToday}
-                  >
-                    {date.getDate()}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -261,7 +176,9 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
 
       {/* Periodo Vacanza */}
       <div className="space-y-3">
-        <Label className="text-lg font-semibold text-gray-800">Periodo Vacanza</Label>
+        <Label className="text-lg font-semibold text-gray-800">
+          Periodo Vacanza
+        </Label>
         <div className="flex gap-2">
           <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
@@ -283,11 +200,14 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
               align="start"
               style={{ width: 650, height: 400 }}
             >
-              <div className="w-[650px] h-[400px] flex bg-white">
-                {renderMonth(leftMonth, leftYear, true)}
-                <div className="w-[2px] bg-gray-100 h-full"></div>
-                {renderMonth(rightMonth, rightYear, false)}
-              </div>
+              <CustomCalendar
+                leftMonth={calendarBase.leftMonth}
+                leftYear={calendarBase.leftYear}
+                onPrevMonth={goToPreviousMonth}
+                onNextMonth={goToNextMonth}
+                onDayClick={onDayClick}
+                range={selectedDateRange}
+              />
             </PopoverContent>
           </Popover>
           {selectedDateRange?.from && (
