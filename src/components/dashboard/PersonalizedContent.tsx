@@ -39,12 +39,12 @@ const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters }) =>
       
       <ExperiencesCarousel experiences={displayExperiences} filters={filters} />
       
-      <EventsCarousel events={displayEvents} />
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <GuestCard />
         <HelpBanner />
       </div>
+      
+      <EventsCarousel events={displayEvents} />
 
       <ServicesSection />
     </div>
