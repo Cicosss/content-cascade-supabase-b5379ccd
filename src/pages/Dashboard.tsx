@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -67,7 +68,7 @@ const Dashboard = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
                 <h1 className="typography-h1 mb-2">
-                  Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}! 👋
+                  Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}!
                 </h1>
                 <p className="text-slate-200 typography-body">
                   Iniziamo? Filtra le esperienze o cerca sulla mappa
