@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -271,6 +272,17 @@ const Webcams = () => {
                 </div>
               </Card>
             ))}
+          </div>
+
+          {/* Powered By Section */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-slate-200/60 shadow-sm">
+              <img 
+                src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
+                alt="Powered-by" 
+                className="h-12 w-auto"
+              />
+            </div>
           </div>
 
           {/* Info Section */}
