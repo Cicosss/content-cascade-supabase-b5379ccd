@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -187,22 +188,33 @@ const Webcams = () => {
         </div>
 
         <div className="container mx-auto px-6 py-8">
-          {/* Category Filter */}
-          <div className="flex justify-center mb-8">
-            <div className="flex flex-wrap gap-2 bg-white/60 backdrop-blur-sm p-2 rounded-xl border border-slate-200/60 shadow-sm">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    selectedCategory === category
-                      ? 'bg-blue-500 text-white shadow-md'
-                      : 'text-slate-600 hover:bg-white/80 hover:text-slate-900'
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
+          {/* Category Filter and Powered By Section */}
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mb-8">
+            <div className="flex-1 flex justify-center">
+              <div className="flex flex-wrap gap-2 bg-white/60 backdrop-blur-sm p-2 rounded-xl border border-slate-200/60 shadow-sm">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                      selectedCategory === category
+                        ? 'bg-blue-500 text-white shadow-md'
+                        : 'text-slate-600 hover:bg-white/80 hover:text-slate-900'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Powered By Section */}
+            <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-slate-200/60 shadow-sm">
+              <img 
+                src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
+                alt="Powered-by" 
+                className="h-10 w-auto"
+              />
             </div>
           </div>
 
@@ -274,17 +286,6 @@ const Webcams = () => {
             ))}
           </div>
 
-          {/* Powered By Section */}
-          <div className="flex justify-center mb-8">
-            <div className="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-slate-200/60 shadow-sm">
-              <img 
-                src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
-                alt="Powered-by" 
-                className="h-12 w-auto"
-              />
-            </div>
-          </div>
-
           {/* Info Section */}
           <div className="max-w-4xl mx-auto">
             <Card className="p-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200/60">
@@ -321,3 +322,4 @@ const Webcams = () => {
 };
 
 export default Webcams;
+
