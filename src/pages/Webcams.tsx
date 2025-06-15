@@ -1,8 +1,10 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Eye, Clock } from 'lucide-react';
+import { MapPin, Eye, Clock, Play } from 'lucide-react';
+import WebcamModal from '@/components/WebcamModal';
 
 const Webcams = () => {
   // Dati placeholder per le webcam - sostituiremo con i tuoi codici HTML
@@ -162,10 +164,22 @@ const Webcams = () => {
 
   const categories = ["Tutti", "Spiaggia", "Centro Storico", "Mare"];
   const [selectedCategory, setSelectedCategory] = React.useState("Tutti");
+  const [selectedWebcam, setSelectedWebcam] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const filteredWebcams = selectedCategory === "Tutti" 
     ? webcams 
     : webcams.filter(webcam => webcam.category === selectedCategory);
+
+  const openWebcamModal = (webcam) => {
+    setSelectedWebcam(webcam);
+    setIsModalOpen(true);
+  };
+
+  const closeWebcamModal = () => {
+    setIsModalOpen(false);
+    setSelectedWebcam(null);
+  };
 
   return (
     <Layout showSidebar>
@@ -237,12 +251,22 @@ const Webcams = () => {
             {filteredWebcams.map((webcam) => (
               <Card key={webcam.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm border-slate-200/60 group">
                 {/* Webcam Video Container */}
-                <div className="aspect-video relative overflow-hidden bg-slate-100">
+                <div className="aspect-video relative overflow-hidden bg-slate-100 group">
                   {/* Placeholder for HTML code - sostituirai questo con il tuo codice */}
                   <div 
                     dangerouslySetInnerHTML={{ __html: webcam.htmlCode }}
                     className="w-full h-full"
                   />
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <button
+                      onClick={() => openWebcamModal(webcam)}
+                      className="bg-white/90 hover:bg-white text-slate-900 p-4 rounded-full shadow-lg transform scale-90 group-hover:scale-100 transition-all duration-300 hover:shadow-xl"
+                    >
+                      <Play className="h-8 w-8 ml-1" fill="currentColor" />
+                    </button>
+                  </div>
                   
                   {/* Live Badge - Unified Style */}
                   <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
@@ -323,6 +347,13 @@ const Webcams = () => {
           </div>
         </div>
       </div>
+
+      {/* Webcam Modal */}
+      <WebcamModal 
+        isOpen={isModalOpen}
+        onClose={closeWebcamModal}
+        webcam={selectedWebcam}
+      />
     </Layout>
   );
 };
