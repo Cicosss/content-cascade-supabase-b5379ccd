@@ -2,49 +2,68 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Heart } from 'lucide-react';
 
 interface SpecialPreferencesFilterProps {
   selectedPreferences: string[];
   onPreferencesChange: (preferences: string[]) => void;
+  includeChildrenFriendly?: boolean;
 }
 
 const SpecialPreferencesFilter: React.FC<SpecialPreferencesFilterProps> = ({ 
   selectedPreferences, 
-  onPreferencesChange 
+  onPreferencesChange,
+  includeChildrenFriendly = false
 }) => {
-  const specialPreferences = ['Accessibile', 'Pet-friendly', 'Vegano/Vegetariano', 'Sostenibile'];
+  const basePreferences = [
+    'Pet-Friendly',
+    'Accessibile',
+    'Romantico',
+    'Opzioni Vegetariane',
+    'Gratuito',
+    'All\'aperto',
+    'Al coperto',
+    'Prenotazione richiesta',
+    'Parcheggio disponibile'
+  ];
+
+  // Aggiungi "Adatto ai bambini" se richiesto
+  const preferences = includeChildrenFriendly 
+    ? ['Adatto ai bambini', ...basePreferences]
+    : basePreferences;
 
   const togglePreference = (preference: string) => {
-    let newPreferences;
-    if (selectedPreferences.includes(preference)) {
-      newPreferences = selectedPreferences.filter(p => p !== preference);
-    } else {
-      newPreferences = [...selectedPreferences, preference];
-    }
+    const newPreferences = selectedPreferences.includes(preference)
+      ? selectedPreferences.filter(p => p !== preference)
+      : [...selectedPreferences, preference];
+    
     onPreferencesChange(newPreferences);
+  };
+
+  const getButtonClassName = (preference: string) => {
+    const isSelected = selectedPreferences.includes(preference);
+    return `text-xs ${
+      isSelected
+        ? 'bg-purple-500 hover:bg-purple-600' 
+        : 'hover:bg-purple-50 hover:border-purple-300'
+    }`;
   };
 
   return (
     <div className="space-y-3">
-      <Label className="font-semibold text-gray-700 flex items-center gap-2">
-        <Heart className="h-4 w-4 text-pink-500" strokeWidth={1.5} />
-        Preferenze speciali
-      </Label>
-      <div className="grid grid-cols-1 gap-2">
-        {specialPreferences.map((pref) => (
+      <div className="flex items-center gap-2">
+        <span className="text-purple-500">✨</span>
+        <Label className="font-semibold text-gray-700">Preferenze Speciali</Label>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {preferences.map((preference) => (
           <Button
-            key={pref}
+            key={preference}
             size="sm"
-            variant={selectedPreferences.includes(pref) ? "default" : "outline"}
-            onClick={() => togglePreference(pref)}
-            className={`justify-start text-sm ${
-              selectedPreferences.includes(pref)
-                ? 'bg-pink-500 hover:bg-pink-600 text-white shadow-lg'
-                : 'hover:bg-pink-50 hover:border-pink-300 border-2'
-            }`}
+            variant={selectedPreferences.includes(preference) ? "default" : "outline"}
+            onClick={() => togglePreference(preference)}
+            className={getButtonClassName(preference)}
           >
-            {pref}
+            {preference}
           </Button>
         ))}
       </div>

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import FilterHeader from './filters/FilterHeader';
 import ZoneFilter from './filters/ZoneFilter';
-import ChildrenFilter from './filters/ChildrenFilter';
 import PeriodFilter from './filters/PeriodFilter';
 import ExperienceFilter from './filters/ExperienceFilter';
 import CategoryFilter from './filters/CategoryFilter';
@@ -37,16 +36,19 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
     <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/95 backdrop-blur-sm">
       <FilterHeader />
 
-      {/* Filtri Base */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      {/* Filtro Categorie - Prominente come filtro principale */}
+      <div className="mb-8">
+        <CategoryFilter 
+          selectedCategories={filters.categories || ['tutte']} 
+          onCategoriesChange={(categories) => updateFilter('categories', categories)} 
+        />
+      </div>
+
+      {/* Filtri Base - Riorganizzati */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <ZoneFilter 
           selectedZone={filters.zone} 
           onZoneChange={(zone) => updateFilter('zone', zone)} 
-        />
-        
-        <ChildrenFilter 
-          selectedOption={filters.withChildren} 
-          onOptionChange={(option) => updateFilter('withChildren', option)} 
         />
         
         <PeriodFilter 
@@ -60,21 +62,13 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
         />
       </div>
 
-      {/* Categorie - Sezione orizzontale */}
-      <div className="mb-8">
-        <CategoryFilter 
-          selectedCategories={filters.categories || ['tutte']} 
-          onCategoriesChange={(categories) => updateFilter('categories', categories)} 
-        />
-      </div>
-
       {/* Switch per Filtri Avanzati */}
       <AdvancedFiltersToggle 
         showAdvanced={showAdvanced} 
         onToggle={setShowAdvanced} 
       />
 
-      {/* Filtri Avanzati - Con animazione slide-down */}
+      {/* Filtri Avanzati - Include "Con bambini" come tag */}
       <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
         showAdvanced 
           ? 'max-h-96 opacity-100' 
@@ -94,6 +88,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
           <SpecialPreferencesFilter 
             selectedPreferences={filters.specialPreferences || []} 
             onPreferencesChange={(preferences) => updateFilter('specialPreferences', preferences)} 
+            includeChildrenFriendly={true}
           />
         </div>
       </div>

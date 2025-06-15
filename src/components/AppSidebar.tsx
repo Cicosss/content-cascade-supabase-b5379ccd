@@ -1,137 +1,137 @@
 
 import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { useNavigate } from 'react-router-dom';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarSeparator,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
-  Inbox, 
-  Calendar,
-  LayoutDashboard,
-  Grid3X3,
-  Droplets,
-  Cloud,
+  Sidebar, 
+  SidebarContent, 
+  SidebarGroup, 
+  SidebarGroupContent, 
+  SidebarMenu, 
+  SidebarMenuButton, 
+  SidebarMenuItem 
+} from '@/components/ui/sidebar';
+import { 
+  Home, 
+  Calendar, 
+  Users, 
+  Heart,
+  User,
   Camera,
-  Settings,
-  Plus,
-  LogOut,
-  ArrowLeft,
-  User
+  MapPin,
+  Route,
+  Map,
+  Crown,
+  Utensils,
+  Building2,
+  Music,
+  TreePine
 } from 'lucide-react';
-import MiaRomagnaLogo from './MiaRomagnaLogo';
+import { useLocation, Link } from 'react-router-dom';
 
 const AppSidebar = () => {
-  const { user, signOut } = useAuth();
-  const { profile } = useUserProfile();
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogout = async () => {
-    await signOut();
-    navigate('/');
-  };
-
-  const handleLogin = () => {
-    navigate('/auth');
-  };
-
-  const mainMenuItems = [
+  // Macro-Aree principali
+  const macroAreas = [
     {
-      title: "Inbox",
-      icon: Inbox,
-      url: "/inbox",
+      title: "Gusto & Sapori",
+      url: "/gusto-sapori",
+      icon: Utensils,
+      description: "Tradizioni culinarie"
     },
     {
-      title: "Today",
-      icon: Calendar,
-      url: "/today",
+      title: "Cultura & Territorio", 
+      url: "/cultura-territorio",
+      icon: Building2,
+      description: "Arte e storia"
     },
+    {
+      title: "Eventi & Spettacoli",
+      url: "/eventi-spettacoli", 
+      icon: Music,
+      description: "Intrattenimento"
+    },
+    {
+      title: "Divertimento & Famiglia",
+      url: "/divertimento-famiglia",
+      icon: TreePine,
+      description: "Attività per tutti"
+    }
   ];
 
-  const channelItems = [
+  // Menu secondario
+  const secondaryItems = [
     {
       title: "Dashboard",
-      icon: ArrowLeft,
-      url: user ? "/dashboard" : "/auth",
+      url: "/dashboard",
+      icon: Home,
     },
     {
-      title: "Categories",
-      icon: Grid3X3,
-      url: "/categories",
+      title: "Eventi",
+      url: "/events",
+      icon: Calendar,
     },
     {
-      title: "Water quality",
-      icon: Droplets,
-      url: "/water-quality",
+      title: "Preferiti",
+      url: "/favorites",
+      icon: Heart,
     },
     {
-      title: "Weather",
-      icon: Cloud,
-      url: "/weather",
-    },
-    {
-      title: "Webcams",
-      icon: Camera,
-      url: "/webcams",
-    },
+      title: "Itinerari",
+      url: "/itineraries",
+      icon: Route,
+    }
   ];
 
-  const bottomItems = [
+  // Menu utilità
+  const utilityItems = [
     {
-      title: "Settings",
-      icon: Settings,
-      url: "/settings",
+      title: "Webcam",
+      url: "/webcams",
+      icon: Camera,
     },
     {
-      title: "Link the card",
-      icon: Plus,
-      url: "/link-card",
+      title: "Partner",
+      url: "/partner",
+      icon: Crown,
     },
+    {
+      title: "Chi Siamo",
+      url: "/chi-siamo",
+      icon: Users,
+    },
+    {
+      title: "Profilo",
+      url: "/profile",
+      icon: User,
+    }
   ];
 
   return (
-    <Sidebar 
-      className="border-r-0 bg-gradient-to-br from-white/95 via-slate-50/90 to-blue-50/85 backdrop-blur-xl supports-[backdrop-filter]:bg-white/30 shadow-xl shadow-slate-200/50"
-      collapsible="icon"
-    >
-      <SidebarHeader className="p-6 bg-gradient-to-r from-blue-50/80 via-indigo-50/60 to-purple-50/40 backdrop-blur-sm border-b border-white/20">
-        <div className="flex items-center space-x-3">
-          <SidebarTrigger className="w-8 h-8 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 hover:bg-gradient-to-br hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600" />
-          <MiaRomagnaLogo width={48} height={48} className="group-data-[collapsible=icon]:hidden" />
-        </div>
-      </SidebarHeader>
-
-      <SidebarContent className="bg-transparent">
-        {/* Main Menu */}
+    <Sidebar className="border-r border-slate-200">
+      <SidebarContent>
+        {/* Macro-Aree Principali */}
         <SidebarGroup>
+          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight text-slate-900">
+            Esplora
+          </h2>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainMenuItems.map((item) => (
+              {macroAreas.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
-                    asChild
-                    className="text-slate-700 hover:bg-white/70 hover:text-slate-900 hover:shadow-md rounded-xl mx-2 transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-white/30"
+                    asChild 
+                    isActive={location.pathname === item.url}
+                    className="h-12"
                   >
-                    <a href={item.url} className="flex items-center space-x-3">
-                      <item.icon className="h-5 w-5 text-blue-500" />
-                      <span>{item.title}</span>
-                      {item.title === "Inbox" && (
-                        <ArrowLeft className="h-4 w-4 ml-auto text-slate-400" />
-                      )}
-                    </a>
+                    <Link to={item.url} className="flex flex-col items-start">
+                      <div className="flex items-center gap-2">
+                        <item.icon className="h-5 w-5" />
+                        <span className="font-medium">{item.title}</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground ml-7">
+                        {item.description}
+                      </span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -139,29 +139,20 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="bg-gradient-to-r from-transparent via-white/40 to-transparent mx-4" />
-
-        {/* My Channel Section */}
+        {/* Menu Secondario */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-600 text-sm font-medium px-3 py-2 group-data-[collapsible=icon]:hidden bg-gradient-to-r from-slate-100/50 to-transparent rounded-lg mx-2">
-            My Channel
-          </SidebarGroupLabel>
+          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight text-slate-900">
+            La Tua Esperienza
+          </h2>
           <SidebarGroupContent>
             <SidebarMenu>
-              {channelItems.map((item) => (
+              {secondaryItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton 
-                    asChild
-                    className="text-slate-700 hover:bg-white/70 hover:text-slate-900 hover:shadow-md rounded-xl mx-2 transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-white/30"
-                  >
-                    <a href={item.url} className="flex items-center space-x-3">
-                      {item.title === "Dashboard" ? (
-                        <ArrowLeft className="h-5 w-5 text-slate-600" />
-                      ) : (
-                        <item.icon className="h-5 w-5 text-blue-500" />
-                      )}
+                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
+                    <Link to={item.url}>
+                      <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -169,22 +160,20 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="bg-gradient-to-r from-transparent via-white/40 to-transparent mx-4" />
-
-        {/* Bottom Menu */}
+        {/* Menu Utilità */}
         <SidebarGroup>
+          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight text-slate-900">
+            Altro
+          </h2>
           <SidebarGroupContent>
             <SidebarMenu>
-              {bottomItems.map((item) => (
+              {utilityItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton 
-                    asChild
-                    className="text-slate-700 hover:bg-white/70 hover:text-slate-900 hover:shadow-md rounded-xl mx-2 transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-white/30"
-                  >
-                    <a href={item.url} className="flex items-center space-x-3">
-                      <item.icon className="h-5 w-5 text-blue-500" />
+                  <SidebarMenuButton asChild isActive={location.pathname === item.url}>
+                    <Link to={item.url}>
+                      <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -192,99 +181,6 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      <SidebarFooter className="p-4 border-t border-white/20 bg-gradient-to-t from-slate-50/80 via-white/40 to-transparent backdrop-blur-sm">
-        {user ? (
-          <>
-            {/* User Profile Avatar - nascosto quando collapsed */}
-            <div className="group-data-[collapsible=icon]:hidden">
-              <a
-                href="/profile"
-                className="flex items-center space-x-3 mb-4 bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm hover:bg-blue-50/70 transition"
-                title="Modifica il profilo"
-              >
-                <Avatar className="h-12 w-12 ring-2 ring-blue-200/50 shadow-md transition">
-                  <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url || undefined} alt="Avatar" />
-                  <AvatarFallback className="bg-gradient-to-br from-blue-100 to-indigo-200 text-blue-700 font-semibold">
-                    {profile?.first_name?.[0] 
-                      || user.user_metadata?.first_name?.[0] 
-                      || user.email?.[0]?.toUpperCase()
-                      || <User className="h-5 w-5" />}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">
-                    {profile?.first_name || user.user_metadata?.first_name || 'Utente'}
-                  </p>
-                  <p className="text-xs text-slate-500">Vai al profilo</p>
-                </div>
-              </a>
-            </div>
-
-            {/* Logout */}
-            <SidebarMenuButton 
-              onClick={handleLogout}
-              className="text-red-600 hover:bg-red-50/80 w-full justify-start rounded-xl transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-red-200/50 hover:shadow-md"
-            >
-              <LogOut className="h-5 w-5 text-red-500" />
-              <span className="group-data-[collapsible=icon]:hidden">Logout</span>
-            </SidebarMenuButton>
-          </>
-        ) : (
-          <>
-            {/* Login for guests - nascosto quando collapsed */}
-            <div className="group-data-[collapsible=icon]:hidden">
-              <div className="flex items-center space-x-3 mb-4 bg-white/50 backdrop-blur-sm rounded-xl p-3 border border-white/30 shadow-sm">
-                <Avatar className="h-10 w-10 ring-2 ring-slate-200/50 shadow-md">
-                  <AvatarFallback className="bg-gradient-to-br from-slate-100 to-slate-200 text-slate-600">
-                    <User className="h-5 w-5" />
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">
-                    Ospite
-                  </p>
-                  <p className="text-xs text-slate-500">Non loggato</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Login Button */}
-            <SidebarMenuButton 
-              onClick={handleLogin}
-              className="text-blue-600 hover:bg-blue-50/80 w-full justify-start rounded-xl transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-blue-200/50 hover:shadow-md"
-            >
-              <User className="h-5 w-5 text-blue-500" />
-              <span className="group-data-[collapsible=icon]:hidden">Accedi</span>
-            </SidebarMenuButton>
-          </>
-        )}
-
-        {/* Social Icons - nascosti quando collapsed */}
-        <div className="flex space-x-3 mt-4 justify-center group-data-[collapsible=icon]:hidden">
-          <div className="w-8 h-8 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
-            <img 
-              src="https://i.ibb.co/ZpwfVjQv/Progetto-senza-titolo-1.png" 
-              alt="Progetto-senza-titolo-1" 
-              className="w-full h-full object-cover" 
-            />
-          </div>
-          <div className="w-8 h-8 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
-            <img 
-              src="https://i.ibb.co/3ysBwqg3/Progetto-senza-titolo-2.png" 
-              alt="Progetto-senza-titolo-2" 
-              className="w-full h-full object-cover" 
-            />
-          </div>
-          <div className="w-8 h-8 rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-shadow duration-300 hover:scale-105 transform cursor-pointer overflow-hidden">
-            <img 
-              src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
-              alt="Progetto-senza-titolo" 
-              className="w-full h-full object-cover" 
-            />
-          </div>
-        </div>
-      </SidebarFooter>
     </Sidebar>
   );
 };

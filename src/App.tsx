@@ -1,66 +1,57 @@
-
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
-import { LocationProvider } from "./contexts/LocationContext";
-import ScrollToTop from "./components/ScrollToTop";
-
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import Favorites from "./pages/Favorites";
-import Restaurants from "./pages/Restaurants";
-import Events from "./pages/Events";
-import Experiences from "./pages/Experiences";
-import Itineraries from "./pages/Itineraries";
-import Family from "./pages/Family";
-import Partner from "./pages/Partner";
-import TerritoryPromoter from "./pages/TerritoryPromoter";
-import AdminModerationPage from "./pages/AdminModerationPage";
-import Webcams from "./pages/Webcams";
-import NotFound from "./pages/NotFound";
-import ChiSiamo from "./pages/ChiSiamo";
-import RespiroDelMare from "./pages/RespiroDelMare";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Toaster } from 'sonner';
+import { AuthProvider } from './contexts/AuthContext';
+import Index from './pages/Index';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import Events from './pages/Events';
+import Favorites from './pages/Favorites';
+import Itineraries from './pages/Itineraries';
+import Webcams from './pages/Webcams';
+import Partner from './pages/Partner';
+import ChiSiamo from './pages/ChiSiamo';
+import Auth from './pages/Auth';
+import AdminModerationPage from './pages/AdminModerationPage';
+import ScrollToTop from './components/ScrollToTop';
+import NotFound from './pages/NotFound';
+import GustoSapori from '@/pages/GustvSapori';
+import CulturaTerritorio from '@/pages/CulturaTerritorio';
+import EventiSpettacoli from '@/pages/EventiSpettacoli';
+import DivertimentoFamiglia from '@/pages/DivertimentoFamiglia';
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
       <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <AuthProvider>
-          <LocationProvider>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/restaurants" element={<Restaurants />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/experiences" element={<Experiences />} />
-              <Route path="/itineraries" element={<Itineraries />} />
-              <Route path="/family" element={<Family />} />
-              <Route path="/partner" element={<Partner />} />
-              <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
-              <Route path="/admin/moderazione" element={<AdminModerationPage />} />
-              <Route path="/webcams" element={<Webcams />} />
-              <Route path="/chi-siamo" element={<ChiSiamo />} />
-              <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </LocationProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/itineraries" element={<Itineraries />} />
+            <Route path="/webcams" element={<Webcams />} />
+            <Route path="/partner" element={<Partner />} />
+            <Route path="/chi-siamo" element={<ChiSiamo />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/admin" element={<AdminModerationPage />} />
+            <Route path="/gusto-sapori" element={<GustoSapori />} />
+            <Route path="/cultura-territorio" element={<CulturaTerritorio />} />
+            <Route path="/eventi-spettacoli" element={<EventiSpettacoli />} />
+            <Route path="/divertimento-famiglia" element={<DivertimentoFamiglia />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
