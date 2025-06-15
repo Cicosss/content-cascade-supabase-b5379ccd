@@ -44,6 +44,13 @@ interface ModerationModalProps {
   updating: boolean;
 }
 
+const STATUS_OPTIONS = [
+  { value: 'pending', label: 'In Attesa' },
+  { value: 'approved', label: 'Approvata' },
+  { value: 'rejected', label: 'Rifiutata' },
+  { value: 'edited', label: 'Modificata' }
+] as const;
+
 const ModerationModal = ({ submission, onClose, onSave, updating }: ModerationModalProps) => {
   const [newStatus, setNewStatus] = useState<string>('');
   const [adminNotes, setAdminNotes] = useState('');
@@ -75,10 +82,11 @@ const ModerationModal = ({ submission, onClose, onSave, updating }: ModerationMo
                 <SelectValue placeholder="Seleziona status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pending">In Attesa</SelectItem>
-                <SelectItem value="approved">Approvata</SelectItem>
-                <SelectItem value="rejected">Rifiutata</SelectItem>
-                <SelectItem value="edited">Modificata</SelectItem>
+                {STATUS_OPTIONS.map(({ value, label }) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -94,16 +102,10 @@ const ModerationModal = ({ submission, onClose, onSave, updating }: ModerationMo
           </div>
 
           <div className="flex gap-2 justify-end">
-            <Button 
-              variant="outline" 
-              onClick={onClose}
-            >
+            <Button variant="outline" onClick={onClose}>
               Annulla
             </Button>
-            <Button 
-              onClick={handleSave}
-              disabled={!newStatus || updating}
-            >
+            <Button onClick={handleSave} disabled={!newStatus || updating}>
               {updating && <Loader2 className="h-4 w-4 mr-2 animate-spin" strokeWidth={1.5} />}
               Salva Moderazione
             </Button>

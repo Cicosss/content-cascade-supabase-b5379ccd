@@ -42,6 +42,8 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
   onEdit,
   onDelete
 }) => {
+  const hasUpdates = experience.updated_at !== experience.created_at;
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -115,7 +117,7 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
             Creata: {new Date(experience.created_at).toLocaleDateString('it-IT')}
           </Badge>
           
-          {experience.updated_at !== experience.created_at && (
+          {hasUpdates && (
             <Badge variant="outline" className="text-xs">
               <Edit className="h-3 w-3 mr-1" />
               Aggiornata: {new Date(experience.updated_at).toLocaleDateString('it-IT')}

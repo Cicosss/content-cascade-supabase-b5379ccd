@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -12,17 +12,19 @@ interface ExperienceFormFieldsProps {
   onInputChange: (field: string, value: string | string[]) => void;
 }
 
-const targetAudiences = [
+const TARGET_AUDIENCES = [
   { value: 'everyone', label: 'Tutti' },
   { value: 'families', label: 'Famiglie' },
   { value: 'couples', label: 'Coppie' },
   { value: 'young', label: 'Giovani' },
   { value: 'adults', label: 'Adulti' },
   { value: 'seniors', label: 'Senior' }
-];
+] as const;
 
 const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, onInputChange }) => {
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+  
+  const macroAreaKeys = useMemo(() => Object.keys(MACRO_AREAS), []);
 
   useEffect(() => {
     if (formData.macro_area) {
@@ -34,17 +36,13 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
         onInputChange('category', '');
       }
     }
-  }, [formData.macro_area]);
+  }, [formData.macro_area, formData.category, onInputChange]);
 
   const handleTagChange = (tag: string, checked: boolean) => {
     const currentTags = formData.tags || [];
-    let newTags;
-    
-    if (checked) {
-      newTags = [...currentTags, tag];
-    } else {
-      newTags = currentTags.filter((t: string) => t !== tag);
-    }
+    const newTags = checked 
+      ? [...currentTags, tag]
+      : currentTags.filter((t: string) => t !== tag);
     
     onInputChange('tags', newTags);
   };
@@ -69,7 +67,7 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
               <SelectValue placeholder="Seleziona macro-area" />
             </SelectTrigger>
             <SelectContent>
-              {Object.keys(MACRO_AREAS).map((macroArea) => (
+              {macroAreaKeys.map((macroArea) => (
                 <SelectItem key={macroArea} value={macroArea}>
                   {macroArea}
                 </SelectItem>
@@ -87,7 +85,7 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
           disabled={!formData.macro_area}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Seleziona prima una macro-area" />
+            <SelectValue placeholder={formData.macro_area ? "Seleziona categoria" : "Seleziona prima una macro-area"} />
           </SelectTrigger>
           <SelectContent>
             {availableCategories.map((category) => (
@@ -216,7 +214,7 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {targetAudiences.map((audience) => (
+              {TARGET_AUDIENCES.map((audience) => (
                 <SelectItem key={audience.value} value={audience.value}>
                   {audience.label}
                 </SelectItem>
@@ -265,7 +263,10 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
                 checked={formData.tags?.includes(tag) || false}
                 onCheckedChange={(checked) => handleTagChange(tag, checked as boolean)}
               />
-              <label htmlFor={`tag-${tag}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <label 
+                htmlFor={`tag-${tag}`} 
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
                 {tag}
               </label>
             </div>

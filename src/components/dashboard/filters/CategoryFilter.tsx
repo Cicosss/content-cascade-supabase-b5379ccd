@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { getAllCategories } from '@/config/categoryMapping';
@@ -13,23 +13,30 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   selectedCategories, 
   onCategoriesChange 
 }) => {
-  const allCategories = getAllCategories();
+  const allCategories = useMemo(() => getAllCategories(), []);
+  const isAllSelected = selectedCategories.includes('tutte');
 
   const toggleCategory = (category: string) => {
     if (category === 'tutte') {
       onCategoriesChange(['tutte']);
-    } else {
-      let newCategories = selectedCategories.filter(c => c !== 'tutte');
-      if (newCategories.includes(category)) {
-        newCategories = newCategories.filter(c => c !== category);
-      } else {
-        newCategories.push(category);
-      }
-      if (newCategories.length === 0) {
-        newCategories = ['tutte'];
-      }
-      onCategoriesChange(newCategories);
+      return;
     }
+
+    const categoriesWithoutAll = selectedCategories.filter(c => c !== 'tutte');
+    const newCategories = categoriesWithoutAll.includes(category)
+      ? categoriesWithoutAll.filter(c => c !== category)
+      : [...categoriesWithoutAll, category];
+
+    onCategoriesChange(newCategories.length === 0 ? ['tutte'] : newCategories);
+  };
+
+  const getButtonClassName = (category: string) => {
+    const isSelected = selectedCategories.includes(category);
+    return `text-xs ${
+      isSelected
+        ? 'bg-purple-500 hover:bg-purple-600' 
+        : 'hover:bg-purple-50 hover:border-purple-300'
+    }`;
   };
 
   return (
@@ -41,13 +48,9 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
       <div className="flex flex-wrap gap-2">
         <Button
           size="sm"
-          variant={selectedCategories.includes('tutte') ? "default" : "outline"}
+          variant={isAllSelected ? "default" : "outline"}
           onClick={() => toggleCategory('tutte')}
-          className={`text-xs ${
-            selectedCategories.includes('tutte')
-              ? 'bg-purple-500 hover:bg-purple-600' 
-              : 'hover:bg-purple-50 hover:border-purple-300'
-          }`}
+          className={getButtonClassName('tutte')}
         >
           Tutte
         </Button>
@@ -57,11 +60,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             size="sm"
             variant={selectedCategories.includes(category) ? "default" : "outline"}
             onClick={() => toggleCategory(category)}
-            className={`text-xs ${
-              selectedCategories.includes(category)
-                ? 'bg-purple-500 hover:bg-purple-600' 
-                : 'hover:bg-purple-50 hover:border-purple-300'
-            }`}
+            className={getButtonClassName(category)}
           >
             {category}
           </Button>

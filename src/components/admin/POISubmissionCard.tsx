@@ -42,26 +42,16 @@ interface POISubmissionCardProps {
   onDelete: (submissionId: string) => void;
 }
 
-const getStatusBadgeVariant = (status: string) => {
-  switch (status) {
-    case 'approved': return 'default';
-    case 'rejected': return 'destructive';
-    case 'edited': return 'secondary';
-    default: return 'outline';
-  }
-};
-
-const getStatusLabel = (status: string) => {
-  switch (status) {
-    case 'pending': return 'In Attesa';
-    case 'approved': return 'Approvata';
-    case 'rejected': return 'Rifiutata';
-    case 'edited': return 'Modificata';
-    default: return status;
-  }
+const STATUS_CONFIG = {
+  pending: { variant: 'outline' as const, label: 'In Attesa' },
+  approved: { variant: 'default' as const, label: 'Approvata' },
+  rejected: { variant: 'destructive' as const, label: 'Rifiutata' },
+  edited: { variant: 'secondary' as const, label: 'Modificata' }
 };
 
 const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCardProps) => {
+  const statusConfig = STATUS_CONFIG[submission.status] || STATUS_CONFIG.pending;
+
   const handleDelete = () => {
     if (window.confirm(`Sei sicuro di voler eliminare la proposta "${submission.name}"? Questa azione non può essere annullata.`)) {
       onDelete(submission.id);
@@ -82,8 +72,8 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant={getStatusBadgeVariant(submission.status)} className="rounded-xl">
-              {getStatusLabel(submission.status)}
+            <Badge variant={statusConfig.variant} className="rounded-xl">
+              {statusConfig.label}
             </Badge>
             <Button
               variant="outline"
