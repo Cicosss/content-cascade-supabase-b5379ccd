@@ -24,6 +24,7 @@ import AdminModerationPage from "./pages/AdminModerationPage";
 import Webcams from "./pages/Webcams";
 import NotFound from "./pages/NotFound";
 import ChiSiamo from "./pages/ChiSiamo";
+import RespiroDelMare from "./pages/RespiroDelMare";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="/admin/moderazione" element={<AdminModerationPage />} />
               <Route path="/webcams" element={<Webcams />} />
               <Route path="/chi-siamo" element={<ChiSiamo />} />
+              <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </LocationProvider>
