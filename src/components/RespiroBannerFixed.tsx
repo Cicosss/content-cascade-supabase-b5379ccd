@@ -9,7 +9,7 @@ const RespiroBannerFixed = () => {
       className="fixed z-50 bottom-5 right-5 shadow-xl animate-fade-in"
       style={{ maxWidth: 320 }}
     >
-      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 rounded-2xl px-6 py-5 flex items-center gap-4 border-0">
+      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 rounded-2xl px-3 py-2 flex items-center gap-2 border-0">
         <Waves className="h-6 w-6 text-blue-100" />
         <div className="flex-1 min-w-0">
           <div className="text-blue-100 text-xs">Scopri Respiro del Mare</div>
