@@ -97,7 +97,7 @@ const RespiroDelMare = () => {
               <Card className="bg-slate-800 border-slate-700 text-white">
                 <CardContent className="p-8 text-center">
                   <Waves className="h-12 w-12 mx-auto mb-6 text-blue-400" />
-                  <h3 className="text-2xl font-bold mb-4">Amico del Mare</h3>
+                  <h3 className="text-2xl font-bold mb-4">Amico della Costa</h3>
                   <div className="text-4xl font-bold text-yellow-400 mb-4">15€</div>
                   <p className="text-slate-300 mb-6">
                     Finanzi simbolicamente 1 ora di pulizia e la raccolta di un sacco di rifiuti.
