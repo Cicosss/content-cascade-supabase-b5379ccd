@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -170,49 +171,55 @@ const Webcams = () => {
   return (
     <Layout showSidebar>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
-        {/* Header Section */}
-        <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200/60 shadow-sm">
-          <div className="container mx-auto px-6 py-8">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl font-bold text-slate-900 mb-4">
+        {/* Hero Section */}
+        <div 
+          className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.8)), url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        >
+          <div className="container mx-auto px-6 text-center text-white relative z-10">
+            <div className="max-w-4xl mx-auto">
+              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
                 Webcam Live della Romagna
               </h1>
-              <p className="text-lg text-slate-600 leading-relaxed">
+              <p className="text-xl md:text-2xl mb-8 font-light leading-relaxed opacity-90">
                 Esplora la bellezza della Romagna in tempo reale attraverso le nostre webcam live. 
                 Dalle spiagge alle città d'arte, scopri cosa succede ora nei luoghi più belli della regione.
               </p>
+              
+              {/* Powered By Section nella Hero */}
+              <div className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-2xl">
+                <img 
+                  src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
+                  alt="Powered-by" 
+                  className="h-14 w-auto"
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="container mx-auto px-6 py-8">
-          {/* Category Filter and Powered By Section */}
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mb-8">
-            <div className="flex-1 flex justify-center">
-              <div className="flex flex-wrap gap-2 bg-white/60 backdrop-blur-sm p-2 rounded-xl border border-slate-200/60 shadow-sm">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                      selectedCategory === category
-                        ? 'bg-blue-500 text-white shadow-md'
-                        : 'text-slate-600 hover:bg-white/80 hover:text-slate-900'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Powered By Section */}
-            <div className="bg-white/90 backdrop-blur-sm p-3 rounded-xl border border-slate-200/60 shadow-sm">
-              <img 
-                src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
-                alt="Powered-by" 
-                className="h-14 w-auto"
-              />
+        <div className="container mx-auto px-6 py-12">
+          {/* Category Filter */}
+          <div className="flex justify-center mb-8">
+            <div className="flex flex-wrap gap-2 bg-white/60 backdrop-blur-sm p-2 rounded-xl border border-slate-200/60 shadow-sm">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    selectedCategory === category
+                      ? 'bg-blue-500 text-white shadow-md'
+                      : 'text-slate-600 hover:bg-white/80 hover:text-slate-900'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
           </div>
 
