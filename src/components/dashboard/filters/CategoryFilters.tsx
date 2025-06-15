@@ -39,7 +39,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
           className={`rounded-full px-6 py-2 font-medium transition-all ${
             isAllSelected
               ? 'bg-blue-900 hover:bg-blue-800 text-white shadow-lg'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              : 'bg-transparent text-blue-900 border border-blue-900 hover:bg-blue-50'
           }`}
         >
           Tutte
@@ -53,7 +53,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
             className={`rounded-full px-6 py-2 font-medium transition-all ${
               categories.includes(category)
                 ? 'bg-blue-900 hover:bg-blue-800 text-white shadow-lg'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-transparent text-blue-900 border border-blue-900 hover:bg-blue-50'
             }`}
           >
             {category}
