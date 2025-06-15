@@ -33,6 +33,15 @@ const Dashboard = () => {
     isFirstVisit: true // Default value
   };
 
+  const handleUpdateTransformedFilters = (newTransformedFilters: any) => {
+    setFilters({
+      ...filters,
+      categories: newTransformedFilters.activityTypes,
+      zone: newTransformedFilters.zone,
+      period: newTransformedFilters.period
+    });
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       navigate('/auth');
@@ -93,7 +102,10 @@ const Dashboard = () => {
           </div>
 
           <div className="mt-12">
-            <PersonalizedContent filters={transformedFilters} />
+            <PersonalizedContent 
+              filters={transformedFilters} 
+              onUpdateFilters={handleUpdateTransformedFilters}
+            />
           </div>
         </div>
       </Layout>
