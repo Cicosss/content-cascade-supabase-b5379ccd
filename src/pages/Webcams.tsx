@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -172,9 +173,9 @@ const Webcams = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
         {/* Hero Section */}
         <div 
-          className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"
+          className="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-slate-900/80 via-blue-900/80 to-indigo-900/80"
           style={{
-            backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.8)), url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")',
+            backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.6), rgba(30, 58, 138, 0.6)), url("https://i.ibb.co/LDWz8f4y/Progetto-senza-titolo-7.png")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed'
@@ -182,10 +183,10 @@ const Webcams = () => {
         >
           <div className="container mx-auto px-6 text-center text-white relative z-10">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-shadow-lg drop-shadow-2xl">
                 Webcam Live della Romagna
               </h1>
-              <p className="text-xl md:text-2xl mb-8 font-light leading-relaxed opacity-90">
+              <p className="text-xl md:text-2xl mb-8 font-light leading-relaxed opacity-90 text-shadow-md drop-shadow-lg">
                 Esplora la bellezza della Romagna in tempo reale attraverso le nostre webcam live. 
                 Dalle spiagge alle città d'arte, scopri cosa succede ora nei luoghi più belli della regione.
               </p>
