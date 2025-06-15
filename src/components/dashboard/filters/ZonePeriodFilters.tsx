@@ -82,7 +82,7 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
                 {formatDisplayDateRange(selectedDateRange) || <span>Seleziona periodo</span>}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-white border-2 shadow-lg" align="start">
+            <PopoverContent className="w-auto p-0 bg-white border shadow-xl rounded-lg" align="start">
               <Calendar
                 mode="range"
                 selected={selectedDateRange}
@@ -91,28 +91,29 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
                 initialFocus
                 locale={it}
                 numberOfMonths={2}
-                className="p-4 pointer-events-auto bg-white"
+                className="p-0 pointer-events-auto bg-white"
                 classNames={{
-                  months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-                  month: "space-y-4",
-                  caption: "flex justify-center pt-1 relative items-center",
-                  caption_label: "text-sm font-medium text-gray-900",
+                  months: "flex flex-col sm:flex-row",
+                  month: "p-4",
+                  caption: "flex justify-center pt-2 pb-4 relative items-center border-b border-gray-100",
+                  caption_label: "text-base font-semibold text-gray-900",
                   nav: "space-x-1 flex items-center",
-                  nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 hover:bg-blue-100 rounded transition-colors",
-                  nav_button_previous: "absolute left-1",
-                  nav_button_next: "absolute right-1",
-                  table: "w-full border-collapse space-y-1",
-                  head_row: "flex",
-                  head_cell: "text-gray-600 rounded-md w-9 font-normal text-[0.8rem]",
-                  row: "flex w-full mt-2",
-                  cell: "h-9 w-9 text-center text-sm p-0 relative hover:bg-blue-50 rounded-md transition-colors first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md",
-                  day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-blue-100 rounded-md transition-colors cursor-pointer",
-                  day_range_end: "day-range-end",
-                  day_selected: "bg-blue-600 text-white hover:bg-blue-700 hover:text-white focus:bg-blue-600 focus:text-white rounded-md",
-                  day_today: "bg-blue-100 text-blue-900 font-semibold rounded-md",
-                  day_outside: "text-gray-400 opacity-50",
-                  day_disabled: "text-gray-300 opacity-30 cursor-not-allowed",
-                  day_range_middle: "aria-selected:bg-blue-100 aria-selected:text-blue-900 rounded-none",
+                  nav_button: "h-8 w-8 bg-transparent p-0 opacity-60 hover:opacity-100 hover:bg-gray-100 rounded-md transition-colors",
+                  nav_button_previous: "absolute left-4",
+                  nav_button_next: "absolute right-4",
+                  table: "w-full border-collapse mt-4",
+                  head_row: "flex mb-2",
+                  head_cell: "text-gray-500 rounded-md w-10 h-8 font-medium text-sm flex items-center justify-center",
+                  row: "flex w-full",
+                  cell: "h-10 w-10 text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+                  day: "h-10 w-10 p-0 font-normal hover:bg-blue-50 rounded-md transition-colors cursor-pointer flex items-center justify-center",
+                  day_range_end: "day-range-end rounded-r-md",
+                  day_range_start: "rounded-l-md",
+                  day_selected: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-semibold",
+                  day_today: "bg-blue-50 text-blue-600 font-semibold rounded-md",
+                  day_outside: "text-gray-300 opacity-50",
+                  day_disabled: "text-gray-200 opacity-30 cursor-not-allowed hover:bg-transparent",
+                  day_range_middle: "aria-selected:bg-blue-100 aria-selected:text-blue-900 rounded-none hover:bg-blue-100",
                   day_hidden: "invisible",
                 }}
               />
