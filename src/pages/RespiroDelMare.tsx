@@ -1,22 +1,16 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Mail, Waves } from 'lucide-react';
-
 const RespiroDelMare = () => {
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-white text-slate-800">
         {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-blue-900/20 to-blue-600/30 overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3)',
-            }}
-          />
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3)'
+        }} />
           <div className="absolute inset-0 bg-blue-900/40" />
           
           <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
@@ -138,11 +132,7 @@ const RespiroDelMare = () => {
                   </div>
                   <h3 className="text-2xl font-bold mb-4">Sentinella Onoraria</h3>
                   <div className="text-4xl font-bold text-yellow-400 mb-4">120€</div>
-                  <p className="text-slate-300 mb-6">
-                    Finanzi un'intera giornata di lavoro per una Sentinella della Spiaggia, 
-                    creando un impatto sociale diretto. Il tuo nome verrà inserito nel registro 
-                    digitale dei sostenitori.
-                  </p>
+                  <p className="text-slate-300 mb-6">Finanzi 2 intere giornate di lavoro per una Sentinella della Spiaggia, creando un impatto sociale diretto. Il tuo nome verrà inserito nel registro digitale dei sostenitori.</p>
                   <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold">
                     Dona Ora
                   </Button>
@@ -195,16 +185,11 @@ const RespiroDelMare = () => {
 
       {/* Fixed Donation Button */}
       <div className="fixed bottom-6 right-6 z-50">
-        <Button 
-          size="lg"
-          className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 px-6 py-4 text-lg font-bold rounded-full"
-        >
+        <Button size="lg" className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105 px-6 py-4 text-lg font-bold rounded-full">
           <Heart className="h-5 w-5 mr-2" />
           FAI LA TUA DONAZIONE
         </Button>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default RespiroDelMare;
