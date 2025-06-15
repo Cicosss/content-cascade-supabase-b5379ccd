@@ -11,9 +11,8 @@ const RespiroBannerFixed = () => {
       style={{ maxWidth: 320 }}
     >
       <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 rounded-2xl px-6 py-5 flex items-center gap-4 border-0">
-        <div className="flex items-center justify-center bg-white/30 rounded-full h-10 w-10">
-          <Waves className="h-6 w-6 text-blue-100" />
-        </div>
+        {/* Eliminato il contenitore, ecco solo l'icona */}
+        <Waves className="h-6 w-6 text-blue-100" />
         <div className="flex-1 min-w-0">
           {/* Eliminato il testo selezionato */}
           <div className="text-blue-100 text-xs">Scopri Respiro del Mare</div>
