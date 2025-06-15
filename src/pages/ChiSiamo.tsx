@@ -96,7 +96,7 @@ const ChiSiamo = () => {
               <Button
                 variant="outline"
                 size="lg"
-                className="text-white border-white hover:bg-white hover:text-slate-900 text-base px-8 py-3 h-auto rounded-lg transition-colors duration-300"
+                className="text-white border border-white bg-transparent hover:bg-white hover:text-slate-900 px-8 py-3 h-auto rounded-lg transition-colors duration-300"
                 asChild
               >
                 <Link to="/partner">Collabora con Noi</Link>
