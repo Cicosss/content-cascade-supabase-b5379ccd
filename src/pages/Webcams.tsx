@@ -192,11 +192,11 @@ const Webcams = () => {
               
               {/* Powered By Section nella Hero - Aligned Right */}
               <div className="flex justify-end">
-                <div className="inline-flex items-center justify-center bg-black/40 backdrop-blur-md p-6 rounded-2xl border-2 border-white/40 shadow-2xl">
+                <div className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-2xl">
                   <img 
                     src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
                     alt="Powered-by" 
-                    className="h-16 w-auto drop-shadow-2xl filter brightness-110 contrast-110"
+                    className="h-14 w-auto"
                   />
                 </div>
               </div>
