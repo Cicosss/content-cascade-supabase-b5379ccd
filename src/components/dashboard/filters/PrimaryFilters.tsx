@@ -87,7 +87,7 @@ const PrimaryFilters: React.FC<PrimaryFiltersProps> = ({ filters, updateFilter }
             className={`rounded-full px-6 py-2 font-medium transition-all ${
               isAllSelected
                 ? 'bg-blue-900 hover:bg-blue-800 text-white shadow-lg'
-                : 'border-2 border-gray-300 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             Tutte
@@ -101,7 +101,7 @@ const PrimaryFilters: React.FC<PrimaryFiltersProps> = ({ filters, updateFilter }
               className={`rounded-full px-6 py-2 font-medium transition-all ${
                 filters.categories.includes(category)
                   ? 'bg-blue-900 hover:bg-blue-800 text-white shadow-lg'
-                  : 'border-2 border-gray-300 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {category}

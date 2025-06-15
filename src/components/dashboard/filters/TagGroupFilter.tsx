@@ -39,14 +39,7 @@ const TagGroupFilter: React.FC<TagGroupFilterProps> = ({
           return `${baseClasses} bg-blue-500 hover:bg-blue-600 text-white shadow-lg`;
       }
     } else {
-      switch (color) {
-        case 'emerald':
-          return `${baseClasses} border-2 border-gray-300 text-gray-700 hover:border-emerald-300 hover:bg-emerald-50`;
-        case 'purple':
-          return `${baseClasses} border-2 border-gray-300 text-gray-700 hover:border-purple-300 hover:bg-purple-50`;
-        case 'blue':
-          return `${baseClasses} border-2 border-gray-300 text-gray-700 hover:border-blue-300 hover:bg-blue-50`;
-      }
+      return `${baseClasses} bg-gray-100 text-gray-700 hover:bg-gray-200`;
     }
   };
 
