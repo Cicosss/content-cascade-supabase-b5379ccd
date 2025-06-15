@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -213,7 +214,7 @@ const Webcams = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-8 py-3 rounded-lg font-medium transition-all duration-200 border-2 ${
+                  className={`px-8 py-3 rounded-lg font-medium transition-all duration-200 border-2 hover:animate-pulse ${
                     selectedCategory === category
                       ? 'bg-slate-900 text-white border-slate-900 shadow-lg hover:bg-slate-800'
                       : 'text-slate-700 bg-white/80 border-slate-400 hover:bg-white hover:border-slate-500 hover:text-slate-900'
@@ -329,3 +330,4 @@ const Webcams = () => {
 };
 
 export default Webcams;
+
