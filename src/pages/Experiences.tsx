@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Star, Clock, Users, MapPin, Search, Filter, RotateCcw, Compass } from 'lucide-react';
 
-interface ExperienceData {
+interface Experience {
   id: string;
   name: string;
   description?: string;
@@ -22,7 +22,7 @@ interface ExperienceData {
 }
 
 const Experiences = () => {
-  const [experiences, setExperiences] = useState<ExperienceData[]>([]);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -49,14 +49,14 @@ const Experiences = () => {
       .order('created_at', { ascending: false });
 
     if (data) {
-      setExperiences(data as ExperienceData[]);
+      setExperiences(data);
     }
     setLoading(false);
   };
 
   const filteredExperiences = experiences.filter((exp) => {
     const matchesSearch = exp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         exp.description?.toLowerCase().includes(searchTerm.toLowerCase());
+                         (exp.description && exp.description.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = selectedCategory === 'all' || exp.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
