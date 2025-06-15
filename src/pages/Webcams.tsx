@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -190,13 +191,15 @@ const Webcams = () => {
                 Dalle spiagge alle città d'arte, scopri cosa succede ora nei luoghi più belli della regione.
               </p>
               
-              {/* Powered By Section nella Hero */}
-              <div className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-2xl">
-                <img 
-                  src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
-                  alt="Powered-by" 
-                  className="h-14 w-auto"
-                />
+              {/* Powered By Section nella Hero - Aligned Right */}
+              <div className="flex justify-end">
+                <div className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-2xl">
+                  <img 
+                    src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
+                    alt="Powered-by" 
+                    className="h-14 w-auto"
+                  />
+                </div>
               </div>
             </div>
           </div>
