@@ -1,5 +1,15 @@
+export interface Webcam {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  category: string;
+  isLive: boolean;
+  viewers: number;
+  htmlCode: string;
+}
 
-export const webcamsData = [
+export const webcamsData: Webcam[] = [
   {
     id: 1,
     name: "Rimini",
