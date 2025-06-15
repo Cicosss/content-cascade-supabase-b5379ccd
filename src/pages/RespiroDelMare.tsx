@@ -147,11 +147,7 @@ const RespiroDelMare = () => {
                   </div>
                   <h3 className="text-2xl font-bold mb-4">Custode della Costa</h3>
                   <div className="text-4xl font-bold text-yellow-400 mb-4">250€+</div>
-                  <p className="text-slate-300 mb-6">
-                    Oltre a tutti i benefici precedenti, il tuo nome o quello della tua azienda 
-                    apparirà sulla targa fisica di un "Punto Respiro", installata all'inizio di 
-                    un tratto di spiaggia per un'intera stagione.
-                  </p>
+                  <p className="text-slate-300 mb-6">Oltre a tutti i benefici precedenti, il tuo nome o quello della tua azienda apparirà sulla targa fisica di un &quot;Punto Respiro&quot;, installata all'inizio di un tratto di spiaggia per un mese.</p>
                   <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold">
                     <Mail className="h-4 w-4 mr-2" />
                     Contattaci
