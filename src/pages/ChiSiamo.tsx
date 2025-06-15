@@ -36,7 +36,7 @@ const ChiSiamo = () => {
                 <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   Un Progetto Nato dalla Passione
                 </h3>
-                <p className="text-slate-600 text-base md:text-lg leading-relaxed">
+                <p className="text-slate-600 text-base md:text-lg leading-relaxed text-left">
                   Siamo un gruppo di giovani romagnoli, amanti della nostra terra, con un background che spazia dalla tecnologia al marketing, dalla fotografia alla narrazione. Abbiamo unito le nostre competenze per un unico scopo: offrire al mondo una visione della Romagna che sia allo stesso tempo intima e sorprendente, moderna nella forma e profondamente radicata nella tradizione.
                 </p>
                 <p className="mt-6 text-slate-500 italic text-lg">
