@@ -83,11 +83,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
-                  Il Festival dell'Economia
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Romagnadoc Festival
                 </a>
               </li>
