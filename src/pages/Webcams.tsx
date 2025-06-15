@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -216,7 +215,7 @@ const Webcams = () => {
                   className={`px-8 py-3 rounded-lg font-medium transition-all duration-200 border-2 ${
                     selectedCategory === category
                       ? 'bg-slate-900 text-white border-slate-900 shadow-lg hover:bg-slate-800'
-                      : 'text-slate-700 bg-white/80 border-slate-300 hover:bg-white hover:border-slate-400 hover:text-slate-900'
+                      : 'text-slate-700 bg-white/80 border-slate-400 hover:bg-white hover:border-slate-500 hover:text-slate-900'
                   }`}
                 >
                   {category}
@@ -245,16 +244,16 @@ const Webcams = () => {
                     className="w-full h-full"
                   />
                   
-                  {/* Live Badge */}
-                  <div className="absolute top-3 left-3 flex items-center gap-1 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-medium">
+                  {/* Live Badge - Unified Style */}
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-red-500 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
                     LIVE
                   </div>
 
-                  {/* Category Badge */}
-                  <Badge className="absolute top-3 right-3 bg-white/90 text-slate-700 border-0">
+                  {/* Category Badge - Unified Style with Brand Colors */}
+                  <div className="absolute top-3 right-3 bg-slate-900 text-white px-3 py-1.5 rounded-md text-xs font-semibold shadow-lg">
                     {webcam.category}
-                  </Badge>
+                  </div>
 
                   {/* Viewers Count */}
                   <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/60 text-white px-2 py-1 rounded-md text-xs backdrop-blur-sm">
