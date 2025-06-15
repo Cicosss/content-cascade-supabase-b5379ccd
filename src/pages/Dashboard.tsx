@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LocationProvider } from '@/contexts/LocationContext';
 import Layout from '@/components/Layout';
-import AdvancedFilters from '@/components/dashboard/AdvancedFilters';
+import ExperienceFilters from '@/components/dashboard/ExperienceFilters';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import GoogleMap from '@/components/dashboard/GoogleMap';
@@ -15,12 +15,12 @@ const Dashboard = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    zone: 'tutto',
-    withChildren: 'no',
     categories: ['tutte'],
-    activityTypes: ['tutto'],
+    zone: 'tuttalrromagna',
     period: null,
-    isFirstVisit: true
+    timeSlots: [],
+    budgets: [],
+    specialPreferences: []
   });
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const Dashboard = () => {
                 </div>
               </Card>
 
-              <AdvancedFilters filters={filters} setFilters={setFilters} />
+              <ExperienceFilters filters={filters} setFilters={setFilters} />
             </div>
 
             <div className="space-y-6">
