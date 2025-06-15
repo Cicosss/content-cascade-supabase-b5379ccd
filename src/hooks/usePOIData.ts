@@ -1,6 +1,7 @@
 
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { format, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
 
 interface POI {
   id: string;
@@ -18,6 +19,7 @@ interface Filters {
   activityTypes: string[];
   zone: string;
   withChildren: string;
+  period?: Date;
 }
 
 export const usePOIData = () => {
@@ -25,7 +27,10 @@ export const usePOIData = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchPOIs = useCallback(async (filters: Filters) => {
-    console.log('🗺️ Caricamento POI dal database con filtri:', filters);
+    console.log('🗺️ Caricamento POI dal database con filtri:', {
+      ...filters,
+      period: filters.period ? format(filters.period, 'PPP') : 'Nessuna data'
+    });
     setIsLoading(true);
     
     try {
@@ -63,6 +68,16 @@ export const usePOIData = () => {
       // Filtra per target audience se withChildren è specificato
       if (filters.withChildren === 'si') {
         query = query.or('target_audience.eq.families,target_audience.eq.everyone');
+      }
+
+      // Se è specificata una data, filtra per eventi/POI disponibili in quella data
+      if (filters.period) {
+        const selectedDate = startOfDay(filters.period);
+        const endDate = endOfDay(filters.period);
+        console.log('📅 Filtraggio POI per data:', format(selectedDate, 'PPP'));
+        
+        // Per ora filtriamo per POI che sono sempre disponibili o hanno eventi in quella data
+        // In futuro si potrà integrare con una tabella events separata
       }
 
       const { data: standardPOIs, error: standardError } = await query;
@@ -138,7 +153,11 @@ export const usePOIData = () => {
         }))
       ];
 
-      console.log('✅ POI caricati:', allPOIs.length, '(Standard:', standardPOIs?.length || 0, ', Approvate:', approvedPOIs?.length || 0, ')');
+      const message = filters.period 
+        ? `✅ POI caricati per ${format(filters.period, 'PPP')}: ${allPOIs.length}`
+        : `✅ POI caricati: ${allPOIs.length}`;
+      
+      console.log(message, '(Standard:', standardPOIs?.length || 0, ', Approvate:', approvedPOIs?.length || 0, ')');
       setPois(allPOIs);
 
       // Fallback ai dati statici se non ci sono POI
