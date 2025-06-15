@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 interface Filters {
   status: string;
   category: string;
-  poiType: string;
+  macroArea: string;
   searchTerm: string;
 }
 
@@ -12,7 +12,7 @@ export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void
   const [filters, setFilters] = useState<Filters>({
     status: 'tutti',
     category: 'tutti',
-    poiType: 'tutti',
+    macroArea: 'tutti',
     searchTerm: ''
   });
 
@@ -24,7 +24,7 @@ export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void
     const activeFilters = [];
     if (filters.status !== 'tutti') activeFilters.push(`Status: ${filters.status}`);
     if (filters.category !== 'tutti') activeFilters.push(`Categoria: ${filters.category}`);
-    if (filters.poiType !== 'tutti') activeFilters.push(`Tipo: ${filters.poiType}`);
+    if (filters.macroArea !== 'tutti') activeFilters.push(`Macro-Area: ${filters.macroArea}`);
     if (filters.searchTerm) activeFilters.push(`Ricerca: "${filters.searchTerm}"`);
     
     return activeFilters.length > 0 ? activeFilters.join(' • ') : 'Nessun filtro attivo';

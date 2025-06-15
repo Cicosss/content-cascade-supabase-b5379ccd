@@ -7,7 +7,7 @@ interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -26,12 +26,13 @@ interface ApprovedExperience {
   status: string;
   created_at: string;
   updated_at: string;
+  tags: string[];
 }
 
 interface Filters {
   status: string;
   category: string;
-  poiType: string;
+  macroArea: string;
   searchTerm: string;
 }
 
@@ -73,8 +74,8 @@ export const useApprovedExperiences = () => {
       filtered = filtered.filter(exp => exp.category === filters.category);
     }
 
-    if (filters.poiType !== 'tutti') {
-      filtered = filtered.filter(exp => exp.poi_type === filters.poiType);
+    if (filters.macroArea !== 'tutti') {
+      filtered = filtered.filter(exp => exp.macro_area === filters.macroArea);
     }
 
     if (filters.searchTerm.trim()) {

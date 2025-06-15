@@ -28,9 +28,9 @@ export const AVAILABLE_TAGS = [
 ] as const;
 
 export const getCategoriesForMacroArea = (macroArea: string): string[] => {
-  return MACRO_AREAS[macroArea as keyof typeof MACRO_AREAS]?.categories || [];
+  return [...(MACRO_AREAS[macroArea as keyof typeof MACRO_AREAS]?.categories || [])];
 };
 
 export const getAllCategories = (): string[] => {
-  return Object.values(MACRO_AREAS).flatMap(area => area.categories);
+  return Object.values(MACRO_AREAS).flatMap(area => [...area.categories]);
 };

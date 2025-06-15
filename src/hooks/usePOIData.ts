@@ -6,7 +6,7 @@ interface POI {
   id: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
   latitude: number;
   longitude: number;
@@ -38,13 +38,13 @@ export const usePOIData = () => {
       if (filters.activityTypes && !filters.activityTypes.includes('tutto')) {
         // Mappa le categorie del filtro alle categorie del database
         const categoryMapping: { [key: string]: string[] } = {
-          'cibo': ['cibo', 'restaurant'],
-          'arte e cultura': ['arte e cultura', 'monument', 'museum'],
-          'parchi e natura': ['parchi e natura', 'park', 'beach', 'nature'],
-          'divertimento': ['divertimento', 'entertainment', 'amusement'],
-          'sport': ['sport', 'sports'],
+          'cibo': ['Ristoranti', 'Agriturismi', 'Cantine', 'Street Food', 'Mercati'],
+          'arte e cultura': ['Musei', 'Borghi', 'Castelli', 'Arte', 'Artigianato'],
+          'parchi e natura': ['Parchi', 'Spiagge', 'Attività per Bambini', 'Sport', 'Natura'],
+          'divertimento': ['Concerti', 'Festival', 'Teatro', 'Cinema', 'Mostre'],
+          'sport': ['Sport'],
           'shopping': ['shopping'],
-          'vita notturna': ['vita notturna', 'nightlife']
+          'vita notturna': ['vita notturna']
         };
 
         const categoriesForFilter: string[] = [];
@@ -56,9 +56,7 @@ export const usePOIData = () => {
         });
 
         if (categoriesForFilter.length > 0) {
-          query = query.or(
-            categoriesForFilter.map(cat => `category.ilike.%${cat}%,poi_type.ilike.%${cat}%`).join(',')
-          );
+          query = query.in('category', categoriesForFilter);
         }
       }
 
@@ -82,13 +80,13 @@ export const usePOIData = () => {
       // Applica gli stessi filtri alle POI approvate
       if (filters.activityTypes && !filters.activityTypes.includes('tutto')) {
         const categoryMapping: { [key: string]: string[] } = {
-          'cibo': ['cibo', 'restaurant'],
-          'arte e cultura': ['arte e cultura', 'monument', 'museum'],
-          'parchi e natura': ['parchi e natura', 'park', 'beach', 'nature'],
-          'divertimento': ['divertimento', 'entertainment', 'amusement'],
-          'sport': ['sport', 'sports'],
+          'cibo': ['Ristoranti', 'Agriturismi', 'Cantine', 'Street Food', 'Mercati'],
+          'arte e cultura': ['Musei', 'Borghi', 'Castelli', 'Arte', 'Artigianato'],
+          'parchi e natura': ['Parchi', 'Spiagge', 'Attività per Bambini', 'Sport', 'Natura'],
+          'divertimento': ['Concerti', 'Festival', 'Teatro', 'Cinema', 'Mostre'],
+          'sport': ['Sport'],
           'shopping': ['shopping'],
-          'vita notturna': ['vita notturna', 'nightlife']
+          'vita notturna': ['vita notturna']
         };
 
         const categoriesForFilter: string[] = [];
@@ -100,9 +98,7 @@ export const usePOIData = () => {
         });
 
         if (categoriesForFilter.length > 0) {
-          approvedQuery = approvedQuery.or(
-            categoriesForFilter.map(cat => `category.ilike.%${cat}%,poi_type.ilike.%${cat}%`).join(',')
-          );
+          approvedQuery = approvedQuery.in('category', categoriesForFilter);
         }
       }
 
@@ -118,12 +114,22 @@ export const usePOIData = () => {
 
       // Combina le POI standard con quelle approvate
       const allPOIs = [
-        ...(standardPOIs || []),
+        ...(standardPOIs || []).map(poi => ({
+          id: poi.id,
+          name: poi.name,
+          description: poi.description || '',
+          macro_area: poi.macro_area,
+          category: poi.category,
+          latitude: poi.latitude || 44.0646,
+          longitude: poi.longitude || 12.5736,
+          address: poi.address || '',
+          target_audience: poi.target_audience || 'everyone'
+        })),
         ...(approvedPOIs || []).map(poi => ({
           id: poi.id,
           name: poi.name,
           description: poi.description || '',
-          poi_type: poi.poi_type,
+          macro_area: poi.macro_area,
           category: poi.category,
           latitude: poi.latitude || 44.0646,
           longitude: poi.longitude || 12.5736,
@@ -142,8 +148,8 @@ export const usePOIData = () => {
             id: '1',
             name: 'Osteria del Borgo Antico',
             description: 'Tradizione Culinaria Romagnola',
-            poi_type: 'restaurant',
-            category: 'cibo',
+            macro_area: 'Gusto & Sapori',
+            category: 'Ristoranti',
             latitude: 44.0646,
             longitude: 12.5736,
             address: 'Centro Storico di Rimini',
@@ -153,8 +159,8 @@ export const usePOIData = () => {
             id: '2',
             name: 'Tempio Malatestiano',
             description: 'Capolavoro Rinascimentale',
-            poi_type: 'monument',
-            category: 'arte e cultura',
+            macro_area: 'Cultura & Territorio',
+            category: 'Arte',
             latitude: 44.0587,
             longitude: 12.5684,
             address: 'Via IV Novembre, Rimini',
@@ -164,8 +170,8 @@ export const usePOIData = () => {
             id: '3',
             name: 'Spiaggia di Riccione',
             description: 'Relax sul mare adriatico',
-            poi_type: 'beach',
-            category: 'parchi e natura',
+            macro_area: 'Divertimento & Famiglia',
+            category: 'Spiagge',
             latitude: 44.0139,
             longitude: 12.6578,
             address: 'Lungomare di Riccione',

@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [filters, setFilters] = useState({
     zone: 'tutto',
     withChildren: 'no',
+    categories: ['tutte'],
     activityTypes: ['tutto'],
     period: null,
     isFirstVisit: true
