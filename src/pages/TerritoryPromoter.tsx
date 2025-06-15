@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -9,13 +8,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, Upload, MapPin, Calendar, Clock, Euro, Users, Eye, EyeOff } from 'lucide-react';
+import { Loader2, MapPin, Eye, EyeOff } from 'lucide-react';
 import Layout from '@/components/Layout';
+import { MACRO_AREAS, getCategoriesForMacroArea, AVAILABLE_TAGS } from '@/config/categoryMapping';
 
 interface POISubmission {
   id: string;
   name: string;
   description: string;
+  macro_area: string;
   category: string;
   status: string;
   created_at: string;
@@ -28,14 +29,16 @@ const TerritoryPromoter: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submissions, setSubmissions] = useState<POISubmission[]>([]);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   
   // Form state
   const [formData, setFormData] = useState({
     submitter_email: '',
     name: '',
     description: '',
-    poi_type: '',
+    macro_area: '',
     category: '',
+    tags: [] as string[],
     address: '',
     latitude: '',
     longitude: '',
@@ -51,6 +54,18 @@ const TerritoryPromoter: React.FC = () => {
     organizer_info: '',
     video_url: ''
   });
+
+  useEffect(() => {
+    if (formData.macro_area) {
+      const categories = getCategoriesForMacroArea(formData.macro_area);
+      setAvailableCategories(categories);
+      
+      // Reset category if it's not valid for the new macro area
+      if (formData.category && !categories.includes(formData.category)) {
+        setFormData(prev => ({ ...prev, category: '' }));
+      }
+    }
+  }, [formData.macro_area]);
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,16 +99,29 @@ const TerritoryPromoter: React.FC = () => {
     }
   };
 
+  const handleTagChange = (tag: string, checked: boolean) => {
+    const currentTags = formData.tags || [];
+    let newTags;
+    
+    if (checked) {
+      newTags = [...currentTags, tag];
+    } else {
+      newTags = currentTags.filter((t: string) => t !== tag);
+    }
+    
+    setFormData(prev => ({ ...prev, tags: newTags }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       // Validazione base
-      if (!formData.submitter_email || !formData.name || !formData.poi_type || !formData.category) {
+      if (!formData.submitter_email || !formData.name || !formData.macro_area || !formData.category) {
         toast({
           title: "Campi obbligatori mancanti",
-          description: "Email, nome, tipo e categoria sono obbligatori",
+          description: "Email, nome, macro-area e categoria sono obbligatori",
           variant: "destructive",
         });
         return;
@@ -135,8 +163,9 @@ const TerritoryPromoter: React.FC = () => {
         submitter_email: '',
         name: '',
         description: '',
-        poi_type: '',
+        macro_area: '',
         category: '',
+        tags: [],
         address: '',
         latitude: '',
         longitude: '',
@@ -321,26 +350,23 @@ const TerritoryPromoter: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Tipo e Categoria */}
+                {/* Macro-Area e Categoria */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="poi_type">Tipo *</Label>
+                    <Label htmlFor="macro_area">Macro-Area *</Label>
                     <Select 
-                      value={formData.poi_type} 
-                      onValueChange={(value) => setFormData({...formData, poi_type: value})}
+                      value={formData.macro_area} 
+                      onValueChange={(value) => setFormData({...formData, macro_area: value})}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Seleziona il tipo" />
+                        <SelectValue placeholder="Seleziona la macro-area" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="restaurant">Ristorante</SelectItem>
-                        <SelectItem value="monument">Monumento</SelectItem>
-                        <SelectItem value="museum">Museo</SelectItem>
-                        <SelectItem value="park">Parco</SelectItem>
-                        <SelectItem value="beach">Spiaggia</SelectItem>
-                        <SelectItem value="experience">Esperienza</SelectItem>
-                        <SelectItem value="entertainment">Intrattenimento</SelectItem>
-                        <SelectItem value="event">Evento</SelectItem>
+                        {Object.keys(MACRO_AREAS).map((macroArea) => (
+                          <SelectItem key={macroArea} value={macroArea}>
+                            {macroArea}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -350,20 +376,38 @@ const TerritoryPromoter: React.FC = () => {
                     <Select 
                       value={formData.category} 
                       onValueChange={(value) => setFormData({...formData, category: value})}
+                      disabled={!formData.macro_area}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Seleziona la categoria" />
+                        <SelectValue placeholder="Seleziona prima una macro-area" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="cibo">Cibo</SelectItem>
-                        <SelectItem value="arte e cultura">Arte e Cultura</SelectItem>
-                        <SelectItem value="parchi e natura">Parchi e Natura</SelectItem>
-                        <SelectItem value="divertimento">Divertimento</SelectItem>
-                        <SelectItem value="sport">Sport</SelectItem>
-                        <SelectItem value="shopping">Shopping</SelectItem>
-                        <SelectItem value="vita notturna">Vita Notturna</SelectItem>
+                        {availableCategories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
+                  </div>
+                </div>
+
+                {/* Tag */}
+                <div className="space-y-3">
+                  <Label>Tag (opzionali)</Label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    {AVAILABLE_TAGS.map((tag) => (
+                      <div key={tag} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`tag-${tag}`}
+                          checked={formData.tags?.includes(tag) || false}
+                          onCheckedChange={(checked) => handleTagChange(tag, checked as boolean)}
+                        />
+                        <label htmlFor={`tag-${tag}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                          {tag}
+                        </label>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -556,7 +600,7 @@ const TerritoryPromoter: React.FC = () => {
                       </div>
                       <p className="text-slate-600 text-sm line-clamp-2">{submission.description}</p>
                       <div className="flex justify-between items-center text-xs text-slate-500">
-                        <span>{submission.category}</span>
+                        <span>{submission.macro_area} - {submission.category}</span>
                         <span>{new Date(submission.created_at).toLocaleDateString('it-IT')}</span>
                       </div>
                     </div>

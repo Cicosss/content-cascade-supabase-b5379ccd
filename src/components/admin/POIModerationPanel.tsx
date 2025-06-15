@@ -15,8 +15,9 @@ interface POISubmission {
   submitter_email: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
+  tags: string[];
   address: string;
   latitude: number;
   longitude: number;
@@ -50,7 +51,7 @@ const POIModerationPanel = () => {
   const [filters, setFilters] = useState({
     status: 'tutti',
     category: 'tutti',
-    poiType: 'tutti',
+    macroArea: 'tutti',
     searchTerm: ''
   });
 
@@ -77,7 +78,8 @@ const POIModerationPanel = () => {
 
       const typedData = (data || []).map(item => ({
         ...item,
-        status: item.status as 'pending' | 'approved' | 'rejected' | 'edited'
+        status: item.status as 'pending' | 'approved' | 'rejected' | 'edited',
+        tags: item.tags || []
       }));
 
       setSubmissions(typedData);
@@ -102,9 +104,9 @@ const POIModerationPanel = () => {
       filtered = filtered.filter(sub => sub.category === filters.category);
     }
 
-    // Filtro per tipo POI
-    if (filters.poiType !== 'tutti') {
-      filtered = filtered.filter(sub => sub.poi_type === filters.poiType);
+    // Filtro per macro-area
+    if (filters.macroArea !== 'tutti') {
+      filtered = filtered.filter(sub => sub.macro_area === filters.macroArea);
     }
 
     // Filtro per ricerca testuale
@@ -211,8 +213,6 @@ const POIModerationPanel = () => {
   };
 
   const handleExperienceAdded = () => {
-    // Ricarica le submissions per aggiornare la vista
-    // (anche se le esperienze vanno direttamente in points_of_interest)
     fetchSubmissions();
     toast.success('Vista aggiornata!');
   };
@@ -221,7 +221,7 @@ const POIModerationPanel = () => {
     const activeFilters = [];
     if (filters.status !== 'tutti') activeFilters.push(`Status: ${filters.status}`);
     if (filters.category !== 'tutti') activeFilters.push(`Categoria: ${filters.category}`);
-    if (filters.poiType !== 'tutti') activeFilters.push(`Tipo: ${filters.poiType}`);
+    if (filters.macroArea !== 'tutti') activeFilters.push(`Macro-Area: ${filters.macroArea}`);
     if (filters.searchTerm) activeFilters.push(`Ricerca: "${filters.searchTerm}"`);
     
     return activeFilters.length > 0 ? activeFilters.join(' • ') : 'Nessun filtro attivo';

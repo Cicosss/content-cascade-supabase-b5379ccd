@@ -173,16 +173,18 @@ export type Database = {
           latitude: number | null
           location_name: string | null
           longitude: number | null
+          macro_area: string
           name: string
           organizer_info: string | null
           price_info: string | null
           start_datetime: string
+          tags: string[] | null
           updated_at: string | null
         }
         Insert: {
           address?: string | null
           avg_rating?: number | null
-          category: string
+          category?: string
           created_at?: string | null
           description?: string | null
           end_datetime?: string | null
@@ -191,10 +193,12 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
+          macro_area?: string
           name: string
           organizer_info?: string | null
           price_info?: string | null
           start_datetime: string
+          tags?: string[] | null
           updated_at?: string | null
         }
         Update: {
@@ -209,10 +213,12 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
+          macro_area?: string
           name?: string
           organizer_info?: string | null
           price_info?: string | null
           start_datetime?: string
+          tags?: string[] | null
           updated_at?: string | null
         }
         Relationships: []
@@ -374,16 +380,17 @@ export type Database = {
           latitude: number | null
           location_name: string | null
           longitude: number | null
+          macro_area: string
           moderated_at: string | null
           moderated_by: string | null
           name: string
           organizer_info: string | null
           phone: string | null
-          poi_type: string
           price_info: string | null
           start_datetime: string | null
           status: string | null
           submitter_email: string
+          tags: string[] | null
           target_audience: string | null
           updated_at: string | null
           video_url: string | null
@@ -392,7 +399,7 @@ export type Database = {
         Insert: {
           address?: string | null
           admin_notes?: string | null
-          category: string
+          category?: string
           created_at?: string | null
           description?: string | null
           duration_info?: string | null
@@ -403,16 +410,17 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
+          macro_area?: string
           moderated_at?: string | null
           moderated_by?: string | null
           name: string
           organizer_info?: string | null
           phone?: string | null
-          poi_type: string
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
           submitter_email: string
+          tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
           video_url?: string | null
@@ -432,16 +440,17 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
+          macro_area?: string
           moderated_at?: string | null
           moderated_by?: string | null
           name?: string
           organizer_info?: string | null
           phone?: string | null
-          poi_type?: string
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
           submitter_email?: string
+          tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
           video_url?: string | null
@@ -464,13 +473,14 @@ export type Database = {
           latitude: number
           location_name: string | null
           longitude: number
+          macro_area: string
           name: string
           organizer_info: string | null
           phone: string | null
-          poi_type: string
           price_info: string | null
           start_datetime: string | null
           status: string | null
+          tags: string[] | null
           target_audience: string | null
           updated_at: string | null
           video_url: string | null
@@ -478,7 +488,7 @@ export type Database = {
         Insert: {
           address?: string | null
           avg_rating?: number | null
-          category: string
+          category?: string
           created_at?: string | null
           description?: string | null
           duration_info?: string | null
@@ -489,13 +499,14 @@ export type Database = {
           latitude: number
           location_name?: string | null
           longitude: number
+          macro_area?: string
           name: string
           organizer_info?: string | null
           phone?: string | null
-          poi_type: string
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
+          tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
           video_url?: string | null
@@ -514,13 +525,14 @@ export type Database = {
           latitude?: number
           location_name?: string | null
           longitude?: number
+          macro_area?: string
           name?: string
           organizer_info?: string | null
           phone?: string | null
-          poi_type?: string
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
+          tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
           video_url?: string | null

@@ -1,25 +1,16 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { MACRO_AREAS, getCategoriesForMacroArea, AVAILABLE_TAGS } from '@/config/categoryMapping';
 
 interface ExperienceFormFieldsProps {
   formData: any;
-  onInputChange: (field: string, value: string) => void;
+  onInputChange: (field: string, value: string | string[]) => void;
 }
-
-const categories = [
-  'Gastronomia',
-  'Sport',
-  'Cultura',
-  'Natura',
-  'Relax',
-  'Famiglia',
-  'Avventura',
-  'Shopping'
-];
 
 const targetAudiences = [
   { value: 'everyone', label: 'Tutti' },
@@ -31,6 +22,33 @@ const targetAudiences = [
 ];
 
 const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, onInputChange }) => {
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (formData.macro_area) {
+      const categories = getCategoriesForMacroArea(formData.macro_area);
+      setAvailableCategories(categories);
+      
+      // Reset category if it's not valid for the new macro area
+      if (formData.category && !categories.includes(formData.category)) {
+        onInputChange('category', '');
+      }
+    }
+  }, [formData.macro_area]);
+
+  const handleTagChange = (tag: string, checked: boolean) => {
+    const currentTags = formData.tags || [];
+    let newTags;
+    
+    if (checked) {
+      newTags = [...currentTags, tag];
+    } else {
+      newTags = currentTags.filter((t: string) => t !== tag);
+    }
+    
+    onInputChange('tags', newTags);
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -45,20 +63,40 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
         </div>
         
         <div>
-          <Label htmlFor="category">Categoria *</Label>
-          <Select value={formData.category} onValueChange={(value) => onInputChange('category', value)}>
+          <Label htmlFor="macro_area">Macro-Area *</Label>
+          <Select value={formData.macro_area} onValueChange={(value) => onInputChange('macro_area', value)}>
             <SelectTrigger>
-              <SelectValue placeholder="Seleziona categoria" />
+              <SelectValue placeholder="Seleziona macro-area" />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
+              {Object.keys(MACRO_AREAS).map((macroArea) => (
+                <SelectItem key={macroArea} value={macroArea}>
+                  {macroArea}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
+      </div>
+
+      <div>
+        <Label htmlFor="category">Categoria *</Label>
+        <Select 
+          value={formData.category} 
+          onValueChange={(value) => onInputChange('category', value)}
+          disabled={!formData.macro_area}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Seleziona prima una macro-area" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableCategories.map((category) => (
+              <SelectItem key={category} value={category}>
+                {category}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div>
@@ -215,6 +253,24 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
           value={formData.website_url}
           onChange={(e) => onInputChange('website_url', e.target.value)}
         />
+      </div>
+
+      <div>
+        <Label>Tag (opzionali)</Label>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
+          {AVAILABLE_TAGS.map((tag) => (
+            <div key={tag} className="flex items-center space-x-2">
+              <Checkbox
+                id={`tag-${tag}`}
+                checked={formData.tags?.includes(tag) || false}
+                onCheckedChange={(checked) => handleTagChange(tag, checked as boolean)}
+              />
+              <label htmlFor={`tag-${tag}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {tag}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

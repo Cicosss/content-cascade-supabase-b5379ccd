@@ -6,7 +6,7 @@ import ZoneFilter from './filters/ZoneFilter';
 import ChildrenFilter from './filters/ChildrenFilter';
 import PeriodFilter from './filters/PeriodFilter';
 import ExperienceFilter from './filters/ExperienceFilter';
-import ActivityTypesFilter from './filters/ActivityTypesFilter';
+import CategoryFilter from './filters/CategoryFilter';
 import AdvancedFiltersToggle from './filters/AdvancedFiltersToggle';
 import TimeSlotFilter from './filters/TimeSlotFilter';
 import BudgetFilter from './filters/BudgetFilter';
@@ -16,7 +16,7 @@ interface AdvancedFiltersProps {
   filters: {
     zone: string;
     withChildren: string;
-    activityTypes: string[];
+    categories: string[];
     period: any;
     isFirstVisit: boolean;
     timeSlots?: string[];
@@ -60,11 +60,13 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({ filters, setFilters }
         />
       </div>
 
-      {/* Tipi di attività - Sezione orizzontale */}
-      <ActivityTypesFilter 
-        selectedTypes={filters.activityTypes} 
-        onTypesChange={(types) => updateFilter('activityTypes', types)} 
-      />
+      {/* Categorie - Sezione orizzontale */}
+      <div className="mb-8">
+        <CategoryFilter 
+          selectedCategories={filters.categories || ['tutte']} 
+          onCategoriesChange={(categories) => updateFilter('categories', categories)} 
+        />
+      </div>
 
       {/* Switch per Filtri Avanzati */}
       <AdvancedFiltersToggle 

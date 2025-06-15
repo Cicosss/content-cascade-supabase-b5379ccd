@@ -6,12 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Filter, Search } from 'lucide-react';
+import { MACRO_AREAS, getAllCategories } from '@/config/categoryMapping';
 
 interface ModerationFiltersProps {
   filters: {
     status: string;
     category: string;
-    poiType: string;
+    macroArea: string;
     searchTerm: string;
   };
   setFilters: (filters: any) => void;
@@ -19,11 +20,8 @@ interface ModerationFiltersProps {
 
 const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilters }) => {
   const statusOptions = ['tutti', 'pending', 'approved', 'rejected', 'edited'];
-  const categoryOptions = [
-    'tutti', 'cibo', 'sport', 'arte e cultura', 'musica', 
-    'parchi e natura', 'vita notturna', 'intrattenimento', 'altro'
-  ];
-  const poiTypeOptions = ['tutti', 'restaurant', 'experience', 'attraction', 'event'];
+  const allCategories = getAllCategories();
+  const macroAreaOptions = ['tutti', ...Object.keys(MACRO_AREAS)];
 
   const updateFilter = (key: string, value: string) => {
     setFilters({ ...filters, [key]: value });
@@ -33,7 +31,7 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
     setFilters({
       status: 'tutti',
       category: 'tutti',
-      poiType: 'tutti',
+      macroArea: 'tutti',
       searchTerm: ''
     });
   };
@@ -83,6 +81,23 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
           </Select>
         </div>
 
+        {/* Macro-Area */}
+        <div className="space-y-2">
+          <Label className="font-semibold text-gray-700">Macro-Area</Label>
+          <Select value={filters.macroArea} onValueChange={(value) => updateFilter('macroArea', value)}>
+            <SelectTrigger className="border-2">
+              <SelectValue placeholder="Seleziona macro-area" />
+            </SelectTrigger>
+            <SelectContent>
+              {macroAreaOptions.map((macroArea) => (
+                <SelectItem key={macroArea} value={macroArea}>
+                  {macroArea === 'tutti' ? 'Tutte' : macroArea}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         {/* Categoria */}
         <div className="space-y-2">
           <Label className="font-semibold text-gray-700">Categoria</Label>
@@ -91,29 +106,10 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
               <SelectValue placeholder="Seleziona categoria" />
             </SelectTrigger>
             <SelectContent>
-              {categoryOptions.map((category) => (
+              <SelectItem value="tutti">Tutte</SelectItem>
+              {allCategories.map((category) => (
                 <SelectItem key={category} value={category}>
-                  {category === 'tutti' ? 'Tutte' : category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Tipo POI */}
-        <div className="space-y-2">
-          <Label className="font-semibold text-gray-700">Tipo POI</Label>
-          <Select value={filters.poiType} onValueChange={(value) => updateFilter('poiType', value)}>
-            <SelectTrigger className="border-2">
-              <SelectValue placeholder="Seleziona tipo" />
-            </SelectTrigger>
-            <SelectContent>
-              {poiTypeOptions.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type === 'tutti' ? 'Tutti' : 
-                   type === 'restaurant' ? 'Ristorante' :
-                   type === 'experience' ? 'Esperienza' :
-                   type === 'attraction' ? 'Attrazione' : 'Evento'}
+                  {category}
                 </SelectItem>
               ))}
             </SelectContent>

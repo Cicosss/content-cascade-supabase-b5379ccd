@@ -15,7 +15,9 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    macro_area: '',
     category: '',
+    tags: [] as string[],
     address: '',
     latitude: '',
     longitude: '',
@@ -33,7 +35,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     video_url: ''
   });
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -50,10 +52,17 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     setLoading(true);
 
     try {
+      if (!formData.name || !formData.macro_area || !formData.category) {
+        toast.error('Nome, macro-area e categoria sono obbligatori');
+        return;
+      }
+
       const experienceData = {
         name: formData.name,
         description: formData.description,
+        macro_area: formData.macro_area,
         category: formData.category,
+        tags: formData.tags,
         address: formData.address,
         latitude: formData.latitude ? parseFloat(formData.latitude) : null,
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
@@ -69,7 +78,6 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         organizer_info: formData.organizer_info,
         images: formData.images,
         video_url: formData.video_url,
-        poi_type: 'experience',
         status: 'approved'
       };
 
@@ -89,7 +97,9 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
       setFormData({
         name: '',
         description: '',
+        macro_area: '',
         category: '',
+        tags: [],
         address: '',
         latitude: '',
         longitude: '',
