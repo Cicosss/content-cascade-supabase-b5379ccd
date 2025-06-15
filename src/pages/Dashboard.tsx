@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -24,13 +23,13 @@ const Dashboard = () => {
     specialPreferences: []
   });
 
-  // Transform filters for child components that need different structure
-  const transformedFilters = {
+  // Transform filters for GoogleMap component that needs different structure
+  const transformedFiltersForMap = {
     zone: filters.zone,
-    withChildren: 'no', // Default value
+    withChildren: 'no',
     activityTypes: filters.categories,
     period: filters.period,
-    isFirstVisit: true // Default value
+    isFirstVisit: true
   };
 
   const handleUpdateTransformedFilters = (newTransformedFilters: any) => {
@@ -89,7 +88,7 @@ const Dashboard = () => {
                   </h2>
                 </div>
                 <div className="h-[calc(100%-4rem)]">
-                  <GoogleMap filters={transformedFilters} />
+                  <GoogleMap filters={transformedFiltersForMap} />
                 </div>
               </Card>
 
@@ -103,8 +102,8 @@ const Dashboard = () => {
 
           <div className="mt-12">
             <PersonalizedContent 
-              filters={transformedFilters} 
-              onUpdateFilters={handleUpdateTransformedFilters}
+              filters={filters} 
+              onUpdateFilters={setFilters}
             />
           </div>
         </div>

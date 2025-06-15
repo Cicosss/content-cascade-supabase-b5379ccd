@@ -8,11 +8,12 @@ import { it } from 'date-fns/locale';
 
 interface AppliedFiltersProps {
   filters: {
+    categories: string[];
     zone: string;
-    withChildren: string;
-    activityTypes: string[];
     period: DateRange | undefined;
-    isFirstVisit: boolean;
+    timeSlots?: string[];
+    budgets?: string[];
+    specialPreferences?: string[];
   };
   onRemoveFilter: (filterType: string, value?: string) => void;
 }
@@ -25,7 +26,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
     if (filters.zone && filters.zone !== 'tuttalromagna') {
       const zoneNames: { [key: string]: string } = {
         centro: 'Centro',
-        nord: 'Nord',
+        nord: 'Nord', 
         sud: 'Sud',
         ovest: 'Ovest',
         est: 'Est'
@@ -38,15 +39,15 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
       });
     }
 
-    // Activity types filter
-    if (filters.activityTypes.length > 0 && !filters.activityTypes.includes('tutte')) {
-      filters.activityTypes.forEach(activity => {
-        if (activity !== 'tutte') {
+    // Categories filter
+    if (filters.categories.length > 0 && !filters.categories.includes('tutte')) {
+      filters.categories.forEach(category => {
+        if (category !== 'tutte') {
           activeFilters.push({
-            type: 'activity',
-            label: activity,
+            type: 'category',
+            label: category,
             icon: Tag,
-            onRemove: () => onRemoveFilter('activity', activity)
+            onRemove: () => onRemoveFilter('category', category)
           });
         }
       });
@@ -66,23 +67,39 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
       });
     }
 
-    // Children filter
-    if (filters.withChildren === 'sì') {
-      activeFilters.push({
-        type: 'children',
-        label: 'Con bambini',
-        icon: Tag,
-        onRemove: () => onRemoveFilter('children')
+    // Time slots filter
+    if (filters.timeSlots && filters.timeSlots.length > 0) {
+      filters.timeSlots.forEach(slot => {
+        activeFilters.push({
+          type: 'timeSlot',
+          label: slot,
+          icon: Tag,
+          onRemove: () => onRemoveFilter('timeSlot', slot)
+        });
       });
     }
 
-    // First visit filter
-    if (!filters.isFirstVisit) {
-      activeFilters.push({
-        type: 'experience',
-        label: 'Locale/Esperto',
-        icon: Tag,
-        onRemove: () => onRemoveFilter('experience')
+    // Budget filter
+    if (filters.budgets && filters.budgets.length > 0) {
+      filters.budgets.forEach(budget => {
+        activeFilters.push({
+          type: 'budget',
+          label: budget,
+          icon: Tag,
+          onRemove: () => onRemoveFilter('budget', budget)
+        });
+      });
+    }
+
+    // Special preferences filter
+    if (filters.specialPreferences && filters.specialPreferences.length > 0) {
+      filters.specialPreferences.forEach(pref => {
+        activeFilters.push({
+          type: 'specialPreference',
+          label: pref,
+          icon: Tag,
+          onRemove: () => onRemoveFilter('specialPreference', pref)
+        });
       });
     }
 
@@ -96,8 +113,8 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
   }
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8">
-      <div className="flex items-center justify-between mb-4">
+    <div className="sticky top-4 z-50 bg-white rounded-2xl p-4 shadow-lg border border-gray-100 mb-8 backdrop-blur-sm bg-white/95">
+      <div className="flex items-center justify-between mb-3">
         <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
           <Tag className="h-5 w-5 text-blue-600" strokeWidth={1.5} />
           Filtri Applicati
@@ -118,7 +135,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
           return (
             <div
               key={`${filter.type}-${index}`}
-              className="flex items-center gap-2 bg-blue-50 text-blue-800 px-3 py-2 rounded-full border border-blue-200 text-sm font-medium"
+              className="flex items-center gap-2 bg-blue-50 text-blue-800 px-3 py-1.5 rounded-full border border-blue-200 text-sm font-medium"
             >
               <IconComponent className="h-4 w-4" strokeWidth={1.5} />
               <span>{filter.label}</span>

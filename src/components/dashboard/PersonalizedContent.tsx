@@ -10,20 +10,31 @@ import AppliedFilters from './AppliedFilters';
 import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
 import { transformPoisToRestaurants, transformPoisToExperiences, transformEventsToCards } from '@/utils/contentTransformers';
 import { fallbackRestaurants, fallbackExperiences, fallbackEvents } from './content/FallbackData';
+import { DateRange } from 'react-day-picker';
 
 interface PersonalizedContentProps {
   filters: {
+    categories: string[];
     zone: string;
-    withChildren: string;
-    activityTypes: string[];
-    period: any;
-    isFirstVisit: boolean;
+    period: DateRange | undefined;
+    timeSlots?: string[];
+    budgets?: string[];
+    specialPreferences?: string[];
   };
   onUpdateFilters?: (filters: any) => void;
 }
 
 const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUpdateFilters }) => {
-  const { pois, events } = usePersonalizedContent(filters);
+  // Transform filters for usePersonalizedContent hook
+  const transformedFilters = {
+    zone: filters.zone,
+    withChildren: 'no',
+    activityTypes: filters.categories,
+    period: filters.period, 
+    isFirstVisit: true
+  };
+
+  const { pois, events } = usePersonalizedContent(transformedFilters);
 
   // Transform data
   const restaurants = transformPoisToRestaurants(pois);
@@ -44,30 +55,40 @@ const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUp
       case 'zone':
         updatedFilters.zone = 'tuttalromagna';
         break;
-      case 'activity':
+      case 'category':
         if (value) {
-          updatedFilters.activityTypes = updatedFilters.activityTypes.filter(type => type !== value);
-          if (updatedFilters.activityTypes.length === 0) {
-            updatedFilters.activityTypes = ['tutte'];
+          updatedFilters.categories = updatedFilters.categories.filter(cat => cat !== value);
+          if (updatedFilters.categories.length === 0) {
+            updatedFilters.categories = ['tutte'];
           }
         }
         break;
       case 'period':
         updatedFilters.period = undefined;
         break;
-      case 'children':
-        updatedFilters.withChildren = 'no';
+      case 'timeSlot':
+        if (value && updatedFilters.timeSlots) {
+          updatedFilters.timeSlots = updatedFilters.timeSlots.filter(slot => slot !== value);
+        }
         break;
-      case 'experience':
-        updatedFilters.isFirstVisit = true;
+      case 'budget':
+        if (value && updatedFilters.budgets) {
+          updatedFilters.budgets = updatedFilters.budgets.filter(budget => budget !== value);
+        }
+        break;
+      case 'specialPreference':
+        if (value && updatedFilters.specialPreferences) {
+          updatedFilters.specialPreferences = updatedFilters.specialPreferences.filter(pref => pref !== value);
+        }
         break;
       case 'all':
         updatedFilters = {
+          categories: ['tutte'],
           zone: 'tuttalromagna',
-          withChildren: 'no',
-          activityTypes: ['tutte'],
           period: undefined,
-          isFirstVisit: true
+          timeSlots: [],
+          budgets: [],
+          specialPreferences: []
         };
         break;
     }
@@ -79,9 +100,9 @@ const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUp
     <div className="space-y-16">
       <AppliedFilters filters={filters} onRemoveFilter={handleRemoveFilter} />
       
-      <RestaurantsCarousel restaurants={displayRestaurants} filters={filters} />
+      <RestaurantsCarousel restaurants={displayRestaurants} filters={transformedFilters} />
       
-      <ExperiencesCarousel experiences={displayExperiences} filters={filters} />
+      <ExperiencesCarousel experiences={displayExperiences} filters={transformedFilters} />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <GuestCard />
