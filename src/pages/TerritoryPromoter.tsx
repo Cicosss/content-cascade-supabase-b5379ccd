@@ -276,9 +276,6 @@ const TerritoryPromoter: React.FC = () => {
                       )}
                     </Button>
                   </div>
-                  <p className="text-xs text-slate-500">
-                    Password: Promotore101miaromagna
-                  </p>
                 </div>
                 <Button type="submit" className="w-full">
                   Accedi
