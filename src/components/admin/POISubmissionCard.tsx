@@ -10,7 +10,7 @@ interface POISubmission {
   submitter_email: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -33,6 +33,7 @@ interface POISubmission {
   updated_at: string;
   moderated_at: string;
   moderated_by: string;
+  tags: string[];
 }
 
 interface POISubmissionCardProps {
@@ -99,8 +100,8 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
       <CardContent>
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
+            <p><strong>Macro-Area:</strong> {submission.macro_area}</p>
             <p><strong>Categoria:</strong> {submission.category}</p>
-            <p><strong>Tipo:</strong> {submission.poi_type}</p>
             <p><strong>Target:</strong> {submission.target_audience}</p>
             {submission.address && (
               <p className="flex items-center gap-1">
@@ -142,6 +143,19 @@ const POISubmissionCard = ({ submission, onModerate, onDelete }: POISubmissionCa
           <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded">
             <strong>Note Admin:</strong>
             <p className="text-sm mt-1">{submission.admin_notes}</p>
+          </div>
+        )}
+
+        {submission.tags && submission.tags.length > 0 && (
+          <div className="mb-4">
+            <strong>Tags:</strong>
+            <div className="flex flex-wrap gap-1 mt-1">
+              {submission.tags.map((tag, index) => (
+                <Badge key={index} variant="secondary" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           </div>
         )}
 
