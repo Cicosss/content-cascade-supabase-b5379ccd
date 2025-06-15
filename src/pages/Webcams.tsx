@@ -264,27 +264,27 @@ const Webcams = () => {
 
                 {/* Card Content */}
                 <div className="p-5">
-                  <h3 className="font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
+                  <h3 className="font-semibold text-white mb-2 group-hover:text-blue-300 transition-colors">
                     {webcam.name}
                   </h3>
                   
-                  <div className="flex items-start gap-2 text-sm text-slate-300 mb-3">
-                    <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-slate-400" />
-                    <span className="leading-relaxed">{webcam.location}</span>
+                  <div className="flex items-start gap-2 text-sm text-white mb-3">
+                    <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0 text-white/80" />
+                    <span className="leading-relaxed font-medium">{webcam.location}</span>
                   </div>
 
-                  <p className="text-sm text-slate-300 leading-relaxed mb-4">
+                  <p className="text-sm text-white leading-relaxed mb-4 font-normal">
                     {webcam.description}
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-xs text-slate-400">
+                    <div className="flex items-center gap-1 text-xs text-white/80">
                       <Clock className="h-3 w-3" />
-                      Aggiornato ora
+                      <span className="font-medium">Aggiornato ora</span>
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-slate-400">
+                    <div className="flex items-center gap-1 text-xs text-white/80">
                       <Eye className="h-3 w-3" />
-                      {webcam.viewers} spettatori
+                      <span className="font-medium">{webcam.viewers} spettatori</span>
                     </div>
                   </div>
                 </div>
