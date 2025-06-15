@@ -1,9 +1,9 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon, X } from "lucide-react";
+import { Calendar as CalendarIcon, X, ArrowLeft, ArrowRight } from "lucide-react";
 import { it } from "date-fns/locale";
 import { useCalendarLogic } from "@/hooks/useCalendarLogic";
 import { DateRange } from "react-day-picker";
@@ -17,17 +17,13 @@ interface ZonePeriodFiltersProps {
   onPeriodChange: (period: DateRange | undefined) => void;
 }
 
-const WEEKDAYS = ["Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do"];
-
 function getDaysMatrix(month: number, year: number) {
-  // Restituisce una matrice di settimane, ciascuna con 7 giorni (Date | null)
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const matrix: (Date | null)[][] = [];
   let week: (Date | null)[] = [];
 
-  // Giorno settimana 0: domenica in JS, ma in Italia inizia dal lunedì: calcolo corretto offset
-  let dayOfWeek = (firstDay.getDay() + 6) % 7; // 0 (lun) ... 6 (dom)
+  let dayOfWeek = (firstDay.getDay() + 6) % 7;
   for (let i = 0; i < dayOfWeek; ++i) week.push(null);
 
   for (let d = 1; d <= lastDay.getDate(); ++d) {
@@ -51,7 +47,6 @@ function isSameDay(a?: Date, b?: Date) {
     a.getDate() === b.getDate()
   );
 }
-
 function isInRange(date: Date, range?: DateRange) {
   if (!range?.from) return false;
   if (range && range.from && !range.to) return isSameDay(date, range.from);
@@ -62,7 +57,6 @@ function isInRange(date: Date, range?: DateRange) {
     );
   return false;
 }
-
 function isRangeStart(date: Date, range?: DateRange) {
   return range?.from && isSameDay(date, range.from);
 }
@@ -101,28 +95,46 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
     onDateRangeChange: onPeriodChange,
   });
 
-  // Determina mese/anno corrente: se selezionato dal, altrimenti oggi
+  // Stato locale per i mesi visualizzati (sinistra/destra)
   const today = new Date();
-  const leftMonth = selectedDateRange?.from
-    ? selectedDateRange.from.getMonth()
-    : today.getMonth();
-  const leftYear = selectedDateRange?.from
-    ? selectedDateRange.from.getFullYear()
-    : today.getFullYear();
+  const [calendarBase, setCalendarBase] = useState<{
+    leftMonth: number;
+    leftYear: number;
+  }>(() => {
+    let m = selectedDateRange?.from ? selectedDateRange.from.getMonth() : today.getMonth();
+    let y = selectedDateRange?.from ? selectedDateRange.from.getFullYear() : today.getFullYear();
+    return { leftMonth: m, leftYear: y };
+  });
 
-  let rightMonth = leftMonth + 1;
-  let rightYear = leftYear;
-  if (rightMonth > 11) {
-    rightMonth = 0;
-    rightYear++;
+  // Aggiorna il mese a sinistra e quello a destra verrà sempre il mese successivo
+  function goToPreviousMonth() {
+    setCalendarBase((prev) => {
+      let month = prev.leftMonth - 1;
+      let year = prev.leftYear;
+      if (month < 0) { month = 11; year -= 1; }
+      return { leftMonth: month, leftYear: year };
+    });
+  }
+  function goToNextMonth() {
+    setCalendarBase((prev) => {
+      let month = prev.leftMonth + 1;
+      let year = prev.leftYear;
+      if (month > 11) { month = 0; year += 1; }
+      return { leftMonth: month, leftYear: year };
+    });
   }
 
+  // Set precise mesi-anni visualizzati
+  const leftMonth = calendarBase.leftMonth;
+  const leftYear = calendarBase.leftYear;
+  let rightMonth = leftMonth + 1;
+  let rightYear = leftYear;
+  if (rightMonth > 11) { rightMonth = 0; rightYear++; }
+
   function onDayClick(date: Date) {
-    // re-implement range logic: click first date, next click = set to
     if (!selectedDateRange?.from || (selectedDateRange?.from && selectedDateRange?.to)) {
       handleDateRangeSelect({ from: date, to: undefined });
     } else if (selectedDateRange.from && !selectedDateRange.to) {
-      // Selezione to: se data < from => inverti
       if (date < selectedDateRange.from) {
         handleDateRangeSelect({ from: date, to: selectedDateRange.from });
       } else if (date > selectedDateRange.from) {
@@ -133,19 +145,44 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
     }
   }
 
-  function renderMonth(month: number, year: number) {
+  // Rimuove intestazione dei giorni settimana, e costruisce header con frecce
+  function renderMonth(month: number, year: number, isLeft: boolean) {
     const daysMatrix = getDaysMatrix(month, year);
+    // Weekdays da LUN a DOM, abbreviazioni 1 lettera
+    const shortWeekdays = ["L", "M", "M", "G", "V", "S", "D"];
 
     return (
-      <div className="flex-1 min-w-[320px] px-4 py-5">
-        <div className="flex items-center justify-center mb-2">
-          <span className="text-base font-semibold text-gray-800">
+      <div className="flex-1 min-w-[310px] px-5 py-3 flex flex-col">
+        <div className="flex items-center justify-between mb-2">
+          {isLeft ? (
+            <button
+              onClick={goToPreviousMonth}
+              className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
+              aria-label="Mese precedente"
+              type="button"
+            >
+              <ArrowLeft size={20} />
+            </button>
+          ) : <span className="w-7"></span>}
+          <span className="text-base font-semibold text-gray-800 select-none">
             {format(new Date(year, month), "LLLL yyyy", { locale: it })}
           </span>
+          {isLeft ? (
+            <span className="w-7"></span>
+          ) : (
+            <button
+              onClick={goToNextMonth}
+              className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
+              aria-label="Mese successivo"
+              type="button"
+            >
+              <ArrowRight size={20} />
+            </button>
+          )}
         </div>
-        <div className="grid grid-cols-7 mb-2">
-          {WEEKDAYS.map((wd) => (
-            <div key={wd} className="text-xs text-gray-400 font-medium text-center h-5">
+        <div className="grid grid-cols-7 mb-2 gap-y-1">
+          {shortWeekdays.map((wd, idx) => (
+            <div key={idx} className="text-xs text-gray-400 font-medium text-center h-5 select-none">
               {wd}
             </div>
           ))}
@@ -157,24 +194,20 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
                 if (!date) {
                   return <div key={j} className="h-9"></div>;
                 }
-
                 const isStart = isRangeStart(date, selectedDateRange);
                 const isEnd = isRangeEnd(date, selectedDateRange);
-                const inRange =
-                  !isStart &&
-                  !isEnd &&
-                  isInRange(date, selectedDateRange);
+                const inRange = !isStart && !isEnd && isInRange(date, selectedDateRange);
                 const isCurrToday = isToday(date);
 
                 let classNames =
-                  "flex items-center justify-center cursor-pointer select-none rounded transition-colors w-9 h-9 text-sm ";
+                  "flex items-center justify-center cursor-pointer select-none rounded-full w-9 h-9 text-sm transition-all duration-150 ";
 
                 if (isStart || isEnd) {
                   classNames +=
                     " bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 ";
                 } else if (inRange) {
                   classNames +=
-                    " bg-blue-100 text-blue-900 border-l border-r border-blue-300 ";
+                    " bg-blue-100 text-blue-900 rounded-full ";
                 } else if (isCurrToday) {
                   classNames +=
                     " border border-blue-500 text-blue-600 font-semibold bg-white ";
@@ -251,9 +284,9 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
               style={{ width: 650, height: 400 }}
             >
               <div className="w-[650px] h-[400px] flex bg-white">
-                {renderMonth(leftMonth, leftYear)}
+                {renderMonth(leftMonth, leftYear, true)}
                 <div className="w-[2px] bg-gray-100 h-full"></div>
-                {renderMonth(rightMonth, rightYear)}
+                {renderMonth(rightMonth, rightYear, false)}
               </div>
             </PopoverContent>
           </Popover>
