@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -42,9 +41,6 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            <Link to="/chi-siamo" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
-              Chi Siamo
-            </Link>
             <Link to="/experiences" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm">
               Tradizione Culinaria
             </Link>
@@ -117,13 +113,6 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="lg:hidden py-3 border-t border-slate-700/60">
             <nav className="flex flex-col space-y-1">
-              <Link 
-                to="/chi-siamo" 
-                className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Chi Siamo
-              </Link>
               <Link 
                 to="/experiences" 
                 className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-700/50 rounded-lg transition-all duration-200 font-medium text-sm"
