@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Waves } from "lucide-react";
+import { Waves, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +11,7 @@ const RespiroBannerFixed = () => {
       style={{ maxWidth: 320 }}
     >
       <div
-        className="bg-gradient-to-r from-blue-400/80 via-blue-500/70 to-blue-600/70 rounded-lg px-2 py-1 flex items-center gap-1 border border-white/20"
+        className="bg-gradient-to-r from-blue-400/70 via-blue-100/30 to-white/50 rounded-md px-3 py-2 flex items-center gap-2 border border-blue-100/30"
         style={{ backdropFilter: "blur(3px)" }}
       >
         <Waves className="h-5 w-5 text-blue-100/90" />
@@ -22,11 +22,13 @@ const RespiroBannerFixed = () => {
         </div>
         <Button
           asChild
+          variant="outline"
           size="sm"
-          className="bg-gradient-to-r from-yellow-300 to-orange-400 shadow-sm font-semibold text-white px-3 py-1 rounded-md hover:from-yellow-400 hover:to-orange-500 transition-all"
+          className="border border-blue-500/30 text-blue-700 bg-white/50 backdrop-blur-sm font-semibold rounded-full px-3 py-1 flex items-center gap-1 shadow-sm hover:bg-blue-50/90 hover:text-blue-900 hover:border-blue-600 transition-all"
         >
-          <Link to="/respiro-del-mare" className="flex items-center">
-            Vai
+          <Link to="/respiro-del-mare" className="flex items-center gap-1">
+            <span className="font-medium text-xs">Vai</span>
+            <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </Button>
       </div>
@@ -35,3 +37,4 @@ const RespiroBannerFixed = () => {
 };
 
 export default RespiroBannerFixed;
+
