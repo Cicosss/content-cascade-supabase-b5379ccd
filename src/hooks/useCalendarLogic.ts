@@ -2,49 +2,54 @@
 import { useState, useCallback, useEffect } from 'react';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
+import { DateRange } from 'react-day-picker';
 
 interface UseCalendarLogicProps {
-  onDateChange?: (date: Date | undefined) => void;
-  initialDate?: Date;
+  onDateRangeChange?: (dateRange: DateRange | undefined) => void;
+  initialDateRange?: DateRange;
 }
 
-export const useCalendarLogic = ({ onDateChange, initialDate }: UseCalendarLogicProps = {}) => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(initialDate);
+export const useCalendarLogic = ({ onDateRangeChange, initialDateRange }: UseCalendarLogicProps = {}) => {
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(initialDateRange);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDateSelect = useCallback((date: Date | undefined) => {
-    setSelectedDate(date);
-    setIsOpen(false);
-    onDateChange?.(date);
+  const handleDateRangeSelect = useCallback((range: DateRange | undefined) => {
+    setSelectedDateRange(range);
+    onDateRangeChange?.(range);
     
-    if (date) {
-      console.log('📅 Data selezionata per filtro POI:', format(date, 'PPP', { locale: it }));
+    if (range?.from && range?.to) {
+      setIsOpen(false);
+      console.log('📅 Periodo selezionato per filtro POI:', 
+        `Dal ${format(range.from, 'PPP', { locale: it })} al ${format(range.to, 'PPP', { locale: it })}`);
+    } else if (range?.from) {
+      console.log('📅 Data di inizio selezionata:', format(range.from, 'PPP', { locale: it }));
     } else {
-      console.log('📅 Filtro data rimosso');
+      console.log('📅 Filtro periodo rimosso');
     }
-  }, [onDateChange]);
+  }, [onDateRangeChange]);
 
-  const formatDisplayDate = useCallback((date: Date | undefined) => {
-    if (!date) return null;
-    return format(date, 'PPP', { locale: it });
+  const formatDisplayDateRange = useCallback((range: DateRange | undefined) => {
+    if (!range?.from) return null;
+    if (!range.to) return format(range.from, 'PPP', { locale: it });
+    return `${format(range.from, 'dd MMM', { locale: it })} - ${format(range.to, 'dd MMM yyyy', { locale: it })}`;
   }, []);
 
-  const clearDate = useCallback(() => {
-    handleDateSelect(undefined);
-  }, [handleDateSelect]);
+  const clearDateRange = useCallback(() => {
+    handleDateRangeSelect(undefined);
+  }, [handleDateRangeSelect]);
 
   useEffect(() => {
-    if (selectedDate) {
-      console.log('📅 Hook calendario: data aggiornata ->', formatDisplayDate(selectedDate));
+    if (selectedDateRange?.from) {
+      console.log('📅 Hook calendario: periodo aggiornato ->', formatDisplayDateRange(selectedDateRange));
     }
-  }, [selectedDate, formatDisplayDate]);
+  }, [selectedDateRange, formatDisplayDateRange]);
 
   return {
-    selectedDate,
+    selectedDateRange,
     isOpen,
     setIsOpen,
-    handleDateSelect,
-    formatDisplayDate,
-    clearDate
+    handleDateRangeSelect,
+    formatDisplayDateRange,
+    clearDateRange
   };
 };

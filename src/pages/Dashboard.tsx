@@ -10,6 +10,7 @@ import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import GoogleMap from '@/components/dashboard/GoogleMap';
 import { Card } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
@@ -17,7 +18,7 @@ const Dashboard = () => {
   const [filters, setFilters] = useState({
     categories: ['tutte'],
     zone: 'tuttalromagna',
-    period: null,
+    period: undefined as DateRange | undefined,
     timeSlots: [],
     budgets: [],
     specialPreferences: []

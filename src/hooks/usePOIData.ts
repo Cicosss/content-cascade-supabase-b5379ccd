@@ -1,7 +1,8 @@
 
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { format, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
+import { format, isAfter, isBefore, startOfDay, endOfDay, isWithinInterval } from 'date-fns';
+import { DateRange } from 'react-day-picker';
 
 interface POI {
   id: string;
@@ -19,7 +20,7 @@ interface Filters {
   activityTypes: string[];
   zone: string;
   withChildren: string;
-  period?: Date;
+  period?: DateRange;
 }
 
 export const usePOIData = () => {
@@ -27,9 +28,15 @@ export const usePOIData = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchPOIs = useCallback(async (filters: Filters) => {
+    const periodText = filters.period?.from && filters.period?.to 
+      ? `dal ${format(filters.period.from, 'PPP')} al ${format(filters.period.to, 'PPP')}`
+      : filters.period?.from 
+        ? `dal ${format(filters.period.from, 'PPP')}`
+        : 'Nessun periodo';
+        
     console.log('🗺️ Caricamento POI dal database con filtri:', {
       ...filters,
-      period: filters.period ? format(filters.period, 'PPP') : 'Nessuna data'
+      period: periodText
     });
     setIsLoading(true);
     
@@ -70,14 +77,21 @@ export const usePOIData = () => {
         query = query.or('target_audience.eq.families,target_audience.eq.everyone');
       }
 
-      // Se è specificata una data, filtra per eventi/POI disponibili in quella data
-      if (filters.period) {
-        const selectedDate = startOfDay(filters.period);
-        const endDate = endOfDay(filters.period);
-        console.log('📅 Filtraggio POI per data:', format(selectedDate, 'PPP'));
+      // Filtra per periodo se specificato
+      if (filters.period?.from) {
+        const startDate = startOfDay(filters.period.from);
+        const endDate = filters.period.to ? endOfDay(filters.period.to) : endOfDay(filters.period.from);
         
-        // Per ora filtriamo per POI che sono sempre disponibili o hanno eventi in quella data
-        // In futuro si potrà integrare con una tabella events separata
+        console.log('📅 Filtraggio POI per periodo:', {
+          from: format(startDate, 'PPP'),
+          to: format(endDate, 'PPP')
+        });
+        
+        // Filtra POI che sono disponibili nel periodo selezionato
+        // Per ora includiamo POI che hanno eventi nel periodo o sono sempre disponibili
+        query = query.or(
+          `start_datetime.is.null,start_datetime.lte.${endDate.toISOString()},end_datetime.gte.${startDate.toISOString()}`
+        );
       }
 
       const { data: standardPOIs, error: standardError } = await query;
@@ -86,7 +100,7 @@ export const usePOIData = () => {
         console.error('❌ Errore nel caricamento POI standard:', standardError);
       }
 
-      // Carica anche le POI approvate dalle submissions
+      // Carica anche le POI approvate dalle submissions con gli stessi filtri
       let approvedQuery = supabase
         .from('poi_submissions')
         .select('*')
@@ -121,6 +135,15 @@ export const usePOIData = () => {
         approvedQuery = approvedQuery.or('target_audience.eq.families,target_audience.eq.everyone');
       }
 
+      if (filters.period?.from) {
+        const startDate = startOfDay(filters.period.from);
+        const endDate = filters.period.to ? endOfDay(filters.period.to) : endOfDay(filters.period.from);
+        
+        approvedQuery = approvedQuery.or(
+          `start_datetime.is.null,start_datetime.lte.${endDate.toISOString()},end_datetime.gte.${startDate.toISOString()}`
+        );
+      }
+
       const { data: approvedPOIs, error: approvedError } = await approvedQuery;
 
       if (approvedError) {
@@ -153,8 +176,8 @@ export const usePOIData = () => {
         }))
       ];
 
-      const message = filters.period 
-        ? `✅ POI caricati per ${format(filters.period, 'PPP')}: ${allPOIs.length}`
+      const message = filters.period?.from 
+        ? `✅ POI caricati per periodo ${periodText}: ${allPOIs.length}`
         : `✅ POI caricati: ${allPOIs.length}`;
       
       console.log(message, '(Standard:', standardPOIs?.length || 0, ', Approvate:', approvedPOIs?.length || 0, ')');
