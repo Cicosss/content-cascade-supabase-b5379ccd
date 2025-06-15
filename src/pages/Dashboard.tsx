@@ -16,12 +16,21 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
     categories: ['tutte'],
-    zone: 'tuttalrromagna',
+    zone: 'tuttalromagna',
     period: null,
     timeSlots: [],
     budgets: [],
     specialPreferences: []
   });
+
+  // Transform filters for child components that need different structure
+  const transformedFilters = {
+    zone: filters.zone,
+    withChildren: 'no', // Default value
+    activityTypes: filters.categories,
+    period: filters.period,
+    isFirstVisit: true // Default value
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -70,7 +79,7 @@ const Dashboard = () => {
                   </h2>
                 </div>
                 <div className="h-[calc(100%-4rem)]">
-                  <GoogleMap filters={filters} />
+                  <GoogleMap filters={transformedFilters} />
                 </div>
               </Card>
 
@@ -83,7 +92,7 @@ const Dashboard = () => {
           </div>
 
           <div className="mt-12">
-            <PersonalizedContent filters={filters} />
+            <PersonalizedContent filters={transformedFilters} />
           </div>
         </div>
       </Layout>
