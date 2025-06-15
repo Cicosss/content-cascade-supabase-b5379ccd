@@ -7,33 +7,32 @@ import DonationLevelsSection from '@/components/respiro/DonationLevelsSection';
 import PartnersSection from '@/components/respiro/PartnersSection';
 import FixedDonationButton from '@/components/respiro/FixedDonationButton';
 
-const YOUTUBE_ID = "z4kYYcmITK8";
+// Video ID estratto dal link YouTube fornito
+const YOUTUBE_VIDEO_ID = "z4kYYcmITK8";
 
-const RespiroDelMare = () => {
+const RespiroDelMare: React.FC = () => {
   return (
     <Layout>
       <div className="bg-white text-slate-800">
-        {/* Hero Section with YouTube Video Background */}
-        <YouTubeVideoBackground videoId={YOUTUBE_ID}>
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 drop-shadow-lg">
-            Respiro del Mare
-          </h1>
-          <h2 className="text-2xl md:text-4xl font-light mb-8 drop-shadow-lg">
-            Insieme, puliamo le spiagge della Romagna e creiamo opportunità.
-          </h2>
+        {/* Hero Section con Video Background */}
+        <YouTubeVideoBackground videoId={YOUTUBE_VIDEO_ID}>
+          <div className="space-y-6">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight drop-shadow-2xl">
+              Respiro del Mare
+            </h1>
+            <h2 className="text-xl md:text-3xl lg:text-4xl font-light max-w-4xl mx-auto leading-relaxed drop-shadow-lg">
+              Insieme, puliamo le spiagge della Romagna e creiamo opportunità.
+            </h2>
+          </div>
         </YouTubeVideoBackground>
 
-        {/* FAQ Section */}
+        {/* Sezioni del contenuto */}
         <FAQSection />
-
-        {/* Donation Levels Section */}
         <DonationLevelsSection />
-
-        {/* Partners Section */}
         <PartnersSection />
       </div>
 
-      {/* Fixed Donation Button */}
+      {/* Pulsante di donazione fisso */}
       <FixedDonationButton />
     </Layout>
   );
