@@ -15,9 +15,7 @@ const RespiroBannerFixed = () => {
           <Waves className="h-6 w-6 text-blue-100" />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-white text-base leading-tight truncate">
-            Aiutaci a proteggere il nostro mare
-          </div>
+          {/* Eliminato il testo selezionato */}
           <div className="text-blue-100 text-xs">Scopri Respiro del Mare</div>
         </div>
         <Button
@@ -36,3 +34,4 @@ const RespiroBannerFixed = () => {
 };
 
 export default RespiroBannerFixed;
+
