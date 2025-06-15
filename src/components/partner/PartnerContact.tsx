@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 const PartnerContact = () => {
   const [formData, setFormData] = useState({
     businessName: '',
-    contactName: '',
+    activityCategory: '',
     email: '',
     phone: '',
     website: '',
@@ -37,7 +36,7 @@ const PartnerContact = () => {
       return;
     }
 
-    if (!formData.businessName || !formData.contactName || !formData.email || !formData.phone) {
+    if (!formData.businessName || !formData.activityCategory || !formData.email || !formData.phone) {
       toast({
         title: "Campi obbligatori mancanti",
         description: "Compila tutti i campi obbligatori per continuare.",
@@ -54,7 +53,7 @@ const PartnerContact = () => {
       const { data, error } = await supabase.functions.invoke('send-partner-request', {
         body: {
           businessName: formData.businessName,
-          contactName: formData.contactName,
+          contactName: formData.activityCategory,
           email: formData.email,
           phone: formData.phone,
           website: formData.website || null
@@ -76,7 +75,7 @@ const PartnerContact = () => {
       // Reset form
       setFormData({
         businessName: '',
-        contactName: '',
+        activityCategory: '',
         email: '',
         phone: '',
         website: '',
@@ -141,17 +140,17 @@ const PartnerContact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="contactName" className="text-sm font-semibold text-slate-700 mb-2 block">
-                        Nome del Referente *
+                      <Label htmlFor="activityCategory" className="text-sm font-semibold text-slate-700 mb-2 block">
+                        Categoria dell'Attività *
                       </Label>
                       <Input
-                        id="contactName"
+                        id="activityCategory"
                         type="text"
                         required
-                        value={formData.contactName}
-                        onChange={(e) => handleChange('contactName', e.target.value)}
+                        value={formData.activityCategory}
+                        onChange={(e) => handleChange('activityCategory', e.target.value)}
                         className="h-12 text-base"
-                        placeholder="Mario Rossi"
+                        placeholder="Es. Ristorante, Agriturismo, Hotel"
                         disabled={isSubmitting}
                       />
                     </div>
