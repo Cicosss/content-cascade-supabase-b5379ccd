@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
@@ -82,11 +81,6 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4 text-slate-200">ALTRI SITI / LINK UTILI</h3>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
-                  I Suoni delle Dolomiti
-                </a>
-              </li>
               <li>
                 <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Il Festival dell'Economia
