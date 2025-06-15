@@ -18,7 +18,10 @@ interface WebcamCardProps {
 
 const WebcamCard: React.FC<WebcamCardProps> = ({ webcam }) => {
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-slate-900 backdrop-blur-sm group !border-0">
+    <Card 
+      className="overflow-hidden hover:shadow-xl transition-all duration-300 bg-slate-900 backdrop-blur-sm group !border-0"
+      style={{ border: 'none' }}
+    >
       {/* Webcam Video Container */}
       <div className="aspect-video relative overflow-hidden bg-slate-800">
         <div 
