@@ -211,7 +211,7 @@ const Webcams = () => {
               <img 
                 src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
                 alt="Powered-by" 
-                className="h-12 w-auto"
+                className="h-14 w-auto"
               />
             </div>
           </div>
