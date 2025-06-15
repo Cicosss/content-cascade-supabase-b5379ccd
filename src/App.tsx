@@ -23,6 +23,7 @@ import TerritoryPromoter from "./pages/TerritoryPromoter";
 import AdminModerationPage from "./pages/AdminModerationPage";
 import Webcams from "./pages/Webcams";
 import NotFound from "./pages/NotFound";
+import ChiSiamo from "./pages/ChiSiamo";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
               <Route path="/admin/moderazione" element={<AdminModerationPage />} />
               <Route path="/webcams" element={<Webcams />} />
+              <Route path="/chi-siamo" element={<ChiSiamo />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </LocationProvider>
