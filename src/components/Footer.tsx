@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
@@ -43,11 +42,6 @@ const Footer = () => {
               <li>
                 <Link to="/uffici-turistici" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Uffici turistici
-                </Link>
-              </li>
-              <li>
-                <Link to="/meeting" className="text-slate-400 hover:text-white transition-colors text-sm">
-                  Meeting
                 </Link>
               </li>
               <li>
