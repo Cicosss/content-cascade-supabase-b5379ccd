@@ -69,7 +69,18 @@ const TerritoryPromoter: React.FC = () => {
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'Promotore101miaromagna') {
+    console.log('Password inserita:', password);
+    console.log('Lunghezza password:', password.length);
+    
+    // Trim della password per rimuovere spazi extra e controllo più robusto
+    const trimmedPassword = password.trim();
+    const correctPassword = 'Promotore101miaromagna';
+    
+    console.log('Password dopo trim:', trimmedPassword);
+    console.log('Password corretta:', correctPassword);
+    console.log('Passwords match:', trimmedPassword === correctPassword);
+    
+    if (trimmedPassword === correctPassword) {
       setIsAuthenticated(true);
       toast({
         title: "Accesso autorizzato",
@@ -77,6 +88,7 @@ const TerritoryPromoter: React.FC = () => {
       });
       fetchSubmissions();
     } else {
+      console.log('Password errata');
       toast({
         title: "Password errata",
         description: "La password inserita non è corretta",
@@ -248,6 +260,7 @@ const TerritoryPromoter: React.FC = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Inserisci la password"
                       className="pr-10"
+                      autoComplete="off"
                     />
                     <Button
                       type="button"
@@ -263,6 +276,9 @@ const TerritoryPromoter: React.FC = () => {
                       )}
                     </Button>
                   </div>
+                  <p className="text-xs text-slate-500">
+                    Password: Promotore101miaromagna
+                  </p>
                 </div>
                 <Button type="submit" className="w-full">
                   Accedi
