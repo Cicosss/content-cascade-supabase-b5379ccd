@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -85,7 +86,7 @@ const Header = () => {
                   className="brand-blue-gradient text-white hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-700 text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-medium"
                 >
                   <User className="h-4 w-4 mr-2" />
-                  Accedi Gratis
+                  Accedi
                 </Button>
                 <Button 
                   onClick={() => navigate('/auth?mode=signup')}
@@ -154,7 +155,7 @@ const Header = () => {
                   className="brand-blue-gradient text-white hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-700 text-sm w-full shadow-md hover:shadow-lg transition-all duration-300 font-medium"
                 >
                   <User className="h-4 w-4 mr-2" />
-                  Accedi Gratis
+                  Accedi
                 </Button>
                 <Button 
                   onClick={() => {
