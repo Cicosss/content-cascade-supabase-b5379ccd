@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -192,7 +193,7 @@ const Webcams = () => {
               
               {/* Powered By Section nella Hero - Aligned Right */}
               <div className="flex justify-end">
-                <div className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-2xl">
+                <div className="inline-flex items-center justify-center bg-white/20 backdrop-blur-sm p-4 rounded-2xl border border-white/30 shadow-2xl">
                   <img 
                     src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
                     alt="Powered-by" 
