@@ -129,9 +129,9 @@ const PrimaryFilters: React.FC<PrimaryFiltersProps> = ({ filters, updateFilter }
           </Select>
         </div>
 
-        {/* Periodo Vacanza */}
+        {/* Quando sei qui? */}
         <div className="space-y-3">
-          <Label className="text-lg font-semibold text-gray-800">Periodo Vacanza</Label>
+          <Label className="text-lg font-semibold text-gray-800">Quando sei qui?</Label>
           <div className="flex gap-2">
             <Popover open={isOpen} onOpenChange={setIsOpen}>
               <PopoverTrigger asChild>
