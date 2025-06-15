@@ -83,39 +83,41 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 bg-white border shadow-xl rounded-lg" align="start">
-              <Calendar
-                mode="range"
-                selected={selectedDateRange}
-                onSelect={handleDateRangeSelect}
-                disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
-                initialFocus
-                locale={it}
-                numberOfMonths={2}
-                className="p-0 pointer-events-auto bg-white"
-                classNames={{
-                  months: "flex flex-col sm:flex-row",
-                  month: "p-6 min-w-[300px]",
-                  caption: "flex justify-center pt-2 pb-6 relative items-center",
-                  caption_label: "text-lg font-semibold text-gray-900",
-                  nav: "space-x-1 flex items-center",
-                  nav_button: "h-8 w-8 bg-transparent p-0 opacity-60 hover:opacity-100 hover:bg-gray-100 rounded-md transition-colors",
-                  nav_button_previous: "absolute left-6",
-                  nav_button_next: "absolute right-6",
-                  table: "w-full border-collapse",
-                  head_row: "hidden", // This hides the weekday headers
-                  row: "flex w-full mb-1",
-                  cell: "w-12 h-10 text-center text-sm p-0 relative flex items-center justify-center",
-                  day: "w-10 h-10 p-0 font-normal hover:bg-blue-50 rounded-md transition-colors cursor-pointer flex items-center justify-center text-gray-700",
-                  day_range_end: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-medium",
-                  day_range_start: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-medium",
-                  day_selected: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-medium",
-                  day_today: "bg-gray-100 text-gray-900 font-semibold rounded-md",
-                  day_outside: "text-gray-300 opacity-50",
-                  day_disabled: "text-gray-200 opacity-30 cursor-not-allowed hover:bg-transparent",
-                  day_range_middle: "aria-selected:bg-blue-100 aria-selected:text-blue-900 hover:bg-blue-100 rounded-none border-l border-r border-blue-200",
-                  day_hidden: "invisible",
-                }}
-              />
+              <div className="w-[650px] h-[400px] bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <Calendar
+                  mode="range"
+                  selected={selectedDateRange}
+                  onSelect={handleDateRangeSelect}
+                  disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                  initialFocus
+                  locale={it}
+                  numberOfMonths={2}
+                  className="w-full h-full pointer-events-auto bg-white p-4"
+                  classNames={{
+                    months: "flex flex-row w-full h-full",
+                    month: "flex-1 p-4",
+                    caption: "flex justify-center pt-2 pb-4 relative items-center",
+                    caption_label: "text-lg font-semibold text-gray-900",
+                    nav: "space-x-1 flex items-center",
+                    nav_button: "h-8 w-8 bg-transparent p-0 opacity-60 hover:opacity-100 hover:bg-gray-100 rounded-md transition-colors",
+                    nav_button_previous: "absolute left-4",
+                    nav_button_next: "absolute right-4",
+                    table: "w-full border-collapse",
+                    head_row: "hidden",
+                    row: "flex w-full mb-1",
+                    cell: "w-8 h-8 text-center text-sm p-0 relative flex items-center justify-center",
+                    day: "w-7 h-7 p-0 font-normal hover:bg-blue-50 rounded-md transition-colors cursor-pointer flex items-center justify-center text-gray-700 text-sm",
+                    day_range_end: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-medium",
+                    day_range_start: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-medium",
+                    day_selected: "bg-blue-600 text-white hover:bg-blue-700 rounded-md font-medium",
+                    day_today: "bg-gray-100 text-gray-900 font-semibold rounded-md",
+                    day_outside: "text-gray-300 opacity-50",
+                    day_disabled: "text-gray-200 opacity-30 cursor-not-allowed hover:bg-transparent",
+                    day_range_middle: "aria-selected:bg-blue-100 aria-selected:text-blue-900 hover:bg-blue-100 rounded-none",
+                    day_hidden: "invisible",
+                  }}
+                />
+              </div>
             </PopoverContent>
           </Popover>
           {selectedDateRange?.from && (
