@@ -108,11 +108,6 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
-                  Webcam Romagna
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Booking Romagna
                 </a>
               </li>
