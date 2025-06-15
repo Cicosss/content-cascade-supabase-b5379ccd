@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -198,7 +196,7 @@ const Webcams = () => {
                   <img 
                     src="https://i.ibb.co/t6p6c0F/Powered-by.png" 
                     alt="Powered-by" 
-                    className="h-14 w-auto"
+                    className="h-14 w-auto drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"
                   />
                 </div>
               </div>
@@ -330,4 +328,3 @@ const Webcams = () => {
 };
 
 export default Webcams;
-
