@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,6 +7,53 @@ import { Heart, Mail, Waves } from 'lucide-react';
 const YOUTUBE_ID = "z4kYYcmITK8";
 
 const RespiroDelMare = () => {
+  useEffect(() => {
+    // Load YouTube IFrame API
+    const loadYouTubeAPI = () => {
+      if (window.YT) return;
+      
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    };
+
+    // Initialize player when API is ready
+    window.onYouTubeIframeAPIReady = () => {
+      const player = new window.YT.Player('youtube-background-video', {
+        videoId: YOUTUBE_ID,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          showinfo: 0,
+          modestbranding: 1,
+          loop: 1,
+          playlist: YOUTUBE_ID,
+          fs: 0,
+          cc_load_policy: 0,
+          iv_load_policy: 3,
+          autohide: 0,
+          mute: 1,
+          rel: 0,
+          playsinline: 1
+        },
+        events: {
+          onReady: (event) => {
+            event.target.playVideo();
+            event.target.mute();
+          },
+          onStateChange: (event) => {
+            if (event.data === window.YT.PlayerState.ENDED) {
+              event.target.playVideo();
+            }
+          }
+        }
+      });
+    };
+
+    loadYouTubeAPI();
+  }, []);
+
   return (
     <Layout>
       <div className="bg-white text-slate-800">
@@ -17,13 +64,9 @@ const RespiroDelMare = () => {
             className="absolute inset-0 -z-10 w-full h-full bg-black"
             style={{ overflow: "hidden" }}
           >
-            <iframe
-              title="Respiro del Mare Video"
-              src={`https://www.youtube.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&loop=1&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&playlist=${YOUTUBE_ID}`}
+            <div
+              id="youtube-background-video"
               className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-              allow="autoplay; encrypted-media"
-              allowFullScreen={false}
-              frameBorder={0}
             />
             {/* Color overlay for contrast */}
             <div className="absolute inset-0 bg-blue-900/40" />
@@ -206,4 +249,5 @@ const RespiroDelMare = () => {
     </Layout>
   );
 };
+
 export default RespiroDelMare;
