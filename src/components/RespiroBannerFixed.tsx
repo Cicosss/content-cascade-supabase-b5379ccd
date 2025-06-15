@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Heart, Waves } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -11,10 +10,8 @@ const RespiroBannerFixed = () => {
       style={{ maxWidth: 320 }}
     >
       <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 rounded-2xl px-6 py-5 flex items-center gap-4 border-0">
-        {/* Eliminato il contenitore, ecco solo l'icona */}
         <Waves className="h-6 w-6 text-blue-100" />
         <div className="flex-1 min-w-0">
-          {/* Eliminato il testo selezionato */}
           <div className="text-blue-100 text-xs">Scopri Respiro del Mare</div>
         </div>
         <Button
@@ -23,7 +20,6 @@ const RespiroBannerFixed = () => {
           className="bg-gradient-to-r from-yellow-400 to-orange-500 shadow font-bold text-white px-4 py-2 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all"
         >
           <Link to="/respiro-del-mare" className="flex items-center">
-            <Heart className="h-4 w-4 mr-1" />
             Vai
           </Link>
         </Button>
@@ -33,4 +29,3 @@ const RespiroBannerFixed = () => {
 };
 
 export default RespiroBannerFixed;
-
