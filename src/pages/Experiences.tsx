@@ -9,17 +9,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Star, Clock, Users, MapPin, Search, Filter, RotateCcw, Compass } from 'lucide-react';
 
-interface Experience {
+// Use the database schema instead of a custom interface
+type Experience = {
   id: string;
   name: string;
-  description?: string;
-  category?: string;
-  address?: string;
-  duration_info?: string;
-  avg_rating?: number;
-  price_info?: string;
-  created_at?: string;
-}
+  description?: string | null;
+  category?: string | null;
+  address?: string | null;
+  duration_info?: string | null;
+  avg_rating?: number | null;
+  price_info?: string | null;
+  created_at?: string | null;
+};
 
 const Experiences = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -44,8 +45,8 @@ const Experiences = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('points_of_interest')
-      .select('*')
-      .eq('poi_type', 'experience')
+      .select('id, name, description, category, address, duration_info, avg_rating, price_info, created_at')
+      .eq('macro_area', 'Divertimento & Famiglia')
       .order('created_at', { ascending: false });
 
     if (data) {
