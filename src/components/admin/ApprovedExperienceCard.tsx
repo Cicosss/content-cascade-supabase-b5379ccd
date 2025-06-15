@@ -9,7 +9,7 @@ interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -28,6 +28,7 @@ interface ApprovedExperience {
   status: string;
   created_at: string;
   updated_at: string;
+  tags: string[];
 }
 
 interface ApprovedExperienceCardProps {
@@ -78,8 +79,8 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
       <CardContent>
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
+            <p><strong>Macro-Area:</strong> {experience.macro_area}</p>
             <p><strong>Categoria:</strong> {experience.category}</p>
-            <p><strong>Tipo:</strong> {experience.poi_type}</p>
             <p><strong>Target:</strong> {experience.target_audience}</p>
             {experience.address && (
               <p className="flex items-center gap-1">
@@ -108,7 +109,7 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center mb-4">
           <Badge variant="outline" className="text-xs">
             <Calendar className="h-3 w-3 mr-1" />
             Creata: {new Date(experience.created_at).toLocaleDateString('it-IT')}
@@ -121,6 +122,16 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
             </Badge>
           )}
         </div>
+
+        {experience.tags && experience.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1">
+            {experience.tags.map((tag, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

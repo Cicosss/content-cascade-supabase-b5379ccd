@@ -7,7 +7,7 @@ interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -26,6 +26,7 @@ interface ApprovedExperience {
   status: string;
   created_at: string;
   updated_at: string;
+  tags: string[];
 }
 
 interface ApprovedExperiencesListProps {

@@ -12,7 +12,7 @@ interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
-  poi_type: string;
+  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -29,6 +29,9 @@ interface ApprovedExperience {
   location_name: string;
   organizer_info: string;
   status: string;
+  created_at: string;
+  updated_at: string;
+  tags: string[];
 }
 
 interface EditExperienceModalProps {
@@ -53,7 +56,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         name: experience.name || '',
         description: experience.description || '',
         category: experience.category || '',
-        poi_type: experience.poi_type || 'experience',
+        macro_area: experience.macro_area || 'Gusto & Sapori',
         address: experience.address || '',
         latitude: experience.latitude || '',
         longitude: experience.longitude || '',
@@ -68,12 +71,13 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         organizer_info: experience.organizer_info || '',
         website_url: experience.video_url || '',
         images: experience.images || [],
-        video_url: experience.video_url || ''
+        video_url: experience.video_url || '',
+        tags: experience.tags || []
       });
     }
   }, [experience]);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | string[]) => {
     setFormData((prev: any) => ({
       ...prev,
       [field]: value
@@ -103,7 +107,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         name: formData.name,
         description: formData.description,
         category: formData.category,
-        poi_type: formData.poi_type,
+        macro_area: formData.macro_area,
         address: formData.address,
         latitude: formData.latitude ? parseFloat(formData.latitude) : null,
         longitude: formData.longitude ? parseFloat(formData.longitude) : null,
@@ -118,6 +122,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         organizer_info: formData.organizer_info,
         images: formData.images,
         video_url: formData.video_url,
+        tags: formData.tags,
         updated_at: new Date().toISOString()
       };
 

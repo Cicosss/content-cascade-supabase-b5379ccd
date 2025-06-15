@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -94,22 +95,18 @@ const POIModerationPanel = () => {
   const applyFilters = () => {
     let filtered = [...submissions];
 
-    // Filtro per status
     if (filters.status !== 'tutti') {
       filtered = filtered.filter(sub => sub.status === filters.status);
     }
 
-    // Filtro per categoria
     if (filters.category !== 'tutti') {
       filtered = filtered.filter(sub => sub.category === filters.category);
     }
 
-    // Filtro per macro-area
     if (filters.macroArea !== 'tutti') {
       filtered = filtered.filter(sub => sub.macro_area === filters.macroArea);
     }
 
-    // Filtro per ricerca testuale
     if (filters.searchTerm.trim()) {
       const searchLower = filters.searchTerm.toLowerCase();
       filtered = filtered.filter(sub => 
@@ -248,10 +245,8 @@ const POIModerationPanel = () => {
         </TabsList>
         
         <TabsContent value="submissions" className="space-y-6">
-          {/* Filtri di moderazione */}
           <ModerationFilters filters={filters} setFilters={setFilters} />
           
-          {/* Riepilogo filtri e contatori */}
           <Card className="p-4 bg-blue-50 border-blue-200">
             <div className="flex justify-between items-center">
               <div>
