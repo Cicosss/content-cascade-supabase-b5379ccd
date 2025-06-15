@@ -22,6 +22,7 @@ import CulturaTerritorio from '@/pages/CulturaTerritorio';
 import EventiSpettacoli from '@/pages/EventiSpettacoli';
 import DivertimentoFamiglia from '@/pages/DivertimentoFamiglia';
 import TerritoryPromoter from '@/pages/TerritoryPromoter';
+import RespiroDelMare from '@/pages/RespiroDelMare';
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ function App() {
             <Route path="/eventi-spettacoli" element={<EventiSpettacoli />} />
             <Route path="/divertimento-famiglia" element={<DivertimentoFamiglia />} />
             <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
+            <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
