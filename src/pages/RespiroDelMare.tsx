@@ -21,7 +21,7 @@ const RespiroDelMare: React.FC = () => {
               Respiro del Mare
             </h1>
             <h2 className="text-xl md:text-3xl lg:text-4xl font-light max-w-4xl mx-auto leading-relaxed drop-shadow-lg">
-              Insieme, puliamo le spiagge della Romagna e creiamo opportunità.
+              Insieme, puliamo la Costa della Romagna e creiamo opportunità.
             </h2>
           </div>
         </YouTubeVideoBackground>
