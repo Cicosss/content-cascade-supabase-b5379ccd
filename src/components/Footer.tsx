@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
@@ -59,11 +60,7 @@ const Footer = () => {
                   Webcam Live
                 </Link>
               </li>
-              <li>
-                <a href="mailto:info@miaromagna.it" className="text-slate-400 hover:text-white transition-colors text-sm">
-                  Scrivi al webmaster
-                </a>
-              </li>
+              {/* Rimosso il link "Scrivi al webmaster" */}
               <li>
                 <Link to="/promotore-territorio" className="text-slate-400 hover:text-white transition-colors text-sm">
                   Promotore del Territorio
@@ -131,3 +128,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
