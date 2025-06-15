@@ -1,12 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar as CalendarIcon, X, ArrowLeft, ArrowRight } from "lucide-react";
-import { it } from "date-fns/locale";
+import { Calendar as CalendarIcon, X } from "lucide-react";
 import { useCalendarLogic } from "@/hooks/useCalendarLogic";
 import { DateRange } from "react-day-picker";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import CustomCalendar from "./CustomCalendar";
 
@@ -15,57 +14,6 @@ interface ZonePeriodFiltersProps {
   period: DateRange | undefined;
   onZoneChange: (zone: string) => void;
   onPeriodChange: (period: DateRange | undefined) => void;
-}
-
-function getDaysMatrix(month: number, year: number) {
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const matrix: (Date | null)[][] = [];
-  let week: (Date | null)[] = [];
-
-  let dayOfWeek = (firstDay.getDay() + 6) % 7;
-  for (let i = 0; i < dayOfWeek; ++i) week.push(null);
-
-  for (let d = 1; d <= lastDay.getDate(); ++d) {
-    week.push(new Date(year, month, d));
-    if (week.length === 7) {
-      matrix.push(week);
-      week = [];
-    }
-  }
-  while (week.length < 7) week.push(null);
-  if (week.some((d) => d !== null)) matrix.push(week);
-
-  return matrix;
-}
-
-function isSameDay(a?: Date, b?: Date) {
-  if (!a || !b) return false;
-  return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  );
-}
-function isInRange(date: Date, range?: DateRange) {
-  if (!range?.from) return false;
-  if (range && range.from && !range.to) return isSameDay(date, range.from);
-  if (range && range.from && range.to)
-    return (
-      date >= new Date(range.from.setHours(0, 0, 0, 0)) &&
-      date <= new Date(range.to.setHours(23, 59, 59, 999))
-    );
-  return false;
-}
-function isRangeStart(date: Date, range?: DateRange) {
-  return range?.from && isSameDay(date, range.from);
-}
-function isRangeEnd(date: Date, range?: DateRange) {
-  return range?.to && isSameDay(date, range.to);
-}
-function isToday(date: Date) {
-  const today = new Date();
-  return isSameDay(date, today);
 }
 
 const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
