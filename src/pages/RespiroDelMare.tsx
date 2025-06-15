@@ -3,17 +3,34 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Mail, Waves } from 'lucide-react';
+
+const YOUTUBE_ID = "z4kYYcmITK8";
+
 const RespiroDelMare = () => {
-  return <Layout>
+  return (
+    <Layout>
       <div className="bg-white text-slate-800">
-        {/* Hero Section */}
-        <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-blue-900/20 to-blue-600/30 overflow-hidden">
-          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3)'
-        }} />
-          <div className="absolute inset-0 bg-blue-900/40" />
-          
-          <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+        {/* Hero Section with YouTube Video Background */}
+        <section className="relative h-screen flex items-center justify-center overflow-hidden">
+          {/* Video Background */}
+          <div 
+            className="absolute inset-0 -z-10 w-full h-full bg-black"
+            style={{ overflow: "hidden" }}
+          >
+            <iframe
+              title="Respiro del Mare Video"
+              src={`https://www.youtube.com/embed/${YOUTUBE_ID}?autoplay=1&mute=1&controls=0&showinfo=0&modestbranding=1&loop=1&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&playlist=${YOUTUBE_ID}`}
+              className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+              allow="autoplay; encrypted-media"
+              allowFullScreen={false}
+              frameBorder={0}
+            />
+            {/* Color overlay for contrast */}
+            <div className="absolute inset-0 bg-blue-900/40" />
+          </div>
+
+          {/* Overlayed Text Content */}
+          <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto drop-shadow-xl">
             <h1 className="text-6xl md:text-8xl font-bold mb-6 drop-shadow-lg">
               Respiro del Mare
             </h1>
@@ -186,6 +203,7 @@ const RespiroDelMare = () => {
           FAI LA TUA DONAZIONE
         </Button>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
 export default RespiroDelMare;
