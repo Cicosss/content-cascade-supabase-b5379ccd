@@ -43,11 +43,11 @@ const TerritoryPromoter: React.FC = () => {
             </p>
           </div>
 
-          {/* Stats Section */}
-          <PromoterStats submissions={submissions} />
-
           {/* Form */}
           <POISubmissionForm onSubmissionSuccess={handleSubmissionSuccess} />
+
+          {/* Stats Section */}
+          <PromoterStats submissions={submissions} />
 
           {/* Le mie submissions */}
           <SubmissionsList submissions={submissions} />
