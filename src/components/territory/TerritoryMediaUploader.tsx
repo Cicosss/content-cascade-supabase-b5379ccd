@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,6 +23,7 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
 }) => {
   const [uploadedImages, setUploadedImages] = useState<string[]>(images);
   const { uploadImage, isUploading } = useImageUpload();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (files: FileList | null) => {
     if (!files) return;
@@ -44,6 +45,10 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
     
     setUploadedImages(newImages);
     onImagesChange(newImages);
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
   };
 
   const removeImage = (index: number) => {
@@ -80,34 +85,33 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
         {/* Area di upload */}
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
           <FileImage className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-          <Label htmlFor="image-upload" className="cursor-pointer">
-            <div className="text-lg font-medium text-gray-700 mb-1">
-              Trascina le immagini qui o clicca per selezionare
-            </div>
-            <div className="text-sm text-gray-500">
-              JPG, PNG, GIF, WebP - Max 5MB per immagine
-            </div>
-            <Button 
-              type="button" 
-              variant="outline" 
-              className="mt-3"
-              disabled={isUploading || uploadedImages.length >= 4}
-            >
-              {isUploading ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Caricamento...
-                </>
-              ) : (
-                <>
-                  <Upload className="h-4 w-4 mr-2" />
-                  Seleziona Immagini ({uploadedImages.length}/4)
-                </>
-              )}
-            </Button>
-          </Label>
+          <div className="text-lg font-medium text-gray-700 mb-1">
+            Trascina le immagini qui o clicca per selezionare
+          </div>
+          <div className="text-sm text-gray-500 mb-3">
+            JPG, PNG, GIF, WebP - Max 5MB per immagine
+          </div>
+          <Button 
+            type="button" 
+            variant="outline" 
+            className="mt-3"
+            disabled={isUploading || uploadedImages.length >= 4}
+            onClick={handleButtonClick}
+          >
+            {isUploading ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Caricamento...
+              </>
+            ) : (
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Seleziona Immagini ({uploadedImages.length}/4)
+              </>
+            )}
+          </Button>
           <Input
-            id="image-upload"
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             multiple
