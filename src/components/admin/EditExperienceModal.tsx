@@ -72,6 +72,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         website_url: experience.video_url || '',
         images: experience.images || [],
         video_url: experience.video_url || '',
+        cover_image: (experience as any).cover_image || '',
         tags: experience.tags || []
       });
     }
@@ -95,6 +96,13 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
     setFormData((prev: any) => ({
       ...prev,
       video_url: videoUrl
+    }));
+  };
+
+  const handleCoverImageChange = (coverImage: string) => {
+    setFormData((prev: any) => ({
+      ...prev,
+      cover_image: coverImage
     }));
   };
 
@@ -122,6 +130,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         organizer_info: formData.organizer_info,
         images: formData.images,
         video_url: formData.video_url,
+        cover_image: formData.cover_image,
         tags: formData.tags,
         updated_at: new Date().toISOString()
       };
@@ -173,8 +182,10 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
           <MediaUploader
             images={formData.images || []}
             videoUrl={formData.video_url || ''}
+            coverImage={formData.cover_image || ''}
             onImagesChange={handleImagesChange}
             onVideoUrlChange={handleVideoUrlChange}
+            onCoverImageChange={handleCoverImageChange}
           />
           
           <div className="flex justify-end gap-3 pt-4 border-t">
