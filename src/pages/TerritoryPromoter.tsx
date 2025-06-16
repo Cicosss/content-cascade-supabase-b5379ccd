@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import PasswordAuth from '@/components/territory/PasswordAuth';
 import POISubmissionForm from '@/components/territory/POISubmissionForm';
-import SubmissionsList from '@/components/territory/SubmissionsList';
+import ImprovedSubmissionsList from '@/components/territory/ImprovedSubmissionsList';
 import PromoterStats from '@/components/territory/PromoterStats';
 import { useSubmissions } from '@/hooks/useSubmissions';
 
@@ -63,8 +62,8 @@ const TerritoryPromoter: React.FC = () => {
             </div>
           </div>
 
-          {/* Le mie submissions */}
-          <SubmissionsList submissions={submissions} />
+          {/* Le mie submissions - Versione Migliorata */}
+          <ImprovedSubmissionsList submissions={submissions} />
         </div>
       </div>
     </Layout>
