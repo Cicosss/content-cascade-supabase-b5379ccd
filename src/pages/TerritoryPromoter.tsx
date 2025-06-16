@@ -4,6 +4,7 @@ import Layout from '@/components/Layout';
 import PasswordAuth from '@/components/territory/PasswordAuth';
 import POISubmissionForm from '@/components/territory/POISubmissionForm';
 import SubmissionsList from '@/components/territory/SubmissionsList';
+import PromoterStats from '@/components/territory/PromoterStats';
 import { useSubmissions } from '@/hooks/useSubmissions';
 
 const TerritoryPromoter: React.FC = () => {
@@ -41,6 +42,9 @@ const TerritoryPromoter: React.FC = () => {
               Inserisci nuove attrazioni e eventi per Mia Romagna
             </p>
           </div>
+
+          {/* Stats Section */}
+          <PromoterStats submissions={submissions} />
 
           {/* Form */}
           <POISubmissionForm onSubmissionSuccess={handleSubmissionSuccess} />
