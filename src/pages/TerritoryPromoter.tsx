@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import PasswordAuth from '@/components/territory/PasswordAuth';
@@ -5,25 +6,35 @@ import POISubmissionForm from '@/components/territory/POISubmissionForm';
 import SubmissionsList from '@/components/territory/SubmissionsList';
 import PromoterStats from '@/components/territory/PromoterStats';
 import { useSubmissions } from '@/hooks/useSubmissions';
+
 const TerritoryPromoter: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const {
     submissions,
     fetchSubmissions
   } = useSubmissions();
+
   const handleAuthenticated = () => {
     setIsAuthenticated(true);
     fetchSubmissions();
   };
+
   const handleSubmissionSuccess = () => {
     fetchSubmissions();
   };
+
   if (!isAuthenticated) {
-    return <Layout>
+    return (
+      <Layout>
         <PasswordAuth onAuthenticated={handleAuthenticated} />
-      </Layout>;
+      </Layout>
+    );
   }
-  return <Layout>
+
+  const approvedCount = submissions.filter(sub => sub.status === 'approved').length;
+
+  return (
+    <Layout>
       <div className="min-h-screen bg-slate-50 p-4">
         <div className="max-w-4xl mx-auto space-y-8">
           
@@ -41,10 +52,23 @@ const TerritoryPromoter: React.FC = () => {
           {/* Stats Section */}
           <PromoterStats submissions={submissions} />
 
+          {/* Gamification Section */}
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-6 text-center">
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-2xl">💎</span>
+              <p className="text-lg text-emerald-800">
+                Grazie al tuo contributo, <span className="font-bold text-emerald-900">{approvedCount} gemme nascoste</span> sono state scoperte dalla nostra community.
+              </p>
+              <span className="text-2xl">🌟</span>
+            </div>
+          </div>
+
           {/* Le mie submissions */}
           <SubmissionsList submissions={submissions} />
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default TerritoryPromoter;
