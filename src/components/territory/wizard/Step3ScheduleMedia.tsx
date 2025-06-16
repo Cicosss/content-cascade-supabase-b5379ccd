@@ -3,6 +3,7 @@ import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import TerritoryMediaUploader from '../TerritoryMediaUploader';
 
 interface Step3ScheduleMediaProps {
   formData: {
@@ -15,14 +16,23 @@ interface Step3ScheduleMediaProps {
     phone: string;
     video_url: string;
     organizer_info: string;
+    images: string[];
   };
-  onInputChange: (field: string, value: string) => void;
+  onInputChange: (field: string, value: string | string[]) => void;
 }
 
 const Step3ScheduleMedia: React.FC<Step3ScheduleMediaProps> = ({ 
   formData, 
   onInputChange 
 }) => {
+  const handleImagesChange = (images: string[]) => {
+    onInputChange('images', images);
+  };
+
+  const handleVideoUrlChange = (url: string) => {
+    onInputChange('video_url', url);
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -109,49 +119,13 @@ const Step3ScheduleMedia: React.FC<Step3ScheduleMediaProps> = ({
           />
         </div>
 
-        {/* Immagini */}
-        <div className="space-y-2">
-          <Label className="text-base font-semibold text-red-600">
-            🖼️ Immagini * (FONDAMENTALI)
-          </Label>
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-sm text-red-700 mb-3">
-              <strong>IMPORTANTE:</strong> Un POI senza immagine è inutile! Le immagini sono fondamentali per attirare i visitatori.
-            </p>
-            <div className="space-y-3">
-              <div>
-                <Label htmlFor="cover_image">Immagine di Copertina (URL) *</Label>
-                <Input
-                  id="cover_image"
-                  type="url"
-                  placeholder="https://esempio.com/copertina.jpg"
-                  className="border-red-300 focus:border-red-500"
-                />
-              </div>
-              <div>
-                <Label htmlFor="gallery_images">Galleria Immagini (URL separate da virgola)</Label>
-                <Textarea
-                  id="gallery_images"
-                  placeholder="https://esempio.com/img1.jpg, https://esempio.com/img2.jpg, ..."
-                  rows={3}
-                  className="border-red-300 focus:border-red-500"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Video */}
-        <div className="space-y-2">
-          <Label htmlFor="video_url">Video URL (opzionale)</Label>
-          <Input
-            id="video_url"
-            type="url"
-            value={formData.video_url}
-            onChange={(e) => onInputChange('video_url', e.target.value)}
-            placeholder="Link YouTube, Vimeo, etc."
-          />
-        </div>
+        {/* Media Uploader */}
+        <TerritoryMediaUploader
+          images={formData.images || []}
+          videoUrl={formData.video_url}
+          onImagesChange={handleImagesChange}
+          onVideoUrlChange={handleVideoUrlChange}
+        />
 
         {/* Note organizzatore */}
         <div className="space-y-2">

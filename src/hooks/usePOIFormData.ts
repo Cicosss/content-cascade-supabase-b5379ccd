@@ -23,6 +23,7 @@ interface FormData {
   location_name: string;
   organizer_info: string;
   video_url: string;
+  images: string[];
 }
 
 const initialFormData: FormData = {
@@ -45,7 +46,8 @@ const initialFormData: FormData = {
   end_datetime: '',
   location_name: '',
   organizer_info: '',
-  video_url: ''
+  video_url: '',
+  images: []
 };
 
 export const usePOIFormData = () => {
