@@ -17,6 +17,7 @@ interface Step3ScheduleMediaProps {
     video_url: string;
     organizer_info: string;
     images: string[];
+    cover_image: string;
   };
   onInputChange: (field: string, value: string | string[]) => void;
 }
@@ -31,6 +32,10 @@ const Step3ScheduleMedia: React.FC<Step3ScheduleMediaProps> = ({
 
   const handleVideoUrlChange = (url: string) => {
     onInputChange('video_url', url);
+  };
+
+  const handleCoverImageChange = (url: string) => {
+    onInputChange('cover_image', url);
   };
 
   return (
@@ -123,8 +128,10 @@ const Step3ScheduleMedia: React.FC<Step3ScheduleMediaProps> = ({
         <TerritoryMediaUploader
           images={formData.images || []}
           videoUrl={formData.video_url}
+          coverImage={formData.cover_image || ''}
           onImagesChange={handleImagesChange}
           onVideoUrlChange={handleVideoUrlChange}
+          onCoverImageChange={handleCoverImageChange}
         />
 
         {/* Note organizzatore */}

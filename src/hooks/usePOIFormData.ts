@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { getCategoriesForMacroArea } from '@/config/categoryMapping';
 
@@ -24,6 +23,7 @@ interface FormData {
   organizer_info: string;
   video_url: string;
   images: string[];
+  cover_image: string;
 }
 
 const initialFormData: FormData = {
@@ -47,7 +47,8 @@ const initialFormData: FormData = {
   location_name: '',
   organizer_info: '',
   video_url: '',
-  images: []
+  images: [],
+  cover_image: ''
 };
 
 export const usePOIFormData = () => {
