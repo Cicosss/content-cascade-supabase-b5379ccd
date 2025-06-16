@@ -36,10 +36,10 @@ const TerritoryPromoter: React.FC = () => {
           {/* Header */}
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold text-slate-800">
-              🏛️ Promotore del Territorio
+              🏛️ Diventa la Voce del Tuo Territorio
             </h1>
             <p className="text-xl text-slate-600">
-              Inserisci nuove attrazioni e eventi per Mia Romagna
+              Proponi un'attrazione, un evento o una gemma nascosta che ami. La revisioneremo e, se approvata, la condivideremo con migliaia di viaggiatori
             </p>
           </div>
 
