@@ -44,32 +44,36 @@ const ProfileMenu = () => {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 rounded-xl border-slate-600 bg-slate-800/98 backdrop-blur-sm shadow-lg">
+      <DropdownMenuContent 
+        align="end" 
+        className="w-48 rounded-xl border border-slate-300 shadow-xl z-50"
+        style={{ backgroundColor: '#2A3385' }}
+      >
         <DropdownMenuItem 
           onClick={() => navigate('/dashboard')}
-          className="rounded-lg hover:bg-slate-700 cursor-pointer text-white"
+          className="rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
         >
-          <LayoutDashboard className="h-4 w-4 mr-3 text-blue-400" />
+          <LayoutDashboard className="h-4 w-4 mr-3 text-blue-200" />
           Dashboard
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate('/profile')}
-          className="rounded-lg hover:bg-slate-700 cursor-pointer text-white"
+          className="rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
         >
-          <Settings className="h-4 w-4 mr-3 text-emerald-400" />
+          <Settings className="h-4 w-4 mr-3 text-emerald-200" />
           Il Mio Profilo
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate('/favorites')}
-          className="rounded-lg hover:bg-slate-700 cursor-pointer text-white"
+          className="rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
         >
-          <Heart className="h-4 w-4 mr-3 text-red-400" />
+          <Heart className="h-4 w-4 mr-3 text-red-200" />
           Preferiti
         </DropdownMenuItem>
-        <DropdownMenuSeparator className="bg-slate-600/50" />
+        <DropdownMenuSeparator className="bg-white/20" />
         <DropdownMenuItem 
           onClick={handleSignOut}
-          className="rounded-lg hover:bg-red-900/30 text-red-400 hover:text-red-300 cursor-pointer"
+          className="rounded-lg hover:bg-red-500/20 text-red-200 hover:text-red-100 cursor-pointer focus:bg-red-500/20 focus:text-red-100"
         >
           <LogOut className="h-4 w-4 mr-3" />
           Esci
