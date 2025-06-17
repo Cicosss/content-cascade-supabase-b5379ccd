@@ -19,10 +19,10 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
     return (
       <SidebarProvider defaultOpen={false}>
         <div className="min-h-screen flex w-full flex-col">
+          <Header />
           <div className="flex flex-1">
             <AppSidebar />
             <SidebarInset className="flex-1">
-              <Header />
               <main className="flex-1">
                 {children}
               </main>
