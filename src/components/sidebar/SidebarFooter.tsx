@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { SidebarFooter as BaseSidebarFooter } from '@/components/ui/sidebar';
-import { LogOut, User, Settings } from 'lucide-react';
+import { LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -47,6 +47,7 @@ export const SidebarFooter = () => {
                   Promotore Bronzo
                 </p>
               </div>
+              <ChevronDown className="h-4 w-4 text-slate-400" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent 
