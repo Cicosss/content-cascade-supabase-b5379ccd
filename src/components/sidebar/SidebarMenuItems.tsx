@@ -15,7 +15,7 @@ import {
   Droplets,
   CloudSun,
   Settings,
-  Radio
+  Zap
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
@@ -120,21 +120,26 @@ export const SidebarMenuItems = () => {
               to="/events" 
               className="block relative"
             >
-              <div className="relative bg-gradient-to-r from-blue-50 to-white p-4 rounded-xl border border-blue-100 hover:border-blue-200 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2">
+              <div 
+                className="relative p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2"
+                style={{
+                  background: 'linear-gradient(to bottom, #EBF5FF, #FFFFFF)'
+                }}
+              >
                 {/* Badge */}
                 {dailyEventsCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
-                    className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs font-bold bg-red-500 hover:bg-red-500 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:text-[10px]"
+                  <div 
+                    className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white font-bold text-xs group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1"
+                    style={{ backgroundColor: '#F59E0B' }}
                   >
                     {dailyEventsCount}
-                  </Badge>
+                  </div>
                 )}
                 
                 {/* Content */}
                 <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
-                  <Radio className="h-5 w-5 text-red-500 animate-pulse" strokeWidth={1.5} />
-                  <span className="font-bold text-slate-800 group-data-[collapsible=icon]:hidden">
+                  <Zap className="h-5 w-5 text-blue-800" strokeWidth={1.5} />
+                  <span className="font-bold text-blue-800 group-data-[collapsible=icon]:hidden">
                     Oggi in Romagna
                   </span>
                 </div>
