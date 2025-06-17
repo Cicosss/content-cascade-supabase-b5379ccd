@@ -57,10 +57,10 @@ export const SidebarFooter = () => {
           <SidebarMenuButton 
             onClick={handleLogout}
             className="h-10 hover:bg-red-100 hover:text-red-700 text-red-600"
-            tooltip="Logout"
+            tooltip="Esci"
           >
             <LogOut className="h-5 w-5" />
-            <span className="group-data-[collapsible=icon]:hidden">Logout</span>
+            <span className="group-data-[collapsible=icon]:hidden">Esci</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

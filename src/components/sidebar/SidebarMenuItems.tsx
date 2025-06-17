@@ -30,12 +30,12 @@ export const SidebarMenuItems = () => {
   // Menu principale
   const mainMenuItems: MenuItem[] = [
     {
-      title: "Inbox",
+      title: "Messaggi",
       url: "/dashboard",
       icon: Home,
     },
     {
-      title: "Today", 
+      title: "Oggi in Romagna", 
       url: "/events",
       icon: Calendar,
     }
@@ -49,22 +49,22 @@ export const SidebarMenuItems = () => {
       icon: Home,
     },
     {
-      title: "Categories",
+      title: "Esplora Categorie",
       url: "/categories",
       icon: Grid3X3,
     },
     {
-      title: "Water quality",
+      title: "Qualità del Mare",
       url: "/water-quality",
       icon: Droplets,
     },
     {
-      title: "Weather",
+      title: "Meteo",
       url: "/weather",
       icon: CloudSun,
     },
     {
-      title: "Webcams",
+      title: "Webcam",
       url: "/webcams",
       icon: Camera,
     }
@@ -73,7 +73,7 @@ export const SidebarMenuItems = () => {
   // Bottom items
   const bottomItems: MenuItem[] = [
     {
-      title: "Settings",
+      title: "Impostazioni",
       url: "/settings",
       icon: Settings,
     }
@@ -113,8 +113,8 @@ export const SidebarMenuItems = () => {
       {/* Menu principale */}
       {renderMenuSection(mainMenuItems)}
 
-      {/* My Channel section */}
-      {renderMenuSection(channelItems, true, "My Channel")}
+      {/* Area Personale section */}
+      {renderMenuSection(channelItems, true, "Area Personale")}
 
       {/* Settings section */}
       {renderMenuSection(bottomItems)}
