@@ -7,7 +7,7 @@ import {
   SidebarMenuItem 
 } from '@/components/ui/sidebar';
 import { 
-  Home, 
+  MessageSquare, 
   Calendar, 
   Camera,
   Grid3X3,
@@ -34,7 +34,7 @@ export const SidebarMenuItems = () => {
     {
       title: "Messaggi",
       url: "/dashboard",
-      icon: Home,
+      icon: MessageSquare,
     }
   ];
 
@@ -43,7 +43,7 @@ export const SidebarMenuItems = () => {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: Home,
+      icon: MessageSquare,
     },
     {
       title: "Esplora Categorie",
