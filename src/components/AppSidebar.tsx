@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Sidebar, 
@@ -20,14 +19,18 @@ import {
   Droplets,
   CloudSun,
   Settings,
-  LogOut
+  LogOut,
+  User
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const AppSidebar = () => {
   const location = useLocation();
   const { signOut } = useAuth();
+  const { profile } = useUserProfile();
 
   // Menu principale
   const mainMenuItems = [
@@ -171,26 +174,31 @@ const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-slate-200 p-2 bg-[#F8F9FA]">
-        {/* User profile section */}
-        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
-            <span className="text-white text-sm font-medium">G</span>
-          </div>
-          <div className="flex-1 group-data-[collapsible=icon]:hidden">
-            <p className="text-sm font-medium text-slate-900">giulia</p>
+        {/* User profile section - solo quando aperta */}
+        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:hidden">
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={profile?.avatar_url || undefined} alt="Avatar utente" />
+            <AvatarFallback className="bg-gradient-to-br from-pink-400 to-purple-500">
+              <User className="h-4 w-4 text-white" />
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-slate-900">
+              {profile?.first_name || 'giulia'}
+            </p>
             <p className="text-xs text-slate-500">Vai al profilo</p>
           </div>
         </div>
         
-        {/* Social icons */}
-        <div className="flex items-center gap-1 px-2 group-data-[collapsible=icon]:justify-center">
+        {/* Social icons - solo quando aperta */}
+        <div className="flex items-center gap-1 px-2 group-data-[collapsible=icon]:hidden">
           <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
             <span className="text-white text-xs">I</span>
           </div>
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center group-data-[collapsible=icon]:hidden">
+          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
             <span className="text-white text-xs">f</span>
           </div>
-          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center group-data-[collapsible=icon]:hidden">
+          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
             <span className="text-white text-xs">G</span>
           </div>
         </div>
