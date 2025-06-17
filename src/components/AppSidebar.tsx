@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Sidebar, 
@@ -192,15 +193,21 @@ const AppSidebar = () => {
         
         {/* Social icons - solo quando aperta */}
         <div className="flex items-center gap-1 px-2 group-data-[collapsible=icon]:hidden">
-          <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
-            <span className="text-white text-xs">I</span>
-          </div>
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
-            <span className="text-white text-xs">f</span>
-          </div>
-          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-            <span className="text-white text-xs">G</span>
-          </div>
+          <img 
+            src="https://i.ibb.co/Lbvqk8V/Progetto-senza-titolo-5.png" 
+            alt="Instagram" 
+            className="w-8 h-8 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
+          />
+          <img 
+            src="https://i.ibb.co/3ythJs2P/Progetto-senza-titolo-4.png" 
+            alt="Facebook" 
+            className="w-8 h-8 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
+          />
+          <img 
+            src="https://i.ibb.co/BHdw3VJd/Progetto-senza-titolo.png" 
+            alt="LinkedIn" 
+            className="w-8 h-8 object-cover cursor-pointer hover:scale-105 transition-transform duration-300" 
+          />
         </div>
 
         {/* Logout */}
