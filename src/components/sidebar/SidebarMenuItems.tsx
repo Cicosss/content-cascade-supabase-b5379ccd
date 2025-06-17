@@ -129,8 +129,15 @@ export const SidebarMenuItems = () => {
                 {/* Badge */}
                 {dailyEventsCount > 0 && (
                   <div 
-                    className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white font-bold text-xs group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1"
-                    style={{ backgroundColor: '#F59E0B' }}
+                    className="absolute flex items-center justify-center text-white font-bold rounded-full group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1"
+                    style={{ 
+                      backgroundColor: '#F59E0B',
+                      top: '8px',
+                      right: '8px',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '12px'
+                    }}
                   >
                     {dailyEventsCount}
                   </div>
