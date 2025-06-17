@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -27,7 +26,7 @@ const Header = () => {
 
   return (
     <header className="w-full bg-[#2A3385] border-b border-[#1e2563] shadow-lg relative z-[998]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-[#2A3385] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
           {/* Left section with logo */}
