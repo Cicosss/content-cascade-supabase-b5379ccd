@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Globe, 
@@ -25,8 +24,13 @@ const Header = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Debug log per verificare che Header si carichi
+  useEffect(() => {
+    console.log('Header component mounted');
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg">
+    <header className="w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg relative z-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
