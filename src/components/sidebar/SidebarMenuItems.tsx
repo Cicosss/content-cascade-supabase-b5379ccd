@@ -118,26 +118,35 @@ export const SidebarMenuItems = () => {
           <div className="px-2 py-2">
             <Link 
               to="/events" 
-              className="block relative"
+              className="block"
             >
               <div 
                 className="relative p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2"
                 style={{
-                  background: 'linear-gradient(to bottom, #EBF5FF, #FFFFFF)'
+                  background: 'linear-gradient(to bottom, #EBF5FF, #FFFFFF)',
+                  position: 'relative'
                 }}
               >
                 {/* Badge */}
                 {dailyEventsCount > 0 && (
                   <div 
-                    className="absolute flex items-center justify-center text-white font-bold rounded-full group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1"
                     style={{ 
-                      backgroundColor: '#F59E0B',
+                      position: 'absolute',
                       top: '8px',
                       right: '8px',
                       width: '20px',
                       height: '20px',
-                      fontSize: '12px'
+                      backgroundColor: '#F59E0B',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      color: 'white',
+                      zIndex: 10
                     }}
+                    className="group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1"
                   >
                     {dailyEventsCount}
                   </div>
