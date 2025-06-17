@@ -119,7 +119,7 @@ export const SidebarMenuItems = () => {
               <div className="relative p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2 bg-gradient-to-b from-blue-50 to-white">
                 
                 {/* Badge - rosso pulsante con numero 7 */}
-                <div className="absolute top-2 right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold z-10 group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1 animate-pulse">
+                <div className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-white text-xs font-bold z-10 group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1 animate-pulse" style={{ backgroundColor: '#FF0033' }}>
                   7
                 </div>
                 
