@@ -107,7 +107,10 @@ const AppSidebar = () => {
   ];
 
   return (
-    <Sidebar className="border-r border-slate-200">
+    <Sidebar 
+      className="border-r border-slate-200 fixed left-0 top-16 h-[calc(100vh-4rem)]" 
+      style={{ zIndex: 1000, position: 'fixed' }}
+    >
       <SidebarContent>
         {/* Macro-Aree Principali */}
         <SidebarGroup>

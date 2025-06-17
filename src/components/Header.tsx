@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -30,7 +31,10 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg relative z-40">
+    <header 
+      className="w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg fixed top-0 left-0 right-0" 
+      style={{ zIndex: 999 }}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           

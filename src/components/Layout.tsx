@@ -18,16 +18,19 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   if (showSidebar) {
     return (
       <div className="min-h-screen bg-slate-50">
-        {/* Header sempre fisso in cima con z-index alto */}
-        <div className="relative z-50">
+        {/* Header con z-index 999 */}
+        <div className="relative" style={{ zIndex: 999 }}>
           <Header />
         </div>
         
         {/* Contenuto principale con sidebar */}
         <SidebarProvider defaultOpen={false}>
-          <div className="flex h-[calc(100vh-4rem)]"> {/* Sottraggo l'altezza dell'header */}
-            <AppSidebar />
-            <SidebarInset className="flex-1">
+          <div className="flex h-[calc(100vh-4rem)]">
+            {/* Sidebar con position fixed e z-index 1000 */}
+            <div style={{ zIndex: 1000 }}>
+              <AppSidebar />
+            </div>
+            <SidebarInset className="flex-1" style={{ paddingLeft: '100px', zIndex: 1 }}>
               <main className="flex-1 p-0 overflow-auto">
                 {children}
               </main>
