@@ -18,7 +18,6 @@ import {
   Zap
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
 import { useDailyEventsCount } from '@/hooks/useDailyEventsCount';
 
 interface MenuItem {
@@ -116,41 +115,13 @@ export const SidebarMenuItems = () => {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="px-2 py-2">
-            <Link 
-              to="/events" 
-              className="block"
-            >
-              <div 
-                className="relative p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2"
-                style={{
-                  background: 'linear-gradient(to bottom, #EBF5FF, #FFFFFF)',
-                  position: 'relative'
-                }}
-              >
-                {/* Badge */}
-                {dailyEventsCount > 0 && (
-                  <div 
-                    style={{ 
-                      position: 'absolute',
-                      top: '8px',
-                      right: '8px',
-                      width: '20px',
-                      height: '20px',
-                      backgroundColor: '#F59E0B',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: 'white',
-                      zIndex: 10
-                    }}
-                    className="group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1"
-                  >
-                    {dailyEventsCount}
-                  </div>
-                )}
+            <Link to="/events" className="block">
+              <div className="relative p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2 bg-gradient-to-b from-blue-50 to-white">
+                
+                {/* Badge - sempre visibile per test */}
+                <div className="absolute top-2 right-2 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold z-10 group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:text-[10px] group-data-[collapsible=icon]:top-1 group-data-[collapsible=icon]:right-1">
+                  {dailyEventsCount > 0 ? dailyEventsCount : '!'}
+                </div>
                 
                 {/* Content */}
                 <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
