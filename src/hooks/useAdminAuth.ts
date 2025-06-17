@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AdminUser {
   email: string;
@@ -9,27 +10,24 @@ interface AdminUser {
 export const useAdminAuth = () => {
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Check if admin is logged in from localStorage
-    const storedAdmin = localStorage.getItem('adminUser');
-    if (storedAdmin) {
-      setAdminUser(JSON.parse(storedAdmin));
-    }
-    setIsLoading(false);
-  }, []);
-
-  const loginAdmin = (email: string, password: string): boolean => {
-    console.log('Tentativo login admin:', { email, password });
-    // Fixed admin credentials
-    if (email === 'Admin' && password === 'Latakia2024!') {
-      const admin = { email: 'Admin', isAdmin: true };
+    // Check if the current authenticated user is admin
+    if (user && user.email === 'luca.litti@gmail.com') {
+      const admin = { email: user.email, isAdmin: true };
       setAdminUser(admin);
       localStorage.setItem('adminUser', JSON.stringify(admin));
-      console.log('Login admin riuscito');
-      return true;
+    } else {
+      setAdminUser(null);
+      localStorage.removeItem('adminUser');
     }
-    console.log('Login admin fallito - credenziali errate');
+    setIsLoading(false);
+  }, [user]);
+
+  const loginAdmin = (email: string, password: string): boolean => {
+    // This function is no longer needed as admin privileges are automatic
+    // for the designated email when they're authenticated
     return false;
   };
 
