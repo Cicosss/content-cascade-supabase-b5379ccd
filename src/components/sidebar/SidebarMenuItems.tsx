@@ -14,9 +14,12 @@ import {
   Grid3X3,
   Droplets,
   CloudSun,
-  Settings
+  Settings,
+  Radio
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
+import { useDailyEventsCount } from '@/hooks/useDailyEventsCount';
 
 interface MenuItem {
   title: string;
@@ -26,6 +29,7 @@ interface MenuItem {
 
 export const SidebarMenuItems = () => {
   const location = useLocation();
+  const { count: dailyEventsCount } = useDailyEventsCount();
 
   // Menu principale
   const mainMenuItems: MenuItem[] = [
@@ -33,11 +37,6 @@ export const SidebarMenuItems = () => {
       title: "Messaggi",
       url: "/dashboard",
       icon: Home,
-    },
-    {
-      title: "Oggi in Romagna", 
-      url: "/events",
-      icon: Calendar,
     }
   ];
 
@@ -112,6 +111,38 @@ export const SidebarMenuItems = () => {
     <>
       {/* Menu principale */}
       {renderMenuSection(mainMenuItems)}
+
+      {/* Oggi in Romagna Card */}
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <div className="px-2 py-2">
+            <Link 
+              to="/events" 
+              className="block relative"
+            >
+              <div className="relative bg-gradient-to-r from-blue-50 to-white p-4 rounded-xl border border-blue-100 hover:border-blue-200 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2">
+                {/* Badge */}
+                {dailyEventsCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs font-bold bg-red-500 hover:bg-red-500 group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:w-4 group-data-[collapsible=icon]:text-[10px]"
+                  >
+                    {dailyEventsCount}
+                  </Badge>
+                )}
+                
+                {/* Content */}
+                <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
+                  <Radio className="h-5 w-5 text-red-500 animate-pulse" strokeWidth={1.5} />
+                  <span className="font-bold text-slate-800 group-data-[collapsible=icon]:hidden">
+                    Oggi in Romagna
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </SidebarGroupContent>
+      </SidebarGroup>
 
       {/* Area Personale section */}
       {renderMenuSection(channelItems, true, "Area Personale")}
