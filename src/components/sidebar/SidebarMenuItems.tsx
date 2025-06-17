@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   SidebarGroup, 
@@ -90,7 +91,7 @@ export const SidebarMenuItems = () => {
               <SidebarMenuButton 
                 asChild 
                 isActive={location.pathname === item.url}
-                className="h-10 hover:bg-gray-200 data-[active=true]:text-white data-[active=true]:bg-[#1e3a8a] data-[active=true]:hover:bg-[#1e40af]"
+                className="h-10 hover:bg-gray-200 data-[active=true]:text-white data-[active=true]:bg-[#1e3a8a] data-[active=true]:hover:bg-[#1e40af] group-data-[collapsible=icon]:data-[active=true]:bg-transparent group-data-[collapsible=icon]:data-[active=true]:border-l-3 group-data-[collapsible=icon]:data-[active=true]:border-l-[#1e3a8a] group-data-[collapsible=icon]:data-[active=true]:text-[#1e3a8a] group-data-[collapsible=icon]:data-[active=true]:pl-3"
                 tooltip={item.title}
               >
                 <Link to={item.url} className="flex items-center gap-3">
