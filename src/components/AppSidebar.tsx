@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Sidebar, 
@@ -38,7 +37,7 @@ import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const AppSidebar = () => {
   const location = useLocation();
-  const { logout } = useAuth();
+  const { signOut } = useAuth();
 
   // Menu principale con icone come negli screenshot
   const mainMenuItems = [
@@ -93,7 +92,7 @@ const AppSidebar = () => {
   ];
 
   const handleLogout = () => {
-    logout();
+    signOut();
   };
 
   return (
