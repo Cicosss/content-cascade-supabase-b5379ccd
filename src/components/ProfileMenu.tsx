@@ -33,11 +33,7 @@ const ProfileMenu = () => {
   };
 
   const handleAdminAccess = () => {
-    if (isAdmin) {
-      navigate('/admin');
-    } else {
-      setShowAdminLogin(true);
-    }
+    navigate('/admin');
   };
 
   const handleAdminLogout = () => {
@@ -92,11 +88,11 @@ const ProfileMenu = () => {
             Preferiti
           </DropdownMenuItem>
           
-          <DropdownMenuSeparator className="bg-white/20" />
-          
-          {/* Admin Section */}
-          {isAdmin ? (
+          {/* Admin Section - Only visible to admin users */}
+          {isAdmin && (
             <>
+              <DropdownMenuSeparator className="bg-white/20" />
+              
               <DropdownMenuItem 
                 onClick={handleAdminAccess}
                 className="rounded-lg hover:bg-orange-500/20 cursor-pointer text-orange-200 hover:text-orange-100 focus:bg-orange-500/20 focus:text-orange-100"
@@ -112,14 +108,6 @@ const ProfileMenu = () => {
                 Esci da Admin
               </DropdownMenuItem>
             </>
-          ) : (
-            <DropdownMenuItem 
-              onClick={handleAdminAccess}
-              className="rounded-lg hover:bg-orange-500/20 cursor-pointer text-orange-200 hover:text-orange-100 focus:bg-orange-500/20 focus:text-orange-100"
-            >
-              <Shield className="h-4 w-4 mr-3" />
-              Accesso Admin
-            </DropdownMenuItem>
           )}
           
           <DropdownMenuSeparator className="bg-white/20" />
