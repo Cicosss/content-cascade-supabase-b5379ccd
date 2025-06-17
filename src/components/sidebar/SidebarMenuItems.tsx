@@ -82,7 +82,7 @@ export const SidebarMenuItems = () => {
   const renderMenuSection = (items: MenuItem[], showHeader?: boolean, headerTitle?: string) => (
     <SidebarGroup className={showHeader ? "" : "mt-auto"}>
       {showHeader && (
-        <h2 className="mb-2 px-2 text-sm font-medium text-slate-600 group-data-[collapsible=icon]:hidden">
+        <h2 className="mb-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wide group-data-[collapsible=icon]:hidden">
           {headerTitle}
         </h2>
       )}
@@ -93,7 +93,7 @@ export const SidebarMenuItems = () => {
               <SidebarMenuButton 
                 asChild 
                 isActive={location.pathname === item.url}
-                className="h-10 hover:bg-slate-200 data-[active=true]:text-[#3275F2] data-[active=true]:bg-transparent"
+                className="h-10 hover:bg-gray-200 data-[active=true]:text-white data-[active=true]:bg-[#1e3a8a] data-[active=true]:hover:bg-[#1e40af]"
                 tooltip={item.title}
               >
                 <Link to={item.url} className="flex items-center gap-3">
