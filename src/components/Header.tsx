@@ -26,7 +26,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg">
+    <header className="w-full bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60 shadow-lg relative z-[998]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
@@ -66,7 +66,7 @@ const Header = () => {
                   IT
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-lg border-slate-600 bg-slate-800/98 backdrop-blur-sm">
+              <DropdownMenuContent align="end" className="rounded-lg border-slate-600 bg-slate-800/98 backdrop-blur-sm z-[1001]">
                 <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇮🇹 Italiano</DropdownMenuItem>
                 <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇬🇧 English</DropdownMenuItem>
                 <DropdownMenuItem className="rounded-md text-sm text-white hover:bg-slate-700">🇩🇪 Deutsch</DropdownMenuItem>
@@ -112,7 +112,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-3 border-t border-slate-700/60">
+          <div className="lg:hidden py-3 border-t border-slate-700/60 relative z-[1002]">
             <nav className="flex flex-col space-y-1">
               <Link 
                 to="/gusto-sapori" 

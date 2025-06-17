@@ -110,7 +110,7 @@ const AppSidebar = () => {
   ];
 
   return (
-    <Sidebar className="border-r border-slate-200 bg-white" collapsible="icon">
+    <Sidebar className="border-r border-slate-200 bg-white z-[1000] fixed" collapsible="icon">
       <SidebarHeader className="border-b border-slate-200 p-4">
         <div className="flex items-center gap-2">
           <MiaRomagnaLogo width={120} height={40} />
@@ -130,7 +130,7 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="h-12 group-data-[collapsible=icon]:h-10"
+                    className="h-12 group-data-[collapsible=icon]:h-10 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-800"
                     tooltip={item.title}
                   >
                     <Link to={item.url} className="flex flex-col items-start group-data-[collapsible=icon]:flex-row group-data-[collapsible=icon]:items-center">
@@ -161,6 +161,7 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
+                    className="hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
                     tooltip={item.title}
                   >
                     <Link to={item.url}>
@@ -186,6 +187,7 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
+                    className="hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
                     tooltip={item.title}
                   >
                     <Link to={item.url}>

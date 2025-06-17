@@ -21,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
         <div className="min-h-screen flex w-full">
           <AppSidebar />
           <SidebarInset className="flex-1 flex flex-col">
-            <div className="sticky top-0 z-50">
+            <div className="sticky top-0 z-[999]">
               <div className="flex items-center gap-2 px-4 py-2 bg-slate-900/95 backdrop-blur-md border-b border-slate-700/60">
                 <SidebarTrigger className="text-white hover:bg-slate-700/50" />
                 <div className="flex-1">
@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
                 </div>
               </div>
             </div>
-            <main className="flex-1 p-4">
+            <main className="flex-1 p-4 pl-6 z-[1]">
               {children}
             </main>
             <Footer />
