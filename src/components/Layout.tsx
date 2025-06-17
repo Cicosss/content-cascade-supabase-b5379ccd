@@ -14,36 +14,26 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   const { user } = useAuth();
   
-  // Layout con sidebar
+  // Mostra la sidebar se showSidebar è true, indipendentemente dal login
   if (showSidebar) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        {/* Header con z-index 999 */}
-        <div className="relative" style={{ zIndex: 999 }}>
-          <Header />
-        </div>
-        
-        {/* Contenuto principale con sidebar */}
-        <SidebarProvider defaultOpen={false}>
-          <div className="flex h-[calc(100vh-4rem)]">
-            {/* Sidebar con position fixed e z-index 1000 */}
-            <div style={{ zIndex: 1000 }}>
-              <AppSidebar />
-            </div>
-            <SidebarInset className="flex-1" style={{ paddingLeft: '100px', zIndex: 1 }}>
-              <main className="flex-1 p-0 overflow-auto">
+      <SidebarProvider defaultOpen={false}>
+        <div className="min-h-screen flex w-full flex-col">
+          <div className="flex flex-1">
+            <AppSidebar />
+            <SidebarInset className="flex-1">
+              <Header />
+              <main className="flex-1">
                 {children}
               </main>
             </SidebarInset>
           </div>
-        </SidebarProvider>
-        
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </SidebarProvider>
     );
   }
 
-  // Layout senza sidebar (standard)
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Header />
