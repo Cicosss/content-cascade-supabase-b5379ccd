@@ -115,7 +115,7 @@ export const SidebarMenuItems = () => {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="px-2 py-2">
-            <Link to="/events" className="block">
+            <Link to="/oggi" className="block">
               <div className="relative p-3 rounded-xl border border-gray-200 hover:border-blue-300 transition-all duration-200 hover:shadow-md group-data-[collapsible=icon]:p-2 bg-gradient-to-b from-blue-50 to-white">
                 
                 {/* Badge - rosso pulsante con numero 7 */}

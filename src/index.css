@@ -1,4 +1,5 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,34 +8,29 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 210 100% 45%;
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
-    --radius: 0.75rem;
-
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -43,11 +39,6 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-
-    --romagna-blue: 210 100% 45%;
-    --romagna-green: 120 60% 40%;
-    --romagna-orange: 25 95% 55%;
-    --romagna-beige: 45 30% 85%;
   }
 
   .dark {
@@ -70,10 +61,15 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 224.3 76.3% 94.1%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
@@ -85,47 +81,59 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
 }
 
-/* Scala tipografica coerente */
-@layer utilities {
-  .typography-h1 {
-    @apply text-5xl font-bold;
+/* Gradients */
+.sunset-gradient {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+}
+
+.ocean-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.forest-gradient {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+/* Custom animations */
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: rgb(250, 204, 21);
+    box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7);
   }
-  
-  .typography-h2 {
-    @apply text-3xl font-semibold;
-  }
-  
-  .typography-h3 {
-    @apply text-2xl font-semibold;
-  }
-  
-  .typography-body {
-    @apply text-base font-normal;
-  }
-  
-  .typography-body-small {
-    @apply text-sm font-normal;
-  }
-  
-  .typography-caption {
-    @apply text-xs font-medium;
+  50% {
+    border-color: rgb(251, 191, 36);
+    box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.2);
   }
 }
 
-.romagna-gradient {
-  background: linear-gradient(135deg, hsl(var(--romagna-blue)) 0%, hsl(var(--romagna-green)) 100%);
+.animate-pulse-border {
+  animation: pulse-border 2s infinite;
 }
 
-.brand-blue-gradient {
-  background: linear-gradient(135deg, hsl(210 100% 30%) 0%, hsl(210 100% 45%) 100%);
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
-.hero-gradient {
-  background: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(120 60% 40%) 50%, hsl(25 95% 55%) 100%);
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }

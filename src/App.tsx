@@ -23,6 +23,7 @@ import EventiSpettacoli from '@/pages/EventiSpettacoli';
 import DivertimentoFamiglia from '@/pages/DivertimentoFamiglia';
 import TerritoryPromoter from '@/pages/TerritoryPromoter';
 import RespiroDelMare from '@/pages/RespiroDelMare';
+import OggiInRomagna from '@/pages/OggiInRomagna';
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/oggi" element={<OggiInRomagna />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/itineraries" element={<Itineraries />} />
             <Route path="/webcams" element={<Webcams />} />
