@@ -6,7 +6,7 @@ import MiaRomagnaLogo from '@/components/MiaRomagnaLogo';
 
 export const SidebarHeader = () => {
   return (
-    <BaseSidebarHeader className="border-b border-slate-200 p-3 bg-[#F8F9FA]">
+    <BaseSidebarHeader className="border-b border-slate-100 p-3 bg-[#F8F9FA]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="h-6 w-6 text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-md" />
@@ -22,9 +22,9 @@ export const SidebarHeader = () => {
           title="Torna alla dashboard"
         >
           <MiaRomagnaLogo 
-            width={40} 
-            height={40} 
-            className="group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:h-8" 
+            width={60} 
+            height={60} 
+            className="group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:h-10" 
           />
         </Link>
       </div>
