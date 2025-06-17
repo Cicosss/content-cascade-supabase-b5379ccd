@@ -15,33 +15,21 @@ import {
 import { 
   Home, 
   Calendar, 
-  Users, 
-  Heart,
-  User,
   Camera,
-  MapPin,
-  Route,
-  Map,
-  Crown,
-  Utensils,
-  Building2,
-  Music,
-  TreePine,
-  Settings,
-  LogOut,
   Grid3X3,
   Droplets,
-  CloudSun
+  CloudSun,
+  Settings,
+  LogOut
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const AppSidebar = () => {
   const location = useLocation();
   const { signOut } = useAuth();
 
-  // Menu principale con icone come negli screenshot
+  // Menu principale
   const mainMenuItems = [
     {
       title: "Inbox",
