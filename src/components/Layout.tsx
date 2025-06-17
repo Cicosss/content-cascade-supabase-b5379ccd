@@ -18,17 +18,17 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   if (showSidebar) {
     return (
       <SidebarProvider defaultOpen={false}>
-        <div className="min-h-screen flex w-full flex-col">
-          <Header />
-          <div className="flex flex-1">
-            <AppSidebar />
+        <div className="min-h-screen flex w-full">
+          <AppSidebar />
+          <div className="flex-1 flex flex-col">
+            <Header />
             <SidebarInset className="flex-1">
               <main className="flex-1">
                 {children}
               </main>
             </SidebarInset>
+            <Footer />
           </div>
-          <Footer />
         </div>
       </SidebarProvider>
     );
