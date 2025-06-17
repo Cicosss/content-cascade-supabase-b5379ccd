@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   SidebarGroup, 
@@ -80,7 +79,7 @@ export const SidebarMenuItems = () => {
   const renderMenuSection = (items: MenuItem[], showHeader?: boolean, headerTitle?: string) => (
     <SidebarGroup className={showHeader ? "" : "mt-auto"}>
       {showHeader && (
-        <h2 className="mb-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wide group-data-[collapsible=icon]:hidden">
+        <h2 className="mb-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wide group-data-[collapsible=icon]:hidden mt-8">
           {headerTitle}
         </h2>
       )}
