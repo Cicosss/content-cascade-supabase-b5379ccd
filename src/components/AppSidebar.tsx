@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Sidebar, 
@@ -8,7 +9,8 @@ import {
   SidebarMenuButton, 
   SidebarMenuItem,
   SidebarHeader,
-  SidebarFooter
+  SidebarFooter,
+  SidebarTrigger
 } from '@/components/ui/sidebar';
 import { 
   Home, 
@@ -98,11 +100,14 @@ const AppSidebar = () => {
   return (
     <Sidebar className="border-r border-slate-200 bg-white z-[1000] fixed" collapsible="icon">
       <SidebarHeader className="border-b border-slate-200 p-3">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">R</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">R</span>
+            </div>
+            <span className="font-semibold text-slate-800 group-data-[collapsible=icon]:hidden">ROMAGNA</span>
           </div>
-          <span className="font-semibold text-slate-800 group-data-[collapsible=icon]:hidden">ROMAGNA</span>
+          <SidebarTrigger className="h-6 w-6 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-md" />
         </div>
       </SidebarHeader>
       
