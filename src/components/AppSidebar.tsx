@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { 
   Sidebar, 
@@ -102,12 +103,9 @@ const AppSidebar = () => {
       <SidebarHeader className="border-b border-slate-200 p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">R</span>
-            </div>
+            <SidebarTrigger className="h-6 w-6 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-md" />
             <span className="font-semibold text-slate-800 group-data-[collapsible=icon]:hidden">ROMAGNA</span>
           </div>
-          <SidebarTrigger className="h-6 w-6 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-md" />
         </div>
       </SidebarHeader>
       
@@ -229,3 +227,4 @@ const AppSidebar = () => {
 };
 
 export default AppSidebar;
+
