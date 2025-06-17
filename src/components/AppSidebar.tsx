@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 import { 
   Sidebar, 
@@ -99,17 +98,17 @@ const AppSidebar = () => {
   };
 
   return (
-    <Sidebar className="border-r border-slate-200 bg-white z-[1000] fixed" collapsible="icon">
-      <SidebarHeader className="border-b border-slate-200 p-3">
+    <Sidebar className="border-r border-slate-200 bg-[#F8F9FA] z-[1000] fixed" collapsible="icon">
+      <SidebarHeader className="border-b border-slate-200 p-3 bg-[#F8F9FA]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <SidebarTrigger className="h-6 w-6 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-md" />
+            <SidebarTrigger className="h-6 w-6 text-slate-600 hover:text-slate-800 hover:bg-slate-200 rounded-md" />
             <span className="font-semibold text-slate-800 group-data-[collapsible=icon]:hidden">ROMAGNA</span>
           </div>
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="px-2">
+      <SidebarContent className="px-2 bg-[#F8F9FA]">
         {/* Menu principale */}
         <SidebarGroup>
           <SidebarGroupContent>
@@ -119,7 +118,7 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="h-10 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-800"
+                    className="h-10 hover:bg-slate-200 data-[active=true]:text-[#3275F2] data-[active=true]:bg-transparent"
                     tooltip={item.title}
                   >
                     <Link to={item.url} className="flex items-center gap-3">
@@ -145,7 +144,7 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="h-10 hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
+                    className="h-10 hover:bg-slate-200 data-[active=true]:text-[#3275F2] data-[active=true]:bg-transparent"
                     tooltip={item.title}
                   >
                     <Link to={item.url} className="flex items-center gap-3">
@@ -168,7 +167,7 @@ const AppSidebar = () => {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="h-10 hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
+                    className="h-10 hover:bg-slate-200 data-[active=true]:text-[#3275F2] data-[active=true]:bg-transparent"
                     tooltip={item.title}
                   >
                     <Link to={item.url} className="flex items-center gap-3">
@@ -183,7 +182,7 @@ const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-slate-200 p-2">
+      <SidebarFooter className="border-t border-slate-200 p-2 bg-[#F8F9FA]">
         {/* User profile section */}
         <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
@@ -213,7 +212,7 @@ const AppSidebar = () => {
           <SidebarMenuItem>
             <SidebarMenuButton 
               onClick={handleLogout}
-              className="h-10 hover:bg-red-50 hover:text-red-700 text-red-600"
+              className="h-10 hover:bg-red-100 hover:text-red-700 text-red-600"
               tooltip="Logout"
             >
               <LogOut className="h-5 w-5" />
@@ -227,4 +226,3 @@ const AppSidebar = () => {
 };
 
 export default AppSidebar;
-
