@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -25,8 +26,8 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="w-full bg-[#2A3385] border-b border-[#1e2563] shadow-lg relative z-[998]">
-      <div className="bg-[#2A3385] mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="w-full bg-[#0F172A] border-b border-slate-700 shadow-lg relative z-[998]">
+      <div className="bg-[#0F172A] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
           {/* Left section with logo */}
@@ -41,16 +42,16 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            <Link to="/gusto-sapori" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm">
+            <Link to="/gusto-sapori" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm">
               Gusto & Sapori
             </Link>
-            <Link to="/cultura-territorio" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm">
+            <Link to="/cultura-territorio" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm">
               Cultura & Territorio
             </Link>
-            <Link to="/eventi-spettacoli" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm">
+            <Link to="/eventi-spettacoli" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm">
               Eventi & Spettacoli
             </Link>
-            <Link to="/divertimento-famiglia" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm">
+            <Link to="/divertimento-famiglia" className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm">
               Divertimento & Famiglia
             </Link>
           </nav>
@@ -60,7 +61,7 @@ const Header = () => {
             {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-[#1e2563] hover:text-orange-300 rounded-lg text-sm text-white">
+                <Button variant="ghost" size="sm" className="hidden sm:flex hover:bg-slate-700 hover:text-orange-300 rounded-lg text-sm text-white">
                   <Globe className="h-4 w-4 mr-1" />
                   IT
                 </Button>
@@ -101,7 +102,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2 hover:bg-[#1e2563] rounded-lg text-white hover:text-orange-300"
+              className="lg:hidden p-2 hover:bg-slate-700 rounded-lg text-white hover:text-orange-300"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -111,32 +112,32 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-3 border-t border-[#1e2563] relative z-[1002]">
+          <div className="lg:hidden py-3 border-t border-slate-700 relative z-[1002]">
             <nav className="flex flex-col space-y-1">
               <Link 
                 to="/gusto-sapori" 
-                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Gusto & Sapori
               </Link>
               <Link 
                 to="/cultura-territorio" 
-                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Cultura & Territorio
               </Link>
               <Link 
                 to="/eventi-spettacoli" 
-                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Eventi & Spettacoli
               </Link>
               <Link 
                 to="/divertimento-famiglia" 
-                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-[#1e2563] rounded-lg transition-all duration-200 font-medium text-sm"
+                className="px-4 py-2 text-white hover:text-orange-300 hover:bg-slate-700 rounded-lg transition-all duration-200 font-medium text-sm"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Divertimento & Famiglia

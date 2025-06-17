@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
           <AppSidebar />
           <SidebarInset className="flex-1 flex flex-col">
             <div className="sticky top-0 z-[999]">
-              <div className="flex items-center gap-2 px-4 py-2 bg-[#2A3385] border-b border-[#1e2563]">
+              <div className="flex items-center gap-2 px-4 py-2 bg-[#0F172A] border-b border-slate-700">
                 <div className="flex-1">
                   <Header />
                 </div>
