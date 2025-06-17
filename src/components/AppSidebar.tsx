@@ -25,147 +25,103 @@ import {
   Utensils,
   Building2,
   Music,
-  TreePine
+  TreePine,
+  Settings,
+  LogOut,
+  Grid3X3,
+  Droplets,
+  CloudSun
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const AppSidebar = () => {
   const location = useLocation();
+  const { logout } = useAuth();
 
-  // Macro-Aree principali
-  const macroAreas = [
+  // Menu principale con icone come negli screenshot
+  const mainMenuItems = [
     {
-      title: "Gusto & Sapori",
-      url: "/gusto-sapori",
-      icon: Utensils,
-      description: "Tradizioni culinarie"
+      title: "Inbox",
+      url: "/dashboard",
+      icon: Home,
     },
     {
-      title: "Cultura & Territorio", 
-      url: "/cultura-territorio",
-      icon: Building2,
-      description: "Arte e storia"
-    },
-    {
-      title: "Eventi & Spettacoli",
-      url: "/eventi-spettacoli", 
-      icon: Music,
-      description: "Intrattenimento"
-    },
-    {
-      title: "Divertimento & Famiglia",
-      url: "/divertimento-famiglia",
-      icon: TreePine,
-      description: "Attività per tutti"
+      title: "Today", 
+      url: "/events",
+      icon: Calendar,
     }
   ];
 
-  // Menu secondario
-  const secondaryItems = [
+  // My Channel section
+  const channelItems = [
     {
       title: "Dashboard",
       url: "/dashboard",
       icon: Home,
     },
     {
-      title: "Eventi",
-      url: "/events",
-      icon: Calendar,
+      title: "Categories",
+      url: "/categories",
+      icon: Grid3X3,
     },
     {
-      title: "Preferiti",
-      url: "/favorites",
-      icon: Heart,
+      title: "Water quality",
+      url: "/water-quality",
+      icon: Droplets,
     },
     {
-      title: "Itinerari",
-      url: "/itineraries",
-      icon: Route,
+      title: "Weather",
+      url: "/weather",
+      icon: CloudSun,
+    },
+    {
+      title: "Webcams",
+      url: "/webcams",
+      icon: Camera,
     }
   ];
 
-  // Menu utilità
-  const utilityItems = [
+  // Bottom items
+  const bottomItems = [
     {
-      title: "Webcam",
-      url: "/webcams",
-      icon: Camera,
-    },
-    {
-      title: "Partner",
-      url: "/partner",
-      icon: Crown,
-    },
-    {
-      title: "Chi Siamo",
-      url: "/chi-siamo",
-      icon: Users,
-    },
-    {
-      title: "Profilo",
-      url: "/profile",
-      icon: User,
+      title: "Settings",
+      url: "/settings",
+      icon: Settings,
     }
   ];
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <Sidebar className="border-r border-slate-200 bg-white z-[1000] fixed" collapsible="icon">
-      <SidebarHeader className="border-b border-slate-200 p-4">
+      <SidebarHeader className="border-b border-slate-200 p-3">
         <div className="flex items-center gap-2">
-          <MiaRomagnaLogo width={120} height={40} />
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">R</span>
+          </div>
+          <span className="font-semibold text-slate-800 group-data-[collapsible=icon]:hidden">ROMAGNA</span>
         </div>
       </SidebarHeader>
       
       <SidebarContent className="px-2">
-        {/* Macro-Aree Principali */}
+        {/* Menu principale */}
         <SidebarGroup>
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight text-slate-900 group-data-[collapsible=icon]:hidden">
-            Esplora
-          </h2>
           <SidebarGroupContent>
             <SidebarMenu>
-              {macroAreas.map((item) => (
+              {mainMenuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="h-12 group-data-[collapsible=icon]:h-10 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-800"
+                    className="h-10 hover:bg-blue-50 hover:text-blue-700 data-[active=true]:bg-blue-100 data-[active=true]:text-blue-800"
                     tooltip={item.title}
                   >
-                    <Link to={item.url} className="flex flex-col items-start group-data-[collapsible=icon]:flex-row group-data-[collapsible=icon]:items-center">
-                      <div className="flex items-center gap-2">
-                        <item.icon className="h-5 w-5" />
-                        <span className="font-medium group-data-[collapsible=icon]:hidden">{item.title}</span>
-                      </div>
-                      <span className="text-xs text-muted-foreground ml-7 group-data-[collapsible=icon]:hidden">
-                        {item.description}
-                      </span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Menu Secondario */}
-        <SidebarGroup>
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight text-slate-900 group-data-[collapsible=icon]:hidden">
-            La Tua Esperienza
-          </h2>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {secondaryItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton 
-                    asChild 
-                    isActive={location.pathname === item.url}
-                    className="hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
-                    tooltip={item.title}
-                  >
-                    <Link to={item.url}>
-                      <item.icon className="h-4 w-4" />
+                    <Link to={item.url} className="flex items-center gap-3">
+                      <item.icon className="h-5 w-5" />
                       <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -175,23 +131,46 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Menu Utilità */}
+        {/* My Channel section */}
         <SidebarGroup>
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight text-slate-900 group-data-[collapsible=icon]:hidden">
-            Altro
+          <h2 className="mb-2 px-2 text-sm font-medium text-slate-600 group-data-[collapsible=icon]:hidden">
+            My Channel
           </h2>
           <SidebarGroupContent>
             <SidebarMenu>
-              {utilityItems.map((item) => (
+              {channelItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
+                    className="h-10 hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
                     tooltip={item.title}
                   >
-                    <Link to={item.url}>
-                      <item.icon className="h-4 w-4" />
+                    <Link to={item.url} className="flex items-center gap-3">
+                      <item.icon className="h-5 w-5" />
+                      <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Settings section */}
+        <SidebarGroup className="mt-auto">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {bottomItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={location.pathname === item.url}
+                    className="h-10 hover:bg-slate-100 hover:text-slate-800 data-[active=true]:bg-slate-200 data-[active=true]:text-slate-900"
+                    tooltip={item.title}
+                  >
+                    <Link to={item.url} className="flex items-center gap-3">
+                      <item.icon className="h-5 w-5" />
                       <span className="group-data-[collapsible=icon]:hidden">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -203,9 +182,43 @@ const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-slate-200 p-2">
-        <div className="text-xs text-slate-500 text-center group-data-[collapsible=icon]:hidden">
-          MiaRomagna © 2024
+        {/* User profile section */}
+        <div className="flex items-center gap-2 p-2 group-data-[collapsible=icon]:justify-center">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
+            <span className="text-white text-sm font-medium">G</span>
+          </div>
+          <div className="flex-1 group-data-[collapsible=icon]:hidden">
+            <p className="text-sm font-medium text-slate-900">giulia</p>
+            <p className="text-xs text-slate-500">Vai al profilo</p>
+          </div>
         </div>
+        
+        {/* Social icons */}
+        <div className="flex items-center gap-1 px-2 group-data-[collapsible=icon]:justify-center">
+          <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
+            <span className="text-white text-xs">I</span>
+          </div>
+          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center group-data-[collapsible=icon]:hidden">
+            <span className="text-white text-xs">f</span>
+          </div>
+          <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center group-data-[collapsible=icon]:hidden">
+            <span className="text-white text-xs">G</span>
+          </div>
+        </div>
+
+        {/* Logout */}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton 
+              onClick={handleLogout}
+              className="h-10 hover:bg-red-50 hover:text-red-700 text-red-600"
+              tooltip="Logout"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="group-data-[collapsible=icon]:hidden">Logout</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );
