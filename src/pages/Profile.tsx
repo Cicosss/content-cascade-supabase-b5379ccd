@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,6 +10,7 @@ import { ProfileForm } from '@/components/profile/ProfileForm';
 import { ProfileActions } from '@/components/profile/ProfileActions';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useAvatarManager } from '@/hooks/useAvatarManager';
+import Layout from '@/components/Layout';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -70,34 +70,46 @@ const Profile = () => {
     );
   }
 
+  if (loading) {
+    return (
+      <Layout showSidebar={true}>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center">
+          <div className="text-2xl text-emerald-600">Caricamento profilo...</div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <ProfileHeader />
+    <Layout showSidebar={true}>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+              <ProfileHeader />
 
-            <div className="space-y-8">
-              <ProfileAvatarSection 
-                avatarUrl={avatarUrl} 
-                onAvatarChange={onAvatarChange}
-              />
+              <div className="space-y-8">
+                <ProfileAvatarSection 
+                  avatarUrl={avatarUrl} 
+                  onAvatarChange={onAvatarChange}
+                />
 
-              <ProfileForm 
-                profile={profile}
-                onProfileChange={setProfile}
-              />
+                <ProfileForm 
+                  profile={profile}
+                  onProfileChange={setProfile}
+                />
 
-              <ProfileActions 
-                loading={loading}
-                onSave={updateProfile}
-              />
-            </div>
-          </Card>
+                <ProfileActions 
+                  loading={loading}
+                  onSave={updateProfile}
+                />
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

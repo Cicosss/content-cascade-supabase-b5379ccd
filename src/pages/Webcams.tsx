@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import WebcamHero from '@/components/webcam/WebcamHero';
@@ -18,7 +17,7 @@ const Webcams = () => {
   }, [selectedCategory]);
 
   return (
-    <Layout showSidebar>
+    <Layout showSidebar={true}>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
         <WebcamHero />
 

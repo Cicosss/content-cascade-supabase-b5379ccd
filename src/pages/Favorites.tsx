@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Layout from '@/components/Layout';
@@ -22,7 +21,7 @@ const Favorites = () => {
   }
 
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center mb-8">
