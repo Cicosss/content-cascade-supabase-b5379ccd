@@ -2,6 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { logEnvironmentDifference } from '@/utils/environmentDebug';
+import { toast } from 'sonner';
 
 interface AuthContextType {
   user: User | null;
@@ -32,12 +34,14 @@ const createProfile = async (profileData: any) => {
 
     if (error) {
       console.error('Error creating profile:', error);
+      logEnvironmentDifference('Profile Creation Error', { error, profileData });
       return null;
     }
 
     return data;
   } catch (error) {
     console.error('Error creating profile:', error);
+    logEnvironmentDifference('Profile Creation Exception', { error, profileData });
     return null;
   }
 };
@@ -59,6 +63,7 @@ const uploadAvatar = async (file: File, userId: string): Promise<string | null> 
 
     if (uploadError) {
       console.error('Upload error:', uploadError);
+      logEnvironmentDifference('Avatar Upload Error', { uploadError, fileName });
       return null;
     }
 
@@ -70,6 +75,7 @@ const uploadAvatar = async (file: File, userId: string): Promise<string | null> 
     return data.publicUrl;
   } catch (error) {
     console.error('Error uploading avatar:', error);
+    logEnvironmentDifference('Avatar Upload Exception', { error, userId });
     return null;
   }
 };
@@ -80,10 +86,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Log environment info at startup
+    logEnvironmentDifference('Auth Context Initialization', {
+      hostname: window.location.hostname,
+      pathname: window.location.pathname,
+      userAgent: navigator.userAgent.substring(0, 50) + '...'
+    });
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session);
+        console.log('🔐 Auth state changed:', event, session?.user?.email || 'No user');
+        
+        logEnvironmentDifference('Auth State Change', {
+          event,
+          hasSession: !!session,
+          hasUser: !!session?.user,
+          userEmail: session?.user?.email,
+          emailConfirmed: session?.user?.email_confirmed_at
+        });
+
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -117,9 +139,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 // Clean up
                 (window as any).pendingAvatarData = null;
                 (window as any).pendingAvatarFile = null;
+                
+                toast.success('Profilo creato con successo!');
               }
             } catch (error) {
               console.error('Error creating profile after email confirmation:', error);
+              logEnvironmentDifference('Profile Creation After Email Confirmation', { error });
+              toast.error('Errore nella creazione del profilo');
             }
           }, 0);
         }
@@ -127,7 +153,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (error) {
+        console.error('Error getting initial session:', error);
+        logEnvironmentDifference('Initial Session Error', { error });
+        toast.error('Errore nel caricamento della sessione');
+      }
+      
+      console.log('🔐 Initial session:', session?.user?.email || 'No user');
+      logEnvironmentDifference('Initial Session', {
+        hasSession: !!session,
+        hasUser: !!session?.user,
+        userEmail: session?.user?.email
+      });
+      
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -137,7 +176,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signUp = async (email: string, password: string, userData?: any) => {
-    const redirectUrl = `${window.location.origin}/`;
+    // Standardized redirect URL for both environments
+    const baseUrl = window.location.origin;
+    const redirectUrl = `${baseUrl}/`;
+    
+    logEnvironmentDifference('Sign Up Attempt', {
+      email,
+      redirectUrl,
+      userData,
+      hostname: window.location.hostname
+    });
     
     const { error } = await supabase.auth.signUp({
       email,
@@ -147,20 +195,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         data: userData
       }
     });
+    
+    if (error) {
+      logEnvironmentDifference('Sign Up Error', { error, email });
+    }
+    
     return { error };
   };
 
   const signIn = async (email: string, password: string) => {
+    logEnvironmentDifference('Sign In Attempt', {
+      email,
+      hostname: window.location.hostname
+    });
+    
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
+    
+    if (error) {
+      logEnvironmentDifference('Sign In Error', { error, email });
+    }
+    
     return { error };
   };
 
   const signOut = async () => {
+    logEnvironmentDifference('Sign Out Attempt', {
+      userEmail: user?.email,
+      hostname: window.location.hostname
+    });
+    
     const { error } = await supabase.auth.signOut();
-    if (error) console.error('Error signing out:', error);
+    if (error) {
+      console.error('Error signing out:', error);
+      logEnvironmentDifference('Sign Out Error', { error });
+      toast.error('Errore durante il logout');
+    } else {
+      toast.success('Logout effettuato con successo');
+    }
   };
 
   const value = {

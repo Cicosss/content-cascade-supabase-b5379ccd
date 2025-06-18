@@ -7,7 +7,7 @@ import { SidebarFooter } from './sidebar/SidebarFooter';
 
 const AppSidebar = () => {
   return (
-    <Sidebar className="border-r border-slate-200 bg-[#F8F9FA] z-[1000] fixed" collapsible="icon">
+    <Sidebar className="border-r border-slate-200 bg-[#F8F9FA] z-sidebar-custom fixed" collapsible="icon">
       <SidebarHeader />
       
       <SidebarContent className="px-2 bg-[#F8F9FA]">

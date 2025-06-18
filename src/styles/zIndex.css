@@ -1,0 +1,36 @@
+
+/* Sistema di z-index standardizzato per consistenza tra ambienti */
+:root {
+  --z-base: 1;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-banner: 200;
+  --z-sidebar: 998;
+  --z-header: 999;
+  --z-overlay: 1000;
+  --z-modal: 1001;
+  --z-popover: 1002;
+  --z-tooltip: 1003;
+  --z-debug: 9999;
+}
+
+/* Applicazione degli z-index standardizzati */
+.z-base { z-index: var(--z-base); }
+.z-dropdown { z-index: var(--z-dropdown); }
+.z-sticky { z-index: var(--z-sticky); }
+.z-banner { z-index: var(--z-banner); }
+.z-sidebar { z-index: var(--z-sidebar); }
+.z-header { z-index: var(--z-header); }
+.z-overlay { z-index: var(--z-overlay); }
+.z-modal { z-index: var(--z-modal); }
+.z-popover { z-index: var(--z-popover); }
+.z-tooltip { z-index: var(--z-tooltip); }
+.z-debug { z-index: var(--z-debug); }
+
+/* Classi Tailwind personalizzate per z-index */
+.z-sidebar-custom { z-index: 998; }
+.z-header-custom { z-index: 999; }
+.z-overlay-custom { z-index: 1000; }
+.z-modal-custom { z-index: 1001; }
+.z-popover-custom { z-index: 1002; }
+.z-debug-custom { z-index: 9999; }

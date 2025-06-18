@@ -33,7 +33,7 @@ const LanguageSelector = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="rounded-lg border-slate-600 bg-slate-800/98 backdrop-blur-sm z-[1001]"
+        className="rounded-lg border-slate-600 bg-slate-800/98 backdrop-blur-sm z-popover-custom"
       >
         {languages.map((lang) => (
           <DropdownMenuItem 

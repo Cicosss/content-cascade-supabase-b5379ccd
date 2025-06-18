@@ -5,6 +5,7 @@ import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import AppSidebar from './AppSidebar';
 import Header from './Header';
 import Footer from './Footer';
+import EnvironmentDebugPanel from './EnvironmentDebugPanel';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,28 +13,31 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   
-  // Mostra la sidebar se showSidebar è true, indipendentemente dal login
-  if (showSidebar) {
+  // Forza showSidebar solo se l'utente è autenticato
+  const shouldShowSidebar = showSidebar && !loading && user;
+  
+  if (shouldShowSidebar) {
     return (
       <SidebarProvider defaultOpen={false}>
         <div className="min-h-screen flex w-full">
           <AppSidebar />
           <SidebarInset className="flex-1 flex flex-col">
-            <div className="sticky top-0 z-[999]">
+            <div className="sticky top-0 z-header-custom">
               <div className="flex items-center gap-2 px-4 py-2 bg-[#0F172A] border-b border-slate-700">
                 <div className="flex-1">
                   <Header />
                 </div>
               </div>
             </div>
-            <main className="flex-1 p-4 pl-6 z-[1]">
+            <main className="flex-1 p-4 pl-6 z-base">
               {children}
             </main>
             <Footer />
           </SidebarInset>
         </div>
+        <EnvironmentDebugPanel />
       </SidebarProvider>
     );
   }
@@ -45,6 +49,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
         {children}
       </main>
       <Footer />
+      <EnvironmentDebugPanel />
     </div>
   );
 };

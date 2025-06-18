@@ -113,7 +113,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
   }
 
   return (
-    <div className="sticky top-4 z-50 bg-white rounded-2xl p-4 shadow-lg border border-gray-100 mb-8 backdrop-blur-sm bg-white/95">
+    <div className="sticky top-4 z-sticky bg-white rounded-2xl p-4 shadow-lg border border-gray-100 mb-8 backdrop-blur-sm bg-white/95">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
           <Tag className="h-5 w-5 text-blue-600" strokeWidth={1.5} />
