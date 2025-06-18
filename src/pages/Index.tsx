@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -263,7 +264,7 @@ const Index = () => {
   ];
 
   return (
-    <Layout showSidebar={false}>
+    <Layout showSidebar={true}>
       <HeroSection />
       <AppFeaturesSection />
       

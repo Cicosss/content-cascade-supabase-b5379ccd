@@ -14,10 +14,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   const { user } = useAuth();
   
-  // Mostra la sidebar solo se l'utente è autenticato E showSidebar è true
-  const shouldShowSidebar = showSidebar && user;
-  
-  if (shouldShowSidebar) {
+  // Mostra la sidebar se showSidebar è true, indipendentemente dal login
+  if (showSidebar) {
     return (
       <SidebarProvider defaultOpen={false}>
         <div className="min-h-screen flex w-full">
