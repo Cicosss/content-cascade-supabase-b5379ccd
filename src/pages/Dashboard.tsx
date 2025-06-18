@@ -15,6 +15,7 @@ import { DateRange } from 'react-day-picker';
 const Dashboard = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  
   const [filters, setFilters] = useState({
     categories: ['tutte'],
     zone: 'tuttalromagna',
@@ -24,22 +25,13 @@ const Dashboard = () => {
     specialPreferences: []
   });
 
-  // Transform filters for GoogleMap component that needs different structure
+  // Transform filters for GoogleMap component
   const transformedFiltersForMap = {
     zone: filters.zone,
     withChildren: 'no',
     activityTypes: filters.categories,
     period: filters.period,
     isFirstVisit: true
-  };
-
-  const handleUpdateTransformedFilters = (newTransformedFilters: any) => {
-    setFilters({
-      ...filters,
-      categories: newTransformedFilters.activityTypes,
-      zone: newTransformedFilters.zone,
-      period: newTransformedFilters.period
-    });
   };
 
   useEffect(() => {
