@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -105,9 +105,7 @@ const OggiInRomagna = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
+    <Layout showSidebar={true}>
       {/* Hero Section */}
       <div className="sunset-gradient text-white py-16">
         <div className="container mx-auto px-4 text-center">
@@ -260,7 +258,7 @@ const OggiInRomagna = () => {
           </div>
         </section>
       </div>
-    </div>
+    </Layout>
   );
 };
 
