@@ -23,7 +23,7 @@ const FlashOffersSection: React.FC<FlashOffersSectionProps> = ({ offers }) => {
   return (
     <section>
       <div className="flex items-center mb-6">
-        <Zap className="h-8 w-8 text-yellow-500 mr-3" />
+        <Zap className="h-8 w-8 text-blue-900 mr-3" />
         <h2 className="text-3xl font-bold text-gray-900">Offerte Lampo (Valide solo Oggi!)</h2>
       </div>
       

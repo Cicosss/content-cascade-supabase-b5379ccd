@@ -7,7 +7,7 @@ interface OggiHeroSectionProps {
 
 const OggiHeroSection: React.FC<OggiHeroSectionProps> = ({ formattedDate }) => {
   return (
-    <div className="sunset-gradient text-white py-16">
+    <div className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-16">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl font-bold mb-4">
           Oggi in Romagna: {formattedDate}

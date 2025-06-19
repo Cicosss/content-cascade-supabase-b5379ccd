@@ -25,7 +25,7 @@ const TodayEventsSection: React.FC<TodayEventsSectionProps> = ({ events, loading
   return (
     <section>
       <div className="flex items-center mb-6">
-        <Calendar className="h-8 w-8 text-blue-600 mr-3" />
+        <Calendar className="h-8 w-8 text-blue-900 mr-3" />
         <h2 className="text-3xl font-bold text-gray-900">Eventi in Corso Oggi</h2>
       </div>
       

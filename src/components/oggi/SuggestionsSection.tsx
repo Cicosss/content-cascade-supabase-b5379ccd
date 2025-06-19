@@ -24,7 +24,7 @@ const SuggestionsSection: React.FC<SuggestionsSectionProps> = ({ suggestions }) 
   return (
     <section>
       <div className="flex items-center mb-6">
-        <Lightbulb className="h-8 w-8 text-purple-600 mr-3" />
+        <Lightbulb className="h-8 w-8 text-blue-900 mr-3" />
         <h2 className="text-3xl font-bold text-gray-900">Suggerito per Te, Oggi</h2>
       </div>
       
@@ -35,8 +35,8 @@ const SuggestionsSection: React.FC<SuggestionsSectionProps> = ({ suggestions }) 
               Consigliato per te
             </Badge>
             
-            <div className="aspect-[4/3] bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-              <span className="text-white text-4xl">{suggestion.image}</span>
+            <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center">
+              <span className="text-gray-600 text-4xl">{suggestion.image}</span>
             </div>
             
             <CardContent className="p-4">
