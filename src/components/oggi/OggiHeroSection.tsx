@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface OggiHeroSectionProps {
@@ -7,7 +6,7 @@ interface OggiHeroSectionProps {
 
 const OggiHeroSection: React.FC<OggiHeroSectionProps> = ({ formattedDate }) => {
   return (
-    <div className="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-16">
+    <div className="text-white py-16" style={{ backgroundColor: '#0F172A' }}>
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl font-bold mb-4">
           Oggi in Romagna: {formattedDate}
