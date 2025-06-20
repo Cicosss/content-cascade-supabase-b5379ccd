@@ -8,35 +8,51 @@ import FavoriteButton from './FavoriteButton';
 interface ExperienceCardProps {
   id: string;
   name: string;
+  title?: string; // Compatibility with legacy usage
   description?: string;
   category: string;
   price_info?: string;
+  price?: string; // Compatibility with legacy usage
   duration_info?: string;
+  duration?: string; // Compatibility with legacy usage
   images?: string[];
+  image?: string; // Compatibility with legacy usage
   address?: string;
   location_name?: string;
   poi_type?: 'place' | 'event';
   start_datetime?: string;
   end_datetime?: string;
   opening_hours?: string;
+  rating?: number; // Compatibility with legacy usage
+  groupSize?: string; // Compatibility with legacy usage
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
   id,
   name,
+  title,
   description,
   category,
   price_info,
+  price,
   duration_info,
+  duration,
   images,
+  image,
   address,
   location_name,
   poi_type = 'place',
   start_datetime,
   end_datetime,
-  opening_hours
+  opening_hours,
+  rating,
+  groupSize
 }) => {
-  const coverImage = images && images.length > 0 ? images[0] : null;
+  // Handle legacy props compatibility
+  const displayName = name || title || '';
+  const displayPrice = price_info || price || '';
+  const displayDuration = duration_info || duration || '';
+  const coverImage = (images && images.length > 0) ? images[0] : image || null;
   const isEvent = poi_type === 'event';
 
   const formatDate = (dateString: string) => {
@@ -68,7 +84,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         {coverImage ? (
           <img
             src={coverImage}
-            alt={name}
+            alt={displayName}
             className="w-full h-full object-cover"
             loading="lazy"
           />
@@ -105,7 +121,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         </div>
 
         <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900">
-          {name}
+          {displayName}
         </h3>
 
         {description && (
@@ -141,18 +157,31 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             </div>
           )}
 
-          {duration_info && (
+          {displayDuration && (
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span>{duration_info}</span>
+              <span>{displayDuration}</span>
+            </div>
+          )}
+
+          {groupSize && (
+            <div className="flex items-center text-sm text-gray-600">
+              <span>{groupSize}</span>
             </div>
           )}
         </div>
 
-        {price_info && (
+        {displayPrice && (
           <div className="flex items-center text-green-600 font-semibold">
             <Euro className="h-4 w-4 mr-1" />
-            <span>{price_info}</span>
+            <span>{displayPrice}</span>
+          </div>
+        )}
+
+        {rating && (
+          <div className="flex items-center mt-2">
+            <span className="text-yellow-500">★</span>
+            <span className="text-sm text-gray-600 ml-1">{rating}</span>
           </div>
         )}
       </CardContent>

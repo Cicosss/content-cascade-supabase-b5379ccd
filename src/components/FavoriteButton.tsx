@@ -1,80 +1,60 @@
 
-import React, { useState } from 'react';
-import { Star } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFavorites } from '@/hooks/useFavorites';
 import { cn } from '@/lib/utils';
 
 interface FavoriteButtonProps {
-  itemType: 'restaurant' | 'experience' | 'event';
   itemId: string;
-  itemData: any;
+  itemType: 'experience' | 'restaurant' | 'event' | 'poi';
   className?: string;
-  size?: 'sm' | 'md' | 'lg';
 }
 
-const FavoriteButton: React.FC<FavoriteButtonProps> = ({
-  itemType,
-  itemId,
-  itemData,
-  className,
-  size = 'sm'
+export const FavoriteButton: React.FC<FavoriteButtonProps> = ({ 
+  itemId, 
+  itemType, 
+  className 
 }) => {
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
-  const [isProcessing, setIsProcessing] = useState(false);
-  
-  const favorite = isFavorite(itemType, itemId);
+  const { isFavorite, addFavorite, removeFavorite } = useFavorites();
+  const [isToggling, setIsToggling] = useState(false);
+  const favoriteState = isFavorite(itemId, itemType);
 
-  const handleToggleFavorite = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsProcessing(true);
-
+  const handleToggle = async () => {
+    if (isToggling) return;
+    
+    setIsToggling(true);
     try {
-      if (favorite) {
-        await removeFromFavorites(itemType, itemId);
+      if (favoriteState) {
+        await removeFavorite(itemId, itemType);
       } else {
-        await addToFavorites(itemType, itemId, itemData);
+        await addFavorite(itemId, itemType);
       }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
     } finally {
-      setIsProcessing(false);
+      setIsToggling(false);
     }
-  };
-
-  const sizeClasses = {
-    sm: 'h-6 w-6',
-    md: 'h-8 w-8',
-    lg: 'h-10 w-10'
-  };
-
-  const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5'
   };
 
   return (
     <Button
       variant="ghost"
       size="icon"
+      onClick={handleToggle}
+      disabled={isToggling}
       className={cn(
-        sizeClasses[size],
-        'absolute top-2 right-2 rounded-full bg-white/90 hover:bg-white shadow-md transition-all duration-200',
-        favorite 
-          ? 'text-yellow-500 hover:text-yellow-600' 
-          : 'text-gray-400 hover:text-yellow-500',
-        isProcessing && 'opacity-50 cursor-not-allowed',
+        "w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm border border-white/20 hover:bg-white/90 transition-all duration-200",
         className
       )}
-      onClick={handleToggleFavorite}
-      disabled={isProcessing}
     >
-      <Star 
+      <Heart 
         className={cn(
-          iconSizes[size],
-          'transition-all duration-200',
-          favorite ? 'fill-current' : 'fill-none'
+          "h-4 w-4 transition-colors duration-200",
+          favoriteState 
+            ? "fill-red-500 text-red-500" 
+            : "text-gray-600 hover:text-red-500"
         )} 
-        strokeWidth={1.5}
       />
     </Button>
   );
