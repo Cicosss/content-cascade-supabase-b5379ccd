@@ -5,7 +5,6 @@ import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import AppSidebar from './AppSidebar';
 import Header from './Header';
 import Footer from './Footer';
-import EnvironmentDebugPanel from './EnvironmentDebugPanel';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -37,7 +36,6 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
             <Footer />
           </SidebarInset>
         </div>
-        <EnvironmentDebugPanel />
       </SidebarProvider>
     );
   }
@@ -51,7 +49,6 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
         {children}
       </main>
       <Footer />
-      <EnvironmentDebugPanel />
     </div>
   );
 };
