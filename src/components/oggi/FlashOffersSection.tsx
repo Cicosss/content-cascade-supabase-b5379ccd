@@ -29,7 +29,10 @@ const FlashOffersSection: React.FC<FlashOffersSectionProps> = ({ offers }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {offers.map((offer) => (
-          <Card key={offer.id} className="relative overflow-hidden border-2 border-yellow-400 shadow-lg animate-pulse-border">
+          <Card key={offer.id} className="relative overflow-hidden shadow-lg">
+            {/* Barra gradiente in cima */}
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+            
             <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold flex items-center">
               <Timer className="h-3 w-3 mr-1" />
               Fino alle {offer.validUntil}
