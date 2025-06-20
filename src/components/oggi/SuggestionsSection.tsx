@@ -66,7 +66,7 @@ const SuggestionsSection: React.FC<SuggestionsSectionProps> = ({ suggestions }) 
                     </span>
                   </div>
                   <Button className="w-full">
-                    Scopri di più
+                    Esplora Questo Consiglio
                   </Button>
                 </CardContent>
               </Card>

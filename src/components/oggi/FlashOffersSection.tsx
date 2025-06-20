@@ -53,7 +53,7 @@ const FlashOffersSection: React.FC<FlashOffersSectionProps> = ({ offers }) => {
                 </div>
               </div>
               <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">
-                Scopri l'Offerta
+                Approfittane Ora
               </Button>
             </CardContent>
           </Card>
