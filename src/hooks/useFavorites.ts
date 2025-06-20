@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 interface FavoriteItem {
   id: string;
-  item_type: 'restaurant' | 'experience' | 'event';
+  item_type: 'restaurant' | 'experience' | 'event' | 'poi';
   item_id: string;
   item_data: any;
   created_at: string;
@@ -39,7 +39,7 @@ export const useFavorites = () => {
       // Cast the data to our expected type
       const typedFavorites = (data || []).map(item => ({
         ...item,
-        item_type: item.item_type as 'restaurant' | 'experience' | 'event'
+        item_type: item.item_type as 'restaurant' | 'experience' | 'event' | 'poi'
       }));
       
       setFavorites(typedFavorites);
@@ -51,7 +51,7 @@ export const useFavorites = () => {
   };
 
   const addToFavorites = async (
-    itemType: 'restaurant' | 'experience' | 'event',
+    itemType: 'restaurant' | 'experience' | 'event' | 'poi',
     itemId: string,
     itemData: any
   ) => {
