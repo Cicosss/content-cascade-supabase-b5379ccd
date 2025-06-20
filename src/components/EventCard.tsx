@@ -45,6 +45,7 @@ const EventCard: React.FC<EventCardProps> = ({
           itemType="event"
           itemId={itemId}
           itemData={itemData}
+          className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
         />
       </div>
       

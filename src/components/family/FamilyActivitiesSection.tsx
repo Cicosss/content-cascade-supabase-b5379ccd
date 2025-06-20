@@ -5,6 +5,8 @@ import ExperienceCard from '@/components/ExperienceCard';
 const FamilyActivitiesSection = () => {
   const familyActivities = [
     {
+      id: 'parco-avventura-famiglia',
+      name: "Parco Avventura Famiglia - Percorsi Acrobatici Sicuri",
       title: "Parco Avventura Famiglia - Percorsi Acrobatici Sicuri",
       image: "🌳 Parco Avventura",
       rating: 4.9,
@@ -14,6 +16,8 @@ const FamilyActivitiesSection = () => {
       category: "Avventura Outdoor"
     },
     {
+      id: 'laboratorio-ceramica-bambini',
+      name: "Laboratorio di Ceramica per Piccoli Artisti",
       title: "Laboratorio di Ceramica per Piccoli Artisti",
       image: "🏺 Lab Ceramica Kids",
       rating: 4.8,
@@ -23,6 +27,8 @@ const FamilyActivitiesSection = () => {
       category: "Arte e Creatività"
     },
     {
+      id: 'mini-crociera-family',
+      name: "Mini Crociera Family - Alla Scoperta dei Delfini",
       title: "Mini Crociera Family - Alla Scoperta dei Delfini",
       image: "⛵ Family Cruise",
       rating: 4.7,
@@ -32,6 +38,8 @@ const FamilyActivitiesSection = () => {
       category: "Esperienza Marina"
     },
     {
+      id: 'caccia-tesoro-romagna',
+      name: "Caccia al Tesoro del Territorio Romagnolo",
       title: "Caccia al Tesoro del Territorio Romagnolo",
       image: "🗺️ Treasure Hunt",
       rating: 4.8,
@@ -41,6 +49,8 @@ const FamilyActivitiesSection = () => {
       category: "Gioco Educativo"
     },
     {
+      id: 'fattoria-didattica-bio',
+      name: "Fattoria Didattica Biologica - Vita Contadina",
       title: "Fattoria Didattica Biologica - Vita Contadina",
       image: "🐄 Fattoria Bio",
       rating: 4.6,
@@ -50,6 +60,8 @@ const FamilyActivitiesSection = () => {
       category: "Natura e Animali"
     },
     {
+      id: 'museo-interattivo-marineria',
+      name: "Museo Interattivo della Marineria per Bambini",
       title: "Museo Interattivo della Marineria per Bambini",
       image: "🎭 Museo Kids",
       rating: 4.7,
@@ -59,6 +71,8 @@ const FamilyActivitiesSection = () => {
       category: "Cultura Interattiva"
     },
     {
+      id: 'laboratorio-piadina-chef',
+      name: "Laboratorio di Piadina per Piccoli Chef",
       title: "Laboratorio di Piadina per Piccoli Chef",
       image: "🥟 Lab Piadina",
       rating: 4.9,
@@ -68,6 +82,8 @@ const FamilyActivitiesSection = () => {
       category: "Tradizione Culinaria"
     },
     {
+      id: 'escursione-bici-family',
+      name: "Escursione in Bicicletta - Piste Ciclabili Family",
       title: "Escursione in Bicicletta - Piste Ciclabili Family",
       image: "🚴 Bike Family",
       rating: 4.6,

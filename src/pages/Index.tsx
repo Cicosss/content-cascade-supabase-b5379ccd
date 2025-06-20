@@ -135,6 +135,8 @@ const Index = () => {
   // Esperienze del territorio unificate (culturali + marittime)
   const territoryExperiences = [
     {
+      id: 'tour-tempio-malatestiano',
+      name: "Tour Guidato Tempio Malatestiano - Capolavoro Rinascimentale",
       title: "Tour Guidato Tempio Malatestiano - Capolavoro Rinascimentale",
       image: "🏛️ Tempio Malatestiano",
       rating: 4.9,
@@ -144,6 +146,8 @@ const Index = () => {
       category: "Patrimonio UNESCO"
     },
     {
+      id: 'laboratorio-ceramica-faentina',
+      name: "Laboratorio di Ceramica Faentina - Arte Millenaria",
       title: "Laboratorio di Ceramica Faentina - Arte Millenaria",
       image: "🏺 Ceramica Faenza",
       rating: 4.8,
@@ -153,6 +157,8 @@ const Index = () => {
       category: "Tradizione Artigianale"
     },
     {
+      id: 'escursione-trabaccolo-storico',
+      name: "Escursione in Barca Tradizionale - Trabaccolo Storico",
       title: "Escursione in Barca Tradizionale - Trabaccolo Storico",
       image: "⛵ Trabaccolo",
       rating: 4.7,
@@ -162,6 +168,8 @@ const Index = () => {
       category: "Tradizione Marinara"
     },
     {
+      id: 'corso-vela-base',
+      name: "Corso di Vela Base - Scuola Nautica Certificata",
       title: "Corso di Vela Base - Scuola Nautica Certificata",
       image: "⛵ Corso Vela",
       rating: 4.9,
@@ -171,6 +179,8 @@ const Index = () => {
       category: "Sport Acquatici"
     },
     {
+      id: 'trekking-unesco-san-leo',
+      name: "Trekking Patrimonio UNESCO - San Leo e San Marino",
       title: "Trekking Patrimonio UNESCO - San Leo e San Marino",
       image: "🥾 Trekking UNESCO",
       rating: 4.8,
@@ -180,6 +190,8 @@ const Index = () => {
       category: "Natura e Storia"
     },
     {
+      id: 'immersione-relitti-adriatico',
+      name: "Immersione Guidata - Relitti dell'Adriatico",
       title: "Immersione Guidata - Relitti dell'Adriatico",
       image: "🤿 Diving",
       rating: 4.8,
@@ -189,6 +201,8 @@ const Index = () => {
       category: "Subacquea"
     },
     {
+      id: 'grotte-onferno',
+      name: "Visita alle Grotte di Onferno - Meraviglia Sotterranea",
       title: "Visita alle Grotte di Onferno - Meraviglia Sotterranea",
       image: "🦇 Grotte Onferno",
       rating: 4.6,
@@ -198,6 +212,8 @@ const Index = () => {
       category: "Natura Selvaggia"
     },
     {
+      id: 'kayak-costa-adriatica',
+      name: "Escursione in Kayak - Costa Adriatica",
       title: "Escursione in Kayak - Costa Adriatica",
       image: "🚣 Kayak",
       rating: 4.7,
@@ -211,6 +227,8 @@ const Index = () => {
   // Attività per famiglie più specifiche
   const familyExperiences = [
     {
+      id: 'parco-avventura-famiglia-index',
+      name: "Parco Avventura Famiglia - Percorsi Acrobatici",
       title: "Parco Avventura Famiglia - Percorsi Acrobatici",
       image: "🌳 Parco Avventura",
       rating: 4.8,
@@ -220,6 +238,8 @@ const Index = () => {
       category: "Avventura Outdoor"
     },
     {
+      id: 'laboratorio-ceramisti-index',
+      name: "Laboratorio Didattico - Piccoli Ceramisti",
       title: "Laboratorio Didattico - Piccoli Ceramisti",
       image: "👨‍👩‍👧‍👦 Lab Ceramica",
       rating: 4.9,
@@ -229,6 +249,8 @@ const Index = () => {
       category: "Arte e Creatività"
     },
     {
+      id: 'mini-crociera-delfini',
+      name: "Mini Crociera per Bambini - Alla Scoperta dei Delfini",
       title: "Mini Crociera per Bambini - Alla Scoperta dei Delfini",
       image: "🐬 Mini Crociera",
       rating: 4.7,
@@ -238,6 +260,8 @@ const Index = () => {
       category: "Esperienza Marina"
     },
     {
+      id: 'caccia-tesoro-territorio',
+      name: "Caccia al Tesoro del Territorio - Avventura Educativa",
       title: "Caccia al Tesoro del Territorio - Avventura Educativa",
       image: "🗺️ Caccia Tesoro",
       rating: 4.8,
@@ -247,6 +271,8 @@ const Index = () => {
       category: "Gioco Educativo"
     },
     {
+      id: 'fattoria-didattica-index',
+      name: "Fattoria Didattica Bio - Vita Contadina",
       title: "Fattoria Didattica Bio - Vita Contadina",
       image: "🐄 Fattoria Bio",
       rating: 4.6,

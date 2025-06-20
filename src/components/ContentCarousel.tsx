@@ -13,6 +13,8 @@ interface ContentCarouselProps {
 const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, children }) => {
   const experiences = [
     {
+      id: 'tour-centro-storico-rimini',
+      name: "Tour guidato del centro storico di Rimini",
       title: "Tour guidato del centro storico di Rimini",
       image: "🏛️ Centro Storico",
       rating: 4.8,
@@ -22,6 +24,8 @@ const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, chil
       category: "Arte e Cultura"
     },
     {
+      id: 'degustazione-piadina-romagnola',
+      name: "Degustazione di piadina romagnola autentica",
       title: "Degustazione di piadina romagnola autentica",
       image: "🥟 Piadina Tour",
       rating: 4.9,
@@ -31,6 +35,8 @@ const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, chil
       category: "Tradizione Culinaria"
     },
     {
+      id: 'escursione-bicicletta-costa',
+      name: "Escursione in bicicletta lungo la costa",
       title: "Escursione in bicicletta lungo la costa",
       image: "🚴‍♀️ Bike Tour",
       rating: 4.7,
@@ -40,6 +46,8 @@ const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, chil
       category: "Outdoor"
     },
     {
+      id: 'esperienza-terme-riccione',
+      name: "Esperienza alle Terme di Riccione",
       title: "Esperienza alle Terme di Riccione",
       image: "💧 Terme Relax",
       rating: 4.6,
