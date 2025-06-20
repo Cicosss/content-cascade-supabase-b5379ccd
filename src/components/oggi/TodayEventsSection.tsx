@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -36,8 +35,8 @@ const TodayEventsSection: React.FC<TodayEventsSectionProps> = ({ events, loading
           ))}
         </div>
       ) : events.length === 0 ? (
-        <Card className="p-8 text-center">
-          <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+        <Card className="p-8 text-left">
+          <Calendar className="h-16 w-16 text-gray-400 mb-4" />
           <h3 className="text-lg font-semibold text-gray-600 mb-2">Nessun evento oggi</h3>
           <p className="text-gray-500">Non ci sono eventi programmati per oggi, ma controlla domani!</p>
         </Card>
