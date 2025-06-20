@@ -1,19 +1,15 @@
 
 import React from 'react';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MACRO_AREAS, getCategoriesForMacroArea } from '@/config/categoryMapping';
+import { MACRO_AREAS } from '@/config/categoryMapping';
+import { FormData } from '@/hooks/usePOIFormData';
 
 interface Step1BasicInfoProps {
-  formData: {
-    name: string;
-    macro_area: string;
-    category: string;
-    description: string;
-    submitter_email: string;
-  };
+  formData: FormData;
   onInputChange: (field: string, value: string) => void;
   availableCategories: string[];
 }
@@ -23,46 +19,81 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
   onInputChange, 
   availableCategories 
 }) => {
-  return (
-    <div className="space-y-6">
-      <div className="text-center mb-6">
-        <h3 className="text-xl font-semibold text-slate-800 mb-2">Informazioni Principali</h3>
-        <p className="text-slate-600">Inserisci le informazioni base del POI/Evento</p>
-      </div>
+  const getNameLabel = () => {
+    switch (formData.poi_type) {
+      case 'place':
+        return 'Nome del Luogo *';
+      case 'event':
+        return 'Nome dell\'Evento *';
+      default:
+        return 'Nome *';
+    }
+  };
 
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="submitter_email">Email del Promotore *</Label>
+  const getNamePlaceholder = () => {
+    switch (formData.poi_type) {
+      case 'place':
+        return 'es. Ristorante Da Mario, Museo della Città...';
+      case 'event':
+        return 'es. Concerto Estate 2024, Sagra del Pesce...';
+      default:
+        return '';
+    }
+  };
+
+  return (
+    <Card>
+      <CardContent className="p-6 space-y-6">
+        <div className="text-center mb-4">
+          <h3 className="text-lg font-semibold">
+            {formData.poi_type === 'place' ? '📍 Informazioni del Luogo' : '🗓️ Informazioni dell\'Evento'}
+          </h3>
+        </div>
+
+        <div>
+          <Label htmlFor="submitter_email">La tua Email *</Label>
           <Input
             id="submitter_email"
             type="email"
             value={formData.submitter_email}
             onChange={(e) => onInputChange('submitter_email', e.target.value)}
-            placeholder="La tua email"
+            placeholder="La tua email per ricevere aggiornamenti"
             required
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="name">Nome POI/Evento *</Label>
+        <div>
+          <Label htmlFor="name">{getNameLabel()}</Label>
           <Input
             id="name"
             value={formData.name}
             onChange={(e) => onInputChange('name', e.target.value)}
-            placeholder="Nome dell'attrazione o evento"
+            placeholder={getNamePlaceholder()}
             required
           />
         </div>
 
+        <div>
+          <Label htmlFor="description">Descrizione</Label>
+          <Textarea
+            id="description"
+            value={formData.description}
+            onChange={(e) => onInputChange('description', e.target.value)}
+            placeholder={
+              formData.poi_type === 'place' 
+                ? 'Descrivi il luogo, i servizi offerti, l\'atmosfera...'
+                : 'Descrivi l\'evento, il programma, cosa aspettarsi...'
+            }
+            rows={4}
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
+          <div>
             <Label htmlFor="macro_area">Macro-Area *</Label>
-            <Select 
-              value={formData.macro_area} 
-              onValueChange={(value) => onInputChange('macro_area', value)}
-            >
+            <Select value={formData.macro_area} onValueChange={(value) => onInputChange('macro_area', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Seleziona la macro-area" />
+                <SelectValue placeholder="Seleziona macro-area" />
               </SelectTrigger>
               <SelectContent>
                 {Object.keys(MACRO_AREAS).map((macroArea) => (
@@ -73,8 +104,8 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
               </SelectContent>
             </Select>
           </div>
-          
-          <div className="space-y-2">
+
+          <div>
             <Label htmlFor="category">Categoria *</Label>
             <Select 
               value={formData.category} 
@@ -82,7 +113,7 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
               disabled={!formData.macro_area}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Seleziona prima una macro-area" />
+                <SelectValue placeholder={formData.macro_area ? "Seleziona categoria" : "Seleziona prima una macro-area"} />
               </SelectTrigger>
               <SelectContent>
                 {availableCategories.map((category) => (
@@ -94,20 +125,8 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
             </Select>
           </div>
         </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="description">Descrizione *</Label>
-          <Textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => onInputChange('description', e.target.value)}
-            placeholder="Descrizione dettagliata del POI o evento"
-            rows={4}
-            required
-          />
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

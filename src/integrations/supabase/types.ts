@@ -384,8 +384,10 @@ export type Database = {
           moderated_at: string | null
           moderated_by: string | null
           name: string
+          opening_hours: string | null
           organizer_info: string | null
           phone: string | null
+          poi_type: string | null
           price_info: string | null
           start_datetime: string | null
           status: string | null
@@ -414,8 +416,10 @@ export type Database = {
           moderated_at?: string | null
           moderated_by?: string | null
           name: string
+          opening_hours?: string | null
           organizer_info?: string | null
           phone?: string | null
+          poi_type?: string | null
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
@@ -444,8 +448,10 @@ export type Database = {
           moderated_at?: string | null
           moderated_by?: string | null
           name?: string
+          opening_hours?: string | null
           organizer_info?: string | null
           phone?: string | null
+          poi_type?: string | null
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
@@ -475,8 +481,10 @@ export type Database = {
           longitude: number
           macro_area: string
           name: string
+          opening_hours: string | null
           organizer_info: string | null
           phone: string | null
+          poi_type: string | null
           price_info: string | null
           start_datetime: string | null
           status: string | null
@@ -501,8 +509,10 @@ export type Database = {
           longitude: number
           macro_area?: string
           name: string
+          opening_hours?: string | null
           organizer_info?: string | null
           phone?: string | null
+          poi_type?: string | null
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null
@@ -527,8 +537,10 @@ export type Database = {
           longitude?: number
           macro_area?: string
           name?: string
+          opening_hours?: string | null
           organizer_info?: string | null
           phone?: string | null
+          poi_type?: string | null
           price_info?: string | null
           start_datetime?: string | null
           status?: string | null

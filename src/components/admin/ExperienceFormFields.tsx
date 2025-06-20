@@ -1,10 +1,10 @@
-
 import React, { useEffect, useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MACRO_AREAS, getCategoriesForMacroArea, AVAILABLE_TAGS } from '@/config/categoryMapping';
 
 interface ExperienceFormFieldsProps {
@@ -31,7 +31,6 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
       const categories = getCategoriesForMacroArea(formData.macro_area);
       setAvailableCategories(categories);
       
-      // Reset category if it's not valid for the new macro area
       if (formData.category && !categories.includes(formData.category)) {
         onInputChange('category', '');
       }
@@ -47,11 +46,35 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
     onInputChange('tags', newTags);
   };
 
+  const isEvent = formData.poi_type === 'event';
+  const isPlace = formData.poi_type === 'place';
+
   return (
     <>
+      {/* Selezione tipo POI */}
+      <div>
+        <Label>Tipo di POI *</Label>
+        <RadioGroup
+          value={formData.poi_type || 'place'}
+          onValueChange={(value) => onInputChange('poi_type', value)}
+          className="flex flex-row gap-6 mt-2"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="place" id="place" />
+            <Label htmlFor="place">📍 Luogo Permanente</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="event" id="event" />
+            <Label htmlFor="event">🗓️ Evento Temporaneo</Label>
+          </div>
+        </RadioGroup>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="name">Nome Esperienza *</Label>
+          <Label htmlFor="name">
+            {isEvent ? 'Nome dell\'Evento *' : 'Nome del Luogo *'}
+          </Label>
           <Input
             id="name"
             value={formData.name}
@@ -107,27 +130,44 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Campi condizionali per eventi */}
+      {isEvent && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="start_datetime">Data e Ora Inizio *</Label>
+            <Input
+              id="start_datetime"
+              type="datetime-local"
+              value={formData.start_datetime}
+              onChange={(e) => onInputChange('start_datetime', e.target.value)}
+            />
+          </div>
+          
+          <div>
+            <Label htmlFor="end_datetime">Data e Ora Fine</Label>
+            <Input
+              id="end_datetime"
+              type="datetime-local"
+              value={formData.end_datetime}
+              onChange={(e) => onInputChange('end_datetime', e.target.value)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Campo orari per luoghi */}
+      {isPlace && (
         <div>
-          <Label htmlFor="start_datetime">Data e Ora Inizio</Label>
-          <Input
-            id="start_datetime"
-            type="datetime-local"
-            value={formData.start_datetime}
-            onChange={(e) => onInputChange('start_datetime', e.target.value)}
+          <Label htmlFor="opening_hours">Orari di Apertura</Label>
+          <Textarea
+            id="opening_hours"
+            value={formData.opening_hours}
+            onChange={(e) => onInputChange('opening_hours', e.target.value)}
+            placeholder="es. Lun-Ven: 9:00-18:00, Sab: 9:00-13:00, Dom: Chiuso"
+            rows={2}
           />
         </div>
-        
-        <div>
-          <Label htmlFor="end_datetime">Data e Ora Fine</Label>
-          <Input
-            id="end_datetime"
-            type="datetime-local"
-            value={formData.end_datetime}
-            onChange={(e) => onInputChange('end_datetime', e.target.value)}
-          />
-        </div>
-      </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -141,12 +181,18 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
         </div>
         
         <div>
-          <Label htmlFor="organizer_info">Informazioni Organizzatore</Label>
+          <Label htmlFor="organizer_info">
+            {isEvent ? 'Informazioni Organizzatore' : 'Gestore/Proprietario'}
+          </Label>
           <Input
             id="organizer_info"
             value={formData.organizer_info}
             onChange={(e) => onInputChange('organizer_info', e.target.value)}
-            placeholder="es. Associazione Culturale XYZ"
+            placeholder={
+              isEvent 
+                ? 'es. Associazione Culturale XYZ' 
+                : 'es. Famiglia Rossi, Comune di...'
+            }
           />
         </div>
       </div>
@@ -196,12 +242,18 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
         </div>
         
         <div>
-          <Label htmlFor="duration_info">Durata</Label>
+          <Label htmlFor="duration_info">
+            {isEvent ? 'Durata Evento' : 'Tempo di Visita Consigliato'}
+          </Label>
           <Input
             id="duration_info"
             value={formData.duration_info}
             onChange={(e) => onInputChange('duration_info', e.target.value)}
-            placeholder="es. 2 ore"
+            placeholder={
+              isEvent 
+                ? 'es. 3 ore, Tutta la giornata' 
+                : 'es. 1-2 ore, 30 minuti'
+            }
           />
         </div>
       </div>
