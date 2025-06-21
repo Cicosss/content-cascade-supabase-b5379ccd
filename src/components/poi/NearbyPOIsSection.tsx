@@ -59,8 +59,8 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
   };
 
   const SkeletonCards = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {[1, 2, 3].map((i) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {[1, 2, 3, 4].map((i) => (
         <div key={i} className="space-y-3">
           <Skeleton className="aspect-[4/3] rounded-lg" />
           <div className="space-y-2">
@@ -74,106 +74,104 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
   );
 
   return (
-    <section ref={sectionRef} className="py-8 border-t bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <MapPin className="h-6 w-6 text-blue-600 mr-3" />
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-900">📍 Nei Dintorni</h2>
-              <p className="text-gray-600 text-sm">Scopri altri luoghi interessanti nel raggio di 5 km</p>
-            </div>
+    <section ref={sectionRef}>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <MapPin className="h-6 w-6 text-blue-600 mr-3" />
+          <div>
+            <h2 className="text-2xl font-semibold text-gray-900">📍 Nei Dintorni</h2>
+            <p className="text-gray-600 text-sm">Scopri altri luoghi interessanti nel raggio di 5 km</p>
           </div>
-          {nearbyPOIs.length >= 3 && (
-            <button
-              onClick={handleViewAll}
-              className="flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors hover:underline"
-            >
-              Vedi tutti
-              <ArrowRight className="h-4 w-4 ml-1" />
-            </button>
-          )}
         </div>
-
-        {isLoading && <SkeletonCards />}
-
-        {error && !isLoading && (
-          <div className="text-center py-12">
-            <div className="max-w-md mx-auto">
-              <div className="text-gray-400 mb-4">
-                <MapPin className="h-12 w-12 mx-auto" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Impossibile caricare i suggerimenti
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Si è verificato un errore durante il caricamento dei luoghi nelle vicinanze.
-              </p>
-              <button
-                onClick={handleRetry}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Riprova
-              </button>
-            </div>
-          </div>
-        )}
-
-        {!isLoading && !error && nearbyPOIs.length > 0 && (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-              {nearbyPOIs.map((poi) => (
-                <NearbyPOICard
-                  key={poi.id}
-                  id={poi.id}
-                  name={poi.name}
-                  category={poi.category}
-                  distance={poi.distance}
-                  images={poi.images}
-                  address={poi.address}
-                  onClick={() => handlePOIClick(poi.id)}
-                />
-              ))}
-            </div>
-
-            <div className="text-center">
-              <p className="text-xs text-gray-500 mb-2">
-                Mostrando luoghi entro 5 km di distanza
-              </p>
-              {nearbyPOIs.length >= 6 && (
-                <button
-                  onClick={handleViewAll}
-                  className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline"
-                >
-                  Scopri altri luoghi nelle vicinanze →
-                </button>
-              )}
-            </div>
-          </>
-        )}
-
-        {!isLoading && !error && nearbyPOIs.length === 0 && hasBeenVisible && (
-          <div className="text-center py-12">
-            <div className="max-w-md mx-auto">
-              <div className="text-gray-400 mb-4">
-                <MapPin className="h-12 w-12 mx-auto" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Nessun altro luogo nelle immediate vicinanze
-              </h3>
-              <p className="text-gray-600 mb-4">
-                Esplora la mappa per nuove scoperte! Puoi trovare molti altri luoghi interessanti nella zona.
-              </p>
-              <button
-                onClick={handleViewAll}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Esplora la mappa
-              </button>
-            </div>
-          </div>
+        {nearbyPOIs.length >= 3 && (
+          <button
+            onClick={handleViewAll}
+            className="flex items-center text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors hover:underline"
+          >
+            Vedi tutti
+            <ArrowRight className="h-4 w-4 ml-1" />
+          </button>
         )}
       </div>
+
+      {isLoading && <SkeletonCards />}
+
+      {error && !isLoading && (
+        <div className="text-center py-8">
+          <div className="max-w-md mx-auto">
+            <div className="text-gray-400 mb-4">
+              <MapPin className="h-8 w-8 mx-auto" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Impossibile caricare i suggerimenti
+            </h3>
+            <p className="text-gray-600 mb-4 text-sm">
+              Si è verificato un errore durante il caricamento dei luoghi nelle vicinanze.
+            </p>
+            <button
+              onClick={handleRetry}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+            >
+              Riprova
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!isLoading && !error && nearbyPOIs.length > 0 && (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            {nearbyPOIs.map((poi) => (
+              <NearbyPOICard
+                key={poi.id}
+                id={poi.id}
+                name={poi.name}
+                category={poi.category}
+                distance={poi.distance}
+                images={poi.images}
+                address={poi.address}
+                onClick={() => handlePOIClick(poi.id)}
+              />
+            ))}
+          </div>
+
+          <div className="text-center">
+            <p className="text-xs text-gray-500 mb-2">
+              Mostrando luoghi entro 5 km di distanza
+            </p>
+            {nearbyPOIs.length >= 4 && (
+              <button
+                onClick={handleViewAll}
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline"
+              >
+                Scopri altri luoghi nelle vicinanze →
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
+      {!isLoading && !error && nearbyPOIs.length === 0 && hasBeenVisible && (
+        <div className="text-center py-8">
+          <div className="max-w-md mx-auto">
+            <div className="text-gray-400 mb-4">
+              <MapPin className="h-8 w-8 mx-auto" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Nessun altro luogo nelle immediate vicinanze
+            </h3>
+            <p className="text-gray-600 mb-4 text-sm">
+              Esplora la mappa per nuove scoperte! Puoi trovare molti altri luoghi interessanti nella zona.
+            </p>
+            <button
+              onClick={handleViewAll}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+            >
+              Esplora la mappa
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
