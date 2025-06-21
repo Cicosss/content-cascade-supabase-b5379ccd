@@ -201,7 +201,7 @@ const POIDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Nearby POIs Section */}
+        {/* Nearby POIs Section - Caricamento Lazy */}
         <NearbyPOIsSection 
           currentPOI={{
             id: poi.id,
