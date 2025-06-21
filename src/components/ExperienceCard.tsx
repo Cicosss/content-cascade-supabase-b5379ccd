@@ -8,23 +8,23 @@ import FavoriteButton from './FavoriteButton';
 interface ExperienceCardProps {
   id: string;
   name: string;
-  title?: string; // Compatibility with legacy usage
+  title?: string;
   description?: string;
   category: string;
   price_info?: string;
-  price?: string; // Compatibility with legacy usage
+  price?: string;
   duration_info?: string;
-  duration?: string; // Compatibility with legacy usage
+  duration?: string;
   images?: string[];
-  image?: string; // Compatibility with legacy usage
+  image?: string;
   address?: string;
   location_name?: string;
   poi_type?: 'place' | 'event';
   start_datetime?: string;
   end_datetime?: string;
   opening_hours?: string;
-  rating?: number; // Compatibility with legacy usage
-  groupSize?: string; // Compatibility with legacy usage
+  rating?: number;
+  groupSize?: string;
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({
@@ -48,7 +48,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   rating,
   groupSize
 }) => {
-  // Handle legacy props compatibility
   const displayName = name || title || '';
   const displayPrice = price_info || price || '';
   const displayDuration = duration_info || duration || '';
@@ -96,15 +95,20 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           </div>
         )}
         
-        {/* Badge distintivo */}
-        {isEvent && start_datetime && (
-          <div className="absolute top-3 left-3">
+        {/* Badge distintivo per tipo POI */}
+        <div className="absolute top-3 left-3">
+          {isEvent && start_datetime ? (
             <Badge className="bg-green-600 text-white flex items-center gap-1">
               <Calendar className="h-3 w-3" />
               {formatDate(start_datetime)}
             </Badge>
-          </div>
-        )}
+          ) : (
+            <Badge className="bg-blue-600 text-white flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              Luogo
+            </Badge>
+          )}
+        </div>
       </div>
 
       <CardContent className="p-4">
@@ -112,12 +116,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           <Badge variant="secondary" className="text-xs">
             {category}
           </Badge>
-          {!isEvent && (
-            <Badge variant="outline" className="text-xs flex items-center gap-1">
-              <MapPin className="h-2 w-2" />
-              Luogo
-            </Badge>
-          )}
         </div>
 
         <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900">
@@ -140,6 +138,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             </div>
           )}
 
+          {/* Mostra orari per eventi o apertura per luoghi */}
           {isEvent && start_datetime && (
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2 flex-shrink-0" />

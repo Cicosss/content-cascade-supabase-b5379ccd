@@ -6,6 +6,7 @@ interface Filters {
   category: string;
   macroArea: string;
   searchTerm: string;
+  poiType: string; // Aggiunto filtro per tipo POI
 }
 
 export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void) => {
@@ -13,7 +14,8 @@ export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void
     status: 'tutti',
     category: 'tutti',
     macroArea: 'tutti',
-    searchTerm: ''
+    searchTerm: '',
+    poiType: 'tutti' // Nuovo filtro
   });
 
   useEffect(() => {
@@ -25,6 +27,7 @@ export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void
     if (filters.status !== 'tutti') activeFilters.push(`Status: ${filters.status}`);
     if (filters.category !== 'tutti') activeFilters.push(`Categoria: ${filters.category}`);
     if (filters.macroArea !== 'tutti') activeFilters.push(`Macro-Area: ${filters.macroArea}`);
+    if (filters.poiType !== 'tutti') activeFilters.push(`Tipo: ${filters.poiType === 'place' ? 'Luoghi' : 'Eventi'}`);
     if (filters.searchTerm) activeFilters.push(`Ricerca: "${filters.searchTerm}"`);
     
     return activeFilters.length > 0 ? activeFilters.join(' • ') : 'Nessun filtro attivo';

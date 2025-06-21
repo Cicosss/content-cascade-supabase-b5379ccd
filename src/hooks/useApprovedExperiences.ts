@@ -27,6 +27,8 @@ interface ApprovedExperience {
   created_at: string;
   updated_at: string;
   tags: string[];
+  poi_type: string;
+  opening_hours: string;
 }
 
 interface Filters {
@@ -34,6 +36,7 @@ interface Filters {
   category: string;
   macroArea: string;
   searchTerm: string;
+  poiType: string;
 }
 
 export const useApprovedExperiences = () => {
@@ -78,6 +81,11 @@ export const useApprovedExperiences = () => {
       filtered = filtered.filter(exp => exp.macro_area === filters.macroArea);
     }
 
+    // Nuovo filtro per tipo POI
+    if (filters.poiType !== 'tutti') {
+      filtered = filtered.filter(exp => exp.poi_type === filters.poiType);
+    }
+
     if (filters.searchTerm.trim()) {
       const searchLower = filters.searchTerm.toLowerCase();
       filtered = filtered.filter(exp => 
@@ -86,6 +94,9 @@ export const useApprovedExperiences = () => {
         (exp.address && exp.address.toLowerCase().includes(searchLower))
       );
     }
+
+    console.log('🔍 Filtri applicati:', filters);
+    console.log('📊 Risultati filtrati:', filtered.length, 'su', experiences.length);
 
     setFilteredExperiences(filtered);
   };

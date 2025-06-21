@@ -38,9 +38,17 @@ const EventCard: React.FC<EventCardProps> = ({
         <div className="w-full h-full bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
         </div>
-        <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900 rounded-xl">
+        
+        {/* Badge distintivo per eventi */}
+        <Badge className="absolute top-3 left-3 bg-green-600 text-white rounded-xl flex items-center gap-1">
+          <Calendar className="h-3 w-3" />
+          {date}
+        </Badge>
+        
+        <Badge className="absolute top-3 right-12 bg-white/90 text-gray-900 rounded-xl">
           {category}
         </Badge>
+        
         <FavoriteButton 
           itemType="event"
           itemId={itemId}

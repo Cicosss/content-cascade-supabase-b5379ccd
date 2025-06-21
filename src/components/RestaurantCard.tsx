@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, Euro, MapPin } from 'lucide-react';
+import { Star, Euro, MapPin, Utensils } from 'lucide-react';
 import FavoriteButton from './FavoriteButton';
 
 interface RestaurantCardProps {
@@ -41,9 +41,17 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         <div className="w-full h-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
         </div>
-        <Badge className="absolute top-3 left-3 bg-white/90 text-gray-900 rounded-xl">
+        
+        {/* Badge distintivo per ristoranti */}
+        <Badge className="absolute top-3 left-3 bg-orange-600 text-white rounded-xl flex items-center gap-1">
+          <Utensils className="h-3 w-3" />
+          Ristorante
+        </Badge>
+        
+        <Badge className="absolute top-3 right-12 bg-white/90 text-gray-900 rounded-xl">
           {cuisine}
         </Badge>
+        
         <FavoriteButton 
           itemType="restaurant"
           itemId={itemId}
