@@ -35,6 +35,12 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isApiLoaded, setIsApiLoaded] = useState(false);
+  const [inputValue, setInputValue] = useState(value);
+
+  // Sincronizza il valore interno con il prop value
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   useEffect(() => {
     const loadGoogleMapsAPI = async () => {
@@ -115,6 +121,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
         country
       };
 
+      setInputValue(addressData.address);
       onAddressSelect(addressData);
       setIsLoading(false);
     };
@@ -127,6 +134,10 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       }
     };
   }, [isApiLoaded, onAddressSelect]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
 
   return (
     <div className={`space-y-2 ${className}`}>
@@ -141,8 +152,8 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           ref={inputRef}
           type="text"
           placeholder={placeholder}
-          value={value}
-          onChange={() => {}} // Gestito dall'autocomplete di Google
+          value={inputValue}
+          onChange={handleInputChange}
           className="pr-10"
           disabled={!isApiLoaded}
         />
