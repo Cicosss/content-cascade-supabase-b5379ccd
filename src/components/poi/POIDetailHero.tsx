@@ -69,26 +69,26 @@ const POIDetailHero: React.FC<POIDetailHeroProps> = ({ poi }) => {
                 />
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Details Card - moved below the hero section */}
-        <div className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
-          <POIDetailsCard
-            address={poi.address}
-            openingHours={poi.opening_hours}
-            startDatetime={poi.start_datetime}
-            endDatetime={poi.end_datetime}
-            priceInfo={poi.price_info}
-            durationInfo={poi.duration_info}
-            targetAudience={poi.target_audience}
-            phone={poi.phone}
-            email={poi.email}
-            websiteUrl={poi.website_url}
-            poiType={poi.poi_type}
-            latitude={poi.latitude}
-            longitude={poi.longitude}
-          />
+            {/* Details Card - moved below action buttons */}
+            <div className="mt-6">
+              <POIDetailsCard
+                address={poi.address}
+                openingHours={poi.opening_hours}
+                startDatetime={poi.start_datetime}
+                endDatetime={poi.end_datetime}
+                priceInfo={poi.price_info}
+                durationInfo={poi.duration_info}
+                targetAudience={poi.target_audience}
+                phone={poi.phone}
+                email={poi.email}
+                websiteUrl={poi.website_url}
+                poiType={poi.poi_type}
+                latitude={poi.latitude}
+                longitude={poi.longitude}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
