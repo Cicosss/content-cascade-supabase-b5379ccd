@@ -16,7 +16,7 @@ interface ApprovedExperience {
   duration_info: string;
   target_audience: string;
   images: string[];
-  video_url: string;
+  website_url: string;
   phone: string;
   email: string;
   start_datetime: string;
@@ -27,6 +27,8 @@ interface ApprovedExperience {
   created_at: string;
   updated_at: string;
   tags: string[];
+  poi_type: string;
+  opening_hours: string;
 }
 
 interface ApprovedExperiencesListProps {

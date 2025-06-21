@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-interface ApprovedExperience {
+export interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
@@ -57,7 +57,15 @@ export const useApprovedExperiences = () => {
         return;
       }
 
-      setExperiences(data || []);
+      // Transform the data to match our interface (ensuring website_url is present)
+      const transformedData = (data || []).map(item => ({
+        ...item,
+        website_url: item.website_url || item.video_url || '', // Fallback to video_url if website_url is null
+        poi_type: item.poi_type || 'place',
+        opening_hours: item.opening_hours || ''
+      }));
+
+      setExperiences(transformedData);
     } catch (error) {
       console.error('Error:', error);
       toast.error('Errore nel caricamento delle esperienze approvate');

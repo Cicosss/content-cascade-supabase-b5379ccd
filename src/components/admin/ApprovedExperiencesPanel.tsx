@@ -6,11 +6,11 @@ import EditExperienceModal from './EditExperienceModal';
 import ApprovedExperiencesHeader from './ApprovedExperiencesHeader';
 import ApprovedExperiencesSummary from './ApprovedExperiencesSummary';
 import ApprovedExperiencesList from './ApprovedExperiencesList';
-import { useApprovedExperiences } from '@/hooks/useApprovedExperiences';
+import { useApprovedExperiences, ApprovedExperience } from '@/hooks/useApprovedExperiences';
 import { useExperienceFilters } from '@/hooks/useExperienceFilters';
 
 const ApprovedExperiencesPanel = () => {
-  const [editingExperience, setEditingExperience] = useState<any>(null);
+  const [editingExperience, setEditingExperience] = useState<ApprovedExperience | null>(null);
   
   const {
     experiences,
@@ -23,7 +23,7 @@ const ApprovedExperiencesPanel = () => {
 
   const { filters, setFilters, getFilterSummary } = useExperienceFilters(applyFilters);
 
-  const handleEdit = (experience: any) => {
+  const handleEdit = (experience: ApprovedExperience) => {
     setEditingExperience(experience);
   };
 
@@ -31,12 +31,12 @@ const ApprovedExperiencesPanel = () => {
     setEditingExperience(null);
   };
 
-  const handleEditSave = (updatedExperience: any) => {
+  const handleEditSave = (updatedExperience: ApprovedExperience) => {
     updateExperience(updatedExperience);
     setEditingExperience(null);
   };
 
-  const handleDelete = (experience: any) => {
+  const handleDelete = (experience: ApprovedExperience) => {
     if (window.confirm(`Sei sicuro di voler eliminare "${experience.name}"? Questa azione non può essere annullata.`)) {
       deleteExperience(experience.id);
     }
