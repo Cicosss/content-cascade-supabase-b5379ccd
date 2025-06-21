@@ -9,36 +9,8 @@ import ApprovedExperiencesList from './ApprovedExperiencesList';
 import { useApprovedExperiences } from '@/hooks/useApprovedExperiences';
 import { useExperienceFilters } from '@/hooks/useExperienceFilters';
 
-interface ApprovedExperience {
-  id: string;
-  name: string;
-  description: string;
-  macro_area: string;
-  category: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  price_info: string;
-  duration_info: string;
-  target_audience: string;
-  images: string[];
-  video_url: string;
-  phone: string;
-  email: string;
-  start_datetime: string;
-  end_datetime: string;
-  location_name: string;
-  organizer_info: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  tags: string[];
-  poi_type: string; // Aggiunto tipo POI
-  opening_hours: string; // Aggiunto orari apertura
-}
-
 const ApprovedExperiencesPanel = () => {
-  const [editingExperience, setEditingExperience] = useState<ApprovedExperience | null>(null);
+  const [editingExperience, setEditingExperience] = useState<any>(null);
   
   const {
     experiences,
@@ -51,7 +23,7 @@ const ApprovedExperiencesPanel = () => {
 
   const { filters, setFilters, getFilterSummary } = useExperienceFilters(applyFilters);
 
-  const handleEdit = (experience: ApprovedExperience) => {
+  const handleEdit = (experience: any) => {
     setEditingExperience(experience);
   };
 
@@ -59,12 +31,12 @@ const ApprovedExperiencesPanel = () => {
     setEditingExperience(null);
   };
 
-  const handleEditSave = (updatedExperience: ApprovedExperience) => {
+  const handleEditSave = (updatedExperience: any) => {
     updateExperience(updatedExperience);
     setEditingExperience(null);
   };
 
-  const handleDelete = (experience: ApprovedExperience) => {
+  const handleDelete = (experience: any) => {
     if (window.confirm(`Sei sicuro di voler eliminare "${experience.name}"? Questa azione non può essere annullata.`)) {
       deleteExperience(experience.id);
     }

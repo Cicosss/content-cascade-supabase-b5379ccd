@@ -97,7 +97,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
     try {
       const updateData = {
         name: formData.name,
-        description: form.description,
+        description: formData.description,
         category: formData.category,
         macro_area: formData.macro_area,
         address: formData.address,

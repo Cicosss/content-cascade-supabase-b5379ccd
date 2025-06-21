@@ -16,7 +16,7 @@ interface ApprovedExperience {
   duration_info: string;
   target_audience: string;
   images: string[];
-  video_url: string;
+  website_url: string;
   phone: string;
   email: string;
   start_datetime: string;
