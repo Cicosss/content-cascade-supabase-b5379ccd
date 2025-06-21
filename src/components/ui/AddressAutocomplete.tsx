@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useGoogleMapsAPI } from '@/hooks/useGoogleMapsAPI';
@@ -34,56 +34,18 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   required = false
 }) => {
   const { isApiLoaded } = useGoogleMapsAPI();
-  const [inputValue, setInputValue] = useState(value);
-  const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
   
-  const { inputRef, isLoading } = useAddressAutocomplete({ 
+  const { inputRef, isLoading, isConfirmed, resetConfirmation } = useAddressAutocomplete({ 
     isApiLoaded, 
     onAddressSelect: (addressData) => {
-      console.log('🔄 AddressAutocomplete - Ricevuti dati da Google:', {
-        address: addressData.address,
-        lat: addressData.latitude,
-        lng: addressData.longitude
-      });
-      
-      // CORREZIONE: Aggiornamento sincrono dell'input value
-      setInputValue(addressData.address);
-      
-      // Propaga i dati al componente padre
       onAddressSelect(addressData);
-      
-      console.log('✅ AddressAutocomplete - Dati propagati al form');
-    },
-    onAddressConfirmed: (isConfirmed) => {
-      console.log('✅ AddressAutocomplete - Stato conferma aggiornato:', isConfirmed);
-      setIsAddressConfirmed(isConfirmed);
     }
   });
 
-  // Sincronizza il valore interno con il prop value
-  useEffect(() => {
-    if (value !== inputValue) {
-      console.log('🔄 AddressAutocomplete - Sincronizzazione value:', { from: inputValue, to: value });
-      setInputValue(value);
-      
-      // Se il valore viene modificato dall'esterno e non corrisponde all'input,
-      // resetta lo stato di conferma
-      if (value === '') {
-        setIsAddressConfirmed(false);
-        console.log('🔄 AddressAutocomplete - Reset conferma per valore vuoto');
-      }
-    }
-  }, [value, inputValue]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    console.log('🔄 AddressAutocomplete - Input change:', newValue);
-    setInputValue(newValue);
-    
-    // Se l'utente digita manualmente, resetta lo stato di conferma
-    if (isAddressConfirmed) {
-      setIsAddressConfirmed(false);
-      console.log('🔄 AddressAutocomplete - Reset conferma per input manuale');
+    // Se l'utente digita manualmente, resetta la conferma
+    if (isConfirmed && e.target.value !== value) {
+      resetConfirmation();
     }
   };
 
@@ -100,15 +62,15 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           ref={inputRef}
           type="text"
           placeholder={placeholder}
-          value={inputValue}
+          defaultValue={value}
           onChange={handleInputChange}
-          className={`pr-10 ${isAddressConfirmed ? 'border-green-300 bg-green-50' : ''}`}
+          className={`pr-10 ${isConfirmed ? 'border-green-300 bg-green-50' : ''}`}
           disabled={!isApiLoaded}
           required={required}
         />
         <AddressFeedback 
           isLoading={isLoading}
-          isAddressConfirmed={isAddressConfirmed}
+          isConfirmed={isConfirmed}
           isApiLoaded={isApiLoaded}
         />
       </div>

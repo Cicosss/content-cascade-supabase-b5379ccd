@@ -14,17 +14,16 @@ interface AddressData {
 interface UseAddressAutocompleteProps {
   isApiLoaded: boolean;
   onAddressSelect: (addressData: AddressData) => void;
-  onAddressConfirmed?: (isConfirmed: boolean) => void;
 }
 
 export const useAddressAutocomplete = ({ 
   isApiLoaded, 
-  onAddressSelect, 
-  onAddressConfirmed 
+  onAddressSelect
 }: UseAddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   useEffect(() => {
     if (!isApiLoaded || !inputRef.current || autocompleteRef.current) return;
@@ -40,18 +39,14 @@ export const useAddressAutocomplete = ({
     const handlePlaceSelect = () => {
       const place = autocomplete.getPlace();
       
-      console.log('🗺️ Google Places - Selezione luogo:', place);
-      
       if (!place.geometry?.location) {
-        console.error('❌ Nessuna posizione trovata per questo indirizzo');
-        onAddressConfirmed?.(false);
+        setIsConfirmed(false);
         return;
       }
 
       setIsLoading(true);
-      console.log('🔄 useAddressAutocomplete - Inizio elaborazione indirizzo');
 
-      // Estrai i dati dall'address_components
+      // Estrai componenti indirizzo
       let city = '';
       let province = '';
       let postalCode = '';
@@ -83,22 +78,8 @@ export const useAddressAutocomplete = ({
         country
       };
 
-      console.log('✅ useAddressAutocomplete - Dati estratti:', {
-        address: addressData.address,
-        lat: addressData.latitude,
-        lng: addressData.longitude,
-        city: addressData.city
-      });
-
-      // CORREZIONE: Prima confermiamo l'indirizzo, poi inviamo i dati
-      console.log('🔄 useAddressAutocomplete - Confermo indirizzo...');
-      onAddressConfirmed?.(true);
-
-      // CORREZIONE: Invio sincrono dei dati (no setTimeout)
-      console.log('🔄 useAddressAutocomplete - Invio dati al form...');
+      setIsConfirmed(true);
       onAddressSelect(addressData);
-      
-      console.log('✅ useAddressAutocomplete - Processo completato con successo');
       setIsLoading(false);
     };
 
@@ -109,7 +90,16 @@ export const useAddressAutocomplete = ({
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
       }
     };
-  }, [isApiLoaded, onAddressSelect, onAddressConfirmed]);
+  }, [isApiLoaded, onAddressSelect]);
 
-  return { inputRef, isLoading };
+  const resetConfirmation = () => {
+    setIsConfirmed(false);
+  };
+
+  return { 
+    inputRef, 
+    isLoading, 
+    isConfirmed,
+    resetConfirmation
+  };
 };
