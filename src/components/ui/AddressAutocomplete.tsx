@@ -82,8 +82,10 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     const handlePlaceSelect = () => {
       const place = autocomplete.getPlace();
       
+      console.log('🗺️ Google Places - Luogo selezionato:', place);
+      
       if (!place.geometry?.location) {
-        console.error('Nessuna posizione trovata per questo indirizzo');
+        console.error('❌ Nessuna posizione trovata per questo indirizzo');
         return;
       }
 
@@ -121,8 +123,16 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
         country
       };
 
+      console.log('✅ AddressAutocomplete - Dati estratti:', addressData);
+
       setInputValue(addressData.address);
-      onAddressSelect(addressData);
+      
+      // Forza l'aggiornamento del form padre con i nuovi dati
+      setTimeout(() => {
+        onAddressSelect(addressData);
+        console.log('📤 AddressAutocomplete - Dati inviati al form padre');
+      }, 0);
+      
       setIsLoading(false);
     };
 
@@ -136,7 +146,13 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   }, [isApiLoaded, onAddressSelect]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    
+    // Se l'utente digita manualmente, resetta le coordinate
+    if (newValue !== value) {
+      console.log('🔄 AddressAutocomplete - Input manuale, reset coordinate');
+    }
   };
 
   return (
@@ -156,6 +172,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           onChange={handleInputChange}
           className="pr-10"
           disabled={!isApiLoaded}
+          required={required}
         />
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
           {isLoading ? (

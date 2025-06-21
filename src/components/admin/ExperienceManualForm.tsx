@@ -39,17 +39,71 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    console.log(`🔄 Form update - ${field}:`, value);
+    
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        [field]: value
+      };
+      
+      // Log dello stato aggiornato per debug
+      if (field === 'latitude' || field === 'longitude' || field === 'address' || field === 'name') {
+        console.log('📊 Stato form aggiornato:', {
+          name: updated.name,
+          address: updated.address,
+          latitude: updated.latitude,
+          longitude: updated.longitude
+        });
+      }
+      
+      return updated;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.latitude || !formData.longitude) {
-      toast.error('Nome, latitudine e longitudine sono obbligatori');
+    console.log('🚀 Tentativo di submit con dati:', {
+      name: formData.name,
+      address: formData.address,
+      latitude: formData.latitude,
+      longitude: formData.longitude,
+      poi_type: formData.poi_type
+    });
+
+    // Validazione migliorata con messaggi specifici
+    const errors = [];
+    
+    if (!formData.name?.trim()) {
+      errors.push('Nome del luogo');
+    }
+    
+    if (!formData.address?.trim()) {
+      errors.push('Indirizzo');
+    }
+    
+    if (!formData.latitude || formData.latitude === '') {
+      errors.push('Latitudine (seleziona un indirizzo dalla lista)');
+    }
+    
+    if (!formData.longitude || formData.longitude === '') {
+      errors.push('Longitudine (seleziona un indirizzo dalla lista)');
+    }
+
+    if (errors.length > 0) {
+      const errorMessage = `Campi mancanti: ${errors.join(', ')}`;
+      console.error('❌ Validazione fallita:', errorMessage);
+      toast.error(errorMessage);
+      return;
+    }
+
+    // Verifica che le coordinate siano numeri validi
+    const lat = parseFloat(formData.latitude);
+    const lng = parseFloat(formData.longitude);
+    
+    if (isNaN(lat) || isNaN(lng)) {
+      toast.error('Coordinate non valide. Seleziona un indirizzo dalla lista di autocompletamento.');
       return;
     }
 
@@ -63,8 +117,8 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         macro_area: formData.macro_area,
         category: formData.category,
         address: formData.address || null,
-        latitude: parseFloat(formData.latitude),
-        longitude: parseFloat(formData.longitude),
+        latitude: lat,
+        longitude: lng,
         price_info: formData.price_info || null,
         duration_info: formData.duration_info || null,
         target_audience: formData.target_audience,
@@ -128,7 +182,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
 
     } catch (error) {
       console.error('❌ Errore nell\'inserimento:', error);
-      toast.error('Errore nell\'inserimento del POI');
+      toast.error('Errore nell\'inserimento del POI. Controlla la console per dettagli.');
     } finally {
       setIsLoading(false);
     }
@@ -144,6 +198,18 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
       <div className="flex gap-4">
         <Button type="submit" disabled={isLoading}>
           {isLoading ? 'Inserimento...' : 'Inserisci POI'}
+        </Button>
+        
+        {/* Pulsante di debug per vedere lo stato del form */}
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={() => {
+            console.log('🔍 Stato completo del form:', formData);
+            toast.info('Stato del form stampato nella console');
+          }}
+        >
+          Debug Form
         </Button>
       </div>
     </form>
