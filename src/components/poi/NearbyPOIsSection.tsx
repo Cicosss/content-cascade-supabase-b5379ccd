@@ -81,7 +81,7 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
             <MapPin className="h-6 w-6 text-blue-600 mr-3" />
             <div>
               <h2 className="text-2xl font-semibold text-gray-900">📍 Nei Dintorni</h2>
-              <p className="text-gray-600 text-sm">Scopri altri luoghi interessanti nella zona</p>
+              <p className="text-gray-600 text-sm">Scopri altri luoghi interessanti nel raggio di 5 km</p>
             </div>
           </div>
           {nearbyPOIs.length >= 3 && (
@@ -138,7 +138,7 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
 
             <div className="text-center">
               <p className="text-xs text-gray-500 mb-2">
-                Mostrando luoghi entro 2 km di distanza
+                Mostrando luoghi entro 5 km di distanza
               </p>
               {nearbyPOIs.length >= 6 && (
                 <button
@@ -159,11 +159,17 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
                 <MapPin className="h-12 w-12 mx-auto" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Nessun luogo nelle vicinanze
+                Nessun altro luogo nelle immediate vicinanze
               </h3>
-              <p className="text-gray-600">
-                Non abbiamo trovato altri luoghi di interesse nel raggio di 2 km.
+              <p className="text-gray-600 mb-4">
+                Esplora la mappa per nuove scoperte! Puoi trovare molti altri luoghi interessanti nella zona.
               </p>
+              <button
+                onClick={handleViewAll}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Esplora la mappa
+              </button>
             </div>
           </div>
         )}

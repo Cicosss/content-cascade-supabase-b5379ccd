@@ -56,14 +56,14 @@ const POIDetailsCard: React.FC<POIDetailsCardProps> = ({
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
+      <CardHeader className="pb-4">
         <CardTitle className="text-lg flex items-center gap-2">
           <MapPin className="h-5 w-5 text-blue-600" />
           Dettagli
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-0">
         {address && (
           <div className="flex items-start gap-3">
             <MapPin className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -175,7 +175,7 @@ const POIDetailsCard: React.FC<POIDetailsCardProps> = ({
           </div>
         )}
       </CardContent>
-    </Card>
+    </div>
   );
 };
 
