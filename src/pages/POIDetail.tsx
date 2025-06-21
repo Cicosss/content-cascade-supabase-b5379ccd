@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,7 +10,7 @@ import POIDetailsCard from '@/components/poi/POIDetailsCard';
 import POILocationMap from '@/components/poi/POILocationMap';
 import FavoriteButton from '@/components/FavoriteButton';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Breadcrumb } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface POIData {
