@@ -30,9 +30,7 @@ export const usePOIFormSubmission = () => {
         email: formData.email,
         location_name: formData.location_name,
         organizer_info: formData.organizer_info,
-        video_url: formData.video_url,
         images: formData.images,
-        cover_image: formData.cover_image,
         // Campi condizionali basati sul tipo
         start_datetime: formData.poi_type === 'event' ? (formData.start_datetime || null) : null,
         end_datetime: formData.poi_type === 'event' ? (formData.end_datetime || null) : null,

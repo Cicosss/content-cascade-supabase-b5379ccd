@@ -31,8 +31,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     end_datetime: '',
     location_name: '',
     organizer_info: '',
-    images: [] as string[],
-    video_url: ''
+    images: [] as string[]
   });
 
   const handleInputChange = (field: string, value: string | string[]) => {
@@ -41,10 +40,6 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
 
   const handleImagesChange = (images: string[]) => {
     setFormData(prev => ({ ...prev, images }));
-  };
-
-  const handleVideoUrlChange = (url: string) => {
-    setFormData(prev => ({ ...prev, video_url: url }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,7 +77,6 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         location_name: formData.location_name,
         organizer_info: formData.organizer_info,
         images: formData.images,
-        video_url: formData.video_url,
         status: 'approved'
       };
 
@@ -118,8 +112,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         end_datetime: '',
         location_name: '',
         organizer_info: '',
-        images: [],
-        video_url: ''
+        images: []
       });
 
       onExperienceAdded();
@@ -140,9 +133,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
 
       <MediaUploader
         images={formData.images}
-        videoUrl={formData.video_url}
         onImagesChange={handleImagesChange}
-        onVideoUrlChange={handleVideoUrlChange}
       />
 
       <Button type="submit" disabled={loading} className="w-full">

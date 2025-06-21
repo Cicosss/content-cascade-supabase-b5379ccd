@@ -4,26 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Upload, Image, Video, FileImage, Loader2, AlertTriangle, Info } from 'lucide-react';
+import { Upload, Image, FileImage, Loader2, AlertTriangle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
 interface TerritoryMediaUploaderProps {
   images: string[];
-  videoUrl: string;
-  coverImage: string;
   onImagesChange: (images: string[]) => void;
-  onVideoUrlChange: (url: string) => void;
-  onCoverImageChange: (url: string) => void;
 }
 
 const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
   images,
-  videoUrl,
-  coverImage,
-  onImagesChange,
-  onVideoUrlChange,
-  onCoverImageChange
+  onImagesChange
 }) => {
   const [uploadedImages, setUploadedImages] = useState<string[]>(images);
   const { uploadImage, isUploading } = useImageUpload();
@@ -49,11 +41,6 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
     
     setUploadedImages(newImages);
     onImagesChange(newImages);
-    
-    // Set first image as cover if no cover is set
-    if (newImages.length > 0 && !coverImage) {
-      onCoverImageChange(newImages[0]);
-    }
   };
 
   const handleButtonClick = () => {
@@ -64,13 +51,6 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
     const newImages = uploadedImages.filter((_, i) => i !== index);
     setUploadedImages(newImages);
     onImagesChange(newImages);
-    
-    // Update cover image if the first image was removed
-    if (index === 0 && newImages.length > 0) {
-      onCoverImageChange(newImages[0]);
-    } else if (newImages.length === 0) {
-      onCoverImageChange('');
-    }
   };
 
   return (
@@ -190,24 +170,6 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
               ))}
             </div>
           </div>
-        )}
-      </div>
-
-      {/* Video URL */}
-      <div className="space-y-2">
-        <Label htmlFor="video_url" className="flex items-center gap-2">
-          <Video className="h-4 w-4" />
-          Video URL (opzionale)
-        </Label>
-        <Input
-          id="video_url"
-          value={videoUrl}
-          onChange={(e) => onVideoUrlChange(e.target.value)}
-          placeholder="https://youtube.com/watch?v=... o https://vimeo.com/..."
-          type="url"
-        />
-        {videoUrl && (
-          <p className="text-xs text-green-600">✓ Video collegato</p>
         )}
       </div>
     </div>

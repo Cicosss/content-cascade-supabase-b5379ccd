@@ -23,9 +23,7 @@ interface FormData {
   end_datetime: string;
   location_name: string;
   organizer_info: string;
-  video_url: string;
   images: string[];
-  cover_image: string;
   opening_hours: string;
 }
 
@@ -50,9 +48,7 @@ const initialFormData: FormData = {
   end_datetime: '',
   location_name: '',
   organizer_info: '',
-  video_url: '',
   images: [],
-  cover_image: '',
   opening_hours: ''
 };
 

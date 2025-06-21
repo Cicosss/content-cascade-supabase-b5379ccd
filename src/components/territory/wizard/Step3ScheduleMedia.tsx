@@ -77,16 +77,12 @@ const Step3ScheduleMedia: React.FC<Step3ScheduleMediaProps> = ({ formData, onInp
       <div>
         <Label className="text-base font-semibold">Contenuti Multimediali</Label>
         <p className="text-sm text-gray-600 mb-4">
-          Aggiungi immagini e video per rendere {isEvent ? 'l\'evento' : 'il luogo'} più attraente
+          Aggiungi immagini per rendere {isEvent ? 'l\'evento' : 'il luogo'} più attraente
         </p>
         
         <TerritoryMediaUploader
           images={formData.images || []}
           onImagesChange={(images) => onInputChange('images', images)}
-          coverImage={formData.images?.[0] || ''}
-          onCoverImageChange={() => {}} // Non usato più, mantenuto per compatibilità
-          videoUrl={formData.video_url || ''}
-          onVideoUrlChange={(videoUrl) => onInputChange('video_url', videoUrl)}
         />
       </div>
 

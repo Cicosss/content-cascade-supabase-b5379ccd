@@ -4,22 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { X, Upload, Image, Video, Loader2, AlertTriangle, Info } from 'lucide-react';
+import { X, Upload, Image, Loader2, AlertTriangle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
 interface MediaUploaderProps {
   images: string[];
-  videoUrl: string;
   onImagesChange: (images: string[]) => void;
-  onVideoUrlChange: (url: string) => void;
 }
 
 const MediaUploader: React.FC<MediaUploaderProps> = ({
   images,
-  videoUrl,
-  onImagesChange,
-  onVideoUrlChange
+  onImagesChange
 }) => {
   const [imageInputs, setImageInputs] = useState<string[]>(images.length > 0 ? images : ['']);
   const { uploadImage, isUploading } = useImageUpload();
@@ -190,46 +186,23 @@ const MediaUploader: React.FC<MediaUploaderProps> = ({
         </div>
       </div>
 
-      {/* Video URL */}
-      <div>
-        <Label htmlFor="video_url" className="flex items-center gap-2">
-          <Video className="h-4 w-4" />
-          Video URL (opzionale)
-        </Label>
-        <Input
-          id="video_url"
-          value={videoUrl}
-          onChange={(e) => onVideoUrlChange(e.target.value)}
-          placeholder="https://youtube.com/watch?v=... o https://vimeo.com/..."
-          type="url"
-        />
-      </div>
-
       {/* Anteprima Media */}
-      {(images.length > 0 || videoUrl) && (
+      {images.length > 0 && (
         <Card>
           <CardContent className="pt-4">
             <h4 className="font-medium mb-2">Anteprima Media</h4>
-            {images.length > 0 && (
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Immagini ({images.length}) - Copertina: {images[0] ? '✅' : '❌'}
-                </p>
-                <ul className="text-xs space-y-1">
-                  {images.map((img, idx) => (
-                    <li key={idx} className={`truncate ${idx === 0 ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>
-                      {idx === 0 ? '🌟 ' : '📷 '}{img}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {videoUrl && (
-              <div className="mt-2">
-                <p className="text-sm text-muted-foreground">Video:</p>
-                <p className="text-xs text-blue-600 truncate">{videoUrl}</p>
-              </div>
-            )}
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">
+                Immagini ({images.length}) - Copertina: {images[0] ? '✅' : '❌'}
+              </p>
+              <ul className="text-xs space-y-1">
+                {images.map((img, idx) => (
+                  <li key={idx} className={`truncate ${idx === 0 ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>
+                    {idx === 0 ? '🌟 ' : '📷 '}{img}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </CardContent>
         </Card>
       )}

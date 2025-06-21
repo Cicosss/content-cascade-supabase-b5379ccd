@@ -21,7 +21,7 @@ interface ApprovedExperience {
   duration_info: string;
   target_audience: string;
   images: string[];
-  video_url: string;
+  website_url: string;
   phone: string;
   email: string;
   start_datetime: string;
@@ -69,9 +69,8 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         end_datetime: experience.end_datetime ? new Date(experience.end_datetime).toISOString().slice(0, 16) : '',
         location_name: experience.location_name || '',
         organizer_info: experience.organizer_info || '',
-        website_url: experience.video_url || '',
+        website_url: experience.website_url || '',
         images: experience.images || [],
-        video_url: experience.video_url || '',
         tags: experience.tags || []
       });
     }
@@ -91,13 +90,6 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
     }));
   };
 
-  const handleVideoUrlChange = (videoUrl: string) => {
-    setFormData((prev: any) => ({
-      ...prev,
-      video_url: videoUrl
-    }));
-  };
-
   const handleSave = async () => {
     if (!experience) return;
 
@@ -105,7 +97,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
     try {
       const updateData = {
         name: formData.name,
-        description: formData.description,
+        description: form.description,
         category: formData.category,
         macro_area: formData.macro_area,
         address: formData.address,
@@ -121,7 +113,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
         location_name: formData.location_name,
         organizer_info: formData.organizer_info,
         images: formData.images,
-        video_url: formData.video_url,
+        website_url: formData.website_url,
         tags: formData.tags,
         updated_at: new Date().toISOString()
       };
@@ -172,9 +164,7 @@ const EditExperienceModal: React.FC<EditExperienceModalProps> = ({
           
           <MediaUploader
             images={formData.images || []}
-            videoUrl={formData.video_url || ''}
             onImagesChange={handleImagesChange}
-            onVideoUrlChange={handleVideoUrlChange}
           />
           
           <div className="flex justify-end gap-3 pt-4 border-t">
