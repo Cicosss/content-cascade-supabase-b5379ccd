@@ -24,7 +24,10 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   const [isToggling, setIsToggling] = useState(false);
   const favoriteState = isFavorite(itemType, itemId);
 
-  const handleToggle = async () => {
+  const handleToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (isToggling) return;
     
     setIsToggling(true);
@@ -60,16 +63,18 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       onClick={handleToggle}
       disabled={isToggling}
       className={cn(
-        `${sizeClasses[size]} rounded-full bg-white/80 backdrop-blur-sm border border-white/20 hover:bg-white/90 transition-all duration-200`,
+        `${sizeClasses[size]} rounded-full bg-white/80 backdrop-blur-sm border border-white/20 hover:bg-white/90 transition-all duration-200 shadow-sm`,
+        favoriteState && "bg-red-50/90 border-red-200/50 hover:bg-red-100/90",
         className
       )}
+      title={favoriteState ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
     >
       <Heart 
         className={cn(
-          `${iconSizes[size]} transition-colors duration-200`,
+          `${iconSizes[size]} transition-all duration-200`,
           favoriteState 
-            ? "fill-red-500 text-red-500" 
-            : "text-gray-600 hover:text-red-500"
+            ? "fill-red-500 text-red-500 scale-110" 
+            : "text-gray-600 hover:text-red-500 hover:scale-105"
         )} 
       />
     </Button>

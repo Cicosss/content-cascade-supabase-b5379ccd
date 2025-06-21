@@ -5,8 +5,14 @@ import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import NearbyPOIsSection from '@/components/poi/NearbyPOIsSection';
 import VisitButton from '@/components/poi/VisitButton';
+import POIImageGallery from '@/components/poi/POIImageGallery';
+import POIStatusBadge from '@/components/poi/POIStatusBadge';
+import POIDetailsCard from '@/components/poi/POIDetailsCard';
+import POILocationMap from '@/components/poi/POILocationMap';
+import FavoriteButton from '@/components/FavoriteButton';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Clock, Euro, Phone, Mail, Globe, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Breadcrumb } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface POIData {
   id: string;
@@ -23,7 +29,13 @@ interface POIData {
   phone?: string;
   email?: string;
   website_url?: string;
+  video_url?: string;
   target_audience: string;
+  poi_type?: string;
+  start_datetime?: string;
+  end_datetime?: string;
+  location_name?: string;
+  organizer_info?: string;
 }
 
 const POIDetail: React.FC = () => {
@@ -64,10 +76,25 @@ const POIDetail: React.FC = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Caricamento...</p>
+        <div className="min-h-screen bg-gray-50">
+          <div className="bg-white border-b">
+            <div className="container mx-auto px-4 py-4">
+              <Skeleton className="h-5 w-20" />
+            </div>
+          </div>
+
+          <div className="bg-white">
+            <div className="container mx-auto px-4 py-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Skeleton className="aspect-[16/9] rounded-xl" />
+                <div className="space-y-4">
+                  <Skeleton className="h-8 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                  <Skeleton className="h-20 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Layout>
@@ -93,11 +120,14 @@ const POIDetail: React.FC = () => {
     );
   }
 
-  const coverImage = poi.images && poi.images.length > 0 ? poi.images[0] : null;
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
+        {/* Navigation Bar */}
         <div className="bg-white border-b">
           <div className="container mx-auto px-4 py-4">
             <button
@@ -110,95 +140,114 @@ const POIDetail: React.FC = () => {
           </div>
         </div>
 
+        {/* Main Content */}
         <div className="bg-white">
           <div className="container mx-auto px-4 py-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="aspect-[4/3] relative overflow-hidden rounded-2xl bg-gray-100">
-                {coverImage ? (
-                  <img
-                    src={coverImage}
-                    alt={poi.name}
-                    className="w-full h-full object-cover"
-                  />
+            {/* Hero Section with Gallery and Header */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              {/* Left Column: Image Gallery */}
+              <POIImageGallery
+                images={poi.images || []}
+                videoUrl={poi.video_url}
+                name={poi.name}
+              />
+
+              {/* Right Column: Header and Actions */}
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <POIStatusBadge
+                      poiType={poi.poi_type || 'place'}
+                      startDatetime={poi.start_datetime}
+                      endDatetime={poi.end_datetime}
+                      category={poi.category}
+                    />
+                    <Badge variant="secondary">{poi.category}</Badge>
+                  </div>
+                  
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{poi.name}</h1>
+                  <p className="text-lg text-gray-600">
+                    {poi.location_name || poi.address}
+                  </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <VisitButton poiId={poi.id} poiName={poi.name} />
+                  </div>
+                  <div onClick={handleFavoriteClick}>
+                    <FavoriteButton
+                      itemType="poi"
+                      itemId={poi.id}
+                      itemData={{
+                        name: poi.name,
+                        description: poi.description,
+                        category: poi.category,
+                        images: poi.images,
+                        address: poi.address,
+                        poi_type: poi.poi_type
+                      }}
+                      size="lg"
+                      className="bg-white border border-gray-300 hover:bg-gray-50"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description and Details Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              {/* Left Column: Description */}
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Descrizione</h2>
+                {poi.description ? (
+                  <div className="prose prose-gray max-w-none">
+                    <p className="text-gray-700 leading-relaxed">{poi.description}</p>
+                  </div>
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-6xl opacity-50">📍</span>
+                  <p className="text-gray-500 italic">Nessuna descrizione disponibile.</p>
+                )}
+
+                {poi.organizer_info && (
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <h3 className="font-semibold text-gray-900 mb-2">Informazioni Organizzatore</h3>
+                    <p className="text-gray-700">{poi.organizer_info}</p>
                   </div>
                 )}
               </div>
 
-              <div className="space-y-6">
-                <div>
-                  <Badge className="mb-3">{poi.category}</Badge>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-4">{poi.name}</h1>
-                  {poi.description && (
-                    <p className="text-gray-600 leading-relaxed">{poi.description}</p>
-                  )}
-                </div>
+              {/* Right Column: Details Card */}
+              <POIDetailsCard
+                address={poi.address}
+                openingHours={poi.opening_hours}
+                startDatetime={poi.start_datetime}
+                endDatetime={poi.end_datetime}
+                priceInfo={poi.price_info}
+                durationInfo={poi.duration_info}
+                targetAudience={poi.target_audience}
+                phone={poi.phone}
+                email={poi.email}
+                websiteUrl={poi.website_url}
+                poiType={poi.poi_type}
+                latitude={poi.latitude}
+                longitude={poi.longitude}
+              />
+            </div>
 
-                <div className="space-y-4">
-                  {poi.address && (
-                    <div className="flex items-start">
-                      <MapPin className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{poi.address}</span>
-                    </div>
-                  )}
-
-                  {poi.opening_hours && (
-                    <div className="flex items-start">
-                      <Clock className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{poi.opening_hours}</span>
-                    </div>
-                  )}
-
-                  {poi.price_info && (
-                    <div className="flex items-start">
-                      <Euro className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{poi.price_info}</span>
-                    </div>
-                  )}
-
-                  {poi.phone && (
-                    <div className="flex items-start">
-                      <Phone className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <a href={`tel:${poi.phone}`} className="text-blue-600 hover:text-blue-700">
-                        {poi.phone}
-                      </a>
-                    </div>
-                  )}
-
-                  {poi.email && (
-                    <div className="flex items-start">
-                      <Mail className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <a href={`mailto:${poi.email}`} className="text-blue-600 hover:text-blue-700">
-                        {poi.email}
-                      </a>
-                    </div>
-                  )}
-
-                  {poi.website_url && (
-                    <div className="flex items-start">
-                      <Globe className="h-5 w-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" />
-                      <a 
-                        href={poi.website_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700"
-                      >
-                        Visita il sito web
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                <div className="pt-4">
-                  <VisitButton poiId={poi.id} poiName={poi.name} />
-                </div>
-              </div>
+            {/* Location Map */}
+            <div className="mb-8">
+              <POILocationMap
+                latitude={poi.latitude}
+                longitude={poi.longitude}
+                name={poi.name}
+                address={poi.address}
+              />
             </div>
           </div>
         </div>
 
+        {/* Nearby POIs Section */}
         <NearbyPOIsSection 
           currentPOI={{
             id: poi.id,
