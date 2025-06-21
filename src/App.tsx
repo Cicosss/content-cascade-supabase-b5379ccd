@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -24,6 +23,7 @@ import DivertimentoFamiglia from '@/pages/DivertimentoFamiglia';
 import TerritoryPromoter from '@/pages/TerritoryPromoter';
 import RespiroDelMare from '@/pages/RespiroDelMare';
 import OggiInRomagna from '@/pages/OggiInRomagna';
+import POIDetail from "@/pages/POIDetail";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +53,7 @@ function App() {
             <Route path="/divertimento-famiglia" element={<DivertimentoFamiglia />} />
             <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
             <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
+            <Route path="/poi/:id" element={<POIDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
