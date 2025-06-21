@@ -24,7 +24,7 @@ const POIDetail: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <div className="min-h-screen bg-gray-50">
         <POIDetailHeader />
         <POIDetailHero poi={poi} />
