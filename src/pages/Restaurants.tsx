@@ -22,7 +22,7 @@ interface Restaurant {
   duration_info: string;
   target_audience: string;
   images: string[];
-  video_url: string;
+  website_url: string;
   phone: string;
   email: string;
   avg_rating: number;
@@ -187,10 +187,10 @@ const Restaurants = () => {
                         {restaurant.phone}
                       </div>
                     )}
-                    {restaurant.video_url && (
+                    {restaurant.website_url && (
                       <div className="flex items-center">
                         <Globe className="h-4 w-4 mr-2" />
-                        <a href={restaurant.video_url} target="_blank" rel="noopener noreferrer" 
+                        <a href={restaurant.website_url} target="_blank" rel="noopener noreferrer" 
                            className="text-blue-600 hover:underline">
                           Visita sito
                         </a>
