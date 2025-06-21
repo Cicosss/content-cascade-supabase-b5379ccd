@@ -11,6 +11,15 @@ export const usePOIFormSubmission = () => {
     setIsLoading(true);
 
     try {
+      // Validazione campi obbligatori
+      if (!formData.name || !formData.submitter_email) {
+        throw new Error('Nome e email sono obbligatori');
+      }
+
+      // Assicurati che latitude e longitude abbiano valori di default se non specificati
+      const latitude = formData.latitude ? parseFloat(formData.latitude) : 44.0; // Default per Romagna
+      const longitude = formData.longitude ? parseFloat(formData.longitude) : 12.0; // Default per Romagna
+
       const submissionData = {
         poi_type: formData.poi_type,
         submitter_email: formData.submitter_email,
@@ -20,8 +29,8 @@ export const usePOIFormSubmission = () => {
         category: formData.category,
         tags: formData.tags,
         address: formData.address,
-        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
-        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+        latitude: latitude,
+        longitude: longitude,
         price_info: formData.price_info,
         duration_info: formData.duration_info,
         target_audience: formData.target_audience,
@@ -37,13 +46,20 @@ export const usePOIFormSubmission = () => {
         opening_hours: formData.poi_type === 'place' ? formData.opening_hours : null,
       };
 
+      console.log('🔄 Submission data:', submissionData);
+
       const { data, error } = await supabase
         .from('poi_submissions')
         .insert([submissionData])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Errore submission:', error);
+        throw error;
+      }
+
+      console.log('✅ Submission inserita:', data);
 
       await supabase.functions.invoke('send-poi-notification', {
         body: {
