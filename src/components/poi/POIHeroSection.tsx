@@ -18,7 +18,7 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
   };
 
   return (
-    <div className="relative w-full h-[60vh] min-h-[400px] overflow-hidden">
+    <div className="relative w-full h-[60vh] min-h-[400px] sm:min-h-[300px] overflow-hidden">
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -30,7 +30,7 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
 
       {/* Content Overlay */}
       <div className="relative h-full flex flex-col justify-end">
-        <div className="container mx-auto px-4 pb-8">
+        <div className="container mx-auto px-4 pb-8 sm:pb-4">
           <div className="max-w-4xl">
             {/* Badges and Category */}
             <div className="flex items-center gap-3 mb-4 animate-fade-in">
@@ -87,15 +87,6 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
           </div>
         </div>
       </div>
-
-      {/* Mobile optimization overlay */}
-      <style jsx>{`
-        @media (max-width: 640px) {
-          .container {
-            padding-bottom: 2rem;
-          }
-        }
-      `}</style>
     </div>
   );
 };
