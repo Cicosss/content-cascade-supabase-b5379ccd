@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Cloud, Sun, CloudRain, Wind, Droplets, MapPin, Crosshair } from 'lucide-react';
+import { Wind, Droplets, MapPin, Crosshair } from 'lucide-react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
+import AnimatedWeatherIcon from './AnimatedWeatherIcon';
 
 const PersonalizedWeather: React.FC = () => {
   const { userLocation, isLoadingLocation } = useLocation();
@@ -17,32 +19,6 @@ const PersonalizedWeather: React.FC = () => {
     hasWeather: !!weather,
     error
   });
-
-  const getWeatherIcon = (condition: string, iconCode?: string) => {
-    if (iconCode) {
-      if (iconCode.includes('01')) return <Sun className="h-8 w-8 text-yellow-400" />;
-      if (iconCode.includes('02') || iconCode.includes('03') || iconCode.includes('04')) 
-        return <Cloud className="h-8 w-8 text-gray-400" />;
-      if (iconCode.includes('09') || iconCode.includes('10') || iconCode.includes('11')) 
-        return <CloudRain className="h-8 w-8 text-blue-400" />;
-    }
-
-    switch (condition) {
-      case 'Clear':
-        return <Sun className="h-8 w-8 text-yellow-400" />;
-      case 'Clouds':
-        return <Cloud className="h-8 w-8 text-gray-400" />;
-      case 'Rain':
-      case 'Drizzle':
-        return <CloudRain className="h-8 w-8 text-blue-400" />;
-      case 'Snow':
-        return <Cloud className="h-8 w-8 text-blue-200" />;
-      case 'Thunderstorm':
-        return <CloudRain className="h-8 w-8 text-purple-400" />;
-      default:
-        return <Sun className="h-8 w-8 text-yellow-400" />;
-    }
-  };
 
   const getGradientColors = (condition: string) => {
     switch (condition) {
@@ -116,7 +92,11 @@ const PersonalizedWeather: React.FC = () => {
               </div>
             )}
           </div>
-          {getWeatherIcon(weather.condition, weather.icon)}
+          <AnimatedWeatherIcon 
+            condition={weather.condition} 
+            iconCode={weather.icon}
+            className="h-8 w-8"
+          />
         </div>
         
         <div className="flex items-center justify-between">
