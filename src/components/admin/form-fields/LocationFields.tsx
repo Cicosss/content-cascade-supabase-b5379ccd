@@ -22,18 +22,37 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
 
   const handleAddressSelect = (addressData: any) => {
     console.log('📍 LocationFields - Ricevuti dati indirizzo:', addressData);
+    console.log('📍 LocationFields - Coordinate ricevute:', { lat: addressData.latitude, lng: addressData.longitude });
+    
+    // Assicuriamoci che le coordinate siano stringhe valide
+    const latStr = addressData.latitude?.toString() || '';
+    const lngStr = addressData.longitude?.toString() || '';
+    
+    console.log('📍 LocationFields - Coordinate come stringhe:', { lat: latStr, lng: lngStr });
     
     // Aggiorna tutti i campi correlati all'indirizzo in sequenza
     onInputChange('address', addressData.address || '');
-    onInputChange('latitude', addressData.latitude?.toString() || '');
-    onInputChange('longitude', addressData.longitude?.toString() || '');
+    
+    // Aggiorna le coordinate con un piccolo delay per garantire l'ordine
+    setTimeout(() => {
+      onInputChange('latitude', latStr);
+      console.log('🔄 LocationFields - Latitude aggiornata:', latStr);
+    }, 10);
+    
+    setTimeout(() => {
+      onInputChange('longitude', lngStr);
+      console.log('🔄 LocationFields - Longitude aggiornata:', lngStr);
+    }, 20);
     
     // Aggiorna anche il nome della location se non è già impostato e abbiamo una città
     if (!formData.location_name && addressData.city) {
-      onInputChange('location_name', addressData.city);
+      setTimeout(() => {
+        onInputChange('location_name', addressData.city);
+        console.log('🔄 LocationFields - Location name aggiornato:', addressData.city);
+      }, 30);
     }
     
-    console.log('✅ LocationFields - Tutti i campi aggiornati');
+    console.log('✅ LocationFields - Processo di aggiornamento completato');
   };
 
   return (
@@ -64,6 +83,13 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
           <div className="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 px-3 py-2 rounded-md">
             <span className="text-amber-500">⚠️</span>
             <span>Seleziona un indirizzo dalla lista di suggerimenti per completare la geolocalizzazione</span>
+          </div>
+        )}
+
+        {/* Debug info - rimuovi in produzione */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">
+            Debug: lat="{formData.latitude}" lng="{formData.longitude}" hasCoords={hasValidCoordinates.toString()}
           </div>
         )}
       </div>

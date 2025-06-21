@@ -34,9 +34,20 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   required = false
 }) => {
   const { isApiLoaded } = useGoogleMapsAPI();
-  const { inputRef, isLoading } = useAddressAutocomplete({ isApiLoaded, onAddressSelect });
   const [inputValue, setInputValue] = useState(value);
   const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
+  
+  const { inputRef, isLoading } = useAddressAutocomplete({ 
+    isApiLoaded, 
+    onAddressSelect: (addressData) => {
+      console.log('🔄 AddressAutocomplete - Ricevuti dati da Google:', addressData);
+      onAddressSelect(addressData);
+    },
+    onAddressConfirmed: (isConfirmed) => {
+      console.log('✅ AddressAutocomplete - Stato conferma aggiornato:', isConfirmed);
+      setIsAddressConfirmed(isConfirmed);
+    }
+  });
 
   // Sincronizza il valore interno con il prop value
   useEffect(() => {

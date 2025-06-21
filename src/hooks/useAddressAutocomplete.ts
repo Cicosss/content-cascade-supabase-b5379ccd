@@ -14,9 +14,14 @@ interface AddressData {
 interface UseAddressAutocompleteProps {
   isApiLoaded: boolean;
   onAddressSelect: (addressData: AddressData) => void;
+  onAddressConfirmed?: (isConfirmed: boolean) => void;
 }
 
-export const useAddressAutocomplete = ({ isApiLoaded, onAddressSelect }: UseAddressAutocompleteProps) => {
+export const useAddressAutocomplete = ({ 
+  isApiLoaded, 
+  onAddressSelect, 
+  onAddressConfirmed 
+}: UseAddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +44,7 @@ export const useAddressAutocomplete = ({ isApiLoaded, onAddressSelect }: UseAddr
       
       if (!place.geometry?.location) {
         console.error('❌ Nessuna posizione trovata per questo indirizzo');
+        onAddressConfirmed?.(false);
         return;
       }
 
@@ -78,10 +84,16 @@ export const useAddressAutocomplete = ({ isApiLoaded, onAddressSelect }: UseAddr
 
       console.log('✅ AddressAutocomplete - Dati estratti:', addressData);
 
+      // Notifica che l'indirizzo è stato confermato
+      onAddressConfirmed?.(true);
+
       // Invia i dati al form padre
       setTimeout(() => {
         onAddressSelect(addressData);
-        console.log('📤 AddressAutocomplete - Dati inviati al form padre');
+        console.log('📤 AddressAutocomplete - Dati inviati al form padre con coordinate:', {
+          lat: addressData.latitude,
+          lng: addressData.longitude
+        });
       }, 0);
       
       setIsLoading(false);
@@ -94,7 +106,7 @@ export const useAddressAutocomplete = ({ isApiLoaded, onAddressSelect }: UseAddr
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
       }
     };
-  }, [isApiLoaded, onAddressSelect]);
+  }, [isApiLoaded, onAddressSelect, onAddressConfirmed]);
 
   return { inputRef, isLoading };
 };
