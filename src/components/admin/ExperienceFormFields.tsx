@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -6,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MACRO_AREAS, getCategoriesForMacroArea, AVAILABLE_TAGS } from '@/config/categoryMapping';
+import AddressAutocomplete from '@/components/ui/AddressAutocomplete';
 
 interface ExperienceFormFieldsProps {
   formData: any;
@@ -44,6 +46,17 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
       : currentTags.filter((t: string) => t !== tag);
     
     onInputChange('tags', newTags);
+  };
+
+  const handleAddressSelect = (addressData: any) => {
+    onInputChange('address', addressData.address);
+    onInputChange('latitude', addressData.latitude.toString());
+    onInputChange('longitude', addressData.longitude.toString());
+    
+    // Aggiorna anche il nome della location se non è già impostato
+    if (!formData.location_name && addressData.city) {
+      onInputChange('location_name', addressData.city);
+    }
   };
 
   const isEvent = formData.poi_type === 'event';
@@ -169,6 +182,17 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
         </div>
       )}
 
+      {/* Indirizzo con autocompletamento - sostituisce i campi separati */}
+      <div>
+        <AddressAutocomplete
+          label="Indirizzo *"
+          placeholder="Inizia a digitare l'indirizzo..."
+          value={formData.address || ''}
+          onAddressSelect={handleAddressSelect}
+          required
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <Label htmlFor="location_name">Nome Location</Label>
@@ -176,7 +200,7 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
             id="location_name"
             value={formData.location_name}
             onChange={(e) => onInputChange('location_name', e.target.value)}
-            placeholder="es. Teatro Comunale"
+            placeholder="es. Centro Storico, Marina"
           />
         </div>
         

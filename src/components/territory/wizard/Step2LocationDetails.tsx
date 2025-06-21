@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AVAILABLE_TAGS } from '@/config/categoryMapping';
+import AddressAutocomplete from '@/components/ui/AddressAutocomplete';
 
 interface Step2LocationDetailsProps {
   formData: {
@@ -24,6 +25,17 @@ const Step2LocationDetails: React.FC<Step2LocationDetailsProps> = ({
   onInputChange, 
   onTagChange 
 }) => {
+  const handleAddressSelect = (addressData: any) => {
+    onInputChange('address', addressData.address);
+    onInputChange('latitude', addressData.latitude.toString());
+    onInputChange('longitude', addressData.longitude.toString());
+    
+    // Aggiorna anche il nome della location se non è già impostato
+    if (!formData.location_name && addressData.city) {
+      onInputChange('location_name', addressData.city);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -32,48 +44,23 @@ const Step2LocationDetails: React.FC<Step2LocationDetailsProps> = ({
       </div>
 
       <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="address">Indirizzo</Label>
-          <Input
-            id="address"
-            value={formData.address}
-            onChange={(e) => onInputChange('address', e.target.value)}
-            placeholder="Via, Città, Provincia (es. Via Roma 1, Rimini, RN)"
-          />
-        </div>
+        {/* Indirizzo con autocompletamento */}
+        <AddressAutocomplete
+          label="Indirizzo *"
+          placeholder="Via, Città, Provincia (es. Via Roma 1, Rimini, RN)"
+          value={formData.address || ''}
+          onAddressSelect={handleAddressSelect}
+          required
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="location_name">Nome Località</Label>
-            <Input
-              id="location_name"
-              value={formData.location_name}
-              onChange={(e) => onInputChange('location_name', e.target.value)}
-              placeholder="Es. Centro Storico, Marina"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="latitude">Latitudine</Label>
-            <Input
-              id="latitude"
-              type="number"
-              step="any"
-              value={formData.latitude}
-              onChange={(e) => onInputChange('latitude', e.target.value)}
-              placeholder="44.0646"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="longitude">Longitudine</Label>
-            <Input
-              id="longitude"
-              type="number"
-              step="any"
-              value={formData.longitude}
-              onChange={(e) => onInputChange('longitude', e.target.value)}
-              placeholder="12.5736"
-            />
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="location_name">Nome Località</Label>
+          <Input
+            id="location_name"
+            value={formData.location_name}
+            onChange={(e) => onInputChange('location_name', e.target.value)}
+            placeholder="Es. Centro Storico, Marina"
+          />
         </div>
 
         <div className="space-y-2">
