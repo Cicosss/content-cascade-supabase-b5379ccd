@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Upload, Image, Video, FileImage, Loader2, AlertTriangle, Star } from 'lucide-react';
+import { Upload, Image, Video, FileImage, Loader2, AlertTriangle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
@@ -28,7 +28,6 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
   const [uploadedImages, setUploadedImages] = useState<string[]>(images);
   const { uploadImage, isUploading } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const coverFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (files: FileList | null) => {
     if (!files) return;
@@ -50,16 +49,10 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
     
     setUploadedImages(newImages);
     onImagesChange(newImages);
-  };
-
-  const handleCoverImageUpload = async (files: FileList | null) => {
-    if (!files || files.length === 0) return;
     
-    const file = files[0];
-    const uploadedUrl = await uploadImage(file);
-    
-    if (uploadedUrl) {
-      onCoverImageChange(uploadedUrl);
+    // Set first image as cover if no cover is set
+    if (newImages.length > 0 && !coverImage) {
+      onCoverImageChange(newImages[0]);
     }
   };
 
@@ -67,18 +60,39 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
     fileInputRef.current?.click();
   };
 
-  const handleCoverButtonClick = () => {
-    coverFileInputRef.current?.click();
-  };
-
   const removeImage = (index: number) => {
     const newImages = uploadedImages.filter((_, i) => i !== index);
     setUploadedImages(newImages);
     onImagesChange(newImages);
+    
+    // Update cover image if the first image was removed
+    if (index === 0 && newImages.length > 0) {
+      onCoverImageChange(newImages[0]);
+    } else if (newImages.length === 0) {
+      onCoverImageChange('');
+    }
   };
 
   return (
     <div className="space-y-6">
+      {/* Banner informativo */}
+      <Card className="border-blue-200 bg-blue-50">
+        <CardContent className="pt-4">
+          <div className="flex items-start gap-3">
+            <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+            <div>
+              <h4 className="font-semibold text-blue-800 mb-1">📸 Immagine di Copertina Automatica</h4>
+              <p className="text-sm text-blue-700 mb-2">
+                <strong>La prima immagine che carichi verrà automaticamente usata come immagine di copertina</strong> e sarà visualizzata più grande rispetto alle altre.
+              </p>
+              <p className="text-xs text-blue-600">
+                💡 Assicurati che la prima immagine sia quella più rappresentativa e attraente del tuo POI!
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Alert sull'importanza delle immagini */}
       <Card className="border-red-200 bg-red-50">
         <CardContent className="pt-4">
@@ -95,82 +109,14 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
         </CardContent>
       </Card>
 
-      {/* Immagine di Copertina - OBBLIGATORIA */}
-      <div className="space-y-4">
-        <Label className="text-base font-semibold flex items-center gap-2">
-          <Star className="h-5 w-5 text-yellow-500" />
-          Immagine di Copertina (OBBLIGATORIA)
-        </Label>
-        
-        <div className="border-2 border-dashed border-yellow-300 bg-yellow-50 rounded-lg p-6 text-center hover:border-yellow-400 transition-colors">
-          <Star className="h-12 w-12 text-yellow-500 mx-auto mb-3" />
-          <div className="text-lg font-medium text-yellow-800 mb-1">
-            Carica l'immagine principale del tuo POI
-          </div>
-          <div className="text-sm text-yellow-700 mb-3">
-            Questa sarà la prima immagine che vedranno i visitatori
-          </div>
-          <Button 
-            type="button" 
-            variant="outline" 
-            className="mt-3 border-yellow-500 text-yellow-700 hover:bg-yellow-100"
-            disabled={isUploading}
-            onClick={handleCoverButtonClick}
-          >
-            {isUploading ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Caricamento...
-              </>
-            ) : (
-              <>
-                <Upload className="h-4 w-4 mr-2" />
-                {coverImage ? 'Cambia Copertina' : 'Seleziona Copertina'}
-              </>
-            )}
-          </Button>
-          <Input
-            ref={coverFileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleCoverImageUpload(e.target.files)}
-            disabled={isUploading}
-            className="hidden"
-          />
-        </div>
-
-        {/* Anteprima immagine di copertina */}
-        {coverImage && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-green-700">✓ Immagine di Copertina Caricata</h4>
-            <div className="relative">
-              <img
-                src={coverImage}
-                alt="Immagine di copertina"
-                className="w-full h-48 object-cover rounded border-2 border-green-200"
-              />
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                className="absolute top-2 right-2 h-8 w-8 p-0"
-                onClick={() => onCoverImageChange('')}
-              >
-                ×
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Upload Immagini Galleria */}
+      {/* Upload Immagini */}
       <div className="space-y-4">
         <Label className="text-base font-semibold flex items-center gap-2">
           <Image className="h-5 w-5" />
-          Galleria Immagini (max 4)
+          Galleria Immagini (max 4) - OBBLIGATORIO
         </Label>
         <p className="text-sm text-gray-600">
-          Queste immagini faranno parte della galleria fotografica del POI
+          La prima immagine sarà automaticamente usata come copertina
         </p>
 
         {/* Area di upload */}
@@ -222,7 +168,9 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
                   <img
                     src={url}
                     alt={`Immagine ${index + 1}`}
-                    className="w-full h-24 object-cover rounded border"
+                    className={`w-full object-cover rounded border ${
+                      index === 0 ? 'h-32 border-2 border-blue-300' : 'h-24'
+                    }`}
                   />
                   <Button
                     type="button"
@@ -233,6 +181,11 @@ const TerritoryMediaUploader: React.FC<TerritoryMediaUploaderProps> = ({
                   >
                     ×
                   </Button>
+                  {index === 0 && (
+                    <div className="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                      🌟 Copertina
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

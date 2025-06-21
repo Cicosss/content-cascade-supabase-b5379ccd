@@ -83,8 +83,8 @@ const Step3ScheduleMedia: React.FC<Step3ScheduleMediaProps> = ({ formData, onInp
         <TerritoryMediaUploader
           images={formData.images || []}
           onImagesChange={(images) => onInputChange('images', images)}
-          coverImage={formData.cover_image || ''}
-          onCoverImageChange={(coverImage) => onInputChange('cover_image', coverImage)}
+          coverImage={formData.images?.[0] || ''}
+          onCoverImageChange={() => {}} // Non usato più, mantenuto per compatibilità
           videoUrl={formData.video_url || ''}
           onVideoUrlChange={(videoUrl) => onInputChange('video_url', videoUrl)}
         />

@@ -32,8 +32,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     location_name: '',
     organizer_info: '',
     images: [] as string[],
-    video_url: '',
-    cover_image: ''
+    video_url: ''
   });
 
   const handleInputChange = (field: string, value: string | string[]) => {
@@ -48,10 +47,6 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     setFormData(prev => ({ ...prev, video_url: url }));
   };
 
-  const handleCoverImageChange = (url: string) => {
-    setFormData(prev => ({ ...prev, cover_image: url }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -62,8 +57,8 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         return;
       }
 
-      if (!formData.cover_image) {
-        toast.error('L\'immagine di copertina è obbligatoria');
+      if (!formData.images || formData.images.length === 0) {
+        toast.error('È necessario caricare almeno una immagine (sarà usata come copertina)');
         return;
       }
 
@@ -88,7 +83,6 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         organizer_info: formData.organizer_info,
         images: formData.images,
         video_url: formData.video_url,
-        cover_image: formData.cover_image,
         status: 'approved'
       };
 
@@ -125,8 +119,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         location_name: '',
         organizer_info: '',
         images: [],
-        video_url: '',
-        cover_image: ''
+        video_url: ''
       });
 
       onExperienceAdded();
@@ -148,10 +141,8 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
       <MediaUploader
         images={formData.images}
         videoUrl={formData.video_url}
-        coverImage={formData.cover_image}
         onImagesChange={handleImagesChange}
         onVideoUrlChange={handleVideoUrlChange}
-        onCoverImageChange={handleCoverImageChange}
       />
 
       <Button type="submit" disabled={loading} className="w-full">
