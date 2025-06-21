@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LocationProvider } from '@/contexts/LocationContext';
@@ -10,20 +10,12 @@ import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import GoogleMap from '@/components/dashboard/GoogleMap';
 import { Card } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
-import { DateRange } from 'react-day-picker';
+import { useURLFilters } from '@/hooks/useURLFilters';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  
-  const [filters, setFilters] = useState({
-    categories: ['tutte'],
-    zone: 'tuttalromagna',
-    period: undefined as DateRange | undefined,
-    timeSlots: [],
-    budgets: [],
-    specialPreferences: []
-  });
+  const { filters, updateFilters } = useURLFilters();
 
   // Transform filters for GoogleMap component
   const transformedFiltersForMap = {
@@ -85,7 +77,7 @@ const Dashboard = () => {
                 </div>
               </Card>
 
-              <ExperienceFilters filters={filters} setFilters={setFilters} />
+              <ExperienceFilters filters={filters} setFilters={updateFilters} />
             </div>
 
             <div className="space-y-6">
@@ -96,7 +88,7 @@ const Dashboard = () => {
           <div className="mt-12">
             <PersonalizedContent 
               filters={filters} 
-              onUpdateFilters={setFilters}
+              onUpdateFilters={updateFilters}
             />
           </div>
         </div>
