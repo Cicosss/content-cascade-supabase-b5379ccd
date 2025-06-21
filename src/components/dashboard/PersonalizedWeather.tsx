@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Wind, Droplets, MapPin, Crosshair } from 'lucide-react';
@@ -95,7 +94,7 @@ const PersonalizedWeather: React.FC = () => {
           <AnimatedWeatherIcon 
             condition={weather.condition} 
             iconCode={weather.icon}
-            className="h-8 w-8"
+            className="h-12 w-12"
           />
         </div>
         
