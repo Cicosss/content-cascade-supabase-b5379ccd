@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -57,10 +56,10 @@ export const useApprovedExperiences = () => {
         return;
       }
 
-      // Transform the data to match our interface (ensuring website_url is present)
+      // Transform the data to match our interface
       const transformedData = (data || []).map(item => ({
         ...item,
-        website_url: item.website_url || item.video_url || '', // Fallback to video_url if website_url is null
+        website_url: item.website_url || '', // Use website_url directly from the database
         poi_type: item.poi_type || 'place',
         opening_hours: item.opening_hours || ''
       }));
