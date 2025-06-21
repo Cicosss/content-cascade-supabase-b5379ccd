@@ -15,7 +15,7 @@ import { useURLFilters } from '@/hooks/useURLFilters';
 const Dashboard = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const { filters, updateFilters } = useURLFilters();
+  const { filters, updateFilters, updateSortBy } = useURLFilters();
 
   // Transform filters for GoogleMap component
   const transformedFiltersForMap = {
@@ -89,6 +89,7 @@ const Dashboard = () => {
             <PersonalizedContent 
               filters={filters} 
               onUpdateFilters={updateFilters}
+              onUpdateSortBy={updateSortBy}
             />
           </div>
         </div>

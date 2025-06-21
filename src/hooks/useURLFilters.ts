@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { DateRange } from 'react-day-picker';
 
+export type SortOption = 'recommended' | 'popularity' | 'distance' | 'price_low' | 'price_high' | 'chronological';
+
 interface Filters {
   categories: string[];
   zone: string;
@@ -10,10 +12,25 @@ interface Filters {
   timeSlots?: string[];
   budgets?: string[];
   specialPreferences?: string[];
+  sortBy: SortOption;
 }
 
 export const useURLFilters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Funzione per determinare l'ordinamento predefinito basato sui filtri
+  const getDefaultSortBy = useCallback((filters: Partial<Filters>): SortOption => {
+    // Se c'è un periodo selezionato (eventi per data), ordina cronologicamente
+    if (filters.period?.from) {
+      return 'chronological';
+    }
+    
+    // Se l'utente sta cercando sulla mappa, ordina per distanza
+    // Nota: questa logica sarà implementata quando si integra con la mappa
+    
+    // Default: popolarità
+    return 'popularity';
+  }, []);
 
   // Funzione per decodificare i filtri dall'URL
   const decodeFiltersFromURL = useCallback((): Filters => {
@@ -35,15 +52,22 @@ export const useURLFilters = () => {
       };
     }
 
+    // Decodifica ordinamento con logica di default
+    const urlSortBy = searchParams.get('sortBy') as SortOption;
+    const tempFilters = { categories, zone, period, timeSlots, budgets, specialPreferences };
+    const defaultSortBy = getDefaultSortBy(tempFilters);
+    const sortBy = urlSortBy || defaultSortBy;
+
     return {
       categories,
       zone,
       period,
       timeSlots,
       budgets,
-      specialPreferences
+      specialPreferences,
+      sortBy
     };
-  }, [searchParams]);
+  }, [searchParams, getDefaultSortBy]);
 
   // Funzione per codificare i filtri nell'URL
   const encodeFiltersToURL = useCallback((filters: Filters) => {
@@ -77,8 +101,14 @@ export const useURLFilters = () => {
       params.set('specialPreferences', filters.specialPreferences.join(','));
     }
 
+    // Aggiungi ordinamento solo se diverso dal default
+    const defaultSortBy = getDefaultSortBy(filters);
+    if (filters.sortBy && filters.sortBy !== defaultSortBy) {
+      params.set('sortBy', filters.sortBy);
+    }
+
     setSearchParams(params, { replace: true });
-  }, [setSearchParams]);
+  }, [setSearchParams, getDefaultSortBy]);
 
   // Inizializza i filtri dall'URL al primo caricamento
   const [filters, setFilters] = useState<Filters>(() => decodeFiltersFromURL());
@@ -95,8 +125,15 @@ export const useURLFilters = () => {
     encodeFiltersToURL(newFilters);
   }, [encodeFiltersToURL]);
 
+  // Funzione per aggiornare solo l'ordinamento
+  const updateSortBy = useCallback((sortBy: SortOption) => {
+    const newFilters = { ...filters, sortBy };
+    updateFilters(newFilters);
+  }, [filters, updateFilters]);
+
   return {
     filters,
-    updateFilters
+    updateFilters,
+    updateSortBy
   };
 };

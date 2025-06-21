@@ -7,6 +7,7 @@ import ExperiencesCarousel from './content/ExperiencesCarousel';
 import EventsCarousel from './content/EventsCarousel';
 import HelpBanner from './content/HelpBanner';
 import AppliedFilters from './AppliedFilters';
+import SortingDropdown, { SortOption } from './SortingDropdown';
 import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
 import { transformPoisToRestaurants, transformPoisToExperiences, transformEventsToCards } from '@/utils/contentTransformers';
 import { fallbackRestaurants, fallbackExperiences, fallbackEvents } from './content/FallbackData';
@@ -20,11 +21,17 @@ interface PersonalizedContentProps {
     timeSlots?: string[];
     budgets?: string[];
     specialPreferences?: string[];
+    sortBy: SortOption;
   };
   onUpdateFilters?: (filters: any) => void;
+  onUpdateSortBy?: (sortBy: SortOption) => void;
 }
 
-const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUpdateFilters }) => {
+const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ 
+  filters, 
+  onUpdateFilters, 
+  onUpdateSortBy 
+}) => {
   // Transform filters for usePersonalizedContent hook
   const transformedFilters = {
     zone: filters.zone,
@@ -45,6 +52,10 @@ const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUp
   const displayRestaurants = restaurants.length > 0 ? restaurants : fallbackRestaurants;
   const displayExperiences = experiences.length > 0 ? experiences : fallbackExperiences;
   const displayEvents = formattedEvents.length > 0 ? formattedEvents : fallbackEvents;
+
+  // Determine which sorting options to show
+  const showDistanceOption = filters.zone !== 'tuttalromagna'; // Show distance when specific zone is selected
+  const showChronologicalOption = !!filters.period?.from; // Show chronological when date is selected
 
   const handleRemoveFilter = (filterType: string, value?: string) => {
     if (!onUpdateFilters) return;
@@ -88,7 +99,8 @@ const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUp
           period: undefined,
           timeSlots: [],
           budgets: [],
-          specialPreferences: []
+          specialPreferences: [],
+          sortBy: 'popularity'
         };
         break;
     }
@@ -99,6 +111,13 @@ const PersonalizedContent: React.FC<PersonalizedContentProps> = ({ filters, onUp
   return (
     <div className="space-y-16">
       <AppliedFilters filters={filters} onRemoveFilter={handleRemoveFilter} />
+      
+      <SortingDropdown
+        sortBy={filters.sortBy}
+        onSortChange={onUpdateSortBy || (() => {})}
+        showDistanceOption={showDistanceOption}
+        showChronologicalOption={showChronologicalOption}
+      />
       
       <RestaurantsCarousel restaurants={displayRestaurants} filters={transformedFilters} />
       
