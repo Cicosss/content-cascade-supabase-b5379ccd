@@ -2,10 +2,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
-import { Loader2, MapPin, Navigation, ExternalLink } from 'lucide-react';
+import { Loader2, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import FavoriteButton from '@/components/FavoriteButton';
+import POIPreviewCard from './POIPreviewCard';
 
 interface GoogleMapProps {
   filters: {
@@ -26,7 +25,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
-  const infoWindowRef = useRef<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedPOI, setSelectedPOI] = useState<any>(null);
   
@@ -81,9 +79,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
       zoomControl: true,
     });
 
-    // Info window per i marker
-    infoWindowRef.current = new window.google.maps.InfoWindow();
-
     console.log('🗺️ Google Maps inizializzata');
   }, [isLoaded, userLocation]);
 
@@ -110,7 +105,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
         icon: {
           url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="12" fill="#3B82F6" stroke="white" stroke-width="3"/>
+              <circle cx="16" cy="16" r="12" fill="#1e3a8a" stroke="white" stroke-width="3"/>
               <circle cx="16" cy="16" r="4" fill="white"/>
             </svg>
           `),
@@ -121,14 +116,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
 
       marker.addListener('click', () => {
         setSelectedPOI(poi);
-        infoWindowRef.current.setContent(`
-          <div style="padding: 10px; max-width: 250px;">
-            <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: bold;">${poi.name}</h3>
-            <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">${poi.description}</p>
-            <p style="margin: 0; color: #999; font-size: 12px;">📍 ${poi.address}</p>
-          </div>
-        `);
-        infoWindowRef.current.open(mapInstanceRef.current, marker);
       });
 
       markersRef.current.push(marker);
@@ -180,6 +167,10 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
     window.open(mapsUrl, '_blank');
   };
 
+  const handleClosePreview = () => {
+    setSelectedPOI(null);
+  };
+
   if (!isLoaded) {
     return (
       <div className="h-full flex items-center justify-center bg-slate-50 rounded-xl">
@@ -205,7 +196,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
         </div>
       )}
       
-      {/* Controlli mappa - spostato in alto a sinistra */}
+      {/* Controlli mappa */}
       <div className="absolute top-4 left-4 space-y-2">
         <Button
           size="sm"
@@ -222,53 +213,15 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
         </Button>
       </div>
 
-      {/* Card POI selezionato */}
+      {/* POI Preview Card */}
       {selectedPOI && (
-        <Card className="absolute bottom-4 left-4 right-4 max-w-sm mx-auto bg-white/95 backdrop-blur-sm shadow-xl">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-blue-600" />
-              {selectedPOI.name}
-              <div className="ml-auto">
-                <FavoriteButton 
-                  itemType="experience"
-                  itemId={selectedPOI.id}
-                  itemData={{
-                    name: selectedPOI.name,
-                    description: selectedPOI.description,
-                    address: selectedPOI.address,
-                    category: selectedPOI.category,
-                    poi_type: selectedPOI.poi_type
-                  }}
-                  className="relative top-0 right-0"
-                  size="md"
-                />
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <p className="text-slate-600 text-sm mb-2">{selectedPOI.description}</p>
-            <p className="text-slate-500 text-xs mb-4">📍 {selectedPOI.address}</p>
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                onClick={() => handleGetDirections(selectedPOI)}
-                className="flex-1 bg-green-600 hover:bg-green-700"
-              >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                Raggiungi
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setSelectedPOI(null)}
-                className="flex-1"
-              >
-                Chiudi
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+          <POIPreviewCard
+            poi={selectedPOI}
+            onClose={handleClosePreview}
+            onGetDirections={handleGetDirections}
+          />
+        </div>
       )}
     </div>
   );
