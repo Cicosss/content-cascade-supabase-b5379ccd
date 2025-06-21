@@ -40,8 +40,19 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   const { inputRef, isLoading } = useAddressAutocomplete({ 
     isApiLoaded, 
     onAddressSelect: (addressData) => {
-      console.log('🔄 AddressAutocomplete - Ricevuti dati da Google:', addressData);
+      console.log('🔄 AddressAutocomplete - Ricevuti dati da Google:', {
+        address: addressData.address,
+        lat: addressData.latitude,
+        lng: addressData.longitude
+      });
+      
+      // CORREZIONE: Aggiornamento sincrono dell'input value
+      setInputValue(addressData.address);
+      
+      // Propaga i dati al componente padre
       onAddressSelect(addressData);
+      
+      console.log('✅ AddressAutocomplete - Dati propagati al form');
     },
     onAddressConfirmed: (isConfirmed) => {
       console.log('✅ AddressAutocomplete - Stato conferma aggiornato:', isConfirmed);
@@ -51,21 +62,28 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
 
   // Sincronizza il valore interno con il prop value
   useEffect(() => {
-    setInputValue(value);
-    // Reset dello stato di conferma se l'indirizzo cambia dall'esterno
     if (value !== inputValue) {
-      setIsAddressConfirmed(false);
+      console.log('🔄 AddressAutocomplete - Sincronizzazione value:', { from: inputValue, to: value });
+      setInputValue(value);
+      
+      // Se il valore viene modificato dall'esterno e non corrisponde all'input,
+      // resetta lo stato di conferma
+      if (value === '') {
+        setIsAddressConfirmed(false);
+        console.log('🔄 AddressAutocomplete - Reset conferma per valore vuoto');
+      }
     }
-  }, [value]);
+  }, [value, inputValue]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    console.log('🔄 AddressAutocomplete - Input change:', newValue);
     setInputValue(newValue);
     
     // Se l'utente digita manualmente, resetta lo stato di conferma
-    if (newValue !== value) {
+    if (isAddressConfirmed) {
       setIsAddressConfirmed(false);
-      console.log('🔄 AddressAutocomplete - Input manuale, reset conferma indirizzo');
+      console.log('🔄 AddressAutocomplete - Reset conferma per input manuale');
     }
   };
 

@@ -21,38 +21,43 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
   const hasValidCoordinates = formData.latitude && formData.longitude && formData.latitude !== '' && formData.longitude !== '';
 
   const handleAddressSelect = (addressData: any) => {
-    console.log('📍 LocationFields - Ricevuti dati indirizzo:', addressData);
-    console.log('📍 LocationFields - Coordinate ricevute:', { lat: addressData.latitude, lng: addressData.longitude });
+    console.log('📍 LocationFields - Ricevuti dati indirizzo:', {
+      address: addressData.address,
+      lat: addressData.latitude,
+      lng: addressData.longitude,
+      city: addressData.city
+    });
     
-    // Assicuriamoci che le coordinate siano stringhe valide
+    // CORREZIONE: Aggiornamenti sincroni e batch per evitare race conditions
     const latStr = addressData.latitude?.toString() || '';
     const lngStr = addressData.longitude?.toString() || '';
     
-    console.log('📍 LocationFields - Coordinate come stringhe:', { lat: latStr, lng: lngStr });
+    console.log('📍 LocationFields - Preparazione aggiornamenti batch:', {
+      address: addressData.address,
+      lat: latStr,
+      lng: lngStr
+    });
     
-    // Aggiorna tutti i campi correlati all'indirizzo in sequenza
+    // CORREZIONE: Aggiornamenti sincroni immediati
     onInputChange('address', addressData.address || '');
+    onInputChange('latitude', latStr);
+    onInputChange('longitude', lngStr);
     
-    // Aggiorna le coordinate con un piccolo delay per garantire l'ordine
-    setTimeout(() => {
-      onInputChange('latitude', latStr);
-      console.log('🔄 LocationFields - Latitude aggiornata:', latStr);
-    }, 10);
-    
-    setTimeout(() => {
-      onInputChange('longitude', lngStr);
-      console.log('🔄 LocationFields - Longitude aggiornata:', lngStr);
-    }, 20);
-    
-    // Aggiorna anche il nome della location se non è già impostato e abbiamo una città
+    // Aggiorna il nome della location se necessario
     if (!formData.location_name && addressData.city) {
-      setTimeout(() => {
-        onInputChange('location_name', addressData.city);
-        console.log('🔄 LocationFields - Location name aggiornato:', addressData.city);
-      }, 30);
+      onInputChange('location_name', addressData.city);
+      console.log('📍 LocationFields - Location name aggiornato:', addressData.city);
     }
     
-    console.log('✅ LocationFields - Processo di aggiornamento completato');
+    console.log('✅ LocationFields - Tutti gli aggiornamenti completati');
+    
+    // Debug: verifica immediata dello stato
+    console.log('🔍 LocationFields - Verifica stato dopo aggiornamenti:', {
+      currentLat: formData.latitude,
+      currentLng: formData.longitude,
+      expectedLat: latStr,
+      expectedLng: lngStr
+    });
   };
 
   return (
@@ -86,10 +91,13 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
           </div>
         )}
 
-        {/* Debug info - rimuovi in produzione */}
+        {/* Debug info migliorato - rimuovi in produzione */}
         {process.env.NODE_ENV === 'development' && (
-          <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded">
-            Debug: lat="{formData.latitude}" lng="{formData.longitude}" hasCoords={hasValidCoordinates.toString()}
+          <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded space-y-1">
+            <div>Debug address: "{formData.address}"</div>
+            <div>Debug lat: "{formData.latitude}" (valid: {!!(formData.latitude && formData.latitude !== '') ? 'true' : 'false'})</div>
+            <div>Debug lng: "{formData.longitude}" (valid: {!!(formData.longitude && formData.longitude !== '') ? 'true' : 'false'})</div>
+            <div>Debug hasCoords: {hasValidCoordinates.toString()}</div>
           </div>
         )}
       </div>

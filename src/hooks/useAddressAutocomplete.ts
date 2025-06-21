@@ -40,7 +40,7 @@ export const useAddressAutocomplete = ({
     const handlePlaceSelect = () => {
       const place = autocomplete.getPlace();
       
-      console.log('🗺️ Google Places - Luogo selezionato:', place);
+      console.log('🗺️ Google Places - Selezione luogo:', place);
       
       if (!place.geometry?.location) {
         console.error('❌ Nessuna posizione trovata per questo indirizzo');
@@ -49,6 +49,7 @@ export const useAddressAutocomplete = ({
       }
 
       setIsLoading(true);
+      console.log('🔄 useAddressAutocomplete - Inizio elaborazione indirizzo');
 
       // Estrai i dati dall'address_components
       let city = '';
@@ -82,20 +83,22 @@ export const useAddressAutocomplete = ({
         country
       };
 
-      console.log('✅ AddressAutocomplete - Dati estratti:', addressData);
+      console.log('✅ useAddressAutocomplete - Dati estratti:', {
+        address: addressData.address,
+        lat: addressData.latitude,
+        lng: addressData.longitude,
+        city: addressData.city
+      });
 
-      // Notifica che l'indirizzo è stato confermato
+      // CORREZIONE: Prima confermiamo l'indirizzo, poi inviamo i dati
+      console.log('🔄 useAddressAutocomplete - Confermo indirizzo...');
       onAddressConfirmed?.(true);
 
-      // Invia i dati al form padre
-      setTimeout(() => {
-        onAddressSelect(addressData);
-        console.log('📤 AddressAutocomplete - Dati inviati al form padre con coordinate:', {
-          lat: addressData.latitude,
-          lng: addressData.longitude
-        });
-      }, 0);
+      // CORREZIONE: Invio sincrono dei dati (no setTimeout)
+      console.log('🔄 useAddressAutocomplete - Invio dati al form...');
+      onAddressSelect(addressData);
       
+      console.log('✅ useAddressAutocomplete - Processo completato con successo');
       setIsLoading(false);
     };
 
