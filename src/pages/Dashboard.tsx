@@ -17,7 +17,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { filters, updateFilters, updateSortBy } = useURLFilters();
 
-  // Transform filters for GoogleMap component
   const transformedFiltersForMap = {
     zone: filters.zone,
     withChildren: 'no',

@@ -19,20 +19,18 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
   const sectionRef = useRef<HTMLDivElement>(null);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
-  // Intersection Observer per caricamento lazy
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
         if (entry.isIntersecting && !hasBeenVisible) {
-          console.log('🔍 Sezione "Nei Dintorni" è diventata visibile, caricamento POI...');
           setHasBeenVisible(true);
           fetchNearbyPOIs(currentPOI);
         }
       },
       {
-        threshold: 0.1, // Trigger when 10% of the section is visible
-        rootMargin: '50px' // Start loading 50px before the section is visible
+        threshold: 0.1,
+        rootMargin: '50px'
       }
     );
 
@@ -78,7 +76,6 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
           )}
         </div>
 
-        {/* Loading State */}
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[1, 2, 3].map((i) => (
@@ -87,7 +84,6 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
           </div>
         )}
 
-        {/* Error State */}
         {error && !isLoading && (
           <div className="text-center py-8">
             <p className="text-gray-600 mb-4">Impossibile caricare i suggerimenti.</p>
@@ -100,7 +96,6 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
           </div>
         )}
 
-        {/* Success State */}
         {!isLoading && !error && nearbyPOIs.length > 0 && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -126,7 +121,6 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({ currentPOI }) => 
           </>
         )}
 
-        {/* Empty State */}
         {!isLoading && !error && nearbyPOIs.length === 0 && hasBeenVisible && (
           <div className="text-center py-8">
             <p className="text-gray-600">Nessun luogo trovato nei dintorni.</p>

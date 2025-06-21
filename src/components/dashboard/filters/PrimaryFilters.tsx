@@ -18,12 +18,10 @@ const PrimaryFilters: React.FC<PrimaryFiltersProps> = ({ filters, updateFilter }
   return (
     <div className="space-y-8">
       <FilterHeader />
-      
       <CategoryFilters 
         categories={filters.categories}
         onCategoriesChange={(categories) => updateFilter('categories', categories)}
       />
-      
       <ZonePeriodFilters 
         zone={filters.zone}
         period={filters.period}

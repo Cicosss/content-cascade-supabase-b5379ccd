@@ -37,8 +37,6 @@ const POIDetail: React.FC = () => {
       if (!id) return;
 
       try {
-        console.log('🔍 Caricamento dettagli POI:', id);
-        
         const { data, error } = await supabase
           .from('points_of_interest')
           .select('*')
@@ -47,15 +45,12 @@ const POIDetail: React.FC = () => {
           .single();
 
         if (error) {
-          console.error('❌ Errore nel caricamento POI:', error);
           setError('POI non trovato');
           return;
         }
 
-        console.log('✅ POI caricato:', data.name);
         setPoi(data);
       } catch (error) {
-        console.error('❌ Errore inaspettato:', error);
         setError('Errore nel caricamento del POI');
       } finally {
         setIsLoading(false);
@@ -102,7 +97,6 @@ const POIDetail: React.FC = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
-        {/* Back Button */}
         <div className="bg-white border-b">
           <div className="container mx-auto px-4 py-4">
             <button
@@ -115,7 +109,6 @@ const POIDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Hero Section */}
         <div className="bg-white">
           <div className="container mx-auto px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -201,7 +194,6 @@ const POIDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Nearby POIs Section - Caricamento Lazy */}
         <NearbyPOIsSection 
           currentPOI={{
             id: poi.id,

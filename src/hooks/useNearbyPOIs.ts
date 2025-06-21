@@ -32,10 +32,8 @@ export const useNearbyPOIs = () => {
     
     setIsLoading(true);
     setError(null);
-    console.log('🔍 Caricamento POI nei dintorni di:', currentPOI.id);
 
     try {
-      // Fetch all POIs except the current one
       const { data: pois, error } = await supabase
         .from('points_of_interest')
         .select('id, name, description, category, latitude, longitude, address, images, target_audience')
@@ -43,21 +41,17 @@ export const useNearbyPOIs = () => {
         .eq('status', 'approved');
 
       if (error) {
-        console.error('❌ Errore nel caricamento POI:', error);
         setError('Errore nel caricamento dei POI vicini');
         return;
       }
 
       if (!pois || pois.length === 0) {
-        console.log('ℹ️ Nessun POI trovato nel database');
         setNearbyPOIs([]);
         return;
       }
 
-      // Calculate distances and filter POIs within 2km
       const poisWithDistance: NearbyPOI[] = pois
         .map(poi => {
-          // Validate coordinates
           if (!poi.latitude || !poi.longitude) {
             return null;
           }
@@ -73,16 +67,14 @@ export const useNearbyPOIs = () => {
             distance
           };
         })
-        .filter((poi): poi is NearbyPOI => poi !== null) // Filter out null values
-        .filter(poi => poi.distance <= 2) // Within 2km
-        .sort((a, b) => a.distance - b.distance) // Sort by distance
-        .slice(0, 3); // Take only first 3
+        .filter((poi): poi is NearbyPOI => poi !== null)
+        .filter(poi => poi.distance <= 2)
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 3);
 
-      console.log(`✅ Trovati ${poisWithDistance.length} POI nei dintorni (entro 2km)`);
       setNearbyPOIs(poisWithDistance);
 
     } catch (error) {
-      console.error('❌ Errore inaspettato:', error);
       setError('Errore inaspettato nel caricamento');
       setNearbyPOIs([]);
     } finally {

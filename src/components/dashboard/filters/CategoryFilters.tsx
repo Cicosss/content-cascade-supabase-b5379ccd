@@ -27,6 +27,9 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
   };
 
   const isAllSelected = categories.includes('tutte');
+  const buttonClass = "rounded-full px-6 py-2 font-medium transition-all";
+  const selectedClass = "bg-blue-900 hover:bg-blue-800 text-white shadow-lg";
+  const unselectedClass = "bg-transparent text-blue-900 border border-blue-900 hover:bg-blue-50";
 
   return (
     <div className="space-y-4">
@@ -36,11 +39,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
           size="sm"
           variant={isAllSelected ? "default" : "outline"}
           onClick={() => toggleCategory('Tutte')}
-          className={`rounded-full px-6 py-2 font-medium transition-all ${
-            isAllSelected
-              ? 'bg-blue-900 hover:bg-blue-800 text-white shadow-lg'
-              : 'bg-transparent text-blue-900 border border-blue-900 hover:bg-blue-50'
-          }`}
+          className={`${buttonClass} ${isAllSelected ? selectedClass : unselectedClass}`}
         >
           Tutte
         </Button>
@@ -50,10 +49,8 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
             size="sm"
             variant={categories.includes(category) ? "default" : "outline"}
             onClick={() => toggleCategory(category)}
-            className={`rounded-full px-6 py-2 font-medium transition-all ${
-              categories.includes(category)
-                ? 'bg-blue-900 hover:bg-blue-800 text-white shadow-lg'
-                : 'bg-transparent text-blue-900 border border-blue-900 hover:bg-blue-50'
+            className={`${buttonClass} ${
+              categories.includes(category) ? selectedClass : unselectedClass
             }`}
           >
             {category}

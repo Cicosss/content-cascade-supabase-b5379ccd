@@ -6,7 +6,7 @@ interface Filters {
   category: string;
   macroArea: string;
   searchTerm: string;
-  poiType: string; // Aggiunto filtro per tipo POI
+  poiType: string;
 }
 
 export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void) => {
@@ -15,7 +15,7 @@ export const useExperienceFilters = (onFiltersChange: (filters: Filters) => void
     category: 'tutti',
     macroArea: 'tutti',
     searchTerm: '',
-    poiType: 'tutti' // Nuovo filtro
+    poiType: 'tutti'
   });
 
   useEffect(() => {

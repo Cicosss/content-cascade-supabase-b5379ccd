@@ -86,12 +86,7 @@
 }
 
 @layer utilities {
-  /* Animazioni meteo personalizzate */
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
+  /* Ottimizzate le animazioni meteo */
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
@@ -109,33 +104,6 @@
     50% { transform: translateY(-5px); }
   }
   
-  @keyframes rain-drop {
-    0% { opacity: 0; transform: translateY(-5px); }
-    50% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(15px); }
-  }
-  
-  @keyframes snow-fall {
-    0% { opacity: 0; transform: translateY(-5px) translateX(0px); }
-    50% { opacity: 1; transform: translateX(2px); }
-    100% { opacity: 0; transform: translateY(20px) translateX(-2px); }
-  }
-  
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-2px); }
-    75% { transform: translateX(2px); }
-  }
-  
-  @keyframes lightning {
-    0%, 90%, 100% { opacity: 0; }
-    5%, 10% { opacity: 1; }
-  }
-  
-  .animate-spin-slow {
-    animation: spin-slow 8s linear infinite;
-  }
-  
   .animate-float {
     animation: float 4s ease-in-out infinite;
   }
@@ -146,41 +114,5 @@
   
   .animate-bounce-gentle {
     animation: bounce-gentle 2s ease-in-out infinite;
-  }
-  
-  .animate-rain-drop {
-    animation: rain-drop 1.5s ease-in-out infinite;
-  }
-  
-  .animate-snow-fall {
-    animation: snow-fall 3s ease-in-out infinite;
-  }
-  
-  .animate-shake {
-    animation: shake 0.5s ease-in-out infinite;
-  }
-  
-  .animate-lightning {
-    animation: lightning 2s ease-in-out infinite;
-  }
-  
-  .animation-delay-0 {
-    animation-delay: 0ms;
-  }
-  
-  .animation-delay-300 {
-    animation-delay: 300ms;
-  }
-  
-  .animation-delay-500 {
-    animation-delay: 500ms;
-  }
-  
-  .animation-delay-600 {
-    animation-delay: 600ms;
-  }
-  
-  .animation-delay-1000 {
-    animation-delay: 1000ms;
   }
 }
