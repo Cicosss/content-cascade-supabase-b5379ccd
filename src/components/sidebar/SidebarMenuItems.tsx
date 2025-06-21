@@ -15,7 +15,8 @@ import {
   CloudSun,
   Settings,
   Zap,
-  LayoutDashboard
+  LayoutDashboard,
+  Trophy
 } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 
@@ -43,6 +44,11 @@ const SidebarMenuItems = () => {
       title: "Dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      title: "Il Mio Passaporto",
+      url: "/my-passport",
+      icon: Trophy,
     },
     {
       title: "Esplora Categorie",

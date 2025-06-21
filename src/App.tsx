@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -6,6 +7,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Index from './pages/Index';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import MyPassport from './pages/MyPassport';
 import Events from './pages/Events';
 import Favorites from './pages/Favorites';
 import Itineraries from './pages/Itineraries';
@@ -38,6 +40,7 @@ function App() {
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/my-passport" element={<MyPassport />} />
             <Route path="/events" element={<Events />} />
             <Route path="/oggi" element={<OggiInRomagna />} />
             <Route path="/favorites" element={<Favorites />} />
