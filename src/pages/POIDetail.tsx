@@ -1,7 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import NearbyPOIsSection from '@/components/poi/NearbyPOIsSection';
 import POILocationMap from '@/components/poi/POILocationMap';
@@ -10,64 +9,11 @@ import POIDetailHero from '@/components/poi/POIDetailHero';
 import POIDetailContent from '@/components/poi/POIDetailContent';
 import POIDetailSkeleton from '@/components/poi/POIDetailSkeleton';
 import POIDetailError from '@/components/poi/POIDetailError';
-
-interface POIData {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  latitude: number;
-  longitude: number;
-  address: string;
-  images: string[];
-  price_info?: string;
-  duration_info?: string;
-  opening_hours?: string;
-  phone?: string;
-  email?: string;
-  website_url?: string;
-  video_url?: string;
-  target_audience: string;
-  poi_type?: string;
-  start_datetime?: string;
-  end_datetime?: string;
-  location_name?: string;
-  organizer_info?: string;
-}
+import { usePOIDetail } from '@/hooks/usePOIDetail';
 
 const POIDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [poi, setPoi] = useState<POIData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchPOI = async () => {
-      if (!id) return;
-
-      try {
-        const { data, error } = await supabase
-          .from('points_of_interest')
-          .select('*')
-          .eq('id', id)
-          .eq('status', 'approved')
-          .single();
-
-        if (error) {
-          setError('POI non trovato');
-          return;
-        }
-
-        setPoi(data);
-      } catch (error) {
-        setError('Errore nel caricamento del POI');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPOI();
-  }, [id]);
+  const { poi, isLoading, error } = usePOIDetail(id);
 
   if (isLoading) {
     return <POIDetailSkeleton />;

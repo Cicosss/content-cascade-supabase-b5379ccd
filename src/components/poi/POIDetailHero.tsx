@@ -6,32 +6,10 @@ import VisitButton from './VisitButton';
 import FavoriteButton from '@/components/FavoriteButton';
 import POIDetailsCard from './POIDetailsCard';
 import { Badge } from '@/components/ui/badge';
-
-interface POIData {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  latitude: number;
-  longitude: number;
-  address: string;
-  images: string[];
-  price_info?: string;
-  duration_info?: string;
-  opening_hours?: string;
-  phone?: string;
-  email?: string;
-  website_url?: string;
-  video_url?: string;
-  target_audience: string;
-  poi_type?: string;
-  start_datetime?: string;
-  end_datetime?: string;
-  location_name?: string;
-}
+import { POIDetailData } from '@/types/poiDetail';
 
 interface POIDetailHeroProps {
-  poi: POIData;
+  poi: POIDetailData;
 }
 
 const POIDetailHero: React.FC<POIDetailHeroProps> = ({ poi }) => {
@@ -91,26 +69,26 @@ const POIDetailHero: React.FC<POIDetailHeroProps> = ({ poi }) => {
                 />
               </div>
             </div>
-
-            {/* Details Card */}
-            <div className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
-              <POIDetailsCard
-                address={poi.address}
-                openingHours={poi.opening_hours}
-                startDatetime={poi.start_datetime}
-                endDatetime={poi.end_datetime}
-                priceInfo={poi.price_info}
-                durationInfo={poi.duration_info}
-                targetAudience={poi.target_audience}
-                phone={poi.phone}
-                email={poi.email}
-                websiteUrl={poi.website_url}
-                poiType={poi.poi_type}
-                latitude={poi.latitude}
-                longitude={poi.longitude}
-              />
-            </div>
           </div>
+        </div>
+
+        {/* Details Card - moved below the hero section */}
+        <div className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
+          <POIDetailsCard
+            address={poi.address}
+            openingHours={poi.opening_hours}
+            startDatetime={poi.start_datetime}
+            endDatetime={poi.end_datetime}
+            priceInfo={poi.price_info}
+            durationInfo={poi.duration_info}
+            targetAudience={poi.target_audience}
+            phone={poi.phone}
+            email={poi.email}
+            websiteUrl={poi.website_url}
+            poiType={poi.poi_type}
+            latitude={poi.latitude}
+            longitude={poi.longitude}
+          />
         </div>
       </div>
     </div>
