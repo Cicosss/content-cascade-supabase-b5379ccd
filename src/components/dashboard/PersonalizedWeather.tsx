@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Wind, Droplets, MapPin, Crosshair } from 'lucide-react';
+import { Wind, Droplets, MapPin, Crosshair, Info } from 'lucide-react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 import AnimatedWeatherIcon from './AnimatedWeatherIcon';
@@ -22,18 +22,18 @@ const PersonalizedWeather: React.FC = () => {
   const getGradientColors = (condition: string) => {
     switch (condition) {
       case 'Clear':
-        return 'from-yellow-400 to-orange-500';
+        return 'from-blue-400 via-blue-500 to-orange-400';
       case 'Clouds':
-        return 'from-gray-400 to-blue-500';
+        return 'from-blue-500 via-blue-600 to-blue-700';
       case 'Rain':
       case 'Drizzle':
-        return 'from-blue-500 to-indigo-600';
+        return 'from-blue-600 via-blue-700 to-indigo-700';
       case 'Snow':
-        return 'from-blue-300 to-blue-500';
+        return 'from-blue-400 via-blue-500 to-blue-600';
       case 'Thunderstorm':
-        return 'from-purple-500 to-indigo-600';
+        return 'from-blue-700 via-purple-600 to-indigo-700';
       default:
-        return 'from-blue-500 to-cyan-600';
+        return 'from-blue-500 via-blue-600 to-cyan-600';
     }
   };
 
@@ -100,8 +100,8 @@ const PersonalizedWeather: React.FC = () => {
         
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-3xl font-bold">{weather.temperature}°C</div>
-            <div className="text-white/90 capitalize">{weather.description}</div>
+            <div className="text-4xl font-bold tracking-tight">{weather.temperature}°C</div>
+            <div className="text-white/80 capitalize text-sm">{weather.description}</div>
           </div>
         </div>
 
@@ -110,27 +110,29 @@ const PersonalizedWeather: React.FC = () => {
             <Droplets className="h-4 w-4 text-white/70" />
             <div>
               <div className="text-xs text-white/70">Umidità</div>
-              <div className="font-semibold">{weather.humidity}%</div>
+              <div className="font-bold text-white">{weather.humidity}%</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Wind className="h-4 w-4 text-white/70" />
             <div>
               <div className="text-xs text-white/70">Vento</div>
-              <div className="font-semibold">{weather.wind} km/h</div>
+              <div className="font-bold text-white">{weather.wind} km/h</div>
             </div>
           </div>
         </div>
 
         {error && (
-          <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
-            ⚠️ Usando dati fallback - {error}
+          <div className="flex items-center gap-2 text-xs text-white/70 text-center pt-2 border-t border-white/20">
+            <Info className="h-3 w-3 flex-shrink-0" />
+            <span>Usando dati fallback - {error}</span>
           </div>
         )}
 
         {userLocation && !error && (
-          <div className="text-xs text-white/70 text-center pt-2 border-t border-white/20">
-            🛰️ Meteo preciso dalla tua posizione GPS tramite Open-Meteo + OpenStreetMap
+          <div className="flex items-center gap-2 text-xs text-white/70 text-center pt-2 border-t border-white/20">
+            <Info className="h-3 w-3 flex-shrink-0" />
+            <span>Meteo preciso dalla tua posizione GPS tramite Open-Meteo + OpenStreetMap</span>
           </div>
         )}
       </div>
