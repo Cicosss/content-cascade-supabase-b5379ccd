@@ -69,7 +69,8 @@ export const useFavorites = () => {
     }
 
     try {
-      console.log('Adding favorite:', { itemType, itemId, itemData });
+      console.log('Adding to favorites:', { itemType, itemId, user: user.id });
+      console.log('Item data:', itemData);
       
       const favoriteData = {
         user_id: user.id,
@@ -80,38 +81,46 @@ export const useFavorites = () => {
       
       console.log('Inserting favorite data:', favoriteData);
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('user_favorites')
-        .insert(favoriteData);
+        .insert(favoriteData)
+        .select()
+        .single();
 
       if (error) {
-        console.error('Supabase error:', error);
+        console.error('Supabase error adding favorite:', error);
+        
         if (error.code === '23505') {
           toast.error('Questo elemento è già nei tuoi preferiti');
           return false;
         }
+        
+        toast.error(`Errore nel salvare: ${error.message}`);
         throw error;
       }
 
-      // Update local state
-      const newFavorite: FavoriteItem = {
-        id: crypto.randomUUID(),
-        item_type: itemType,
-        item_id: itemId,
-        item_data: itemData,
-        created_at: new Date().toISOString()
-      };
+      console.log('Successfully added favorite:', data);
 
-      setFavorites(prev => [newFavorite, ...prev]);
+      // Update local state with the returned data
+      if (data) {
+        const newFavorite: FavoriteItem = {
+          id: data.id,
+          item_type: itemType,
+          item_id: itemId,
+          item_data: itemData,
+          created_at: data.created_at
+        };
 
-      toast.success('✨ Salvato nei preferiti! Puoi ritrovarlo nella pagina dei preferiti', {
+        setFavorites(prev => [newFavorite, ...prev]);
+      }
+
+      toast.success('✨ Salvato nei preferiti!', {
         duration: 3000,
       });
       
       return true;
     } catch (error) {
       console.error('Error adding to favorites:', error);
-      toast.error('Errore nel salvare il preferito. Controlla la console per dettagli.');
       return false;
     }
   };
@@ -120,7 +129,7 @@ export const useFavorites = () => {
     if (!user) return false;
 
     try {
-      console.log('Removing favorite:', { itemType, itemId });
+      console.log('Removing favorite:', { itemType, itemId, user: user.id });
       
       const { error } = await supabase
         .from('user_favorites')
@@ -131,8 +140,11 @@ export const useFavorites = () => {
 
       if (error) {
         console.error('Error removing favorite:', error);
+        toast.error(`Errore nella rimozione: ${error.message}`);
         throw error;
       }
+
+      console.log('Successfully removed favorite');
 
       setFavorites(prev => prev.filter(
         fav => !(fav.item_type === itemType && fav.item_id === itemId)
@@ -142,7 +154,6 @@ export const useFavorites = () => {
       return true;
     } catch (error) {
       console.error('Error removing from favorites:', error);
-      toast.error('Errore nel rimuovere il preferito');
       return false;
     }
   };

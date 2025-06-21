@@ -32,10 +32,14 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     
     setIsToggling(true);
     try {
+      console.log('Toggling favorite for:', { itemType, itemId, favoriteState });
+      
       if (favoriteState) {
-        await removeFromFavorites(itemType, itemId);
+        const success = await removeFromFavorites(itemType, itemId);
+        console.log('Remove result:', success);
       } else {
-        await addToFavorites(itemType, itemId, itemData || {});
+        const success = await addToFavorites(itemType, itemId, itemData || {});
+        console.log('Add result:', success);
       }
     } catch (error) {
       console.error('Error toggling favorite:', error);
