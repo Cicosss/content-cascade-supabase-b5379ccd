@@ -28,13 +28,20 @@ export const useFavorites = () => {
 
     setLoading(true);
     try {
+      console.log('Fetching favorites for user:', user.id);
+      
       const { data, error } = await supabase
         .from('user_favorites')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching favorites:', error);
+        throw error;
+      }
+      
+      console.log('Fetched favorites:', data);
       
       // Cast the data to our expected type
       const typedFavorites = (data || []).map(item => ({
@@ -45,6 +52,7 @@ export const useFavorites = () => {
       setFavorites(typedFavorites);
     } catch (error) {
       console.error('Error fetching favorites:', error);
+      toast.error('Errore nel caricamento dei preferiti');
     } finally {
       setLoading(false);
     }
@@ -61,16 +69,23 @@ export const useFavorites = () => {
     }
 
     try {
+      console.log('Adding favorite:', { itemType, itemId, itemData });
+      
+      const favoriteData = {
+        user_id: user.id,
+        item_type: itemType,
+        item_id: itemId,
+        item_data: itemData
+      };
+      
+      console.log('Inserting favorite data:', favoriteData);
+
       const { error } = await supabase
         .from('user_favorites')
-        .insert({
-          user_id: user.id,
-          item_type: itemType,
-          item_id: itemId,
-          item_data: itemData
-        });
+        .insert(favoriteData);
 
       if (error) {
+        console.error('Supabase error:', error);
         if (error.code === '23505') {
           toast.error('Questo elemento è già nei tuoi preferiti');
           return false;
@@ -78,22 +93,25 @@ export const useFavorites = () => {
         throw error;
       }
 
-      setFavorites(prev => [{
+      // Update local state
+      const newFavorite: FavoriteItem = {
         id: crypto.randomUUID(),
         item_type: itemType,
         item_id: itemId,
         item_data: itemData,
         created_at: new Date().toISOString()
-      }, ...prev]);
+      };
 
-      toast.success('✨ Salvato nei preferiti! Puoi ritrovarlo nella pagina dei preferiti cliccando sul tasto col tuo nome', {
+      setFavorites(prev => [newFavorite, ...prev]);
+
+      toast.success('✨ Salvato nei preferiti! Puoi ritrovarlo nella pagina dei preferiti', {
         duration: 3000,
       });
       
       return true;
     } catch (error) {
       console.error('Error adding to favorites:', error);
-      toast.error('Errore nel salvare il preferito');
+      toast.error('Errore nel salvare il preferito. Controlla la console per dettagli.');
       return false;
     }
   };
@@ -102,6 +120,8 @@ export const useFavorites = () => {
     if (!user) return false;
 
     try {
+      console.log('Removing favorite:', { itemType, itemId });
+      
       const { error } = await supabase
         .from('user_favorites')
         .delete()
@@ -109,7 +129,10 @@ export const useFavorites = () => {
         .eq('item_type', itemType)
         .eq('item_id', itemId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error removing favorite:', error);
+        throw error;
+      }
 
       setFavorites(prev => prev.filter(
         fav => !(fav.item_type === itemType && fav.item_id === itemId)

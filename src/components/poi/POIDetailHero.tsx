@@ -62,7 +62,11 @@ const POIDetailHero: React.FC<POIDetailHeroProps> = ({ poi }) => {
                     category: poi.category,
                     images: poi.images,
                     address: poi.address,
-                    poi_type: poi.poi_type
+                    poi_type: poi.poi_type,
+                    location_name: poi.location_name,
+                    price_info: poi.price_info,
+                    duration_info: poi.duration_info,
+                    target_audience: poi.target_audience
                   }}
                   size="lg"
                   className="bg-white border border-gray-300 hover:bg-gray-50"
