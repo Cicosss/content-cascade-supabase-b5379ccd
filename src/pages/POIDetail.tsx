@@ -192,32 +192,8 @@ const POIDetail: React.FC = () => {
                     />
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Description and Details Section - NEW 2-COLUMN LAYOUT */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-              {/* Left Column: Description (60% width - 2/3 columns) */}
-              <div className="lg:col-span-2">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Descrizione</h2>
-                {poi.description ? (
-                  <div className="prose prose-gray max-w-none">
-                    <p className="text-gray-700 leading-relaxed text-lg">{poi.description}</p>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 italic">Nessuna descrizione disponibile.</p>
-                )}
-
-                {poi.organizer_info && (
-                  <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
-                    <h3 className="font-semibold text-gray-900 mb-2">Informazioni Organizzatore</h3>
-                    <p className="text-gray-700">{poi.organizer_info}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Right Column: Details Card (40% width - 1/3 column) */}
-              <div className="lg:col-span-1">
+                {/* Details Card - MOVED HERE */}
                 <div className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
                   <POIDetailsCard
                     address={poi.address}
@@ -236,6 +212,25 @@ const POIDetail: React.FC = () => {
                   />
                 </div>
               </div>
+            </div>
+
+            {/* Description Section - NOW FULL WIDTH */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Descrizione</h2>
+              {poi.description ? (
+                <div className="prose prose-gray max-w-none">
+                  <p className="text-gray-700 leading-relaxed text-lg">{poi.description}</p>
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">Nessuna descrizione disponibile.</p>
+              )}
+
+              {poi.organizer_info && (
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                  <h3 className="font-semibold text-gray-900 mb-2">Informazioni Organizzatore</h3>
+                  <p className="text-gray-700">{poi.organizer_info}</p>
+                </div>
+              )}
             </div>
 
             {/* Location Map */}
