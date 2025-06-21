@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -56,10 +57,10 @@ export const useApprovedExperiences = () => {
         return;
       }
 
-      // Transform the data to match our interface, handling both old and new schema
+      // Transform the data to match our interface
       const transformedData = (data || []).map(item => ({
         ...item,
-        website_url: (item as any).website_url || (item as any).video_url || '', // Handle both old and new schema
+        website_url: item.website_url || '',
         poi_type: item.poi_type || 'place',
         opening_hours: item.opening_hours || ''
       }));

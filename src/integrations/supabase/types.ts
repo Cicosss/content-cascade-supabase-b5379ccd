@@ -491,7 +491,7 @@ export type Database = {
           tags: string[] | null
           target_audience: string | null
           updated_at: string | null
-          video_url: string | null
+          website_url: string | null
         }
         Insert: {
           address?: string | null
@@ -519,7 +519,7 @@ export type Database = {
           tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
-          video_url?: string | null
+          website_url?: string | null
         }
         Update: {
           address?: string | null
@@ -547,7 +547,7 @@ export type Database = {
           tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
-          video_url?: string | null
+          website_url?: string | null
         }
         Relationships: []
       }
