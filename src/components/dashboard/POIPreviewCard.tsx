@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Clock, Euro, Star, X, ExternalLink } from 'lucide-react';
+import { MapPin, Clock, Star, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -118,7 +118,7 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
         <div className="flex items-center gap-4 text-xs text-gray-500">
           {poi.price_info && (
             <div className="flex items-center gap-1">
-              <Euro className="h-3 w-3" />
+              <span>€</span>
               <span>{poi.price_info}</span>
             </div>
           )}
