@@ -18,6 +18,7 @@ interface LocationFieldsProps {
 
 const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange }) => {
   const isEvent = formData.poi_type === 'event';
+  const hasValidCoordinates = formData.latitude && formData.longitude && formData.latitude !== '' && formData.longitude !== '';
 
   const handleAddressSelect = (addressData: any) => {
     console.log('📍 LocationFields - Ricevuti dati indirizzo:', addressData);
@@ -37,8 +38,8 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
 
   return (
     <>
-      {/* Indirizzo con autocompletamento */}
-      <div>
+      {/* Indirizzo con autocompletamento e feedback visivo */}
+      <div className="space-y-2">
         <AddressAutocomplete
           label="Indirizzo *"
           placeholder="Inizia a digitare l'indirizzo..."
@@ -46,32 +47,25 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
           onAddressSelect={handleAddressSelect}
           required
         />
-      </div>
-
-      {/* Campi di debug per latitudine e longitudine (visibili in modalità sviluppo) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="latitude">Latitudine (Auto)</Label>
-          <Input
-            id="latitude"
-            value={formData.latitude || ''}
-            onChange={(e) => onInputChange('latitude', e.target.value)}
-            placeholder="Auto da indirizzo"
-            className="bg-gray-50"
-            readOnly
-          />
-        </div>
-        <div>
-          <Label htmlFor="longitude">Longitudine (Auto)</Label>
-          <Input
-            id="longitude"
-            value={formData.longitude || ''}
-            onChange={(e) => onInputChange('longitude', e.target.value)}
-            placeholder="Auto da indirizzo"
-            className="bg-gray-50"
-            readOnly
-          />
-        </div>
+        
+        {/* Feedback visivo per confermare che l'indirizzo è stato geolocalizzato */}
+        {hasValidCoordinates && formData.address && (
+          <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-md">
+            <span className="text-green-500">✓</span>
+            <span>Indirizzo confermato e geolocalizzato</span>
+            <span className="text-xs text-gray-500 ml-2">
+              ({parseFloat(formData.latitude).toFixed(4)}, {parseFloat(formData.longitude).toFixed(4)})
+            </span>
+          </div>
+        )}
+        
+        {/* Messaggio di aiuto se l'indirizzo non è stato selezionato dalla lista */}
+        {formData.address && !hasValidCoordinates && (
+          <div className="flex items-center gap-2 text-sm text-amber-600 bg-amber-50 px-3 py-2 rounded-md">
+            <span className="text-amber-500">⚠️</span>
+            <span>Seleziona un indirizzo dalla lista di suggerimenti per completare la geolocalizzazione</span>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

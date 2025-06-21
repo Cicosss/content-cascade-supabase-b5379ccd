@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, MapPin } from 'lucide-react';
+import { Loader2, MapPin, CheckCircle } from 'lucide-react';
 
 interface AddressData {
   address: string;
@@ -36,10 +36,15 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [inputValue, setInputValue] = useState(value);
+  const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
 
   // Sincronizza il valore interno con il prop value
   useEffect(() => {
     setInputValue(value);
+    // Reset dello stato di conferma se l'indirizzo cambia dall'esterno
+    if (value !== inputValue) {
+      setIsAddressConfirmed(false);
+    }
   }, [value]);
 
   useEffect(() => {
@@ -86,6 +91,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       
       if (!place.geometry?.location) {
         console.error('❌ Nessuna posizione trovata per questo indirizzo');
+        setIsAddressConfirmed(false);
         return;
       }
 
@@ -126,8 +132,9 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       console.log('✅ AddressAutocomplete - Dati estratti:', addressData);
 
       setInputValue(addressData.address);
+      setIsAddressConfirmed(true);
       
-      // Forza l'aggiornamento del form padre con i nuovi dati
+      // Invia i dati al form padre
       setTimeout(() => {
         onAddressSelect(addressData);
         console.log('📤 AddressAutocomplete - Dati inviati al form padre');
@@ -149,9 +156,10 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     const newValue = e.target.value;
     setInputValue(newValue);
     
-    // Se l'utente digita manualmente, resetta le coordinate
+    // Se l'utente digita manualmente, resetta lo stato di conferma
     if (newValue !== value) {
-      console.log('🔄 AddressAutocomplete - Input manuale, reset coordinate');
+      setIsAddressConfirmed(false);
+      console.log('🔄 AddressAutocomplete - Input manuale, reset conferma indirizzo');
     }
   };
 
@@ -170,13 +178,15 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           placeholder={placeholder}
           value={inputValue}
           onChange={handleInputChange}
-          className="pr-10"
+          className={`pr-10 ${isAddressConfirmed ? 'border-green-300 bg-green-50' : ''}`}
           disabled={!isApiLoaded}
           required={required}
         />
         <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+          ) : isAddressConfirmed ? (
+            <CheckCircle className="h-4 w-4 text-green-500" />
           ) : (
             <MapPin className="h-4 w-4 text-gray-400" />
           )}

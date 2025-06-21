@@ -27,12 +27,10 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     email: '',
     images: [] as string[],
     tags: [] as string[],
-    // Campi specifici per eventi
     start_datetime: '',
     end_datetime: '',
     location_name: '',
     organizer_info: '',
-    // Campi specifici per luoghi
     opening_hours: ''
   });
 
@@ -53,7 +51,8 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
           name: updated.name,
           address: updated.address,
           latitude: updated.latitude,
-          longitude: updated.longitude
+          longitude: updated.longitude,
+          hasCoordinates: !!(updated.latitude && updated.longitude)
         });
       }
       
@@ -72,7 +71,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
       poi_type: formData.poi_type
     });
 
-    // Validazione migliorata con messaggi specifici
+    // Validazione semplificata e migliorata
     const errors = [];
     
     if (!formData.name?.trim()) {
@@ -83,16 +82,13 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
       errors.push('Indirizzo');
     }
     
-    if (!formData.latitude || formData.latitude === '') {
-      errors.push('Latitudine (seleziona un indirizzo dalla lista)');
-    }
-    
-    if (!formData.longitude || formData.longitude === '') {
-      errors.push('Longitudine (seleziona un indirizzo dalla lista)');
+    // Controllo semplificato: se c'è un indirizzo, deve avere coordinate da Google Maps
+    if (formData.address && (!formData.latitude || !formData.longitude || formData.latitude === '' || formData.longitude === '')) {
+      errors.push('Geolocalizzazione (seleziona un indirizzo dalla lista di Google Maps)');
     }
 
     if (errors.length > 0) {
-      const errorMessage = `Campi mancanti: ${errors.join(', ')}`;
+      const errorMessage = `Campi mancanti o incompleti: ${errors.join(', ')}`;
       console.error('❌ Validazione fallita:', errorMessage);
       toast.error(errorMessage);
       return;
@@ -103,7 +99,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     const lng = parseFloat(formData.longitude);
     
     if (isNaN(lat) || isNaN(lng)) {
-      toast.error('Coordinate non valide. Seleziona un indirizzo dalla lista di autocompletamento.');
+      toast.error('Coordinate non valide. Assicurati di aver selezionato un indirizzo dalla lista di Google Maps.');
       return;
     }
 
@@ -127,8 +123,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
         email: formData.email || null,
         images: formData.images.length > 0 ? formData.images : null,
         tags: formData.tags.length > 0 ? formData.tags : null,
-        status: 'approved', // Gli admin inseriscono direttamente come approvati
-        // Campi condizionali basati sul tipo
+        status: 'approved',
         start_datetime: formData.poi_type === 'event' ? (formData.start_datetime || null) : null,
         end_datetime: formData.poi_type === 'event' ? (formData.end_datetime || null) : null,
         location_name: formData.poi_type === 'event' ? (formData.location_name || null) : null,
@@ -151,7 +146,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
 
       console.log('✅ POI inserito con successo:', data);
       
-      toast.success('POI inserito con successo!');
+      toast.success('POI inserito con successo! L\'indirizzo è stato geolocalizzato correttamente.');
       
       // Reset form
       setFormData({
@@ -189,30 +184,46 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <ExperienceFormFields
-        formData={formData}
-        onInputChange={handleInputChange}
-      />
-
-      <div className="flex gap-4">
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? 'Inserimento...' : 'Inserisci POI'}
-        </Button>
-        
-        {/* Pulsante di debug per vedere lo stato del form */}
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={() => {
-            console.log('🔍 Stato completo del form:', formData);
-            toast.info('Stato del form stampato nella console');
-          }}
-        >
-          Debug Form
-        </Button>
+    <div className="space-y-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-start gap-3">
+          <div className="text-blue-500 mt-1">ℹ️</div>
+          <div>
+            <h4 className="font-medium text-blue-900 mb-1">Come funziona la geolocalizzazione</h4>
+            <p className="text-sm text-blue-700">
+              Quando inserisci l'indirizzo, inizia a digitare e seleziona una delle opzioni dalla lista di Google Maps. 
+              Questo garantisce che il luogo venga geolocalizzato automaticamente sulla mappa interattiva.
+            </p>
+          </div>
+        </div>
       </div>
-    </form>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <ExperienceFormFields
+          formData={formData}
+          onInputChange={handleInputChange}
+        />
+
+        <div className="flex gap-4">
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? 'Inserimento...' : 'Inserisci POI'}
+          </Button>
+          
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={() => {
+              console.log('🔍 Stato completo del form:', formData);
+              const hasCoordinates = !!(formData.latitude && formData.longitude);
+              console.log('📍 Ha coordinate valide:', hasCoordinates);
+              toast.info('Stato del form stampato nella console');
+            }}
+          >
+            Debug Form
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 };
 
