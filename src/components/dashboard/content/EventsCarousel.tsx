@@ -14,7 +14,7 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({ events }) => {
       subtitle="Non perdere gli appuntamenti più interessanti del territorio"
     >
       {events.map((event, index) => (
-        <EventCard key={index} {...event} />
+        <EventCard key={event.id || index} {...event} />
       ))}
     </ContentCarousel>
   );

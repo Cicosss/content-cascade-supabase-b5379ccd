@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, Euro, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
 
 interface ExperienceCardProps {
@@ -48,11 +49,20 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   rating,
   groupSize
 }) => {
+  const navigate = useNavigate();
   const displayName = name || title || '';
   const displayPrice = price_info || price || '';
   const displayDuration = duration_info || duration || '';
   const coverImage = (images && images.length > 0) ? images[0] : image || null;
   const isEvent = poi_type === 'event';
+
+  const handleCardClick = () => {
+    navigate(`/poi/${id}`);
+  };
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click when clicking favorite button
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -72,19 +82,24 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow relative group">
-      <FavoriteButton
-        itemId={id}
-        itemType="poi"
-        className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
-      />
+    <Card 
+      className="overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer relative group"
+      onClick={handleCardClick}
+    >
+      <div onClick={handleFavoriteClick}>
+        <FavoriteButton
+          itemId={id}
+          itemType="poi"
+          className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
+        />
+      </div>
       
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-100">
         {coverImage ? (
           <img
             src={coverImage}
             alt={displayName}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
         ) : (
@@ -118,7 +133,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           </Badge>
         </div>
 
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900">
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">
           {displayName}
         </h3>
 

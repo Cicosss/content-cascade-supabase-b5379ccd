@@ -17,7 +17,7 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({ experiences, 
       subtitle={`Attività selezionate in base alle tue preferenze`}
     >
       {experiences.map((exp, index) => (
-        <ExperienceCard key={index} {...exp} />
+        <ExperienceCard key={exp.id || index} {...exp} />
       ))}
     </ContentCarousel>
   );

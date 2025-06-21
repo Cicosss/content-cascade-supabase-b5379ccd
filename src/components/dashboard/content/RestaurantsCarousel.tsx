@@ -18,7 +18,7 @@ const RestaurantsCarousel: React.FC<RestaurantsCarouselProps> = ({ restaurants, 
       subtitle={`I sapori della Romagna ${filters.withChildren === 'sì' ? 'per tutta la famiglia' : 'selezionati per te'}`}
     >
       {restaurants.map((restaurant, index) => (
-        <RestaurantCard key={index} {...restaurant} />
+        <RestaurantCard key={restaurant.id || index} id={restaurant.id} {...restaurant} />
       ))}
     </ContentCarousel>
   );

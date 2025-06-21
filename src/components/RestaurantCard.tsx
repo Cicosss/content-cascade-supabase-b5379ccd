@@ -3,9 +3,11 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Star, Euro, MapPin, Utensils } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
 
 interface RestaurantCardProps {
+  id?: string;
   name: string;
   cuisine: string;
   rating: number;
@@ -16,6 +18,7 @@ interface RestaurantCardProps {
 }
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({
+  id,
   name,
   cuisine,
   rating,
@@ -24,6 +27,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   image,
   specialty
 }) => {
+  const navigate = useNavigate();
   const itemId = `${name}-${location}`.toLowerCase().replace(/\s+/g, '-');
   const itemData = {
     name,
@@ -35,8 +39,21 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
     specialty
   };
 
+  const handleCardClick = () => {
+    if (id) {
+      navigate(`/poi/${id}`);
+    }
+  };
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click when clicking favorite button
+  };
+
   return (
-    <Card className="overflow-hidden cursor-pointer group relative animate-fade-in">
+    <Card 
+      className={`overflow-hidden group relative animate-fade-in hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${id ? 'cursor-pointer' : ''}`}
+      onClick={id ? handleCardClick : undefined}
+    >
       <div className="aspect-[4/3] relative overflow-hidden">
         <div className="w-full h-full bg-gradient-to-br from-green-400 to-blue-400 flex items-center justify-center">
           <span className="text-white text-sm">{image}</span>
@@ -52,12 +69,14 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           {cuisine}
         </Badge>
         
-        <FavoriteButton 
-          itemType="restaurant"
-          itemId={itemId}
-          itemData={itemData}
-          className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
-        />
+        <div onClick={handleFavoriteClick}>
+          <FavoriteButton 
+            itemType="restaurant"
+            itemId={itemId}
+            itemData={itemData}
+            className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
+          />
+        </div>
       </div>
       
       <div className="p-4">

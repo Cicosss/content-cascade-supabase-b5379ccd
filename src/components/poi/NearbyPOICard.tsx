@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin } from 'lucide-react';
 import { formatWalkingTime } from '@/utils/distanceCalculator';
+import { useNavigate } from 'react-router-dom';
 
 interface NearbyPOICardProps {
   id: string;
@@ -16,6 +17,7 @@ interface NearbyPOICardProps {
 }
 
 const NearbyPOICard: React.FC<NearbyPOICardProps> = ({
+  id,
   name,
   category,
   distance,
@@ -23,12 +25,21 @@ const NearbyPOICard: React.FC<NearbyPOICardProps> = ({
   address,
   onClick
 }) => {
+  const navigate = useNavigate();
   const coverImage = images && images.length > 0 ? images[0] : null;
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(`/poi/${id}`);
+    }
+  };
 
   return (
     <Card 
-      className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow group"
-      onClick={onClick}
+      className="overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
+      onClick={handleClick}
     >
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-100">
         {coverImage ? (
