@@ -50,14 +50,14 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
 
   const sizeClasses = {
     sm: "w-8 h-8",
-    md: "w-10 h-10",
-    lg: "w-12 h-12"
+    md: "w-10 h-10", 
+    lg: "w-14 h-14" // Increased size for better prominence
   };
 
   const iconSizes = {
     sm: "h-4 w-4",
     md: "h-5 w-5",
-    lg: "h-6 w-6"
+    lg: "h-7 w-7" // Larger icon for better visibility
   };
 
   return (
@@ -67,18 +67,18 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       onClick={handleToggle}
       disabled={isToggling}
       className={cn(
-        `${sizeClasses[size]} rounded-full bg-white/80 backdrop-blur-sm border border-white/20 hover:bg-white/90 transition-all duration-200 shadow-sm`,
-        favoriteState && "bg-red-50/90 border-red-200/50 hover:bg-red-100/90",
+        `${sizeClasses[size]} rounded-full bg-white/80 backdrop-blur-sm border border-white/20 hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105`,
+        favoriteState && "bg-red-50/90 border-red-200/50 hover:bg-red-100/90 shadow-red-200/30",
         className
       )}
       title={favoriteState ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
     >
       <Heart 
         className={cn(
-          `${iconSizes[size]} transition-all duration-200`,
+          `${iconSizes[size]} transition-all duration-300`,
           favoriteState 
             ? "fill-red-500 text-red-500 scale-110" 
-            : "text-gray-600 hover:text-red-500 hover:scale-105"
+            : "text-gray-600 hover:text-red-500 hover:scale-110"
         )} 
       />
     </Button>

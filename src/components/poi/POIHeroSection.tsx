@@ -55,14 +55,17 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
               {poi.location_name || poi.address}
             </p>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md animate-fade-in">
+            {/* Action Buttons Bar - Improved grouping and hierarchy */}
+            <div className="flex items-center gap-3 max-w-md animate-fade-in">
+              {/* Primary Action - Visit Button (takes most space) */}
               <div className="flex-1">
                 <VisitButton 
                   poiId={poi.id} 
                   poiName={poi.name}
                 />
               </div>
+              
+              {/* Secondary Action - Favorite Button (icon-based, larger and well-defined) */}
               <div onClick={handleFavoriteClick}>
                 <FavoriteButton
                   itemType="poi"
@@ -80,7 +83,7 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
                     target_audience: poi.target_audience
                   }}
                   size="lg"
-                  className="bg-white/10 border-white/30 backdrop-blur-sm hover:bg-white/20 text-white w-12 h-12 sm:w-auto sm:h-auto sm:px-4"
+                  className="bg-white/15 border-white/25 backdrop-blur-sm hover:bg-white/25 text-white shadow-lg hover:shadow-xl transition-all duration-300 w-14 h-14 rounded-full"
                 />
               </div>
             </div>
