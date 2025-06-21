@@ -5,7 +5,9 @@ import Layout from '@/components/Layout';
 import NearbyPOIsSection from '@/components/poi/NearbyPOIsSection';
 import POILocationMap from '@/components/poi/POILocationMap';
 import POIDetailHeader from '@/components/poi/POIDetailHeader';
-import POIDetailHero from '@/components/poi/POIDetailHero';
+import POIHeroSection from '@/components/poi/POIHeroSection';
+import POIImageGallerySection from '@/components/poi/POIImageGallerySection';
+import POIDetailsSection from '@/components/poi/POIDetailsSection';
 import POIDetailContent from '@/components/poi/POIDetailContent';
 import POIDetailSkeleton from '@/components/poi/POIDetailSkeleton';
 import POIDetailError from '@/components/poi/POIDetailError';
@@ -27,7 +29,21 @@ const POIDetail: React.FC = () => {
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-gray-50">
         <POIDetailHeader />
-        <POIDetailHero poi={poi} />
+        
+        {/* New Hero Section */}
+        <POIHeroSection poi={poi} />
+        
+        {/* Image Gallery Section */}
+        <POIImageGallerySection
+          images={poi.images || []}
+          videoUrl={poi.video_url}
+          name={poi.name}
+        />
+        
+        {/* Details Section */}
+        <POIDetailsSection poi={poi} />
+        
+        {/* Description Content */}
         <POIDetailContent 
           description={poi.description}
           organizerInfo={poi.organizer_info}
