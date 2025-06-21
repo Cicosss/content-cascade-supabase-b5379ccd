@@ -7,12 +7,22 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useUserAchievements } from '@/hooks/useUserAchievements';
+import { useUserVisits } from '@/hooks/useUserVisits';
+import TravelDiary from '@/components/passport/TravelDiary';
 import { Trophy, MapPin, Utensils, Camera, Heart, Star } from 'lucide-react';
 
 const MyPassport = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const { achievements, userProgress, loading: achievementsLoading } = useUserAchievements();
+  const { 
+    achievements, 
+    userProgress, 
+    loading: achievementsLoading,
+    getCompletedCount,
+    getTotalVisits,
+    getVisitsByAchievementCategory
+  } = useUserAchievements();
+  const { loading: visitsLoading } = useUserVisits();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -20,7 +30,7 @@ const MyPassport = () => {
     }
   }, [user, loading, navigate]);
 
-  if (loading || achievementsLoading) {
+  if (loading || achievementsLoading || visitsLoading) {
     return (
       <Layout showSidebar={true}>
         <div className="container mx-auto px-4 py-8">
@@ -46,9 +56,8 @@ const MyPassport = () => {
     return icons[iconName as keyof typeof icons] || Trophy;
   };
 
-  const completedCount = achievements.filter(achievement => 
-    userProgress[achievement.id]?.completed
-  ).length;
+  const completedCount = getCompletedCount();
+  const totalVisits = getTotalVisits();
 
   return (
     <Layout showSidebar={true}>
@@ -78,7 +87,7 @@ const MyPassport = () => {
         </div>
 
         {/* Badge Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {achievements.map((achievement) => {
             const progress = userProgress[achievement.id];
             const isCompleted = progress?.completed || false;
@@ -90,7 +99,7 @@ const MyPassport = () => {
                 key={achievement.id}
                 className={`p-6 transition-all duration-300 ${
                   isCompleted 
-                    ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200 shadow-lg scale-105' 
+                    ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200 shadow-lg' 
                     : 'bg-gray-50 border-gray-200'
                 }`}
               >
@@ -142,7 +151,7 @@ const MyPassport = () => {
         </div>
 
         {/* Statistics */}
-        <Card className="mt-8 p-6">
+        <Card className="mb-8 p-6">
           <h2 className="text-xl font-bold mb-4 text-slate-900">Le Tue Statistiche</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
@@ -151,24 +160,27 @@ const MyPassport = () => {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600">
-                {userProgress['visit_borghi']?.current || 0}
+                {getVisitsByAchievementCategory('borgo')}
               </div>
               <div className="text-sm text-slate-600">Borghi Visitati</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-600">
-                {userProgress['try_restaurants']?.current || 0}
+                {getVisitsByAchievementCategory('ristoranti')}
               </div>
               <div className="text-sm text-slate-600">Ristoranti Provati</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
-                {Math.round(((completedCount / achievements.length) * 100) || 0)}%
+                {totalVisits}
               </div>
-              <div className="text-sm text-slate-600">Completamento</div>
+              <div className="text-sm text-slate-600">Visite Totali</div>
             </div>
           </div>
         </Card>
+
+        {/* Travel Diary */}
+        <TravelDiary />
       </div>
     </Layout>
   );

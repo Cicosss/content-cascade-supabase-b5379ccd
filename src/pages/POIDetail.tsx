@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import NearbyPOIsSection from '@/components/poi/NearbyPOIsSection';
+import VisitButton from '@/components/poi/VisitButton';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, Euro, Phone, Mail, Globe, ArrowLeft } from 'lucide-react';
 
@@ -188,6 +189,10 @@ const POIDetail: React.FC = () => {
                       </a>
                     </div>
                   )}
+                </div>
+
+                <div className="pt-4">
+                  <VisitButton poiId={poi.id} poiName={poi.name} />
                 </div>
               </div>
             </div>

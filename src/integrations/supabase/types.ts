@@ -678,6 +678,41 @@ export type Database = {
         }
         Relationships: []
       }
+      user_visits: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          poi_id: string
+          user_id: string
+          visit_timestamp: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          poi_id: string
+          user_id: string
+          visit_timestamp?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          poi_id?: string
+          user_id?: string
+          visit_timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_visits_poi_id_fkey"
+            columns: ["poi_id"]
+            isOneToOne: false
+            referencedRelation: "points_of_interest"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

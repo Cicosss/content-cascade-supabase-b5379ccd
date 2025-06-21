@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+import { useUserVisits } from '@/hooks/useUserVisits';
 
 interface Achievement {
   id: string;
@@ -10,6 +10,7 @@ interface Achievement {
   icon: string;
   target: number;
   category: string;
+  categoryFilter: string; // The category to filter POIs by
 }
 
 interface UserProgress {
@@ -22,6 +23,7 @@ interface UserProgress {
 
 export const useUserAchievements = () => {
   const { user } = useAuth();
+  const { visits, loading: visitsLoading, getVisitsByCategory } = useUserVisits();
   const [achievements] = useState<Achievement[]>([
     {
       id: 'visit_borghi',
@@ -29,7 +31,8 @@ export const useUserAchievements = () => {
       description: 'Visita 5 borghi storici della Romagna',
       icon: 'mappin',
       target: 5,
-      category: 'exploration'
+      category: 'exploration',
+      categoryFilter: 'borgo'
     },
     {
       id: 'try_restaurants',
@@ -37,39 +40,44 @@ export const useUserAchievements = () => {
       description: 'Prova 3 ristoranti tipici locali',
       icon: 'utensils',
       target: 3,
-      category: 'food'
+      category: 'food',
+      categoryFilter: 'ristoranti'
     },
     {
-      id: 'collect_photos',
-      name: 'Fotografo Viaggiatore',
-      description: 'Scatta foto in 10 luoghi diversi',
+      id: 'visit_attractions',
+      name: 'Scopritore di Attrazioni',
+      description: 'Visita 7 attrazioni turistiche',
       icon: 'camera',
-      target: 10,
-      category: 'photos'
+      target: 7,
+      category: 'attractions',
+      categoryFilter: 'attrazioni'
     },
     {
-      id: 'save_favorites',
-      name: 'Collezionista',
-      description: 'Salva 15 luoghi nei preferiti',
-      icon: 'heart',
-      target: 15,
-      category: 'favorites'
-    },
-    {
-      id: 'attend_events',
-      name: 'Partecipante Attivo',
-      description: 'Partecipa a 5 eventi culturali',
+      id: 'explore_culture',
+      name: 'Cultore del Territorio',
+      description: 'Visita 4 musei o siti culturali',
       icon: 'star',
-      target: 5,
-      category: 'events'
+      target: 4,
+      category: 'culture',
+      categoryFilter: 'museo'
     },
     {
-      id: 'complete_itinerary',
-      name: 'Pianificatore Esperto',
-      description: 'Completa il tuo primo itinerario',
+      id: 'beach_lover',
+      name: 'Amante del Mare',
+      description: 'Visita 3 stabilimenti balneari',
+      icon: 'heart',
+      target: 3,
+      category: 'beach',
+      categoryFilter: 'stabilimento'
+    },
+    {
+      id: 'first_visit',
+      name: 'Primo Passo',
+      description: 'Registra la tua prima visita',
       icon: 'trophy',
       target: 1,
-      category: 'planning'
+      category: 'milestone',
+      categoryFilter: 'all'
     }
   ]);
   
@@ -77,79 +85,61 @@ export const useUserAchievements = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      fetchUserProgress();
+    if (user && !visitsLoading) {
+      calculateProgress();
     }
-  }, [user]);
+  }, [user, visits, visitsLoading]);
 
-  const fetchUserProgress = async () => {
-    if (!user) return;
+  const calculateProgress = () => {
+    if (!visits) return;
 
-    try {
-      // Fetch user favorites count
-      const { count: favoritesCount } = await supabase
-        .from('user_favorites')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id);
+    const progress: UserProgress = {};
 
-      // Simulate other progress data (in a real app, this would come from actual tracking)
-      const simulatedProgress: UserProgress = {
-        visit_borghi: { current: 2, completed: false },
-        try_restaurants: { current: 1, completed: false },
-        collect_photos: { current: 3, completed: false },
-        save_favorites: { current: favoritesCount || 0, completed: (favoritesCount || 0) >= 15 },
-        attend_events: { current: 1, completed: false },
-        complete_itinerary: { current: 0, completed: false }
+    achievements.forEach(achievement => {
+      let current = 0;
+
+      if (achievement.categoryFilter === 'all') {
+        current = visits.length;
+      } else {
+        const categoryVisits = getVisitsByCategory(achievement.categoryFilter);
+        current = categoryVisits.length;
+      }
+
+      const completed = current >= achievement.target;
+      
+      progress[achievement.id] = {
+        current: Math.min(current, achievement.target),
+        completed,
+        completedAt: completed ? new Date().toISOString() : undefined
       };
+    });
 
-      // Check which achievements are completed
-      achievements.forEach(achievement => {
-        const progress = simulatedProgress[achievement.id];
-        if (progress && progress.current >= achievement.target) {
-          progress.completed = true;
-          if (!progress.completedAt) {
-            progress.completedAt = new Date().toISOString();
-          }
-        }
-      });
-
-      setUserProgress(simulatedProgress);
-    } catch (error) {
-      console.error('Error fetching user progress:', error);
-    } finally {
-      setLoading(false);
-    }
+    setUserProgress(progress);
+    setLoading(false);
   };
 
-  const updateProgress = async (achievementId: string, increment: number = 1) => {
-    if (!user) return;
+  const getCompletedCount = () => {
+    return achievements.filter(achievement => 
+      userProgress[achievement.id]?.completed
+    ).length;
+  };
 
-    const currentProgress = userProgress[achievementId]?.current || 0;
-    const newProgress = currentProgress + increment;
-    const achievement = achievements.find(a => a.id === achievementId);
-    
-    if (!achievement) return;
+  const getTotalVisits = () => {
+    return visits.length;
+  };
 
-    const isCompleted = newProgress >= achievement.target;
-    
-    setUserProgress(prev => ({
-      ...prev,
-      [achievementId]: {
-        current: newProgress,
-        completed: isCompleted,
-        completedAt: isCompleted ? new Date().toISOString() : prev[achievementId]?.completedAt
-      }
-    }));
-
-    // In a real app, you would save this to your database
-    console.log(`Achievement ${achievementId} updated: ${newProgress}/${achievement.target}`);
+  const getVisitsByAchievementCategory = (categoryFilter: string) => {
+    if (categoryFilter === 'all') return visits.length;
+    return getVisitsByCategory(categoryFilter).length;
   };
 
   return {
     achievements,
     userProgress,
-    loading,
-    updateProgress,
-    refetch: fetchUserProgress
+    loading: loading || visitsLoading,
+    getCompletedCount,
+    getTotalVisits,
+    getVisitsByAchievementCategory,
+    refetch: calculateProgress
   };
 };
