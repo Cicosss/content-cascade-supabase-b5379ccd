@@ -33,7 +33,7 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
     console.log('🏠 Indirizzo selezionato da Google Places:', addressData);
     
     // Prepara tutti gli aggiornamenti in un singolo oggetto
-    const updates = {
+    const updates: Record<string, string> = {
       address: addressData.address || '',
       latitude: addressData.latitude?.toString() || '',
       longitude: addressData.longitude?.toString() || ''
