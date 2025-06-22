@@ -17,6 +17,10 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
     e.stopPropagation();
   };
 
+  // Debug log to check what data we're receiving
+  console.log('POI data in hero:', poi);
+  console.log('POI name:', poi.name);
+
   return (
     <div className="relative w-full h-[60vh] min-h-[400px] sm:min-h-[300px] overflow-hidden">
       {/* Hero Background Image */}
@@ -45,9 +49,9 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
               </Badge>
             </div>
 
-            {/* Main Title - Now correctly displays POI name */}
+            {/* Main Title - Fixed to properly display POI name */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 animate-fade-in drop-shadow-2xl">
-              {poi.name}
+              {poi.name || poi.location_name || 'Nome non disponibile'}
             </h1>
 
             {/* Address - Location name or address */}
@@ -61,7 +65,7 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
               <div className="flex-1">
                 <VisitButton 
                   poiId={poi.id} 
-                  poiName={poi.name}
+                  poiName={poi.name || poi.location_name || 'POI'}
                 />
               </div>
               
@@ -71,7 +75,7 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
                   itemType="poi"
                   itemId={poi.id}
                   itemData={{
-                    name: poi.name,
+                    name: poi.name || poi.location_name || 'POI',
                     description: poi.description,
                     category: poi.category,
                     images: poi.images,
