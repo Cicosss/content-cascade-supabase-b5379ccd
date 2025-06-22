@@ -1,103 +1,19 @@
 
-import React, { useEffect, useMemo } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { LocationProvider } from '@/contexts/LocationContext';
+import React from 'react';
 import Layout from '@/components/Layout';
-import ExperienceFilters from '@/components/dashboard/ExperienceFilters';
-import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
-import GoogleMap from '@/components/dashboard/GoogleMap';
-import { Card } from '@/components/ui/card';
-import { MapPin } from 'lucide-react';
-import { useURLFilters } from '@/hooks/useURLFilters';
-import { useDebounce } from '@/hooks/useDebounce';
+import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 
 const Dashboard = () => {
-  const { user, loading } = useAuth();
-  const navigate = useNavigate();
-  const { filters, updateFilters, updateSortBy } = useURLFilters();
-  
-  // Debounce filters to prevent excessive API calls
-  const debouncedFilters = useDebounce(filters, 300);
-
-  const transformedFiltersForMap = useMemo(() => ({
-    zone: debouncedFilters.zone,
-    withChildren: 'no',
-    activityTypes: debouncedFilters.categories,
-    period: debouncedFilters.period,
-    isFirstVisit: true
-  }), [debouncedFilters.zone, debouncedFilters.categories, debouncedFilters.period]);
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Caricamento...</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
-
   return (
-    <LocationProvider>
-      <Layout showSidebar={true}>
-        <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white py-8">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-              <div>
-                <h1 className="typography-h1 mb-2">
-                  Ciao {user.user_metadata?.first_name || user.email?.split('@')[0]}!
-                </h1>
-                <p className="text-slate-200 typography-body">
-                  Iniziamo? Filtra le esperienze o cerca sulla mappa
-                </p>
-              </div>
-            </div>
-          </div>
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-emerald-50">
+        <div className="container mx-auto px-4 py-6 space-y-6">
+          <PersonalizedWeather />
+          <PersonalizedContent />
         </div>
-
-        <div className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div className="xl:col-span-2 space-y-6">
-              <Card className="h-[600px] p-6 rounded-3xl border-0 shadow-xl">
-                <div className="flex items-center mb-4">
-                  <MapPin className="h-8 w-8 text-red-600 mr-3" strokeWidth={1.5} />
-                  <h2 className="typography-h2 text-slate-900">
-                    Mappa Interattiva
-                  </h2>
-                </div>
-                <div className="h-[calc(100%-4rem)]">
-                  <GoogleMap filters={transformedFiltersForMap} />
-                </div>
-              </Card>
-
-              <ExperienceFilters filters={filters} setFilters={updateFilters} />
-            </div>
-
-            <div className="space-y-6">
-              <PersonalizedWeather />
-            </div>
-          </div>
-
-          <div className="mt-12">
-            <PersonalizedContent 
-              filters={filters} 
-              onUpdateFilters={updateFilters}
-              onUpdateSortBy={updateSortBy}
-            />
-          </div>
-        </div>
-      </Layout>
-    </LocationProvider>
+      </div>
+    </Layout>
   );
 };
 
