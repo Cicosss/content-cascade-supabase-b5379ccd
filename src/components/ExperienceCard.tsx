@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, Euro, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
@@ -60,7 +61,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   };
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent card click when clicking favorite button
   };
 
   const formatDate = (dateString: string) => {
@@ -80,23 +81,9 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
     });
   };
 
-  const getCategoryIcon = (category: string) => {
-    const icons: Record<string, string> = {
-      'Ristoranti': '🍽️',
-      'Arte': '🎨',
-      'Sport': '⚽',
-      'Concerti': '🎵',
-      'Parchi': '🌳',
-      'Spiagge': '🏖️',
-      'Musei': '🏛️',
-      'default': '📍'
-    };
-    return icons[category] || icons.default;
-  };
-
   return (
     <Card 
-      className="overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer relative group bg-white shadow-md border border-gray-100"
+      className="overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer relative group"
       onClick={handleCardClick}
     >
       <div onClick={handleFavoriteClick}>
@@ -107,7 +94,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
         />
       </div>
       
-      <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
+      <div className="aspect-[4/3] relative overflow-hidden bg-gray-100">
         {coverImage ? (
           <img
             src={coverImage}
@@ -116,24 +103,34 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-50">
-            <span className="text-4xl opacity-30 text-gray-400">
-              {getCategoryIcon(category)}
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+            <span className="text-4xl opacity-50">
+              {isEvent ? '🗓️' : '📍'}
             </span>
           </div>
         )}
+        
+        {/* Badge distintivo per tipo POI */}
+        <div className="absolute top-3 left-3">
+          {isEvent && start_datetime ? (
+            <Badge className="bg-green-600 text-white flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {formatDate(start_datetime)}
+            </Badge>
+          ) : (
+            <Badge className="bg-blue-600 text-white flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              Luogo
+            </Badge>
+          )}
+        </div>
       </div>
 
       <CardContent className="p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm">{getCategoryIcon(category)}</span>
-          <span className="text-sm text-gray-600 font-medium">{category}</span>
-          {isEvent && start_datetime && (
-            <div className="ml-auto flex items-center gap-1 text-xs text-gray-500">
-              <Calendar className="h-3 w-3" />
-              {formatDate(start_datetime)}
-            </div>
-          )}
+        <div className="flex justify-between items-start mb-2">
+          <Badge variant="secondary" className="text-xs">
+            {category}
+          </Badge>
         </div>
 
         <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">
@@ -156,6 +153,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             </div>
           )}
 
+          {/* Mostra orari per eventi o apertura per luoghi */}
           {isEvent && start_datetime && (
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
@@ -177,6 +175,12 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
               <span>{displayDuration}</span>
+            </div>
+          )}
+
+          {groupSize && (
+            <div className="flex items-center text-sm text-gray-600">
+              <span>{groupSize}</span>
             </div>
           )}
         </div>

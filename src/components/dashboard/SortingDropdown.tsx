@@ -32,13 +32,13 @@ const SortingDropdown: React.FC<SortingDropdownProps> = ({
   ];
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 mb-6">
       <div className="flex items-center gap-2 text-slate-600">
         <ArrowUpDown className="h-4 w-4" />
         <span className="text-sm font-medium">Ordina per:</span>
       </div>
       <Select value={sortBy} onValueChange={(value: SortOption) => onSortChange(value)}>
-        <SelectTrigger className="w-[200px] bg-white border-slate-200 shadow-sm">
+        <SelectTrigger className="w-[200px] bg-white border-slate-200">
           <SelectValue />
         </SelectTrigger>
         <SelectContent className="bg-white border-slate-200 shadow-lg z-50">
