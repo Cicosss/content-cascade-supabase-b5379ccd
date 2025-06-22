@@ -62,12 +62,13 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     setSelectedPOI(null);
   }, []);
 
-  // Load POIs when map is ready - fixed dependency array to prevent infinite loop
+  // Load POIs when map is ready - FIXED: Using primitive values instead of memoizedFilters
   useEffect(() => {
     if (!mapInstance) return;
     
+    console.log('GoogleMap: Loading POIs with filters:', memoizedFilters);
     fetchPOIs(memoizedFilters);
-  }, [mapInstance, memoizedFilters, fetchPOIs]);
+  }, [mapInstance, filters.activityTypes.join(','), filters.zone, filters.withChildren, fetchPOIs]);
 
   if (error) {
     return (
