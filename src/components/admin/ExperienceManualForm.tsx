@@ -18,50 +18,30 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     handleBatchUpdate,
     resetForm, 
     isAddressConfirmed,
-    resetAddressConfirmation,
-    isFormReadyForSubmission 
+    resetAddressConfirmation
   } = useExperienceFormData();
   
-  const { validateForm } = useExperienceFormValidation();
+  const { validateFormAsync } = useExperienceFormValidation();
   const { submitForm, isLoading } = useExperienceFormSubmission();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    console.log('🚀 Tentativo di submit del form');
-    console.log('📋 Stato form completo al momento del submit:', formData);
-    
-    // Controllo di readiness prima della validazione
-    if (!isFormReadyForSubmission()) {
-      console.log('❌ Form non pronto per submission - stato indirizzo non confermato');
-      
-      // Aspetta un breve momento per permettere eventuali aggiornamenti asincroni
-      setTimeout(() => {
-        if (!isFormReadyForSubmission()) {
-          console.log('❌ Form ancora non pronto dopo timeout');
-          return;
-        }
-        // Riprova la submission
-        handleSubmit(e);
-      }, 100);
-      return;
-    }
-    
-    const errors = validateForm(formData);
-    if (errors.length > 0) {
-      console.log('❌ Errori di validazione:', errors);
-      return;
-    }
-
     try {
+      // Use async validation with retry mechanism
+      const errors = await validateFormAsync(formData, isAddressConfirmed);
+      
+      if (errors.length > 0) {
+        return;
+      }
+
       await submitForm(formData, () => {
         resetForm();
         resetAddressConfirmation();
         onExperienceAdded();
       });
     } catch (error) {
-      console.error('❌ Errore durante il submit:', error);
-      // Error handling is done in the hook
+      console.error('Errore durante il submit:', error);
     }
   };
 

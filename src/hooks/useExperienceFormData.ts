@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export interface ExperienceFormData {
   name: string;
@@ -52,86 +52,53 @@ const initialFormData: ExperienceFormData = {
 export const useExperienceFormData = () => {
   const [formData, setFormData] = useState<ExperienceFormData>(initialFormData);
   const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  const handleInputChange = (field: string, value: any) => {
-    console.log(`🔄 Form update - ${field}:`, value);
+  const handleInputChange = useCallback((field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  }, []);
+
+  // Atomic batch update with locking mechanism
+  const handleBatchUpdate = useCallback((updates: Partial<ExperienceFormData>) => {
+    if (isUpdating) return; // Prevent concurrent updates
     
-    setFormData(prev => {
-      const updated = {
-        ...prev,
-        [field]: value
-      };
-      
-      // Log dello stato aggiornato per debug
-      if (field === 'latitude' || field === 'longitude' || field === 'address' || field === 'name') {
-        console.log('📊 Stato form aggiornato:', {
-          name: updated.name,
-          address: updated.address,
-          latitude: updated.latitude,
-          longitude: updated.longitude,
-          hasCoordinates: !!(updated.latitude && updated.longitude)
-        });
-      }
-      
-      return updated;
-    });
-  };
-
-  // Nuova funzione per aggiornamenti batch (specializzata per autocompletamento)
-  const handleBatchUpdate = (updates: Partial<ExperienceFormData>) => {
-    console.log('🔄 Batch form update:', updates);
+    setIsUpdating(true);
     
     setFormData(prev => {
       const updated = {
         ...prev,
         ...updates
       };
-      
-      // Log completo per debug batch update
-      console.log('📊 Batch stato form aggiornato:', {
-        name: updated.name,
-        address: updated.address,
-        latitude: updated.latitude,
-        longitude: updated.longitude,
-        location_name: updated.location_name,
-        hasCoordinates: !!(updated.latitude && updated.longitude),
-        isComplete: !!(updated.address && updated.latitude && updated.longitude)
-      });
-      
       return updated;
     });
-    
-    // Conferma che l'indirizzo è stato processato completamente
+
+    // Confirm address if we have complete address data
     if (updates.address && updates.latitude && updates.longitude) {
       setIsAddressConfirmed(true);
-      console.log('✅ Indirizzo confermato e geolocalizzato');
     }
-  };
 
-  const resetForm = () => {
+    setIsUpdating(false);
+  }, [isUpdating]);
+
+  const resetForm = useCallback(() => {
     setFormData(initialFormData);
     setIsAddressConfirmed(false);
-  };
+    setIsUpdating(false);
+  }, []);
 
-  const resetAddressConfirmation = () => {
+  const resetAddressConfirmation = useCallback(() => {
     setIsAddressConfirmed(false);
-  };
+  }, []);
 
-  // Funzione per validazione pre-submit che aspetta la conferma
-  const isFormReadyForSubmission = () => {
+  const isFormReadyForSubmission = useCallback(() => {
     const hasRequiredFields = !!(formData.name && formData.macro_area && formData.category);
     const hasValidAddress = !!(formData.address && formData.latitude && formData.longitude);
-    const isAddressProcessed = isAddressConfirmed || !formData.address; // Se non c'è indirizzo, non serve conferma
     
-    console.log('🔍 Controllo readiness form:', {
-      hasRequiredFields,
-      hasValidAddress,
-      isAddressProcessed,
-      isReady: hasRequiredFields && hasValidAddress && isAddressProcessed
-    });
-    
-    return hasRequiredFields && hasValidAddress && isAddressProcessed;
-  };
+    return hasRequiredFields && hasValidAddress && (isAddressConfirmed || !formData.address);
+  }, [formData.name, formData.macro_area, formData.category, formData.address, formData.latitude, formData.longitude, isAddressConfirmed]);
 
   return {
     formData,

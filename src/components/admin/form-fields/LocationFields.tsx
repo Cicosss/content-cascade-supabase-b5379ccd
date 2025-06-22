@@ -40,49 +40,24 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
                               formData.latitude !== '0' && formData.longitude !== '0';
 
   const handleAddressSelect = (addressData: AddressData) => {
-    try {
-      console.log('🏠 Indirizzo selezionato da Google Places:', addressData);
-      
-      // Prepara tutti gli aggiornamenti in un singolo oggetto
-      const updates: Record<string, string> = {
-        address: addressData.address || '',
-        latitude: addressData.latitude?.toString() || '',
-        longitude: addressData.longitude?.toString() || ''
-      };
-      
-      // Se c'è location_name vuoto e abbiamo una città, aggiungila
-      if (!formData.location_name && addressData.city) {
-        updates.location_name = addressData.city;
-        console.log('📍 Aggiunto location_name dalla città:', addressData.city);
-      }
-      
-      console.log('📦 Updates preparati:', updates);
-      
-      // Usa batch update se disponibile, altrimenti fallback a singoli update
-      if (onBatchUpdate) {
-        console.log('📦 Usando batch update per indirizzo');
-        onBatchUpdate(updates);
-      } else {
-        console.log('⚠️ Fallback a singoli update per indirizzo');
-        Object.entries(updates).forEach(([field, value]) => {
-          onInputChange(field, value);
-        });
-      }
-      
-      console.log('✅ Indirizzo processato con successo');
-      
-    } catch (error) {
-      console.error('❌ Errore in handleAddressSelect:', error);
-      console.error('📋 AddressData ricevuto:', addressData);
-      
-      // Fallback: almeno tenta di salvare l'indirizzo base
-      try {
-        if (addressData?.address) {
-          onInputChange('address', addressData.address);
-        }
-      } catch (fallbackError) {
-        console.error('❌ Errore anche nel fallback:', fallbackError);
-      }
+    const updates: Record<string, string> = {
+      address: addressData.address || '',
+      latitude: addressData.latitude?.toString() || '',
+      longitude: addressData.longitude?.toString() || ''
+    };
+    
+    // Add city as location_name if empty
+    if (!formData.location_name && addressData.city) {
+      updates.location_name = addressData.city;
+    }
+    
+    // Use batch update for atomic state change
+    if (onBatchUpdate) {
+      onBatchUpdate(updates);
+    } else {
+      Object.entries(updates).forEach(([field, value]) => {
+        onInputChange(field, value);
+      });
     }
   };
 
@@ -97,7 +72,7 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
           required
         />
         
-        {/* Feedback visivo migliorato con stato di conferma */}
+        {/* Enhanced visual feedback */}
         {hasValidCoordinates && formData.address && isAddressConfirmed && (
           <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-md">
             <span className="text-green-500">✓</span>

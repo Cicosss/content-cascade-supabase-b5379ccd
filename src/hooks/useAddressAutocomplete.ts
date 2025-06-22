@@ -25,22 +25,19 @@ export const useAddressAutocomplete = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  // Memoizza la callback per evitare re-render inutili
   const handlePlaceSelect = useCallback(() => {
     if (!autocompleteRef.current) return;
     
     const place = autocompleteRef.current.getPlace();
     
     if (!place.geometry?.location) {
-      console.log('⚠️ Luogo selezionato senza geometria valida');
       setIsConfirmed(false);
       return;
     }
 
-    console.log('🌍 Elaborazione luogo da Google Places:', place);
     setIsLoading(true);
 
-    // Estrai componenti indirizzo in modo più sicuro
+    // Extract address components safely
     let city = '';
     let province = '';
     let postalCode = '';
@@ -72,22 +69,15 @@ export const useAddressAutocomplete = ({
       country
     };
 
-    console.log('📍 Dati indirizzo processati:', addressData);
-
-    // Usa un breve timeout per assicurarsi che tutti i dati siano processati
-    setTimeout(() => {
-      setIsConfirmed(true);
-      onAddressSelect(addressData);
-      setIsLoading(false);
-      console.log('✅ Indirizzo confermato e inviato al form');
-    }, 50);
+    // Synchronous state update - no setTimeout
+    setIsConfirmed(true);
+    setIsLoading(false);
+    onAddressSelect(addressData);
 
   }, [onAddressSelect]);
 
   useEffect(() => {
     if (!isApiLoaded || !inputRef.current || autocompleteRef.current) return;
-
-    console.log('🔧 Inizializzazione Google Places Autocomplete');
 
     const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
       types: ['address'],
@@ -101,13 +91,11 @@ export const useAddressAutocomplete = ({
     return () => {
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
-        console.log('🧹 Cleanup Google Places Autocomplete');
       }
     };
   }, [isApiLoaded, handlePlaceSelect]);
 
   const resetConfirmation = useCallback(() => {
-    console.log('🔄 Reset conferma indirizzo');
     setIsConfirmed(false);
   }, []);
 

@@ -39,8 +39,6 @@ export const useExperienceFormSubmission = () => {
         opening_hours: formData.poi_type === 'place' ? (formData.opening_hours || null) : null,
       };
 
-      console.log('🔄 Inserimento POI:', submissionData);
-
       const { data, error } = await supabase
         .from('points_of_interest')
         .insert([submissionData])
@@ -48,19 +46,15 @@ export const useExperienceFormSubmission = () => {
         .single();
 
       if (error) {
-        console.error('❌ Errore inserimento POI:', error);
         throw error;
       }
-
-      console.log('✅ POI inserito con successo:', data);
       
       toast.success('POI inserito con successo! L\'indirizzo è stato geolocalizzato correttamente.');
-      
       onSuccess();
 
     } catch (error) {
-      console.error('❌ Errore nell\'inserimento:', error);
-      toast.error('Errore nell\'inserimento del POI. Controlla la console per dettagli.');
+      console.error('Errore nell\'inserimento:', error);
+      toast.error('Errore nell\'inserimento del POI. Verifica i dati e riprova.');
       throw error;
     } finally {
       setIsLoading(false);
