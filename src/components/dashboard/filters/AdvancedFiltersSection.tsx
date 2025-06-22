@@ -61,7 +61,6 @@ const AdvancedFiltersSection: React.FC<AdvancedFiltersSectionProps> = ({
             options={budgetOptions}
             selectedOptions={filters.budgets || []}
             onOptionsChange={(options) => updateFilter('budgets', options)}
-            color="emerald"
           />
 
           {/* Preferenze */}
@@ -70,7 +69,6 @@ const AdvancedFiltersSection: React.FC<AdvancedFiltersSectionProps> = ({
             options={preferenceOptions}
             selectedOptions={filters.specialPreferences || []}
             onOptionsChange={(options) => updateFilter('specialPreferences', options)}
-            color="purple"
           />
 
           {/* Servizi */}
@@ -79,7 +77,6 @@ const AdvancedFiltersSection: React.FC<AdvancedFiltersSectionProps> = ({
             options={serviceOptions}
             selectedOptions={filters.specialPreferences || []}
             onOptionsChange={(options) => updateFilter('specialPreferences', options)}
-            color="blue"
           />
 
         </div>
