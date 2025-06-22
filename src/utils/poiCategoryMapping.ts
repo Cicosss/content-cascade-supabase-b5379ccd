@@ -10,7 +10,11 @@ export const POI_CATEGORY_MAPPING: { [key: string]: string[] } = {
 };
 
 export const getCategoriesForFilters = (activityTypes: string[]): string[] => {
-  if (activityTypes.includes('tutto')) {
+  console.log('🏷️ getCategoriesForFilters called with:', activityTypes);
+  
+  // If "tutto" or "tutte" is selected, return empty array to show all categories
+  if (activityTypes.includes('tutto') || activityTypes.includes('tutte') || activityTypes.length === 0) {
+    console.log('🌍 Returning empty array for all categories');
     return [];
   }
 
@@ -19,8 +23,12 @@ export const getCategoriesForFilters = (activityTypes: string[]): string[] => {
     const mappedCategories = POI_CATEGORY_MAPPING[filterType.toLowerCase()];
     if (mappedCategories) {
       categories.push(...mappedCategories);
+      console.log(`🎯 Added categories for ${filterType}:`, mappedCategories);
+    } else {
+      console.log(`⚠️ No mapping found for filter type: ${filterType}`);
     }
   });
 
+  console.log('🏷️ Final categories array:', categories);
   return categories;
 };

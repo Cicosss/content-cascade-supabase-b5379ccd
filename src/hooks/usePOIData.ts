@@ -23,31 +23,40 @@ export const usePOIData = () => {
     setIsLoading(true);
     
     try {
-      console.log('🔄 Fetching POIs with filters:', filters);
+      console.log('🔄 usePOIData: Fetching POIs with filters:', filters);
       
       // Single unified call to fetch POIs
       const allPOIs = await poiService.fetchStandardPOIs(filters);
       
       // Check if request was aborted
       if (abortControllerRef.current?.signal.aborted) {
+        console.log('🚫 Request aborted');
         return;
       }
       
-      console.log('✅ POIs fetched successfully:', allPOIs.length);
-      poiService.logResults(filters, allPOIs.length, 0, allPOIs.length);
+      console.log('✅ usePOIData: POIs fetched successfully:', allPOIs.length);
       
-      // Use fallback data if no POIs found and no active filters
+      // Check if we have active filters
       const hasActiveFilters = filters.activityTypes.length > 1 || 
+                              (filters.activityTypes.length === 1 && 
+                               !filters.activityTypes.includes('tutto') && 
+                               !filters.activityTypes.includes('tutte')) ||
                               filters.zone !== 'tuttalromagna' || 
                               filters.withChildren === 'si' ||
                               filters.period?.from;
       
+      console.log('🔍 Has active filters:', hasActiveFilters);
+      
+      // Use fallback data only if no POIs found AND no active filters
       if (allPOIs.length === 0 && !hasActiveFilters) {
-        console.log('📍 Using fallback data');
+        console.log('📍 No POIs found and no active filters - using fallback data');
         setPois(FALLBACK_POI_DATA);
       } else {
+        console.log('📍 Setting POIs from database:', allPOIs.length);
         setPois(allPOIs);
       }
+      
+      poiService.logResults(filters, allPOIs.length, 0, allPOIs.length);
       
     } catch (error) {
       // Don't set error state if request was just aborted

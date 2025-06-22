@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
@@ -35,13 +34,20 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     onPOISelect: setSelectedPOI
   });
 
-  // Transform filters for POI data service
-  const poiFilters = useMemo(() => ({
-    activityTypes: filters.activityTypes,
-    zone: filters.zone,
-    withChildren: filters.withChildren,
-    period: undefined
-  }), [filters.activityTypes.join(','), filters.zone, filters.withChildren]);
+  // Transform filters for POI data service with better default handling
+  const poiFilters = useMemo(() => {
+    console.log('🗺️ GoogleMap: Creating POI filters from:', filters);
+    
+    const transformedFilters = {
+      activityTypes: filters.activityTypes.length > 0 ? filters.activityTypes : ['tutto'],
+      zone: filters.zone,
+      withChildren: filters.withChildren,
+      period: undefined
+    };
+    
+    console.log('🗺️ GoogleMap: Transformed filters:', transformedFilters);
+    return transformedFilters;
+  }, [filters.activityTypes.join(','), filters.zone, filters.withChildren]);
 
   // Memoized callbacks to prevent unnecessary re-renders
   const handleCenterOnUser = useCallback(() => {
@@ -65,7 +71,10 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
 
   // Load POIs when map is ready or filters change
   useEffect(() => {
-    if (!mapInstance) return;
+    if (!mapInstance) {
+      console.log('🗺️ GoogleMap: Map not ready yet');
+      return;
+    }
     
     console.log('🗺️ GoogleMap: Loading POIs with filters:', poiFilters);
     fetchPOIs(poiFilters);
@@ -114,7 +123,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
         </div>
       )}
 
-      {/* Indicatore numero POI caricati */}
+      {/* Indicatore numero POI caricati con logging migliorato */}
       {pois.length > 0 && (
         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
           <div className="flex items-center gap-2 text-sm text-slate-700">
