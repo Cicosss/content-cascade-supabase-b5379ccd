@@ -131,9 +131,49 @@ export const useURLFilters = () => {
     updateFilters(newFilters);
   }, [filters, updateFilters]);
 
+  // Funzione per rimuovere un singolo filtro
+  const removeFilter = useCallback((filterType: string, value?: string) => {
+    const newFilters = { ...filters };
+    
+    switch (filterType) {
+      case 'category':
+        if (value) {
+          newFilters.categories = newFilters.categories.filter(cat => cat !== value);
+          if (newFilters.categories.length === 0) {
+            newFilters.categories = ['tutte'];
+          }
+        }
+        break;
+      case 'zone':
+        newFilters.zone = 'tuttalromagna';
+        break;
+      case 'period':
+        newFilters.period = undefined;
+        break;
+      case 'timeSlot':
+        if (value && newFilters.timeSlots) {
+          newFilters.timeSlots = newFilters.timeSlots.filter(slot => slot !== value);
+        }
+        break;
+      case 'budget':
+        if (value && newFilters.budgets) {
+          newFilters.budgets = newFilters.budgets.filter(budget => budget !== value);
+        }
+        break;
+      case 'specialPreference':
+        if (value && newFilters.specialPreferences) {
+          newFilters.specialPreferences = newFilters.specialPreferences.filter(pref => pref !== value);
+        }
+        break;
+    }
+    
+    updateFilters(newFilters);
+  }, [filters, updateFilters]);
+
   return {
     filters,
     updateFilters,
-    updateSortBy
+    updateSortBy,
+    removeFilter
   };
 };

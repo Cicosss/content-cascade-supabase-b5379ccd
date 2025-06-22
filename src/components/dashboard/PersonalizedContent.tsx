@@ -8,10 +8,11 @@ import HelpBanner from './content/HelpBanner';
 import SortingDropdown, { SortOption } from './SortingDropdown';
 import AppliedFilters from './AppliedFilters';
 import { useURLFilters } from '@/hooks/useURLFilters';
+import { usePersonalizedContentFixed } from '@/hooks/usePersonalizedContentFixed';
 
 const PersonalizedContent: React.FC = () => {
-  const { filters, updateFilters, removeFilter } = useURLFilters();
-  const [sortBy, setSortBy] = React.useState<SortOption>('recommended');
+  const { filters, updateFilters, removeFilter, updateSortBy } = useURLFilters();
+  const { restaurants, experiences, events, isLoading } = usePersonalizedContentFixed(filters);
 
   const handleRemoveFilter = (filterType: string, value?: string) => {
     if (filterType === 'all') {
@@ -22,11 +23,16 @@ const PersonalizedContent: React.FC = () => {
         period: undefined,
         timeSlots: [],
         budgets: [],
-        specialPreferences: []
+        specialPreferences: [],
+        sortBy: filters.sortBy
       });
     } else {
       removeFilter(filterType, value);
     }
+  };
+
+  const handleSortChange = (sortBy: SortOption) => {
+    updateSortBy(sortBy);
   };
 
   return (
@@ -45,13 +51,19 @@ const PersonalizedContent: React.FC = () => {
             <p className="text-gray-600">Scopri i migliori ristoranti e sapori della Romagna</p>
           </div>
           <SortingDropdown 
-            sortBy={sortBy}
-            onSortChange={setSortBy}
+            sortBy={filters.sortBy}
+            onSortChange={handleSortChange}
             showDistanceOption={true}
             showPriceOptions={true}
           />
         </div>
-        <RestaurantsCarousel />
+        <RestaurantsCarousel 
+          restaurants={restaurants}
+          filters={{
+            isFirstVisit: false,
+            withChildren: filters.specialPreferences?.includes('famiglia') ? 'sì' : 'no'
+          }}
+        />
       </Card>
 
       {/* Sezione Esperienze */}
@@ -62,13 +74,18 @@ const PersonalizedContent: React.FC = () => {
             <p className="text-gray-600">Vivi momenti indimenticabili nel territorio romagnolo</p>
           </div>
           <SortingDropdown 
-            sortBy={sortBy}
-            onSortChange={setSortBy}
+            sortBy={filters.sortBy}
+            onSortChange={handleSortChange}
             showDistanceOption={true}
             showPriceOptions={true}
           />
         </div>
-        <ExperiencesCarousel />
+        <ExperiencesCarousel 
+          experiences={experiences}
+          filters={{
+            withChildren: filters.specialPreferences?.includes('famiglia') ? 'sì' : 'no'
+          }}
+        />
       </Card>
 
       {/* Sezione Eventi */}
@@ -79,13 +96,13 @@ const PersonalizedContent: React.FC = () => {
             <p className="text-gray-600">Non perdere gli eventi più interessanti della zona</p>
           </div>
           <SortingDropdown 
-            sortBy={sortBy}
-            onSortChange={setSortBy}
+            sortBy={filters.sortBy}
+            onSortChange={handleSortChange}
             showChronologicalOption={true}
             showPriceOptions={false}
           />
         </div>
-        <EventsCarousel />
+        <EventsCarousel events={events} />
       </Card>
 
       {/* Banner di Aiuto */}
