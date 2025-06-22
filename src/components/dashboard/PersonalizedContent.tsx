@@ -1,9 +1,8 @@
-
 import React, { useState, useCallback, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import ExperienceFilters from './ExperienceFilters';
 import AppliedFilters from './AppliedFilters';
-import SortingDropdown from './SortingDropdown';
+import SortingDropdown, { SortOption } from './SortingDropdown';
 import ExperiencesCarousel from './content/ExperiencesCarousel';
 import RestaurantsCarousel from './content/RestaurantsCarousel';
 import EventsCarousel from './content/EventsCarousel';
@@ -22,7 +21,7 @@ const PersonalizedContent = () => {
     isFirstVisit: true
   });
   
-  const [sortBy, setSortBy] = useState('relevance');
+  const [sortBy, setSortBy] = useState<SortOption>('recommended');
 
   // Memoize filters to prevent unnecessary re-renders
   const memoizedFilters = useMemo(() => ({

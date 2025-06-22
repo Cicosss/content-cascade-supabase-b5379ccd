@@ -8,7 +8,7 @@ export const usePersonalizedContent = (filters?: any) => {
   const [error, setError] = useState<Error | null>(null);
   
   // Prevent infinite loops with refs
-  const filtersRef = useRef();
+  const filtersRef = useRef<string>();
   const mountedRef = useRef(true);
   const lastCallRef = useRef(0);
   
