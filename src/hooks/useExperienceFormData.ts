@@ -54,6 +54,8 @@ export const useExperienceFormData = () => {
   const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
 
   const handleInputChange = useCallback((field: string, value: any) => {
+    console.log(`🔄 Form field change: ${field} =`, value);
+    
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -61,39 +63,53 @@ export const useExperienceFormData = () => {
 
     // Se l'indirizzo viene modificato manualmente, resetta la conferma
     if (field === 'address') {
+      console.log('📍 Address manually changed, resetting confirmation');
       setIsAddressConfirmed(false);
     }
   }, []);
 
-  // Atomic batch update
+  // Atomic batch update for address data
   const handleBatchUpdate = useCallback((updates: Partial<ExperienceFormData>) => {
+    console.log('🔄 Batch update:', updates);
+    
     setFormData(prev => ({
       ...prev,
       ...updates
     }));
 
-    // Se l'aggiornamento include coordinate valide, considera l'indirizzo confermato
+    // Se l'aggiornamento include coordinate valide, mantieni la conferma
     if (updates.address && updates.latitude && updates.longitude) {
-      setIsAddressConfirmed(true);
+      console.log('✅ Address batch update with coordinates, keeping confirmation');
+      // Non resettare la conferma qui, sarà gestita dal callback onConfirmationChange
     }
   }, []);
 
   const handleAddressConfirmationChange = useCallback((confirmed: boolean) => {
+    console.log('🔔 Address confirmation state change:', confirmed);
     setIsAddressConfirmed(confirmed);
   }, []);
 
   const resetForm = useCallback(() => {
+    console.log('🔄 Resetting form');
     setFormData(initialFormData);
     setIsAddressConfirmed(false);
   }, []);
 
   const resetAddressConfirmation = useCallback(() => {
+    console.log('🔄 Resetting address confirmation');
     setIsAddressConfirmed(false);
   }, []);
 
   const isFormReadyForSubmission = useCallback(() => {
     const hasRequiredFields = !!(formData.name && formData.macro_area && formData.category);
     const hasValidAddress = !!(formData.address && formData.latitude && formData.longitude);
+    
+    console.log('🔍 Form submission readiness check:', {
+      hasRequiredFields,
+      hasValidAddress,
+      isAddressConfirmed,
+      ready: hasRequiredFields && hasValidAddress && isAddressConfirmed
+    });
     
     return hasRequiredFields && hasValidAddress && isAddressConfirmed;
   }, [formData.name, formData.macro_area, formData.category, formData.address, formData.latitude, formData.longitude, isAddressConfirmed]);

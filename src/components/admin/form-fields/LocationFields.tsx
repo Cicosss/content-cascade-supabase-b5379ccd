@@ -42,6 +42,8 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
                               formData.latitude !== '0' && formData.longitude !== '0';
 
   const handleAddressSelect = (addressData: AddressData) => {
+    console.log('📍 Address selected in LocationFields:', addressData);
+    
     const updates: Record<string, string> = {
       address: addressData.address || '',
       latitude: addressData.latitude?.toString() || '',
@@ -52,6 +54,8 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
     if (!formData.location_name && addressData.city) {
       updates.location_name = addressData.city;
     }
+    
+    console.log('🔄 Updating form with address data:', updates);
     
     // Use batch update for atomic state change
     if (onBatchUpdate) {
@@ -64,10 +68,12 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
   };
 
   const handleAddressChange = (value: string) => {
+    console.log('✏️ Address input changed:', value);
     onInputChange('address', value);
   };
 
   const handleConfirmationChange = (isConfirmed: boolean) => {
+    console.log('🔔 Address confirmation changed:', isConfirmed);
     onAddressConfirmationChange?.(isConfirmed);
   };
 
@@ -135,6 +141,13 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
           />
         </div>
       </div>
+
+      {/* Debug coordinates display */}
+      {(formData.latitude || formData.longitude) && (
+        <div className="text-xs text-gray-500">
+          Debug: lat={formData.latitude}, lng={formData.longitude}, confirmed={isAddressConfirmed ? 'yes' : 'no'}
+        </div>
+      )}
     </>
   );
 };

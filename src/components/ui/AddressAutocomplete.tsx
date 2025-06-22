@@ -20,10 +20,10 @@ interface AddressAutocompleteProps {
   label?: string;
   placeholder?: string;
   value: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   onAddressSelect: (addressData: AddressData) => void;
-  onConfirmationChange?: (isConfirmed: boolean) => void;
-  isConfirmed?: boolean;
+  onConfirmationChange: (isConfirmed: boolean) => void;
+  isConfirmed: boolean;
   className?: string;
   required?: boolean;
 }
@@ -35,7 +35,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   onChange,
   onAddressSelect,
   onConfirmationChange,
-  isConfirmed = false,
+  isConfirmed,
   className = "",
   required = false
 }) => {
@@ -52,11 +52,12 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     
     // Se l'utente digita manualmente, resetta immediatamente la conferma
     if (isConfirmed && newValue !== value) {
-      onConfirmationChange?.(false);
+      console.log('🔄 Resetting address confirmation due to manual typing');
+      onConfirmationChange(false);
     }
     
-    // Chiama il callback di onChange se fornito
-    onChange?.(newValue);
+    // Aggiorna sempre il valore
+    onChange(newValue);
   };
 
   return (

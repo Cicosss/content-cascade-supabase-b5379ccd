@@ -14,7 +14,7 @@ interface AddressData {
 interface UseAddressAutocompleteProps {
   isApiLoaded: boolean;
   onAddressSelect: (addressData: AddressData) => void;
-  onConfirmationChange?: (isConfirmed: boolean) => void;
+  onConfirmationChange: (isConfirmed: boolean) => void;
 }
 
 export const useAddressAutocomplete = ({ 
@@ -25,20 +25,24 @@ export const useAddressAutocomplete = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const processedRef = useRef(false);
 
   const handlePlaceSelect = useCallback(() => {
-    if (!autocompleteRef.current || processedRef.current) return;
+    if (!autocompleteRef.current) {
+      console.log('❌ Autocomplete ref not available');
+      return;
+    }
     
     const place = autocompleteRef.current.getPlace();
+    console.log('📍 Place selected:', place);
     
     if (!place.geometry?.location) {
-      onConfirmationChange?.(false);
+      console.log('❌ No geometry/location in selected place');
+      onConfirmationChange(false);
       return;
     }
 
-    processedRef.current = true;
     setIsLoading(true);
+    console.log('🔄 Processing place selection...');
 
     try {
       // Extract address components safely
@@ -73,22 +77,27 @@ export const useAddressAutocomplete = ({
         country
       };
 
-      // Call callbacks immediately
+      console.log('✅ Address data processed:', addressData);
+
+      // Call callbacks immediatamente e atomicamente
       onAddressSelect(addressData);
-      onConfirmationChange?.(true);
+      onConfirmationChange(true);
       
     } catch (error) {
-      console.error('Error processing address:', error);
-      onConfirmationChange?.(false);
+      console.error('❌ Error processing address:', error);
+      onConfirmationChange(false);
     } finally {
       setIsLoading(false);
-      processedRef.current = false;
     }
 
   }, [onAddressSelect, onConfirmationChange]);
 
   useEffect(() => {
-    if (!isApiLoaded || !inputRef.current || autocompleteRef.current) return;
+    if (!isApiLoaded || !inputRef.current || autocompleteRef.current) {
+      return;
+    }
+
+    console.log('🔧 Initializing Google Places Autocomplete...');
 
     try {
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
@@ -99,13 +108,16 @@ export const useAddressAutocomplete = ({
 
       autocompleteRef.current = autocomplete;
       autocomplete.addListener('place_changed', handlePlaceSelect);
+      
+      console.log('✅ Google Places Autocomplete initialized');
     } catch (error) {
-      console.error('Error initializing autocomplete:', error);
+      console.error('❌ Error initializing autocomplete:', error);
     }
 
     return () => {
       if (autocompleteRef.current) {
         google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        console.log('🧹 Cleaned up autocomplete listeners');
       }
     };
   }, [isApiLoaded, handlePlaceSelect]);
