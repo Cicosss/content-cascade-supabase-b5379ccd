@@ -4,6 +4,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AddressAutocomplete from '@/components/ui/AddressAutocomplete';
 
+interface AddressData {
+  address: string;
+  latitude: number;
+  longitude: number;
+  city?: string;
+  province?: string;
+  postalCode?: string;
+  country?: string;
+}
+
 interface LocationFieldsProps {
   formData: {
     address: string;
@@ -29,30 +39,50 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
                               formData.latitude !== '' && formData.longitude !== '' &&
                               formData.latitude !== '0' && formData.longitude !== '0';
 
-  const handleAddressSelect = (addressData: any) => {
-    console.log('🏠 Indirizzo selezionato da Google Places:', addressData);
-    
-    // Prepara tutti gli aggiornamenti in un singolo oggetto
-    const updates: Record<string, string> = {
-      address: addressData.address || '',
-      latitude: addressData.latitude?.toString() || '',
-      longitude: addressData.longitude?.toString() || ''
-    };
-    
-    // Se c'è location_name vuoto e abbiamo una città, aggiungila
-    if (!formData.location_name && addressData.city) {
-      updates.location_name = addressData.city;
-    }
-    
-    // Usa batch update se disponibile, altrimenti fallback a singoli update
-    if (onBatchUpdate) {
-      console.log('📦 Usando batch update per indirizzo');
-      onBatchUpdate(updates);
-    } else {
-      console.log('⚠️ Fallback a singoli update per indirizzo');
-      Object.entries(updates).forEach(([field, value]) => {
-        onInputChange(field, value);
-      });
+  const handleAddressSelect = (addressData: AddressData) => {
+    try {
+      console.log('🏠 Indirizzo selezionato da Google Places:', addressData);
+      
+      // Prepara tutti gli aggiornamenti in un singolo oggetto
+      const updates: Record<string, string> = {
+        address: addressData.address || '',
+        latitude: addressData.latitude?.toString() || '',
+        longitude: addressData.longitude?.toString() || ''
+      };
+      
+      // Se c'è location_name vuoto e abbiamo una città, aggiungila
+      if (!formData.location_name && addressData.city) {
+        updates.location_name = addressData.city;
+        console.log('📍 Aggiunto location_name dalla città:', addressData.city);
+      }
+      
+      console.log('📦 Updates preparati:', updates);
+      
+      // Usa batch update se disponibile, altrimenti fallback a singoli update
+      if (onBatchUpdate) {
+        console.log('📦 Usando batch update per indirizzo');
+        onBatchUpdate(updates);
+      } else {
+        console.log('⚠️ Fallback a singoli update per indirizzo');
+        Object.entries(updates).forEach(([field, value]) => {
+          onInputChange(field, value);
+        });
+      }
+      
+      console.log('✅ Indirizzo processato con successo');
+      
+    } catch (error) {
+      console.error('❌ Errore in handleAddressSelect:', error);
+      console.error('📋 AddressData ricevuto:', addressData);
+      
+      // Fallback: almeno tenta di salvare l'indirizzo base
+      try {
+        if (addressData?.address) {
+          onInputChange('address', addressData.address);
+        }
+      } catch (fallbackError) {
+        console.error('❌ Errore anche nel fallback:', fallbackError);
+      }
     }
   };
 
