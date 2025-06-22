@@ -1,9 +1,8 @@
 
-import React from 'react';
-import { MapPin, Clock, Euro, Star, X, ExternalLink } from 'lucide-react';
+import React, { memo } from 'react';
+import { MapPin, Euro, Star, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 
 interface POI {
@@ -19,14 +18,14 @@ interface POI {
   avg_rating?: number;
 }
 
-interface POIPreviewCardProps {
+interface OptimizedPOIPreviewProps {
   poi: POI;
   onClose: () => void;
   onGetDirections: (poi: POI) => void;
 }
 
-const getCategoryIcon = (category: string) => {
-  const icons: Record<string, React.ReactNode> = {
+const getCategoryIcon = (category: string): string => {
+  const icons: Record<string, string> = {
     'Ristoranti': '🍽️',
     'Arte': '🏛️',
     'Sport': '⚽',
@@ -58,7 +57,7 @@ const truncateDescription = (text: string, maxWords: number = 18): string => {
   return words.slice(0, maxWords).join(' ') + '...';
 };
 
-const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDirections }) => {
+const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ poi, onClose, onGetDirections }) => {
   const navigate = useNavigate();
 
   const handleDiscoverMore = () => {
@@ -73,7 +72,6 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
 
   return (
     <Card className="w-[300px] bg-white shadow-xl border-0 overflow-hidden relative">
-      {/* Close button */}
       <button
         onClick={onClose}
         className="absolute top-2 right-2 z-10 w-6 h-6 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors"
@@ -81,7 +79,6 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
         <X className="h-3 w-3 text-white" />
       </button>
 
-      {/* Cover Image */}
       <div className="h-32 bg-gradient-to-br from-blue-500 to-blue-600 relative overflow-hidden">
         <img
           src={poi.images?.[0] || placeholderImage}
@@ -96,7 +93,6 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
       </div>
 
       <CardContent className="p-4 space-y-3">
-        {/* Title and Category */}
         <div>
           <h4 className="font-semibold text-gray-900 text-lg leading-tight mb-1">
             {poi.name}
@@ -107,14 +103,12 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
           </div>
         </div>
 
-        {/* Description */}
         {poi.description && (
           <p className="text-sm text-gray-700 leading-relaxed">
             {truncateDescription(poi.description)}
           </p>
         )}
 
-        {/* Key Information */}
         <div className="flex items-center gap-4 text-xs text-gray-500">
           {poi.price_info && (
             <div className="flex items-center gap-1">
@@ -130,7 +124,6 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button
             onClick={handleDiscoverMore}
@@ -150,6 +143,8 @@ const POIPreviewCard: React.FC<POIPreviewCardProps> = ({ poi, onClose, onGetDire
       </CardContent>
     </Card>
   );
-};
+});
 
-export default POIPreviewCard;
+OptimizedPOIPreview.displayName = 'OptimizedPOIPreview';
+
+export default OptimizedPOIPreview;

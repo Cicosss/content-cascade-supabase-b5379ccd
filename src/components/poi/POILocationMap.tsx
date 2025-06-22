@@ -55,7 +55,7 @@ const POILocationMap: React.FC<POILocationMapProps> = ({
       });
 
       // Add marker
-      new window.google.maps.Marker({
+      const marker = new window.google.maps.Marker({
         position: position,
         map: mapInstanceRef.current,
         title: name,
@@ -82,12 +82,9 @@ const POILocationMap: React.FC<POILocationMapProps> = ({
       });
 
       // Open info window on marker click
-      const marker = mapInstanceRef.current.markers?.[0];
-      if (marker) {
-        marker.addListener('click', () => {
-          infoWindow.open(mapInstanceRef.current, marker);
-        });
-      }
+      marker.addListener('click', () => {
+        infoWindow.open(mapInstanceRef.current, marker);
+      });
     };
 
     loadGoogleMaps();

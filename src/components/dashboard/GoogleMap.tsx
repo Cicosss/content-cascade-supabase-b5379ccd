@@ -1,14 +1,14 @@
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, memo, useCallback } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
 import { Loader2 } from 'lucide-react';
-import POIPreviewCard from './POIPreviewCard';
+import OptimizedPOIPreview from './OptimizedPOIPreview';
 import MapControls from './MapControls';
 import MapLoadingIndicator from './MapLoadingIndicator';
 import { useGoogleMapsInit } from '@/hooks/useGoogleMapsInit';
-import { useGoogleMapInstance } from '@/hooks/useGoogleMapInstance';
-import { useGoogleMapMarkers } from '@/hooks/useGoogleMapMarkers';
+import { useOptimizedMapInstance } from '@/hooks/useOptimizedMapInstance';
+import { useOptimizedMapMarkers } from '@/hooks/useOptimizedMapMarkers';
 
 interface GoogleMapProps {
   filters: {
@@ -18,21 +18,41 @@ interface GoogleMapProps {
   };
 }
 
-const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
+const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedPOI, setSelectedPOI] = useState<any>(null);
   
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
   const { pois, fetchPOIs, isLoading: isLoadingPOIs } = usePOIData();
-  const { isLoaded } = useGoogleMapsInit();
-  const mapInstance = useGoogleMapInstance({ isLoaded, mapRef, userLocation });
+  const { isLoaded, error } = useGoogleMapsInit();
+  const mapInstance = useOptimizedMapInstance({ isLoaded, mapRef, userLocation });
 
-  useGoogleMapMarkers({
+  useOptimizedMapMarkers({
     map: mapInstance,
     pois,
     userLocation,
     onPOISelect: setSelectedPOI
   });
+
+  // Memoized callbacks to prevent unnecessary re-renders
+  const handleCenterOnUser = useCallback(() => {
+    if (userLocation && mapInstance) {
+      mapInstance.setCenter(userLocation);
+      mapInstance.setZoom(15);
+    } else {
+      getCurrentLocation();
+    }
+  }, [userLocation, mapInstance, getCurrentLocation]);
+
+  const handleGetDirections = useCallback((poi: any) => {
+    const destination = `${poi.latitude},${poi.longitude}`;
+    const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
+    window.open(mapsUrl, '_blank');
+  }, []);
+
+  const handleClosePreview = useCallback(() => {
+    setSelectedPOI(null);
+  }, []);
 
   // Load POIs when map is ready or filters change
   useEffect(() => {
@@ -40,24 +60,16 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
     fetchPOIs(filters);
   }, [mapInstance, filters, fetchPOIs]);
 
-  const handleCenterOnUser = () => {
-    if (userLocation && mapInstance) {
-      mapInstance.setCenter(userLocation);
-      mapInstance.setZoom(15);
-    } else {
-      getCurrentLocation();
-    }
-  };
-
-  const handleGetDirections = (poi: any) => {
-    const destination = `${poi.latitude},${poi.longitude}`;
-    const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}`;
-    window.open(mapsUrl, '_blank');
-  };
-
-  const handleClosePreview = () => {
-    setSelectedPOI(null);
-  };
+  if (error) {
+    return (
+      <div className="h-full flex items-center justify-center bg-slate-50 rounded-xl">
+        <div className="text-center">
+          <p className="text-red-600 mb-2">Errore caricamento mappa</p>
+          <p className="text-slate-600 text-sm">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isLoaded) {
     return (
@@ -83,7 +95,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
 
       {selectedPOI && (
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
-          <POIPreviewCard
+          <OptimizedPOIPreview
             poi={selectedPOI}
             onClose={handleClosePreview}
             onGetDirections={handleGetDirections}
@@ -92,6 +104,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ filters }) => {
       )}
     </div>
   );
-};
+});
+
+GoogleMap.displayName = 'GoogleMap';
 
 export default GoogleMap;
