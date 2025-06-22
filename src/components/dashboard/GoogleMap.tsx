@@ -35,11 +35,12 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     onPOISelect: setSelectedPOI
   });
 
-  // Memoize the filters to prevent unnecessary re-renders and API calls
-  const memoizedFilters = useMemo(() => ({
+  // Transform filters for POI data service
+  const poiFilters = useMemo(() => ({
     activityTypes: filters.activityTypes,
     zone: filters.zone,
-    withChildren: filters.withChildren
+    withChildren: filters.withChildren,
+    period: undefined
   }), [filters.activityTypes.join(','), filters.zone, filters.withChildren]);
 
   // Memoized callbacks to prevent unnecessary re-renders
@@ -62,13 +63,13 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     setSelectedPOI(null);
   }, []);
 
-  // Load POIs when map is ready - FIXED: Using primitive values instead of memoizedFilters
+  // Load POIs when map is ready or filters change
   useEffect(() => {
     if (!mapInstance) return;
     
-    console.log('GoogleMap: Loading POIs with filters:', memoizedFilters);
-    fetchPOIs(memoizedFilters);
-  }, [mapInstance, filters.activityTypes.join(','), filters.zone, filters.withChildren, fetchPOIs]);
+    console.log('🗺️ GoogleMap: Loading POIs with filters:', poiFilters);
+    fetchPOIs(poiFilters);
+  }, [mapInstance, poiFilters, fetchPOIs]);
 
   if (error) {
     return (
@@ -110,6 +111,16 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
             onClose={handleClosePreview}
             onGetDirections={handleGetDirections}
           />
+        </div>
+      )}
+
+      {/* Indicatore numero POI caricati */}
+      {pois.length > 0 && (
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+          <div className="flex items-center gap-2 text-sm text-slate-700">
+            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+            <span className="font-medium">{pois.length} POI trovati</span>
+          </div>
         </div>
       )}
     </div>

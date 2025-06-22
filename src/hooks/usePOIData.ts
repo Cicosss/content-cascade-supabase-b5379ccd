@@ -23,6 +23,8 @@ export const usePOIData = () => {
     setIsLoading(true);
     
     try {
+      console.log('🔄 Fetching POIs with filters:', filters);
+      
       // Single unified call to fetch POIs
       const allPOIs = await poiService.fetchStandardPOIs(filters);
       
@@ -31,10 +33,17 @@ export const usePOIData = () => {
         return;
       }
       
+      console.log('✅ POIs fetched successfully:', allPOIs.length);
       poiService.logResults(filters, allPOIs.length, 0, allPOIs.length);
       
-      // Use fallback data if no POIs found
-      if (allPOIs.length === 0) {
+      // Use fallback data if no POIs found and no active filters
+      const hasActiveFilters = filters.activityTypes.length > 1 || 
+                              filters.zone !== 'tuttalromagna' || 
+                              filters.withChildren === 'si' ||
+                              filters.period?.from;
+      
+      if (allPOIs.length === 0 && !hasActiveFilters) {
+        console.log('📍 Using fallback data');
         setPois(FALLBACK_POI_DATA);
       } else {
         setPois(allPOIs);
@@ -43,7 +52,7 @@ export const usePOIData = () => {
     } catch (error) {
       // Don't set error state if request was just aborted
       if (!abortControllerRef.current?.signal.aborted) {
-        console.error('Error fetching POIs:', error);
+        console.error('❌ Error fetching POIs:', error);
         setPois([]);
       }
     } finally {
