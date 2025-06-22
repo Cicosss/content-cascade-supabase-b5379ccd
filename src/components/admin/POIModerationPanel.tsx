@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -120,9 +119,63 @@ const POIModerationPanel = () => {
     setFilteredSubmissions(filtered);
   };
 
+  const copyToMainTable = async (submission: POISubmission) => {
+    console.log('🔄 Copying submission to points_of_interest:', submission.name);
+    
+    // Prepare data for points_of_interest table
+    const poiData = {
+      id: submission.id, // Keep the same ID to avoid duplicates
+      name: submission.name,
+      description: submission.description,
+      poi_type: submission.poi_type || 'place',
+      category: submission.category,
+      macro_area: submission.macro_area,
+      address: submission.address,
+      latitude: submission.latitude,
+      longitude: submission.longitude,
+      price_info: submission.price_info,
+      duration_info: submission.duration_info,
+      target_audience: submission.target_audience,
+      website_url: submission.website_url,
+      phone: submission.phone,
+      email: submission.email,
+      start_datetime: submission.start_datetime,
+      end_datetime: submission.end_datetime,
+      location_name: submission.location_name,
+      organizer_info: submission.organizer_info,
+      images: submission.images,
+      tags: submission.tags,
+      status: 'approved'
+    };
+
+    console.log('🔄 POI data to insert:', poiData);
+
+    // Use upsert to handle both insert and update cases
+    const { error: insertError } = await supabase
+      .from('points_of_interest')
+      .upsert(poiData, {
+        onConflict: 'id'
+      });
+
+    if (insertError) {
+      console.error('❌ Error copying to points_of_interest:', insertError);
+      throw new Error(`Errore nel copiare il POI nella tabella principale: ${insertError.message}`);
+    }
+
+    console.log('✅ Successfully copied to points_of_interest:', submission.name);
+  };
+
   const updateSubmissionStatus = async (submissionId: string, status: string, notes: string) => {
     setUpdating(true);
     try {
+      console.log('🔄 Updating submission status:', { submissionId, status, notes });
+      
+      // If approving, first copy to main table
+      if (status === 'approved' && selectedSubmission) {
+        await copyToMainTable(selectedSubmission);
+      }
+
+      // Update the submission status
       const { error } = await supabase
         .from('poi_submissions')
         .update({
@@ -147,7 +200,12 @@ const POIModerationPanel = () => {
         )
       );
 
-      toast.success('Status aggiornato con successo');
+      if (status === 'approved') {
+        toast.success('POI approvato e pubblicato con successo!');
+      } else {
+        toast.success('Status aggiornato con successo');
+      }
+      
       setSelectedSubmission(null);
 
       if (status !== 'pending') {
