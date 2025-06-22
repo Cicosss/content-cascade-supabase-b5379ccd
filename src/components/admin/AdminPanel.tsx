@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,18 @@ import { toast } from 'sonner';
 import { Loader2, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { MACRO_AREAS, getCategoriesForMacroArea, AVAILABLE_TAGS } from '@/config/categoryMapping';
+
+// New imports for moderation components
+import PendingSubmissionsTable from './moderation/PendingSubmissionsTable';
+import ApprovedExperiencesTable from './moderation/ApprovedExperiencesTable';
+import RejectSubmissionModal from './moderation/RejectSubmissionModal';
+import EditSubmissionModal from './moderation/EditSubmissionModal';
+import EditApprovedModal from './moderation/EditApprovedModal';
+import DeleteConfirmModal from './moderation/DeleteConfirmModal';
+import { usePOISubmissions } from './moderation/usePOISubmissions';
+import { useApprovedExperiences } from '@/hooks/useApprovedExperiences';
+import { useModerationActions } from './moderation/useModerationActions';
+import { POISubmission } from './moderation/POISubmission';
 
 // Definizione interfaccia per i dati del form
 interface FormData {
@@ -173,6 +184,79 @@ const AdminPanel: React.FC = () => {
     }
   }, [formData.macro_area, formData.category]);
 
+  // New state for moderation functionality
+  const [rejectModalOpen, setRejectModalOpen] = useState(false);
+  const [editSubmissionModalOpen, setEditSubmissionModalOpen] = useState(false);
+  const [editApprovedModalOpen, setEditApprovedModalOpen] = useState(false);
+  const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
+  const [selectedSubmission, setSelectedSubmission] = useState<POISubmission | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<any>(null);
+
+  // Hooks for moderation data and actions
+  const { submissions, loading: submissionsLoading, fetchSubmissions, updateSubmissionStatus, deleteSubmission } = usePOISubmissions();
+  const { experiences, filteredExperiences, loading: experiencesLoading, deleteExperience, deApproveExperience, updateExperience } = useApprovedExperiences();
+  const { updating, updateSubmissionStatus: moderateSubmission } = useModerationActions();
+
+  // Apply empty filters to show all experiences initially
+  useEffect(() => {
+    const emptyFilters = {
+      status: 'tutti',
+      category: 'tutti',
+      macroArea: 'tutti',
+      searchTerm: '',
+      poiType: 'tutti'
+    };
+    // Apply filters to show all experiences
+    if (experiences.length > 0) {
+      // This will be called by the hook internally
+    }
+  }, [experiences]);
+
+  // Moderation action handlers
+  const handleApproveSubmission = async (submission: POISubmission) => {
+    await moderateSubmission(submission.id, 'approved', 'Approvato dall\'amministratore', submission, updateSubmissionStatus);
+    fetchSubmissions();
+  };
+
+  const handleRejectSubmission = (submission: POISubmission) => {
+    setSelectedSubmission(submission);
+    setRejectModalOpen(true);
+  };
+
+  const handleConfirmReject = async (submissionId: string, reason: string) => {
+    await moderateSubmission(submissionId, 'rejected', reason, null, updateSubmissionStatus);
+    fetchSubmissions();
+  };
+
+  const handleEditSubmission = (submission: POISubmission) => {
+    setSelectedSubmission(submission);
+    setEditSubmissionModalOpen(true);
+  };
+
+  const handlePreviewSubmission = (submission: POISubmission) => {
+    // Open POI detail page in new tab with preview mode
+    const previewUrl = `/esperienze/${submission.id}?preview=true`;
+    window.open(previewUrl, '_blank');
+  };
+
+  const handleRevertExperience = async (experience: any) => {
+    await deApproveExperience(experience);
+  };
+
+  const handleEditApproved = (experience: any) => {
+    setSelectedExperience(experience);
+    setEditApprovedModalOpen(true);
+  };
+
+  const handleDeleteExperience = (experience: any) => {
+    setSelectedExperience(experience);
+    setDeleteConfirmModalOpen(true);
+  };
+
+  const handleConfirmDelete = async (experienceId: string) => {
+    await deleteExperience(experienceId);
+  };
+
   // Gestione cambio input generico
   const handleInputChange = (field: keyof FormData, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -314,7 +398,7 @@ const AdminPanel: React.FC = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">🏛️ Panel di Moderazione POI</h1>
       
-      <Tabs defaultValue="add-new" className="w-full">
+      <Tabs defaultValue="pending" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="pending">Proposte da Moderare</TabsTrigger>
           <TabsTrigger value="approved">Esperienze Approvate</TabsTrigger>
@@ -322,15 +406,26 @@ const AdminPanel: React.FC = () => {
         </TabsList>
         
         <TabsContent value="pending" className="mt-6">
-          <div className="text-center py-12">
-            <p className="text-gray-500">Funzionalità in arrivo...</p>
-          </div>
+          <PendingSubmissionsTable
+            submissions={submissions}
+            loading={submissionsLoading}
+            onApprove={handleApproveSubmission}
+            onReject={handleRejectSubmission}
+            onEdit={handleEditSubmission}
+            onPreview={handlePreviewSubmission}
+            updating={updating}
+          />
         </TabsContent>
         
         <TabsContent value="approved" className="mt-6">
-          <div className="text-center py-12">
-            <p className="text-gray-500">Funzionalità in arrivo...</p>
-          </div>
+          <ApprovedExperiencesTable
+            experiences={experiences}
+            loading={experiencesLoading}
+            onRevert={handleRevertExperience}
+            onEdit={handleEditApproved}
+            onDelete={handleDeleteExperience}
+            updating={updating}
+          />
         </TabsContent>
         
         <TabsContent value="add-new" className="mt-6">
@@ -679,6 +774,47 @@ const AdminPanel: React.FC = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Moderation Modals */}
+      <RejectSubmissionModal
+        submission={selectedSubmission}
+        isOpen={rejectModalOpen}
+        onClose={() => {
+          setRejectModalOpen(false);
+          setSelectedSubmission(null);
+        }}
+        onConfirm={handleConfirmReject}
+      />
+
+      <EditSubmissionModal
+        submission={selectedSubmission}
+        isOpen={editSubmissionModalOpen}
+        onClose={() => {
+          setEditSubmissionModalOpen(false);
+          setSelectedSubmission(null);
+        }}
+        onSave={fetchSubmissions}
+      />
+
+      <EditApprovedModal
+        experience={selectedExperience}
+        isOpen={editApprovedModalOpen}
+        onClose={() => {
+          setEditApprovedModalOpen(false);
+          setSelectedExperience(null);
+        }}
+        onSave={updateExperience}
+      />
+
+      <DeleteConfirmModal
+        experience={selectedExperience}
+        isOpen={deleteConfirmModalOpen}
+        onClose={() => {
+          setDeleteConfirmModalOpen(false);
+          setSelectedExperience(null);
+        }}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 };
