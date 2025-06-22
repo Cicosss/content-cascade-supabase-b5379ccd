@@ -8,15 +8,14 @@ interface TagGroupFilterProps {
   options: string[];
   selectedOptions: string[];
   onOptionsChange: (options: string[]) => void;
-  color: 'emerald' | 'purple' | 'blue';
+  color?: 'blue'; // Standardized to only blue
 }
 
 const TagGroupFilter: React.FC<TagGroupFilterProps> = ({ 
   title, 
   options, 
   selectedOptions, 
-  onOptionsChange,
-  color 
+  onOptionsChange 
 }) => {
   const toggleOption = (option: string) => {
     const newOptions = selectedOptions.includes(option)
@@ -26,20 +25,13 @@ const TagGroupFilter: React.FC<TagGroupFilterProps> = ({
     onOptionsChange(newOptions);
   };
 
-  const getColorClasses = (isSelected: boolean) => {
-    const baseClasses = 'text-sm font-medium rounded-lg px-4 py-2 transition-all';
-    
+  // Standardized styling following the same pattern as categories
+  const getButtonClassName = (isSelected: boolean) => {
+    const baseClasses = "text-sm font-medium rounded-lg px-4 py-2 transition-all duration-200 border-2";
     if (isSelected) {
-      switch (color) {
-        case 'emerald':
-          return `${baseClasses} bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg`;
-        case 'purple':
-          return `${baseClasses} bg-purple-500 hover:bg-purple-600 text-white shadow-lg`;
-        case 'blue':
-          return `${baseClasses} bg-blue-500 hover:bg-blue-600 text-white shadow-lg`;
-      }
+      return `${baseClasses} bg-blue-900 border-blue-900 text-white hover:bg-blue-800 hover:border-blue-800 shadow-md`;
     } else {
-      return `${baseClasses} bg-gray-100 text-gray-700 hover:bg-gray-200`;
+      return `${baseClasses} bg-white border-blue-900 text-blue-900 hover:bg-blue-50 hover:border-blue-800`;
     }
   };
 
@@ -51,9 +43,8 @@ const TagGroupFilter: React.FC<TagGroupFilterProps> = ({
           <Button
             key={option}
             size="sm"
-            variant={selectedOptions.includes(option) ? "default" : "outline"}
             onClick={() => toggleOption(option)}
-            className={getColorClasses(selectedOptions.includes(option))}
+            className={getButtonClassName(selectedOptions.includes(option))}
           >
             {option}
           </Button>

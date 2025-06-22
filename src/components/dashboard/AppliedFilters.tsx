@@ -116,7 +116,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
     <div className="sticky top-4 z-sticky bg-white rounded-2xl p-4 shadow-lg border border-gray-100 mb-8 backdrop-blur-sm bg-white/95">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <Tag className="h-5 w-5 text-blue-600" strokeWidth={1.5} />
+          <Tag className="h-5 w-5 text-blue-900" strokeWidth={1.5} />
           Filtri Applicati
         </h3>
         <Button
@@ -135,13 +135,13 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
           return (
             <div
               key={`${filter.type}-${index}`}
-              className="flex items-center gap-2 bg-blue-50 text-blue-800 px-3 py-1.5 rounded-full border border-blue-200 text-sm font-medium"
+              className="flex items-center gap-2 bg-blue-900 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-md"
             >
               <IconComponent className="h-4 w-4" strokeWidth={1.5} />
               <span>{filter.label}</span>
               <button
                 onClick={filter.onRemove}
-                className="ml-1 hover:bg-blue-200 rounded-full p-0.5 transition-colors"
+                className="ml-1 hover:bg-blue-800 rounded-full p-0.5 transition-colors"
               >
                 <X className="h-3 w-3" strokeWidth={2} />
               </button>

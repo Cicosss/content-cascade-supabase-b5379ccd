@@ -27,9 +27,16 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
   };
 
   const isAllSelected = categories.includes('tutte');
-  const buttonClass = "rounded-full px-6 py-2 font-medium transition-all";
-  const selectedClass = "bg-blue-900 hover:bg-blue-800 text-white shadow-lg";
-  const unselectedClass = "bg-transparent text-blue-900 border border-blue-900 hover:bg-blue-50";
+
+  // Standardized button styling
+  const getButtonClassName = (category: string, isSelected: boolean) => {
+    const baseClasses = "rounded-full px-6 py-2 font-medium transition-all duration-200 border-2";
+    if (isSelected) {
+      return `${baseClasses} bg-blue-900 border-blue-900 text-white hover:bg-blue-800 hover:border-blue-800 shadow-md`;
+    } else {
+      return `${baseClasses} bg-white border-blue-900 text-blue-900 hover:bg-blue-50 hover:border-blue-800`;
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -37,9 +44,8 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
       <div className="flex flex-wrap gap-3">
         <Button
           size="sm"
-          variant={isAllSelected ? "default" : "outline"}
           onClick={() => toggleCategory('Tutte')}
-          className={`${buttonClass} ${isAllSelected ? selectedClass : unselectedClass}`}
+          className={getButtonClassName('Tutte', isAllSelected)}
         >
           Tutte
         </Button>
@@ -47,11 +53,8 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, onCategor
           <Button
             key={category}
             size="sm"
-            variant={categories.includes(category) ? "default" : "outline"}
             onClick={() => toggleCategory(category)}
-            className={`${buttonClass} ${
-              categories.includes(category) ? selectedClass : unselectedClass
-            }`}
+            className={getButtonClassName(category, categories.includes(category))}
           >
             {category}
           </Button>
