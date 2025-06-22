@@ -130,6 +130,78 @@ export const useApprovedExperiences = () => {
     }
   };
 
+  const deApproveExperience = async (experience: ApprovedExperience) => {
+    try {
+      console.log('🔄 De-approving experience:', experience.name);
+
+      // Step 1: Remove from points_of_interest (make it invisible to public)
+      const { error: deleteError } = await supabase
+        .from('points_of_interest')
+        .delete()
+        .eq('id', experience.id);
+
+      if (deleteError) {
+        console.error('❌ Error removing from points_of_interest:', deleteError);
+        throw new Error(`Errore nella rimozione dal pubblico: ${deleteError.message}`);
+      }
+
+      // Step 2: Update status in poi_submissions back to pending
+      const { error: updateError } = await supabase
+        .from('poi_submissions')
+        .update({
+          status: 'pending',
+          admin_notes: 'Rimandato in moderazione dall\'amministratore',
+          moderated_at: new Date().toISOString(),
+          moderated_by: 'admin'
+        })
+        .eq('id', experience.id);
+
+      if (updateError) {
+        console.error('❌ Error updating poi_submissions:', updateError);
+        // Try to rollback by re-inserting into points_of_interest if possible
+        await supabase
+          .from('points_of_interest')
+          .upsert({
+            id: experience.id,
+            name: experience.name,
+            description: experience.description,
+            poi_type: experience.poi_type || 'place',
+            category: experience.category,
+            macro_area: experience.macro_area,
+            address: experience.address,
+            latitude: experience.latitude,
+            longitude: experience.longitude,
+            price_info: experience.price_info,
+            duration_info: experience.duration_info,
+            target_audience: experience.target_audience,
+            website_url: experience.website_url,
+            phone: experience.phone,
+            email: experience.email,
+            start_datetime: experience.start_datetime,
+            end_datetime: experience.end_datetime,
+            location_name: experience.location_name,
+            organizer_info: experience.organizer_info,
+            images: experience.images,
+            tags: experience.tags,
+            opening_hours: experience.opening_hours,
+            status: 'approved'
+          });
+        
+        throw new Error(`Errore nell'aggiornamento dello stato: ${updateError.message}`);
+      }
+
+      // Remove from local state
+      setExperiences(prev => prev.filter(exp => exp.id !== experience.id));
+      
+      console.log('✅ Successfully de-approved:', experience.name);
+      toast.success(`"${experience.name}" è stato spostato in "Proposte da Moderare"`);
+
+    } catch (error) {
+      console.error('❌ Error in de-approval process:', error);
+      toast.error('Errore nel rimandare l\'esperienza in moderazione');
+    }
+  };
+
   const updateExperience = (updatedExperience: ApprovedExperience) => {
     setExperiences(prev => 
       prev.map(exp => 
@@ -148,6 +220,7 @@ export const useApprovedExperiences = () => {
     loading,
     applyFilters,
     deleteExperience,
+    deApproveExperience,
     updateExperience
   };
 };

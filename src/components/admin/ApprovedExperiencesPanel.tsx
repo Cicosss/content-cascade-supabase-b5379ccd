@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import ModerationFilters from './ModerationFilters';
 import EditExperienceModal from './EditExperienceModal';
+import DeApprovalConfirmDialog from './DeApprovalConfirmDialog';
 import ApprovedExperiencesHeader from './ApprovedExperiencesHeader';
 import ApprovedExperiencesSummary from './ApprovedExperiencesSummary';
 import ApprovedExperiencesList from './ApprovedExperiencesList';
@@ -11,6 +12,8 @@ import { useExperienceFilters } from '@/hooks/useExperienceFilters';
 
 const ApprovedExperiencesPanel = () => {
   const [editingExperience, setEditingExperience] = useState<ApprovedExperience | null>(null);
+  const [deApprovingExperience, setDeApprovingExperience] = useState<ApprovedExperience | null>(null);
+  const [isDeApproving, setIsDeApproving] = useState(false);
   
   const {
     experiences,
@@ -18,6 +21,7 @@ const ApprovedExperiencesPanel = () => {
     loading,
     applyFilters,
     deleteExperience,
+    deApproveExperience,
     updateExperience
   } = useApprovedExperiences();
 
@@ -40,6 +44,28 @@ const ApprovedExperiencesPanel = () => {
     if (window.confirm(`Sei sicuro di voler eliminare "${experience.name}"? Questa azione non può essere annullata.`)) {
       deleteExperience(experience.id);
     }
+  };
+
+  const handleDeApprove = (experience: ApprovedExperience) => {
+    setDeApprovingExperience(experience);
+  };
+
+  const handleDeApproveConfirm = async () => {
+    if (!deApprovingExperience) return;
+    
+    setIsDeApproving(true);
+    try {
+      await deApproveExperience(deApprovingExperience);
+      setDeApprovingExperience(null);
+    } catch (error) {
+      console.error('Error de-approving experience:', error);
+    } finally {
+      setIsDeApproving(false);
+    }
+  };
+
+  const handleDeApproveCancel = () => {
+    setDeApprovingExperience(null);
   };
 
   if (loading) {
@@ -105,6 +131,7 @@ const ApprovedExperiencesPanel = () => {
         totalCount={experiences.length}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onDeApprove={handleDeApprove}
       />
 
       <EditExperienceModal
@@ -112,6 +139,14 @@ const ApprovedExperiencesPanel = () => {
         isOpen={!!editingExperience}
         onClose={handleEditClose}
         onSave={handleEditSave}
+      />
+
+      <DeApprovalConfirmDialog
+        isOpen={!!deApprovingExperience}
+        onClose={handleDeApproveCancel}
+        onConfirm={handleDeApproveConfirm}
+        experienceName={deApprovingExperience?.name || ''}
+        isLoading={isDeApproving}
       />
     </div>
   );

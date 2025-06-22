@@ -36,13 +36,15 @@ interface ApprovedExperiencesListProps {
   totalCount: number;
   onEdit: (experience: ApprovedExperience) => void;
   onDelete: (experience: ApprovedExperience) => void;
+  onDeApprove: (experience: ApprovedExperience) => void;
 }
 
 const ApprovedExperiencesList: React.FC<ApprovedExperiencesListProps> = ({
   experiences,
   totalCount,
   onEdit,
-  onDelete
+  onDelete,
+  onDeApprove
 }) => {
   if (experiences.length === 0) {
     return (
@@ -67,6 +69,7 @@ const ApprovedExperiencesList: React.FC<ApprovedExperiencesListProps> = ({
           experience={experience}
           onEdit={onEdit}
           onDelete={onDelete}
+          onDeApprove={onDeApprove}
         />
       ))}
     </div>

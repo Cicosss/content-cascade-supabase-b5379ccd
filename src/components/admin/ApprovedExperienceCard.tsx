@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, MapPin, Calendar, Phone } from 'lucide-react';
+import { Edit, Trash2, MapPin, Calendar, Phone, Undo } from 'lucide-react';
 
 interface ApprovedExperience {
   id: string;
@@ -37,12 +36,14 @@ interface ApprovedExperienceCardProps {
   experience: ApprovedExperience;
   onEdit: (experience: ApprovedExperience) => void;
   onDelete: (experience: ApprovedExperience) => void;
+  onDeApprove: (experience: ApprovedExperience) => void;
 }
 
 const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
   experience,
   onEdit,
-  onDelete
+  onDelete,
+  onDeApprove
 }) => {
   const hasUpdates = experience.updated_at !== experience.created_at;
 
@@ -60,6 +61,15 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
             <Badge variant="default" className="bg-green-100 text-green-800">
               {experience.status || 'Approvata'}
             </Badge>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDeApprove(experience)}
+              className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+              title="Rimanda in Moderazione"
+            >
+              <Undo className="h-4 w-4" />
+            </Button>
             <Button
               variant="outline"
               size="sm"
