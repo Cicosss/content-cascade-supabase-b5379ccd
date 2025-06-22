@@ -26,13 +26,15 @@ interface LocationFieldsProps {
   onInputChange: (field: string, value: string) => void;
   onBatchUpdate?: (updates: Record<string, string>) => void;
   isAddressConfirmed?: boolean;
+  onAddressConfirmationChange?: (isConfirmed: boolean) => void;
 }
 
 const LocationFields: React.FC<LocationFieldsProps> = ({ 
   formData, 
   onInputChange, 
   onBatchUpdate,
-  isAddressConfirmed = false 
+  isAddressConfirmed = false,
+  onAddressConfirmationChange
 }) => {
   const isEvent = formData.poi_type === 'event';
   const hasValidCoordinates = formData.latitude && formData.longitude && 
@@ -61,6 +63,14 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
     }
   };
 
+  const handleAddressChange = (value: string) => {
+    onInputChange('address', value);
+  };
+
+  const handleConfirmationChange = (isConfirmed: boolean) => {
+    onAddressConfirmationChange?.(isConfirmed);
+  };
+
   return (
     <>
       <div className="space-y-2">
@@ -68,7 +78,10 @@ const LocationFields: React.FC<LocationFieldsProps> = ({
           label="Indirizzo *"
           placeholder="Inizia a digitare l'indirizzo..."
           value={formData.address || ''}
+          onChange={handleAddressChange}
           onAddressSelect={handleAddressSelect}
+          onConfirmationChange={handleConfirmationChange}
+          isConfirmed={isAddressConfirmed}
           required
         />
         

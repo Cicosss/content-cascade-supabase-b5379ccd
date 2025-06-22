@@ -18,7 +18,8 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
     handleBatchUpdate,
     resetForm, 
     isAddressConfirmed,
-    resetAddressConfirmation
+    resetAddressConfirmation,
+    handleAddressConfirmationChange
   } = useExperienceFormData();
   
   const { validateFormAsync } = useExperienceFormValidation();
@@ -55,6 +56,7 @@ const ExperienceManualForm: React.FC<ExperienceManualFormProps> = ({ onExperienc
           onInputChange={handleInputChange}
           onBatchUpdate={handleBatchUpdate}
           isAddressConfirmed={isAddressConfirmed}
+          onAddressConfirmationChange={handleAddressConfirmationChange}
         />
 
         <ExperienceFormActions 

@@ -20,7 +20,10 @@ interface AddressAutocompleteProps {
   label?: string;
   placeholder?: string;
   value: string;
+  onChange?: (value: string) => void;
   onAddressSelect: (addressData: AddressData) => void;
+  onConfirmationChange?: (isConfirmed: boolean) => void;
+  isConfirmed?: boolean;
   className?: string;
   required?: boolean;
 }
@@ -29,24 +32,31 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   label = "Indirizzo",
   placeholder = "Inizia a digitare l'indirizzo...",
   value,
+  onChange,
   onAddressSelect,
+  onConfirmationChange,
+  isConfirmed = false,
   className = "",
   required = false
 }) => {
   const { isLoaded } = useGoogleMapsInit();
   
-  const { inputRef, isLoading, isConfirmed, resetConfirmation } = useAddressAutocomplete({ 
+  const { inputRef, isLoading } = useAddressAutocomplete({ 
     isApiLoaded: isLoaded, 
-    onAddressSelect: (addressData) => {
-      onAddressSelect(addressData);
-    }
+    onAddressSelect,
+    onConfirmationChange
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Se l'utente digita manualmente, resetta la conferma
-    if (isConfirmed && e.target.value !== value) {
-      resetConfirmation();
+    const newValue = e.target.value;
+    
+    // Se l'utente digita manualmente, resetta immediatamente la conferma
+    if (isConfirmed && newValue !== value) {
+      onConfirmationChange?.(false);
     }
+    
+    // Chiama il callback di onChange se fornito
+    onChange?.(newValue);
   };
 
   return (
@@ -62,7 +72,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           ref={inputRef}
           type="text"
           placeholder={placeholder}
-          defaultValue={value}
+          value={value}
           onChange={handleInputChange}
           className={`pr-10 ${isConfirmed ? 'border-green-300 bg-green-50' : ''}`}
           disabled={!isLoaded}

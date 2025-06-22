@@ -12,13 +12,15 @@ interface ExperienceFormFieldsProps {
   onInputChange: (field: string, value: string | string[]) => void;
   onBatchUpdate?: (updates: Record<string, string>) => void;
   isAddressConfirmed?: boolean;
+  onAddressConfirmationChange?: (isConfirmed: boolean) => void;
 }
 
 const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ 
   formData, 
   onInputChange, 
   onBatchUpdate,
-  isAddressConfirmed 
+  isAddressConfirmed,
+  onAddressConfirmationChange
 }) => {
   const handleTagChange = (tag: string, checked: boolean) => {
     const currentTags = formData.tags || [];
@@ -56,6 +58,7 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({
         onInputChange={onInputChange}
         onBatchUpdate={onBatchUpdate}
         isAddressConfirmed={isAddressConfirmed}
+        onAddressConfirmationChange={onAddressConfirmationChange}
       />
 
       <ContactInfoFields

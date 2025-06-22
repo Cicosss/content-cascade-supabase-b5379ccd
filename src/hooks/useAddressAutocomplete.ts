@@ -14,16 +14,17 @@ interface AddressData {
 interface UseAddressAutocompleteProps {
   isApiLoaded: boolean;
   onAddressSelect: (addressData: AddressData) => void;
+  onConfirmationChange?: (isConfirmed: boolean) => void;
 }
 
 export const useAddressAutocomplete = ({ 
   isApiLoaded, 
-  onAddressSelect
+  onAddressSelect,
+  onConfirmationChange
 }: UseAddressAutocompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
   const processedRef = useRef(false);
 
   const handlePlaceSelect = useCallback(() => {
@@ -32,7 +33,7 @@ export const useAddressAutocomplete = ({
     const place = autocompleteRef.current.getPlace();
     
     if (!place.geometry?.location) {
-      setIsConfirmed(false);
+      onConfirmationChange?.(false);
       return;
     }
 
@@ -72,20 +73,19 @@ export const useAddressAutocomplete = ({
         country
       };
 
-      // Set confirmed state immediately and call parent
-      setIsConfirmed(true);
-      setIsLoading(false);
+      // Call callbacks immediately
       onAddressSelect(addressData);
+      onConfirmationChange?.(true);
       
     } catch (error) {
       console.error('Error processing address:', error);
-      setIsConfirmed(false);
-      setIsLoading(false);
+      onConfirmationChange?.(false);
     } finally {
+      setIsLoading(false);
       processedRef.current = false;
     }
 
-  }, [onAddressSelect]);
+  }, [onAddressSelect, onConfirmationChange]);
 
   useEffect(() => {
     if (!isApiLoaded || !inputRef.current || autocompleteRef.current) return;
@@ -110,15 +110,8 @@ export const useAddressAutocomplete = ({
     };
   }, [isApiLoaded, handlePlaceSelect]);
 
-  const resetConfirmation = useCallback(() => {
-    setIsConfirmed(false);
-    processedRef.current = false;
-  }, []);
-
   return { 
     inputRef, 
-    isLoading, 
-    isConfirmed,
-    resetConfirmation
+    isLoading
   };
 };
