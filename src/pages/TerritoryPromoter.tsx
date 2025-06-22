@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import PasswordAuth from '@/components/territory/PasswordAuth';
@@ -33,7 +34,7 @@ const TerritoryPromoter: React.FC = () => {
   const approvedCount = submissions.filter(sub => sub.status === 'approved').length;
 
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <div className="min-h-screen bg-slate-50 p-4">
         <div className="max-w-4xl mx-auto space-y-8">
           

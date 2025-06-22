@@ -5,7 +5,7 @@ import POIModerationPanel from '@/components/admin/POIModerationPanel';
 
 const AdminModerationPage = () => {
   return (
-    <Layout>
+    <Layout showSidebar={true}>
       <POIModerationPanel />
     </Layout>
   );
