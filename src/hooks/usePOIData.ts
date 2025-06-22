@@ -14,14 +14,10 @@ export const usePOIData = () => {
     setIsLoading(true);
     
     try {
-      const [standardPOIs, approvedPOIs] = await Promise.all([
-        poiService.fetchStandardPOIs(filters),
-        poiService.fetchApprovedPOIs(filters)
-      ]);
-
-      const allPOIs = [...standardPOIs, ...approvedPOIs];
+      // Single unified call to fetch POIs
+      const allPOIs = await poiService.fetchStandardPOIs(filters);
       
-      poiService.logResults(filters, standardPOIs.length, approvedPOIs.length, allPOIs.length);
+      poiService.logResults(filters, allPOIs.length, 0, allPOIs.length);
       
       // Use fallback data if no POIs found
       if (allPOIs.length === 0) {
@@ -31,7 +27,6 @@ export const usePOIData = () => {
       }
       
     } catch (error) {
-      console.error('❌ Errore inaspettato nel caricamento POI:', error);
       setPois([]);
     } finally {
       setIsLoading(false);

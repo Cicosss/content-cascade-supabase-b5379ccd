@@ -1,18 +1,6 @@
 
 import { useRef, useEffect, useMemo } from 'react';
-
-interface POI {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  latitude: number;
-  longitude: number;
-  address: string;
-  images?: string[];
-  price_info?: string;
-  avg_rating?: number;
-}
+import { POI } from '@/types/poi';
 
 interface UseOptimizedMapMarkersProps {
   map: any;
@@ -75,14 +63,21 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
       }
     });
 
-    // Show/create markers for current POIs
+    // Show/create markers for current POIs with coordinate validation
     pois.forEach(poi => {
+      // Validate coordinates before creating marker
+      if (!poi.latitude || !poi.longitude || 
+          typeof poi.latitude !== 'number' || typeof poi.longitude !== 'number' ||
+          isNaN(poi.latitude) || isNaN(poi.longitude)) {
+        return; // Skip invalid coordinates
+      }
+
       let marker = markersPoolRef.current.get(poi.id);
       
       if (!marker) {
         // Create new marker only if it doesn't exist
         marker = new window.google.maps.Marker({
-          position: { lat: poi.latitude, lng: poi.longitude },
+          position: { lat: Number(poi.latitude), lng: Number(poi.longitude) },
           title: poi.name,
           icon: poiMarkerIcon
         });

@@ -27,6 +27,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   const { isLoaded, error } = useGoogleMapsInit();
   const mapInstance = useOptimizedMapInstance({ isLoaded, mapRef, userLocation });
 
+  // Use the optimized markers hook with proper POI data
   useOptimizedMapMarkers({
     map: mapInstance,
     pois,
@@ -57,7 +58,14 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   // Load POIs when map is ready or filters change
   useEffect(() => {
     if (!mapInstance) return;
-    fetchPOIs(filters);
+    
+    const transformedFilters = {
+      activityTypes: filters.activityTypes,
+      zone: filters.zone,
+      withChildren: filters.withChildren
+    };
+    
+    fetchPOIs(transformedFilters);
   }, [mapInstance, filters, fetchPOIs]);
 
   if (error) {
