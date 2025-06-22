@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -274,6 +272,10 @@ const POIModerationPanel = () => {
     setSelectedSubmission(null);
   };
 
+  const handleModerationClick = (submission: POISubmission) => {
+    setSelectedSubmission(submission);
+  };
+
   const handleExperienceAdded = () => {
     fetchSubmissions();
     toast.success('Vista aggiornata!');
@@ -347,7 +349,7 @@ const POIModerationPanel = () => {
                 <POISubmissionCard
                   key={submission.id}
                   submission={submission}
-                  onModerate={setSelectedSubmission}
+                  onModerate={handleModerationClick}
                   onDelete={deleteSubmission}
                 />
               ))
@@ -375,4 +377,3 @@ const POIModerationPanel = () => {
 };
 
 export default POIModerationPanel;
-
