@@ -27,32 +27,40 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
   const userMarkerRef = useRef<any>(null);
 
   // Memoize POI marker icon to avoid recreation
-  const poiMarkerIcon = useMemo(() => ({
-    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="12" fill="#1e3a8a" stroke="white" stroke-width="3"/>
-        <circle cx="16" cy="16" r="4" fill="white"/>
-      </svg>
-    `),
-    scaledSize: new window.google.maps?.Size(32, 32),
-    anchor: new window.google.maps?.Point(16, 16)
-  }), []);
+  const poiMarkerIcon = useMemo(() => {
+    if (!window.google?.maps) return null;
+    
+    return {
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="12" fill="#1e3a8a" stroke="white" stroke-width="3"/>
+          <circle cx="16" cy="16" r="4" fill="white"/>
+        </svg>
+      `),
+      scaledSize: new window.google.maps.Size(32, 32),
+      anchor: new window.google.maps.Point(16, 16)
+    };
+  }, []);
 
   // Memoize user marker icon
-  const userMarkerIcon = useMemo(() => ({
-    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="8" fill="#EF4444" stroke="white" stroke-width="3"/>
-        <circle cx="12" cy="12" r="3" fill="white"/>
-      </svg>
-    `),
-    scaledSize: new window.google.maps?.Size(24, 24),
-    anchor: new window.google.maps?.Point(12, 12)
-  }), []);
+  const userMarkerIcon = useMemo(() => {
+    if (!window.google?.maps) return null;
+    
+    return {
+      url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="8" fill="#EF4444" stroke="white" stroke-width="3"/>
+          <circle cx="12" cy="12" r="3" fill="white"/>
+        </svg>
+      `),
+      scaledSize: new window.google.maps.Size(24, 24),
+      anchor: new window.google.maps.Point(12, 12)
+    };
+  }, []);
 
   // Optimized POI marker management
   useEffect(() => {
-    if (!map || !window.google) return;
+    if (!map || !window.google || !poiMarkerIcon) return;
 
     const currentPOIIds = new Set(pois.map(poi => poi.id));
     
@@ -97,7 +105,7 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
 
   // Optimized user location marker management
   useEffect(() => {
-    if (!map || !window.google) return;
+    if (!map || !window.google || !userMarkerIcon) return;
 
     if (userLocation) {
       if (!userMarkerRef.current) {
