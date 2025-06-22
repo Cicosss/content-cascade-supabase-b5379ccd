@@ -10,7 +10,7 @@ interface MapControlsProps {
 
 const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLocation }) => {
   return (
-    <div className="absolute top-4 right-4 flex flex-col space-y-2">
+    <div className="absolute top-4 left-4 flex flex-col space-y-2">
       <Button
         size="sm"
         variant="secondary"
