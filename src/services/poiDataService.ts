@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { format, startOfDay, endOfDay } from 'date-fns';
 import { POI, POIFilters } from '@/types/poi';
@@ -6,6 +5,8 @@ import { getCategoriesForFilters } from '@/utils/poiCategoryMapping';
 
 export class POIDataService {
   async fetchStandardPOIs(filters: POIFilters): Promise<POI[]> {
+    console.log('🗺️ POIDataService: Fetching standard POIs with filters:', filters);
+    
     let query = supabase
       .from('points_of_interest')
       .select('id, name, description, macro_area, category, latitude, longitude, address, target_audience, images, price_info, avg_rating');
@@ -38,10 +39,15 @@ export class POIDataService {
       return [];
     }
 
-    return this.transformStandardPOIs(data || []);
+    const transformedData = this.transformStandardPOIs(data || []);
+    console.log('🗺️ POIDataService: Standard POIs retrieved:', transformedData.length, transformedData);
+    
+    return transformedData;
   }
 
   async fetchApprovedPOIs(filters: POIFilters): Promise<POI[]> {
+    console.log('🗺️ POIDataService: Fetching approved POIs from poi_submissions with filters:', filters);
+    
     let query = supabase
       .from('poi_submissions')
       .select('id, name, description, macro_area, category, latitude, longitude, address, target_audience, images, price_info')
@@ -73,7 +79,17 @@ export class POIDataService {
       return [];
     }
 
-    return this.transformApprovedPOIs(data || []);
+    const transformedData = this.transformApprovedPOIs(data || []);
+    console.log('🗺️ POIDataService: Approved POIs retrieved:', transformedData.length, transformedData);
+    
+    // Debug specifico per Trattoria Gina
+    const trattoriaGina = transformedData.find(poi => 
+      poi.name?.toLowerCase().includes('trattoria gina') || 
+      poi.id === 'f1ade38a-31eb-4586-ab71-589213826edb'
+    );
+    console.log('🍝 POIDataService: Trattoria Gina in approved POIs?', trattoriaGina);
+
+    return transformedData;
   }
 
   private transformStandardPOIs(data: any[]): POI[] {
@@ -127,5 +143,7 @@ export class POIDataService {
       : `✅ POI caricati: ${totalCount}`;
     
     console.log(message, '(Standard:', standardCount, ', Approvate:', approvedCount, ')');
+    
+    console.log('🗺️ POIDataService: RISULTATI FINALI - Standard:', standardCount, 'Approvate:', approvedCount, 'Totale:', totalCount);
   }
 }
