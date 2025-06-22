@@ -23,7 +23,6 @@ const AdvancedFiltersSection: React.FC<AdvancedFiltersSectionProps> = ({
 }) => {
   const budgetOptions = ['Gratuito', '€', '€€', '€€€'];
   const preferenceOptions = ['Pet-Friendly', 'Accessibile', 'Adatto ai bambini', 'Romantico', 'Opzioni Vegetariane'];
-  const serviceOptions = ['Al coperto', 'Parcheggio disponibile'];
 
   return (
     <div className="space-y-6">
@@ -53,7 +52,7 @@ const AdvancedFiltersSection: React.FC<AdvancedFiltersSectionProps> = ({
           ? 'max-h-96 opacity-100' 
           : 'max-h-0 opacity-0'
       }`}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
           
           {/* Budget */}
           <TagGroupFilter
@@ -67,14 +66,6 @@ const AdvancedFiltersSection: React.FC<AdvancedFiltersSectionProps> = ({
           <TagGroupFilter
             title="Preferenze"
             options={preferenceOptions}
-            selectedOptions={filters.specialPreferences || []}
-            onOptionsChange={(options) => updateFilter('specialPreferences', options)}
-          />
-
-          {/* Servizi */}
-          <TagGroupFilter
-            title="Servizi"
-            options={serviceOptions}
             selectedOptions={filters.specialPreferences || []}
             onOptionsChange={(options) => updateFilter('specialPreferences', options)}
           />
