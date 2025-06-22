@@ -132,9 +132,90 @@ export const useApprovedExperiences = () => {
 
   const deApproveExperience = async (experience: ApprovedExperience) => {
     try {
-      console.log('🔄 De-approving experience:', experience.name);
+      console.log('🔄 Starting de-approval process for:', experience.name);
 
-      // Step 1: Remove from points_of_interest (make it invisible to public)
+      // Step 1: Check if POI submission record exists
+      console.log('🔍 Checking if poi_submissions record exists...');
+      const { data: existingSubmission, error: checkError } = await supabase
+        .from('poi_submissions')
+        .select('id')
+        .eq('id', experience.id)
+        .single();
+
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('❌ Error checking poi_submissions:', checkError);
+        throw new Error(`Errore nel controllo della proposta: ${checkError.message}`);
+      }
+
+      // Step 2: If record doesn't exist, create it with POI data
+      if (!existingSubmission) {
+        console.log('📝 Creating new poi_submissions record...');
+        const submissionData = {
+          id: experience.id,
+          submitter_email: experience.email || 'admin@miaromagna.it',
+          name: experience.name,
+          description: experience.description,
+          macro_area: experience.macro_area,
+          category: experience.category,
+          address: experience.address,
+          latitude: experience.latitude,
+          longitude: experience.longitude,
+          price_info: experience.price_info,
+          duration_info: experience.duration_info,
+          target_audience: experience.target_audience,
+          website_url: experience.website_url,
+          phone: experience.phone,
+          email: experience.email,
+          start_datetime: experience.start_datetime,
+          end_datetime: experience.end_datetime,
+          location_name: experience.location_name,
+          organizer_info: experience.organizer_info,
+          images: experience.images,
+          tags: experience.tags,
+          poi_type: experience.poi_type,
+          opening_hours: experience.opening_hours,
+          status: 'pending',
+          admin_notes: 'Rimandato in moderazione dall\'amministratore',
+          created_at: experience.created_at,
+          updated_at: new Date().toISOString(),
+          moderated_at: new Date().toISOString(),
+          moderated_by: 'admin'
+        };
+
+        const { error: insertError } = await supabase
+          .from('poi_submissions')
+          .insert(submissionData);
+
+        if (insertError) {
+          console.error('❌ Error creating poi_submissions record:', insertError);
+          throw new Error(`Errore nella creazione della proposta: ${insertError.message}`);
+        }
+
+        console.log('✅ Successfully created poi_submissions record');
+      } else {
+        // Step 3: Update existing record status to pending
+        console.log('🔄 Updating existing poi_submissions record...');
+        const { error: updateError } = await supabase
+          .from('poi_submissions')
+          .update({
+            status: 'pending',
+            admin_notes: 'Rimandato in moderazione dall\'amministratore',
+            moderated_at: new Date().toISOString(),
+            moderated_by: 'admin',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', experience.id);
+
+        if (updateError) {
+          console.error('❌ Error updating poi_submissions:', updateError);
+          throw new Error(`Errore nell'aggiornamento della proposta: ${updateError.message}`);
+        }
+
+        console.log('✅ Successfully updated poi_submissions record');
+      }
+
+      // Step 4: Remove from points_of_interest (make it invisible to public)
+      console.log('🔄 Removing from points_of_interest...');
       const { error: deleteError } = await supabase
         .from('points_of_interest')
         .delete()
@@ -142,63 +223,31 @@ export const useApprovedExperiences = () => {
 
       if (deleteError) {
         console.error('❌ Error removing from points_of_interest:', deleteError);
+        
+        // Rollback: reset poi_submissions status if it was updated
+        console.log('🔄 Rolling back poi_submissions status...');
+        await supabase
+          .from('poi_submissions')
+          .update({
+            status: 'approved',
+            admin_notes: 'Rollback automatico dopo errore',
+            moderated_at: new Date().toISOString(),
+            moderated_by: 'admin'
+          })
+          .eq('id', experience.id);
+        
         throw new Error(`Errore nella rimozione dal pubblico: ${deleteError.message}`);
       }
 
-      // Step 2: Update status in poi_submissions back to pending
-      const { error: updateError } = await supabase
-        .from('poi_submissions')
-        .update({
-          status: 'pending',
-          admin_notes: 'Rimandato in moderazione dall\'amministratore',
-          moderated_at: new Date().toISOString(),
-          moderated_by: 'admin'
-        })
-        .eq('id', experience.id);
-
-      if (updateError) {
-        console.error('❌ Error updating poi_submissions:', updateError);
-        // Try to rollback by re-inserting into points_of_interest if possible
-        await supabase
-          .from('points_of_interest')
-          .upsert({
-            id: experience.id,
-            name: experience.name,
-            description: experience.description,
-            poi_type: experience.poi_type || 'place',
-            category: experience.category,
-            macro_area: experience.macro_area,
-            address: experience.address,
-            latitude: experience.latitude,
-            longitude: experience.longitude,
-            price_info: experience.price_info,
-            duration_info: experience.duration_info,
-            target_audience: experience.target_audience,
-            website_url: experience.website_url,
-            phone: experience.phone,
-            email: experience.email,
-            start_datetime: experience.start_datetime,
-            end_datetime: experience.end_datetime,
-            location_name: experience.location_name,
-            organizer_info: experience.organizer_info,
-            images: experience.images,
-            tags: experience.tags,
-            opening_hours: experience.opening_hours,
-            status: 'approved'
-          });
-        
-        throw new Error(`Errore nell'aggiornamento dello stato: ${updateError.message}`);
-      }
-
-      // Remove from local state
+      // Step 5: Update local state
       setExperiences(prev => prev.filter(exp => exp.id !== experience.id));
       
-      console.log('✅ Successfully de-approved:', experience.name);
+      console.log('✅ Successfully completed de-approval process for:', experience.name);
       toast.success(`"${experience.name}" è stato spostato in "Proposte da Moderare"`);
 
     } catch (error) {
-      console.error('❌ Error in de-approval process:', error);
-      toast.error('Errore nel rimandare l\'esperienza in moderazione');
+      console.error('❌ Complete de-approval process failed:', error);
+      toast.error(`Errore nel rimandare "${experience.name}" in moderazione: ${error.message}`);
     }
   };
 
