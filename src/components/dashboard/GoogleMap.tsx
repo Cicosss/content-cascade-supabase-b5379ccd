@@ -1,5 +1,5 @@
 
-import React, { useRef, useState, useEffect, memo, useCallback } from 'react';
+import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
 import { Loader2 } from 'lucide-react';
@@ -35,6 +35,13 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     onPOISelect: setSelectedPOI
   });
 
+  // Memoize the filters to prevent unnecessary re-renders and API calls
+  const memoizedFilters = useMemo(() => ({
+    activityTypes: filters.activityTypes,
+    zone: filters.zone,
+    withChildren: filters.withChildren
+  }), [filters.activityTypes.join(','), filters.zone, filters.withChildren]);
+
   // Memoized callbacks to prevent unnecessary re-renders
   const handleCenterOnUser = useCallback(() => {
     if (userLocation && mapInstance) {
@@ -55,18 +62,12 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     setSelectedPOI(null);
   }, []);
 
-  // Load POIs when map is ready or filters change
+  // Load POIs when map is ready - fixed dependency array to prevent infinite loop
   useEffect(() => {
     if (!mapInstance) return;
     
-    const transformedFilters = {
-      activityTypes: filters.activityTypes,
-      zone: filters.zone,
-      withChildren: filters.withChildren
-    };
-    
-    fetchPOIs(transformedFilters);
-  }, [mapInstance, filters, fetchPOIs]);
+    fetchPOIs(memoizedFilters);
+  }, [mapInstance, memoizedFilters, fetchPOIs]);
 
   if (error) {
     return (

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LocationProvider } from '@/contexts/LocationContext';
@@ -11,19 +11,23 @@ import GoogleMap from '@/components/dashboard/GoogleMap';
 import { Card } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
 import { useURLFilters } from '@/hooks/useURLFilters';
+import { useDebounce } from '@/hooks/useDebounce';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const { filters, updateFilters, updateSortBy } = useURLFilters();
+  
+  // Debounce filters to prevent excessive API calls
+  const debouncedFilters = useDebounce(filters, 300);
 
-  const transformedFiltersForMap = {
-    zone: filters.zone,
+  const transformedFiltersForMap = useMemo(() => ({
+    zone: debouncedFilters.zone,
     withChildren: 'no',
-    activityTypes: filters.categories,
-    period: filters.period,
+    activityTypes: debouncedFilters.categories,
+    period: debouncedFilters.period,
     isFirstVisit: true
-  };
+  }), [debouncedFilters.zone, debouncedFilters.categories, debouncedFilters.period]);
 
   useEffect(() => {
     if (!loading && !user) {
