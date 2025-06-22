@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import ModerationFilters from './ModerationFilters';
-import EditExperienceModal from './EditExperienceModal';
+import EditApprovedModal from './moderation/EditApprovedModal';
 import DeApprovalConfirmDialog from './DeApprovalConfirmDialog';
 import ApprovedExperiencesHeader from './ApprovedExperiencesHeader';
 import ApprovedExperiencesSummary from './ApprovedExperiencesSummary';
@@ -134,7 +133,7 @@ const ApprovedExperiencesPanel = () => {
         onDeApprove={handleDeApprove}
       />
 
-      <EditExperienceModal
+      <EditApprovedModal
         experience={editingExperience}
         isOpen={!!editingExperience}
         onClose={handleEditClose}
