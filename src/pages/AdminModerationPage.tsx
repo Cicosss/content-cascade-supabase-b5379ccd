@@ -1,14 +1,9 @@
 
 import React from 'react';
-import Layout from '@/components/Layout';
-import POIModerationPanel from '@/components/admin/POIModerationPanel';
+import AdminPanel from '@/components/admin/AdminPanel';
 
-const AdminModerationPage = () => {
-  return (
-    <Layout showSidebar={true}>
-      <POIModerationPanel />
-    </Layout>
-  );
+const AdminModerationPage: React.FC = () => {
+  return <AdminPanel />;
 };
 
 export default AdminModerationPage;
