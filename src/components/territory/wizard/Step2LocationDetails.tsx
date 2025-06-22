@@ -18,14 +18,20 @@ interface Step2LocationDetailsProps {
   };
   onInputChange: (field: string, value: string | string[]) => void;
   onTagChange: (tag: string, checked: boolean) => void;
+  isAddressConfirmed?: boolean;
+  onAddressConfirmationChange?: (isConfirmed: boolean) => void;
 }
 
 const Step2LocationDetails: React.FC<Step2LocationDetailsProps> = ({ 
   formData, 
   onInputChange, 
-  onTagChange 
+  onTagChange,
+  isAddressConfirmed = false,
+  onAddressConfirmationChange
 }) => {
   const handleAddressSelect = (addressData: any) => {
+    console.log('📍 Address selected in Step2LocationDetails:', addressData);
+    
     onInputChange('address', addressData.address);
     onInputChange('latitude', addressData.latitude.toString());
     onInputChange('longitude', addressData.longitude.toString());
@@ -34,6 +40,16 @@ const Step2LocationDetails: React.FC<Step2LocationDetailsProps> = ({
     if (!formData.location_name && addressData.city) {
       onInputChange('location_name', addressData.city);
     }
+  };
+
+  const handleAddressChange = (value: string) => {
+    console.log('✏️ Address input changed in Step2LocationDetails:', value);
+    onInputChange('address', value);
+  };
+
+  const handleConfirmationChange = (isConfirmed: boolean) => {
+    console.log('🔔 Address confirmation changed in Step2LocationDetails:', isConfirmed);
+    onAddressConfirmationChange?.(isConfirmed);
   };
 
   return (
@@ -49,7 +65,10 @@ const Step2LocationDetails: React.FC<Step2LocationDetailsProps> = ({
           label="Indirizzo *"
           placeholder="Via, Città, Provincia (es. Via Roma 1, Rimini, RN)"
           value={formData.address || ''}
+          onChange={handleAddressChange}
           onAddressSelect={handleAddressSelect}
+          onConfirmationChange={handleConfirmationChange}
+          isConfirmed={isAddressConfirmed}
           required
         />
 
