@@ -12,6 +12,8 @@ export const usePOIData = () => {
   const poiService = new POIDataService();
 
   const fetchPOIs = useCallback(async (filters: POIFilters) => {
+    console.log('🔄 usePOIData: Inizio fetchPOIs con filtri:', filters);
+    
     // Cancel any existing request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -23,36 +25,43 @@ export const usePOIData = () => {
     setIsLoading(true);
     
     try {
-      console.log('🔄 usePOIData: Fetching POIs with filters:', filters);
+      console.log('🔄 usePOIData: Chiamata al servizio POI...');
       
       // Single unified call to fetch POIs
       const allPOIs = await poiService.fetchStandardPOIs(filters);
       
       // Check if request was aborted
       if (abortControllerRef.current?.signal.aborted) {
-        console.log('🚫 Request aborted');
+        console.log('🚫 Richiesta annullata');
         return;
       }
       
-      console.log('✅ usePOIData: POIs fetched successfully:', allPOIs.length);
+      console.log('✅ usePOIData: POI ricevuti dal servizio:', allPOIs.length);
       
-      // Check if we have active filters
-      const hasActiveFilters = filters.activityTypes.length > 1 || 
-                              (filters.activityTypes.length === 1 && 
-                               !filters.activityTypes.includes('tutto') && 
-                               !filters.activityTypes.includes('tutte')) ||
-                              filters.zone !== 'tuttalromagna' || 
+      // Determina se usare i dati di fallback
+      const hasActiveFilters = filters.activityTypes.length > 0 || 
+                              filters.zone !== '' || 
                               filters.withChildren === 'si' ||
                               filters.period?.from;
       
-      console.log('🔍 Has active filters:', hasActiveFilters);
+      console.log('🔍 Analisi filtri:', {
+        hasActiveFilters,
+        activityTypes: filters.activityTypes,
+        zone: filters.zone,
+        withChildren: filters.withChildren,
+        hasPeriod: !!filters.period?.from
+      });
       
-      // Use fallback data only if no POIs found AND no active filters
+      // Usa i dati di fallback SOLO se non ci sono POI E non ci sono filtri attivi
       if (allPOIs.length === 0 && !hasActiveFilters) {
-        console.log('📍 No POIs found and no active filters - using fallback data');
+        console.log('📍 Nessun POI trovato e nessun filtro attivo - uso dati di fallback');
+        console.log('📍 Dati di fallback disponibili:', FALLBACK_POI_DATA.length);
         setPois(FALLBACK_POI_DATA);
       } else {
-        console.log('📍 Setting POIs from database:', allPOIs.length);
+        console.log('📍 Impostando POI dal database:', allPOIs.length);
+        if (allPOIs.length === 0) {
+          console.log('⚠️ Nessun POI trovato con i filtri attuali - verifica i criteri di ricerca');
+        }
         setPois(allPOIs);
       }
       
@@ -61,8 +70,9 @@ export const usePOIData = () => {
     } catch (error) {
       // Don't set error state if request was just aborted
       if (!abortControllerRef.current?.signal.aborted) {
-        console.error('❌ Error fetching POIs:', error);
-        setPois([]);
+        console.error('❌ Errore nel caricamento POI:', error);
+        console.log('📍 Tentativo di uso dati di fallback dopo errore...');
+        setPois(FALLBACK_POI_DATA);
       }
     } finally {
       if (!abortControllerRef.current?.signal.aborted) {

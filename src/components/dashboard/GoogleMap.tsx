@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
@@ -34,27 +35,37 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     onPOISelect: setSelectedPOI
   });
 
-  // Transform filters for POI data service with better default handling
+  // Transform filters for POI data service - SEMPLIFICATO per mostrare tutti i POI
   const poiFilters = useMemo(() => {
-    console.log('🗺️ GoogleMap: Creating POI filters from:', filters);
+    console.log('🗺️ GoogleMap: Filters ricevuti:', filters);
+    
+    // Se non ci sono filtri specifici, mostra TUTTI i POI
+    const shouldShowAll = !filters.activityTypes || 
+                         filters.activityTypes.length === 0 || 
+                         filters.activityTypes.includes('tutto') ||
+                         filters.activityTypes.includes('tutte');
     
     const transformedFilters = {
-      activityTypes: filters.activityTypes.length > 0 ? filters.activityTypes : ['tutto'],
-      zone: filters.zone,
-      withChildren: filters.withChildren,
+      activityTypes: shouldShowAll ? [] : filters.activityTypes, // Array vuoto = tutti i POI
+      zone: filters.zone === 'tuttalromagna' ? '' : filters.zone, // Stringa vuota = tutte le zone
+      withChildren: filters.withChildren || 'no',
       period: undefined
     };
     
-    console.log('🗺️ GoogleMap: Transformed filters:', transformedFilters);
+    console.log('🗺️ GoogleMap: Filtri trasformati (semplificati):', transformedFilters);
+    console.log('🗺️ GoogleMap: shouldShowAll:', shouldShowAll);
+    
     return transformedFilters;
-  }, [filters.activityTypes.join(','), filters.zone, filters.withChildren]);
+  }, [filters.activityTypes, filters.zone, filters.withChildren]);
 
   // Memoized callbacks to prevent unnecessary re-renders
   const handleCenterOnUser = useCallback(() => {
     if (userLocation && mapInstance) {
+      console.log('🗺️ GoogleMap: Centrando mappa su utente:', userLocation);
       mapInstance.setCenter(userLocation);
       mapInstance.setZoom(15);
     } else {
+      console.log('🗺️ GoogleMap: Richiedendo posizione utente');
       getCurrentLocation();
     }
   }, [userLocation, mapInstance, getCurrentLocation]);
@@ -72,13 +83,35 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   // Load POIs when map is ready or filters change
   useEffect(() => {
     if (!mapInstance) {
-      console.log('🗺️ GoogleMap: Map not ready yet');
+      console.log('🗺️ GoogleMap: Mappa non ancora pronta');
       return;
     }
     
-    console.log('🗺️ GoogleMap: Loading POIs with filters:', poiFilters);
+    console.log('🗺️ GoogleMap: Caricamento POI con filtri:', poiFilters);
+    console.log('🗺️ GoogleMap: Stato mappa:', { 
+      mapReady: !!mapInstance,
+      isLoaded,
+      filtersReady: !!poiFilters 
+    });
+    
     fetchPOIs(poiFilters);
-  }, [mapInstance, poiFilters, fetchPOIs]);
+  }, [mapInstance, poiFilters, fetchPOIs, isLoaded]);
+
+  // Log dei POI ricevuti
+  useEffect(() => {
+    console.log('🗺️ GoogleMap: POI ricevuti dal database:', pois.length);
+    if (pois.length > 0) {
+      console.log('🗺️ GoogleMap: Primi 3 POI:', pois.slice(0, 3).map(poi => ({
+        id: poi.id,
+        name: poi.name,
+        latitude: poi.latitude,
+        longitude: poi.longitude,
+        category: poi.category
+      })));
+    } else {
+      console.log('🗺️ GoogleMap: Nessun POI ricevuto - verificare database e filtri');
+    }
+  }, [pois]);
 
   if (error) {
     return (
@@ -123,15 +156,24 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
         </div>
       )}
 
-      {/* Indicatore numero POI caricati con logging migliorato */}
-      {pois.length > 0 && (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
-          <div className="flex items-center gap-2 text-sm text-slate-700">
-            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-            <span className="font-medium">{pois.length} POI trovati</span>
-          </div>
+      {/* Indicatore migliorato con stato dettagliato */}
+      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+        <div className="flex items-center gap-2 text-sm">
+          <div 
+            className={`w-2 h-2 rounded-full ${
+              pois.length > 0 ? 'bg-green-600' : isLoadingPOIs ? 'bg-yellow-500' : 'bg-red-500'
+            }`}
+          ></div>
+          <span className="font-medium text-slate-700">
+            {isLoadingPOIs ? 'Caricamento...' : `${pois.length} POI${pois.length === 0 ? ' (verifica filtri)' : ''}`}
+          </span>
         </div>
-      )}
+        {/* Debug info per sviluppo */}
+        <div className="text-xs text-slate-500 mt-1">
+          Mappa: {mapInstance ? '✓' : '✗'} | 
+          Filtri: {poiFilters.activityTypes.length === 0 ? 'Tutti' : poiFilters.activityTypes.join(',')}
+        </div>
+      </div>
     </div>
   );
 });

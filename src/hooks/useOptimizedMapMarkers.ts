@@ -46,9 +46,44 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
     };
   }, []);
 
+  // Funzione di validazione coordinate migliorata
+  const validateCoordinates = (lat: any, lng: any): { lat: number; lng: number } | null => {
+    console.log('🗺️ Validazione coordinate:', { lat, lng, latType: typeof lat, lngType: typeof lng });
+    
+    // Converti esplicitamente in numeri
+    const numLat = typeof lat === 'string' ? parseFloat(lat) : Number(lat);
+    const numLng = typeof lng === 'string' ? parseFloat(lng) : Number(lng);
+    
+    console.log('🗺️ Coordinate convertite:', { numLat, numLng });
+    
+    // Validazione più permissiva - controlla solo che siano numeri validi
+    if (isNaN(numLat) || isNaN(numLng)) {
+      console.warn('⚠️ Coordinate non valide (NaN):', { lat, lng, numLat, numLng });
+      return null;
+    }
+    
+    // Controllo range geografico ragionevole per l'Italia
+    if (numLat < 35 || numLat > 47 || numLng < 6 || numLng > 19) {
+      console.warn('⚠️ Coordinate fuori dal range Italia:', { numLat, numLng });
+      // Non ritorniamo null, ma le coordinate originali se sono numeri validi
+      // Potrebbe essere un POI in altra zona geografica
+    }
+    
+    return { lat: numLat, lng: numLng };
+  };
+
   // Optimized POI marker management
   useEffect(() => {
-    if (!map || !window.google || !poiMarkerIcon) return;
+    if (!map || !window.google || !poiMarkerIcon) {
+      console.log('🗺️ Markers: Condizioni non soddisfatte:', { 
+        map: !!map, 
+        google: !!window.google, 
+        icon: !!poiMarkerIcon 
+      });
+      return;
+    }
+
+    console.log('🗺️ Aggiornamento markers per', pois.length, 'POI');
 
     const currentPOIIds = new Set(pois.map(poi => poi.id));
     
@@ -57,33 +92,46 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
       if (!currentPOIIds.has(markerId)) {
         const marker = markersPoolRef.current.get(markerId);
         if (marker) {
+          console.log('🗺️ Nascondendo marker:', markerId);
           marker.setMap(null);
           activeMarkersRef.current.delete(markerId);
         }
       }
     });
 
+    let validMarkersCount = 0;
+    let invalidMarkersCount = 0;
+
     // Show/create markers for current POIs with coordinate validation
     pois.forEach(poi => {
-      // Validate coordinates before creating marker
-      if (!poi.latitude || !poi.longitude || 
-          typeof poi.latitude !== 'number' || typeof poi.longitude !== 'number' ||
-          isNaN(poi.latitude) || isNaN(poi.longitude)) {
-        return; // Skip invalid coordinates
+      const coordinates = validateCoordinates(poi.latitude, poi.longitude);
+      
+      if (!coordinates) {
+        console.warn('🗺️ Saltando POI con coordinate non valide:', {
+          id: poi.id,
+          name: poi.name,
+          lat: poi.latitude,
+          lng: poi.longitude
+        });
+        invalidMarkersCount++;
+        return;
       }
 
       let marker = markersPoolRef.current.get(poi.id);
       
       if (!marker) {
+        console.log('🗺️ Creando nuovo marker per:', poi.name, coordinates);
+        
         // Create new marker only if it doesn't exist
         marker = new window.google.maps.Marker({
-          position: { lat: Number(poi.latitude), lng: Number(poi.longitude) },
+          position: coordinates,
           title: poi.name,
           icon: poiMarkerIcon
         });
 
         // Add click listener once
         marker.addListener('click', () => {
+          console.log('🗺️ Click su marker:', poi.name);
           onPOISelect(poi);
         });
 
@@ -92,10 +140,20 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
 
       // Show marker on map if not already active
       if (!activeMarkersRef.current.has(poi.id)) {
+        console.log('🗺️ Mostrando marker sulla mappa:', poi.name);
         marker.setMap(map);
         activeMarkersRef.current.add(poi.id);
+        validMarkersCount++;
       }
     });
+
+    console.log('🗺️ Riepilogo markers:', {
+      totaliPOI: pois.length,
+      markersValidi: validMarkersCount,
+      markersNonValidi: invalidMarkersCount,
+      markersAttivi: activeMarkersRef.current.size
+    });
+
   }, [map, pois, onPOISelect, poiMarkerIcon]);
 
   // Optimized user location marker management
@@ -103,6 +161,8 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
     if (!map || !window.google || !userMarkerIcon) return;
 
     if (userLocation) {
+      console.log('🗺️ Aggiornando posizione utente:', userLocation);
+      
       if (!userMarkerRef.current) {
         userMarkerRef.current = new window.google.maps.Marker({
           position: userLocation,
@@ -122,6 +182,7 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
 
   // Cleanup function
   const clearAllMarkers = () => {
+    console.log('🗺️ Pulizia di tutti i markers');
     markersPoolRef.current.forEach(marker => marker.setMap(null));
     activeMarkersRef.current.clear();
     
