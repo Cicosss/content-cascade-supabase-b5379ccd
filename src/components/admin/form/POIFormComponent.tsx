@@ -15,6 +15,7 @@ import { MACRO_AREAS, getCategoriesForMacroArea, AVAILABLE_TAGS } from '@/config
 import { FormData, initialFormData } from './POIFormData';
 import { useGoogleMaps } from './useGoogleMaps';
 import { useFormValidation } from './useFormValidation';
+import MediaUploader from '@/components/admin/MediaUploader';
 
 const POIFormComponent: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -65,6 +66,11 @@ const POIFormComponent: React.FC = () => {
     }));
   };
 
+  const handleImagesChange = (images: string[]) => {
+    setFormData(prev => ({ ...prev, images }));
+    console.log('🖼️ Images updated:', images);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -100,9 +106,12 @@ const POIFormComponent: React.FC = () => {
         start_datetime: formData.start_datetime || null,
         end_datetime: formData.end_datetime || null,
         tags: formData.tags,
+        images: formData.images,
         status: 'pending',
         submitter_email: 'admin@miaromagna.it'
       };
+
+      console.log('📤 Submitting data with images:', submissionData.images);
 
       const { error } = await supabase
         .from('poi_submissions')
@@ -114,7 +123,7 @@ const POIFormComponent: React.FC = () => {
 
       toast.success('Proposta inviata con successo per la revisione!');
       resetForm();
-      console.log('✅ Proposta POI inviata con successo');
+      console.log('✅ Proposta POI inviata con successo con immagini');
 
     } catch (error) {
       console.error('❌ Errore invio proposta:', error);
@@ -280,6 +289,12 @@ const POIFormComponent: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Sezione Galleria Immagini */}
+          <MediaUploader
+            images={formData.images}
+            onImagesChange={handleImagesChange}
+          />
 
           {/* Campi Aggiuntivi */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

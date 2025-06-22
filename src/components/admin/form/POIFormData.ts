@@ -20,6 +20,7 @@ export interface FormData {
   start_datetime: string;
   end_datetime: string;
   tags: string[];
+  images: string[];
 }
 
 export const initialFormData: FormData = {
@@ -42,5 +43,6 @@ export const initialFormData: FormData = {
   opening_hours: '',
   start_datetime: '',
   end_datetime: '',
-  tags: []
+  tags: [],
+  images: []
 };
