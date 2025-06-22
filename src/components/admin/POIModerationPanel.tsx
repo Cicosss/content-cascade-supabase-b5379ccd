@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -82,7 +83,9 @@ const POIModerationPanel = () => {
       const typedData = (data || []).map(item => ({
         ...item,
         status: item.status as 'pending' | 'approved' | 'rejected' | 'edited',
-        tags: item.tags || []
+        tags: item.tags || [],
+        poi_type: item.poi_type || 'place',
+        opening_hours: item.opening_hours || ''
       }));
 
       setSubmissions(typedData);
@@ -372,3 +375,4 @@ const POIModerationPanel = () => {
 };
 
 export default POIModerationPanel;
+
