@@ -10,9 +10,16 @@ import TagsSelector from './form-fields/TagsSelector';
 interface ExperienceFormFieldsProps {
   formData: any;
   onInputChange: (field: string, value: string | string[]) => void;
+  onBatchUpdate?: (updates: Record<string, string>) => void;
+  isAddressConfirmed?: boolean;
 }
 
-const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, onInputChange }) => {
+const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ 
+  formData, 
+  onInputChange, 
+  onBatchUpdate,
+  isAddressConfirmed 
+}) => {
   const handleTagChange = (tag: string, checked: boolean) => {
     const currentTags = formData.tags || [];
     const newTags = checked 
@@ -47,6 +54,8 @@ const ExperienceFormFields: React.FC<ExperienceFormFieldsProps> = ({ formData, o
       <LocationFields
         formData={formData}
         onInputChange={onInputChange}
+        onBatchUpdate={onBatchUpdate}
+        isAddressConfirmed={isAddressConfirmed}
       />
 
       <ContactInfoFields

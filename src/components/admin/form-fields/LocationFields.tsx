@@ -14,23 +14,45 @@ interface LocationFieldsProps {
     poi_type: string;
   };
   onInputChange: (field: string, value: string) => void;
+  onBatchUpdate?: (updates: Record<string, string>) => void;
+  isAddressConfirmed?: boolean;
 }
 
-const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange }) => {
+const LocationFields: React.FC<LocationFieldsProps> = ({ 
+  formData, 
+  onInputChange, 
+  onBatchUpdate,
+  isAddressConfirmed = false 
+}) => {
   const isEvent = formData.poi_type === 'event';
   const hasValidCoordinates = formData.latitude && formData.longitude && 
                               formData.latitude !== '' && formData.longitude !== '' &&
                               formData.latitude !== '0' && formData.longitude !== '0';
 
   const handleAddressSelect = (addressData: any) => {
-    // Aggiornamenti batch sincroni
-    onInputChange('address', addressData.address || '');
-    onInputChange('latitude', addressData.latitude?.toString() || '');
-    onInputChange('longitude', addressData.longitude?.toString() || '');
+    console.log('🏠 Indirizzo selezionato da Google Places:', addressData);
     
-    // Aggiorna il nome della location se necessario
+    // Prepara tutti gli aggiornamenti in un singolo oggetto
+    const updates = {
+      address: addressData.address || '',
+      latitude: addressData.latitude?.toString() || '',
+      longitude: addressData.longitude?.toString() || ''
+    };
+    
+    // Se c'è location_name vuoto e abbiamo una città, aggiungila
     if (!formData.location_name && addressData.city) {
-      onInputChange('location_name', addressData.city);
+      updates.location_name = addressData.city;
+    }
+    
+    // Usa batch update se disponibile, altrimenti fallback a singoli update
+    if (onBatchUpdate) {
+      console.log('📦 Usando batch update per indirizzo');
+      onBatchUpdate(updates);
+    } else {
+      console.log('⚠️ Fallback a singoli update per indirizzo');
+      Object.entries(updates).forEach(([field, value]) => {
+        onInputChange(field, value);
+      });
     }
   };
 
@@ -45,11 +67,18 @@ const LocationFields: React.FC<LocationFieldsProps> = ({ formData, onInputChange
           required
         />
         
-        {/* Feedback visivo semplificato */}
-        {hasValidCoordinates && formData.address && (
+        {/* Feedback visivo migliorato con stato di conferma */}
+        {hasValidCoordinates && formData.address && isAddressConfirmed && (
           <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-md">
             <span className="text-green-500">✓</span>
             <span>Indirizzo confermato e geolocalizzato</span>
+          </div>
+        )}
+        
+        {hasValidCoordinates && formData.address && !isAddressConfirmed && (
+          <div className="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 px-3 py-2 rounded-md">
+            <span className="text-blue-500">⏳</span>
+            <span>Elaborazione coordinate in corso...</span>
           </div>
         )}
         

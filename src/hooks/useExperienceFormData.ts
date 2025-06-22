@@ -51,6 +51,7 @@ const initialFormData: ExperienceFormData = {
 
 export const useExperienceFormData = () => {
   const [formData, setFormData] = useState<ExperienceFormData>(initialFormData);
+  const [isAddressConfirmed, setIsAddressConfirmed] = useState(false);
 
   const handleInputChange = (field: string, value: any) => {
     console.log(`🔄 Form update - ${field}:`, value);
@@ -76,13 +77,69 @@ export const useExperienceFormData = () => {
     });
   };
 
+  // Nuova funzione per aggiornamenti batch (specializzata per autocompletamento)
+  const handleBatchUpdate = (updates: Partial<ExperienceFormData>) => {
+    console.log('🔄 Batch form update:', updates);
+    
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        ...updates
+      };
+      
+      // Log completo per debug batch update
+      console.log('📊 Batch stato form aggiornato:', {
+        name: updated.name,
+        address: updated.address,
+        latitude: updated.latitude,
+        longitude: updated.longitude,
+        location_name: updated.location_name,
+        hasCoordinates: !!(updated.latitude && updated.longitude),
+        isComplete: !!(updated.address && updated.latitude && updated.longitude)
+      });
+      
+      return updated;
+    });
+    
+    // Conferma che l'indirizzo è stato processato completamente
+    if (updates.address && updates.latitude && updates.longitude) {
+      setIsAddressConfirmed(true);
+      console.log('✅ Indirizzo confermato e geolocalizzato');
+    }
+  };
+
   const resetForm = () => {
     setFormData(initialFormData);
+    setIsAddressConfirmed(false);
+  };
+
+  const resetAddressConfirmation = () => {
+    setIsAddressConfirmed(false);
+  };
+
+  // Funzione per validazione pre-submit che aspetta la conferma
+  const isFormReadyForSubmission = () => {
+    const hasRequiredFields = !!(formData.name && formData.macro_area && formData.category);
+    const hasValidAddress = !!(formData.address && formData.latitude && formData.longitude);
+    const isAddressProcessed = isAddressConfirmed || !formData.address; // Se non c'è indirizzo, non serve conferma
+    
+    console.log('🔍 Controllo readiness form:', {
+      hasRequiredFields,
+      hasValidAddress,
+      isAddressProcessed,
+      isReady: hasRequiredFields && hasValidAddress && isAddressProcessed
+    });
+    
+    return hasRequiredFields && hasValidAddress && isAddressProcessed;
   };
 
   return {
     formData,
     handleInputChange,
-    resetForm
+    handleBatchUpdate,
+    resetForm,
+    isAddressConfirmed,
+    resetAddressConfirmation,
+    isFormReadyForSubmission
   };
 };
