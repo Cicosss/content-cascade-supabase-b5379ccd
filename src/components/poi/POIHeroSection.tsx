@@ -45,12 +45,12 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
               </Badge>
             </div>
 
-            {/* Main Title */}
+            {/* Main Title - Now correctly displays POI name */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 animate-fade-in drop-shadow-2xl">
               {poi.name}
             </h1>
 
-            {/* Address */}
+            {/* Address - Location name or address */}
             <p className="text-lg md:text-xl text-white/90 mb-6 animate-fade-in drop-shadow-lg">
               {poi.location_name || poi.address}
             </p>
