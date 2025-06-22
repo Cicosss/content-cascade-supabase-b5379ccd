@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
@@ -39,6 +40,8 @@ interface POISubmission {
   updated_at: string;
   moderated_at: string;
   moderated_by: string;
+  poi_type: string;
+  opening_hours: string;
 }
 
 const POIModerationPanel = () => {
@@ -145,6 +148,7 @@ const POIModerationPanel = () => {
       organizer_info: submission.organizer_info,
       images: submission.images,
       tags: submission.tags,
+      opening_hours: submission.opening_hours,
       status: 'approved'
     };
 
