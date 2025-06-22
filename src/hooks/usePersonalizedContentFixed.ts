@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 export const usePersonalizedContent = (filters?: any) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
   
   // Prevent infinite loops with refs
   const filtersRef = useRef();
@@ -55,7 +55,7 @@ export const usePersonalizedContent = (filters?: any) => {
     } catch (error) {
       console.error('DEBUG: usePersonalizedContent - Errore:', error);
       if (mountedRef.current) {
-        setError(error);
+        setError(error as Error);
         setData([]);
       }
     } finally {

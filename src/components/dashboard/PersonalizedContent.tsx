@@ -15,6 +15,10 @@ const PersonalizedContent = () => {
     withChildren: 'no',
     activityTypes: [],
     period: undefined,
+    categories: [],
+    timeSlots: [],
+    budgets: [],
+    specialPreferences: [],
     isFirstVisit: true
   });
   
@@ -44,9 +48,56 @@ const PersonalizedContent = () => {
       withChildren: 'no',
       activityTypes: [],
       period: undefined,
+      categories: [],
+      timeSlots: [],
+      budgets: [],
+      specialPreferences: [],
       isFirstVisit: false
     });
   }, []);
+
+  const handleRemoveFilter = useCallback((filterType: string, value?: string) => {
+    if (filterType === 'all') {
+      handleClearFilters();
+      return;
+    }
+
+    setActiveFilters(prev => {
+      const newFilters = { ...prev };
+      
+      switch (filterType) {
+        case 'zone':
+          newFilters.zone = 'tuttalromagna';
+          break;
+        case 'category':
+          if (value) {
+            newFilters.categories = newFilters.categories.filter(cat => cat !== value);
+            newFilters.activityTypes = newFilters.activityTypes.filter(cat => cat !== value);
+          }
+          break;
+        case 'period':
+          newFilters.period = undefined;
+          break;
+        case 'timeSlot':
+          if (value) {
+            newFilters.timeSlots = newFilters.timeSlots?.filter(slot => slot !== value) || [];
+          }
+          break;
+        case 'budget':
+          if (value) {
+            newFilters.budgets = newFilters.budgets?.filter(budget => budget !== value) || [];
+          }
+          break;
+        case 'specialPreference':
+          if (value) {
+            newFilters.specialPreferences = newFilters.specialPreferences?.filter(pref => pref !== value) || [];
+          }
+          break;
+      }
+      
+      return newFilters;
+    });
+  }, [handleClearFilters]);
 
   // Filter and sort data
   const { experiences, restaurants, events } = useMemo(() => {
@@ -91,17 +142,20 @@ const PersonalizedContent = () => {
                 Scopri esperienze su misura per te in Romagna
               </p>
             </div>
-            <SortingDropdown value={sortBy} onChange={setSortBy} />
+            <SortingDropdown 
+              sortBy={sortBy} 
+              onSortChange={setSortBy} 
+            />
           </div>
           
           <ExperienceFilters 
-            onFilterChange={handleFilterChange}
-            currentFilters={activeFilters}
+            filters={activeFilters}
+            setFilters={handleFilterChange}
           />
           
           <AppliedFilters 
             filters={activeFilters}
-            onClearFilters={handleClearFilters}
+            onRemoveFilter={handleRemoveFilter}
           />
         </div>
       </Card>
@@ -109,20 +163,16 @@ const PersonalizedContent = () => {
       <div className="space-y-6">
         <ExperiencesCarousel 
           experiences={experiences}
-          isLoading={isLoading}
-          title="Esperienze per Te"
+          filters={activeFilters}
         />
         
         <RestaurantsCarousel 
           restaurants={restaurants}
-          isLoading={isLoading}
-          title="Ristoranti Consigliati"
+          filters={activeFilters}
         />
         
         <EventsCarousel 
           events={events}
-          isLoading={isLoading}
-          title="Eventi in Programma"
         />
       </div>
     </div>
