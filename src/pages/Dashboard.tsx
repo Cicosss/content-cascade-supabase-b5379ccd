@@ -4,11 +4,10 @@ import Layout from '@/components/Layout';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import GoogleMap from '@/components/dashboard/GoogleMap';
-import ExperienceFilters from '@/components/dashboard/ExperienceFilters';
 import { useURLFilters } from '@/hooks/useURLFilters';
 
 const Dashboard = () => {
-  const { filters, updateFilters } = useURLFilters();
+  const { filters } = useURLFilters();
 
   // Convert URL filters to map filters format
   const mapFilters = {
@@ -35,12 +34,6 @@ const Dashboard = () => {
               <PersonalizedWeather />
             </div>
           </div>
-
-          {/* Pannello Filtri */}
-          <ExperienceFilters 
-            filters={filters}
-            setFilters={updateFilters}
-          />
 
           {/* Contenuti personalizzati */}
           <PersonalizedContent />
