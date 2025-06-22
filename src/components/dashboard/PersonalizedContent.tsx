@@ -8,11 +8,16 @@ import HelpBanner from './content/HelpBanner';
 import SortingDropdown, { SortOption } from './SortingDropdown';
 import AppliedFilters from './AppliedFilters';
 import { useURLFilters } from '@/hooks/useURLFilters';
-import { usePersonalizedContentFixed } from '@/hooks/usePersonalizedContentFixed';
+import { usePersonalizedContent } from '@/hooks/usePersonalizedContentFixed';
 
 const PersonalizedContent: React.FC = () => {
   const { filters, updateFilters, removeFilter, updateSortBy } = useURLFilters();
-  const { restaurants, experiences, events, isLoading } = usePersonalizedContentFixed(filters);
+  const { data: allData, isLoading } = usePersonalizedContent(filters);
+
+  // Transform the data into the expected format for each carousel
+  const restaurants = allData.filter(item => item.category === 'restaurant' || item.category === 'ristorante') || [];
+  const experiences = allData.filter(item => item.category === 'experience' || item.category === 'esperienza') || [];
+  const events = allData.filter(item => item.category === 'event' || item.category === 'evento') || [];
 
   const handleRemoveFilter = (filterType: string, value?: string) => {
     if (filterType === 'all') {
