@@ -26,16 +26,27 @@ export const useCoastalStatus = (weather: WeatherData | null) => {
     const seasonStart = new Date(currentYear, 4, 1); // May 1st
     const seasonEnd = new Date(currentYear, 8, 30); // September 30th
     
+    console.log('🏊 Swimming season check:', {
+      today: today.toDateString(),
+      seasonStart: seasonStart.toDateString(),
+      seasonEnd: seasonEnd.toDateString(),
+      isInSeason: today >= seasonStart && today <= seasonEnd
+    });
+    
     return today >= seasonStart && today <= seasonEnd;
   }, []);
 
   // Calculate flag status based on weather conditions
   const flagStatus = useMemo((): FlagStatus => {
+    // Default fallback values when weather is not available
     if (!weather) {
+      console.log('⚠️ No weather data, using default flag status');
       return { level: 'yellow', text: 'Prudenza' };
     }
 
     const { temperature, condition, wind } = weather;
+    
+    console.log('🏁 Calculating flag status:', { temperature, condition, wind });
     
     // Red flag conditions
     if (temperature < 15 || wind > 25 || condition === 'Thunderstorm') {
@@ -53,7 +64,11 @@ export const useCoastalStatus = (weather: WeatherData | null) => {
 
   // Calculate water temperature (approximation based on air temperature and season)
   const waterTemperature = useMemo(() => {
-    if (!weather) return 20;
+    // Default fallback when weather is not available
+    if (!weather) {
+      console.log('🌡️ No weather data, using default water temperature');
+      return 18; // Default reasonable temperature
+    }
     
     const today = new Date();
     const month = today.getMonth();
@@ -72,16 +87,29 @@ export const useCoastalStatus = (weather: WeatherData | null) => {
     const baseWaterTemp = weather.temperature - 4 + seasonalAdjustment;
     
     // Clamp between reasonable values
-    return Math.max(12, Math.min(28, Math.round(baseWaterTemp)));
+    const finalTemp = Math.max(12, Math.min(28, Math.round(baseWaterTemp)));
+    
+    console.log('🌊 Water temperature calculation:', {
+      airTemp: weather.temperature,
+      seasonalAdjustment,
+      baseWaterTemp,
+      finalTemp
+    });
+    
+    return finalTemp;
   }, [weather]);
 
   // Calculate water quality (simulated based on weather and season)
   const waterQuality = useMemo((): WaterQuality => {
+    // Default fallback when weather is not available
     if (!weather) {
+      console.log('💧 No weather data, using default water quality');
       return { level: 'good', text: 'Buona' };
     }
 
     const { condition, wind } = weather;
+    
+    console.log('💧 Calculating water quality:', { condition, wind });
     
     // Poor quality during storms or very windy conditions
     if (condition === 'Thunderstorm' || wind > 20) {

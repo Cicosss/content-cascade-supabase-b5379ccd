@@ -11,9 +11,14 @@ const CoastalStatusWidget: React.FC = () => {
   const { weather } = useWeatherAPI(userLocation);
   const { flagStatus, waterTemperature, waterQuality, isSwimmingSeason } = useCoastalStatus(weather);
 
-  if (!isSwimmingSeason) {
-    return null;
-  }
+  console.log('🌊 CoastalStatusWidget render:', {
+    hasUserLocation: !!userLocation,
+    hasWeather: !!weather,
+    isSwimmingSeason,
+    flagStatus,
+    waterTemperature,
+    waterQuality
+  });
 
   const getFlagColor = () => {
     switch (flagStatus.level) {
@@ -33,13 +38,29 @@ const CoastalStatusWidget: React.FC = () => {
     }
   };
 
+  // Dynamic title based on season
+  const getTitle = () => {
+    return isSwimmingSeason ? 'Stato della Costa Oggi' : 'Condizioni Marine';
+  };
+
+  // Info message based on season and data availability
+  const getInfoMessage = () => {
+    if (!weather) {
+      return 'Caricamento dati meteorologici in corso...';
+    }
+    if (!isSwimmingSeason) {
+      return 'Informazioni generali sulle condizioni marine';
+    }
+    return 'Scopri il significato dei colori e i consigli di sicurezza';
+  };
+
   return (
     <Card className="p-4 h-auto rounded-3xl border-0 shadow-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 text-white">
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center gap-2">
           <Waves className="h-5 w-5 text-cyan-200" />
-          <h3 className="text-lg font-bold text-white">Stato della Costa Oggi</h3>
+          <h3 className="text-lg font-bold text-white">{getTitle()}</h3>
         </div>
 
         {/* Three Circular Indicators */}
@@ -82,7 +103,7 @@ const CoastalStatusWidget: React.FC = () => {
         <div className="flex items-start gap-2 text-xs text-cyan-200 pt-3 border-t border-white/20">
           <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
           <button className="leading-tight hover:text-white transition-colors duration-200 text-left">
-            Scopri il significato dei colori e i consigli di sicurezza
+            {getInfoMessage()}
           </button>
         </div>
       </div>
