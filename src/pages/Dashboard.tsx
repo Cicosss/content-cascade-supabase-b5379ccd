@@ -4,6 +4,7 @@ import Layout from '@/components/Layout';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import GoogleMap from '@/components/dashboard/GoogleMap';
+import DashboardHero from '@/components/dashboard/DashboardHero';
 import { useURLFilters } from '@/hooks/useURLFilters';
 
 const Dashboard = () => {
@@ -19,6 +20,9 @@ const Dashboard = () => {
   return (
     <Layout showSidebar={true}>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-emerald-50">
+        {/* Hero Section di Benvenuto */}
+        <DashboardHero />
+        
         <div className="container mx-auto px-4 py-6 space-y-6">
           {/* Sezione principale: Mappa + Meteo */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[500px]">
