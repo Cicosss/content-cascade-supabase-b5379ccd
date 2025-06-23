@@ -21,8 +21,8 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
         return (
           <div className="relative">
             <Sun className={`${className} text-yellow-400 animate-spin-slow`} />
-            <div className="absolute inset-0 animate-pulse">
-              <Sun className={`${className} text-yellow-300 opacity-30`} />
+            <div className="absolute inset-0 opacity-30 animate-pulse">
+              <Sun className={`${className} text-yellow-300`} />
             </div>
           </div>
         );
@@ -79,8 +79,8 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
         return (
           <div className="relative">
             <Sun className={`${className} text-yellow-400 animate-spin-slow`} />
-            <div className="absolute inset-0 animate-pulse">
-              <Sun className={`${className} text-yellow-300 opacity-30`} />
+            <div className="absolute inset-0 opacity-30 animate-pulse">
+              <Sun className={`${className} text-yellow-300`} />
             </div>
           </div>
         );
@@ -134,8 +134,8 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
         return (
           <div className="relative">
             <Sun className={`${className} text-yellow-400 animate-spin-slow`} />
-            <div className="absolute inset-0 animate-pulse">
-              <Sun className={`${className} text-yellow-300 opacity-30`} />
+            <div className="absolute inset-0 opacity-30 animate-pulse">
+              <Sun className={`${className} text-yellow-300`} />
             </div>
           </div>
         );
