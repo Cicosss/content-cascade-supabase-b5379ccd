@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import ExperienceFilters from './ExperienceFilters';
@@ -6,9 +7,7 @@ import SortingDropdown, { SortOption } from './SortingDropdown';
 import ExperiencesCarousel from './content/ExperiencesCarousel';
 import RestaurantsCarousel from './content/RestaurantsCarousel';
 import EventsCarousel from './content/EventsCarousel';
-import SeaSafetyBanner from './SeaSafetyBanner';
 import { usePersonalizedContent } from '@/hooks/usePersonalizedContentFixed';
-import { useSeaSafetyBanner } from '@/hooks/useSeaSafetyBanner';
 
 const PersonalizedContent = () => {
   const [activeFilters, setActiveFilters] = useState({
@@ -24,9 +23,6 @@ const PersonalizedContent = () => {
   });
   
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
-
-  // Hook per il banner di sicurezza marina
-  const { shouldShowBanner, dismissBanner } = useSeaSafetyBanner({ activeFilters });
 
   // Memoize filters to prevent unnecessary re-renders
   const memoizedFilters = useMemo(() => ({
@@ -163,11 +159,6 @@ const PersonalizedContent = () => {
           />
         </div>
       </Card>
-
-      {/* Banner di sicurezza marina contestuale */}
-      {shouldShowBanner && (
-        <SeaSafetyBanner onDismiss={dismissBanner} />
-      )}
 
       <div className="space-y-6">
         <ExperiencesCarousel 

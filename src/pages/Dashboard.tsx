@@ -3,6 +3,7 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
+import CoastalStatusWidget from '@/components/dashboard/CoastalStatusWidget';
 import GoogleMap from '@/components/dashboard/GoogleMap';
 import { Separator } from '@/components/ui/separator';
 import { useURLFilters } from '@/hooks/useURLFilters';
@@ -50,7 +51,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Sezione principale: Mappa + Meteo */}
+          {/* Sezione principale: Mappa + Meteo + Stato Costa */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[500px]">
             {/* Colonna principale - Mappa Interattiva */}
             <div className="lg:col-span-3">
@@ -59,9 +60,10 @@ const Dashboard = () => {
               </div>
             </div>
             
-            {/* Colonna laterale - Meteo */}
-            <div className="lg:col-span-1">
+            {/* Colonna laterale - Meteo e Stato Costa */}
+            <div className="lg:col-span-1 space-y-4">
               <PersonalizedWeather />
+              <CoastalStatusWidget />
             </div>
           </div>
 
