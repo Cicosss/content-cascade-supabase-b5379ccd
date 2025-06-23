@@ -10,6 +10,7 @@ import { ApprovedExperience } from '@/hooks/useApprovedExperiences';
 import { MACRO_AREAS, getCategoriesForMacroArea } from '@/config/categoryMapping';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import MediaUploader from '@/components/admin/MediaUploader';
 
 interface EditApprovedModalProps {
   experience: ApprovedExperience | null;
@@ -50,6 +51,11 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleImagesChange = (images: string[]) => {
+    setFormData(prev => ({ ...prev, images }));
+    console.log('🖼️ Images updated in modal:', images);
+  };
+
   const handleSave = async () => {
     if (!experience || !formData) return;
 
@@ -69,6 +75,7 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
         website_url: formData.website_url,
         organizer_info: formData.organizer_info,
         opening_hours: formData.opening_hours,
+        images: formData.images,
         updated_at: new Date().toISOString()
       };
 
@@ -95,12 +102,12 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Modifica Esperienza Live: {experience.name}</DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
             <p className="text-sm text-blue-800">
               ⚡ Stai modificando un'esperienza <strong>già pubblicata</strong>. 
@@ -172,6 +179,12 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
               onChange={(e) => handleInputChange('address', e.target.value)}
             />
           </div>
+
+          {/* Sezione Galleria Immagini */}
+          <MediaUploader
+            images={formData.images || []}
+            onImagesChange={handleImagesChange}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
