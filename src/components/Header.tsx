@@ -16,24 +16,16 @@ const Header = () => {
 
   return (
     <header className="w-full bg-[#0F172A] border-b border-slate-700 shadow-lg relative z-header-custom">
-      <div className="bg-[#0F172A] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
-          {/* Logo Section */}
           <LogoSection />
-
-          {/* Desktop Navigation */}
           <NavigationMenu />
 
-          {/* Right Section */}
           <div className="flex items-center space-x-3">
-            {/* Language Selector */}
             <LanguageSelector />
-
-            {/* Auth Buttons */}
             <AuthButtons />
 
-            {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
@@ -45,10 +37,8 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         <MobileNavigationMenu isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
 
-        {/* Mobile Auth Buttons */}
         {isMobileMenuOpen && (
           <AuthButtons isMobile onMobileClose={closeMobileMenu} />
         )}

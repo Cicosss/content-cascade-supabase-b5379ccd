@@ -8,17 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { languages } from '@/constants/navigation';
 
 const LanguageSelector = () => {
-  const languages = [
-    { code: 'IT', flag: '🇮🇹', name: 'Italiano' },
-    { code: 'EN', flag: '🇬🇧', name: 'English' },
-    { code: 'DE', flag: '🇩🇪', name: 'Deutsch' },
-    { code: 'FR', flag: '🇫🇷', name: 'Français' },
-    { code: 'ES', flag: '🇪🇸', name: 'Español' },
-    { code: 'RU', flag: '🇷🇺', name: 'Русский' }
-  ];
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

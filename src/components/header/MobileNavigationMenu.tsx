@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { navigationItems } from '@/constants/navigation';
 
 interface MobileNavigationMenuProps {
   isOpen: boolean;
@@ -8,17 +9,10 @@ interface MobileNavigationMenuProps {
 }
 
 const MobileNavigationMenu: React.FC<MobileNavigationMenuProps> = ({ isOpen, onClose }) => {
-  const navigationItems = [
-    { to: "/gusto-sapori", label: "Gusto & Sapori" },
-    { to: "/cultura-territorio", label: "Cultura & Territorio" },
-    { to: "/eventi-spettacoli", label: "Eventi & Spettacoli" },
-    { to: "/divertimento-famiglia", label: "Divertimento & Famiglia" }
-  ];
-
   if (!isOpen) return null;
 
   return (
-    <div className="lg:hidden py-3 border-t border-slate-700 relative z-[1002]">
+    <div className="lg:hidden py-3 border-t border-slate-700 relative z-popover-custom">
       <nav className="flex flex-col space-y-1">
         {navigationItems.map((item) => (
           <Link 

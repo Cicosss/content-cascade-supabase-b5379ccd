@@ -34,14 +34,14 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({ isMobile = false, onMobileClo
       <div className="flex flex-col space-y-2 mt-4 px-4">
         <Button 
           onClick={handleLogin}
-          className="brand-blue-gradient text-white hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-700 text-sm w-full shadow-md hover:shadow-lg transition-all duration-300 font-medium"
+          className="auth-button-primary w-full"
         >
           <User className="h-4 w-4 mr-2" />
           Accedi
         </Button>
         <Button 
           onClick={handleSignup}
-          className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm w-full"
+          className="auth-button-secondary w-full"
         >
           <UserPlus className="h-4 w-4 mr-2" />
           Registrati
@@ -54,14 +54,14 @@ const AuthButtons: React.FC<AuthButtonsProps> = ({ isMobile = false, onMobileClo
     <div className="flex items-center space-x-2">
       <Button 
         onClick={handleLogin}
-        className="brand-blue-gradient text-white hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-700 text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-medium"
+        className="auth-button-primary"
       >
         <User className="h-4 w-4 mr-2" />
         Accedi
       </Button>
       <Button 
         onClick={handleSignup}
-        className="bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold"
+        className="auth-button-secondary"
       >
         <UserPlus className="h-4 w-4 mr-2" />
         Registrati

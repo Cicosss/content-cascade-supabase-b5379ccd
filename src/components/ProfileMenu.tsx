@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -17,27 +18,20 @@ import { useNavigate } from 'react-router-dom';
 const ProfileMenu = () => {
   const { user, signOut } = useAuth();
   const { profile } = useUserProfile();
-  const { adminUser, logoutAdmin, isAdmin } = useAdminAuth();
+  const { logoutAdmin, isAdmin } = useAdminAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     await signOut();
-    // Also logout admin if logged in
     if (isAdmin) {
       logoutAdmin();
     }
     navigate('/');
   };
 
-  const handleAdminAccess = () => {
-    navigate('/admin');
-  };
-
-  const handleAdminLogout = () => {
-    logoutAdmin();
-  };
-
   if (!user) return null;
+
+  const displayName = profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0];
 
   return (
     <DropdownMenu>
@@ -53,14 +47,13 @@ const ProfileMenu = () => {
             </AvatarFallback>
           </Avatar>
           <span className="hidden sm:block font-medium">
-            {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
+            {displayName}
           </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-48 rounded-xl border border-slate-300 shadow-xl z-profile-dropdown-custom"
-        style={{ backgroundColor: '#2A3385' }}
+        className="w-48 rounded-xl border border-slate-300 shadow-xl z-profile-dropdown-custom bg-[#2A3385]"
       >
         <DropdownMenuItem 
           onClick={() => navigate('/dashboard')}
@@ -84,20 +77,18 @@ const ProfileMenu = () => {
           Preferiti
         </DropdownMenuItem>
         
-        {/* Admin Section - Only visible to admin users */}
         {isAdmin && (
           <>
             <DropdownMenuSeparator className="bg-white/20" />
-            
             <DropdownMenuItem 
-              onClick={handleAdminAccess}
+              onClick={() => navigate('/admin')}
               className="rounded-lg hover:bg-orange-500/20 cursor-pointer text-orange-200 hover:text-orange-100 focus:bg-orange-500/20 focus:text-orange-100"
             >
               <Shield className="h-4 w-4 mr-3" />
               Pannello Admin
             </DropdownMenuItem>
             <DropdownMenuItem 
-              onClick={handleAdminLogout}
+              onClick={logoutAdmin}
               className="rounded-lg hover:bg-yellow-500/20 cursor-pointer text-yellow-200 hover:text-yellow-100 focus:bg-yellow-500/20 focus:text-yellow-100"
             >
               <Shield className="h-4 w-4 mr-3" />
@@ -107,7 +98,6 @@ const ProfileMenu = () => {
         )}
         
         <DropdownMenuSeparator className="bg-white/20" />
-        
         <DropdownMenuItem 
           onClick={handleSignOut}
           className="rounded-lg hover:bg-red-500/20 text-red-200 hover:text-red-100 cursor-pointer focus:bg-red-500/20 focus:text-red-100"

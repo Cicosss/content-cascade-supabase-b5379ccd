@@ -1,15 +1,9 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { navigationItems } from '@/constants/navigation';
 
 const NavigationMenu = () => {
-  const navigationItems = [
-    { to: "/gusto-sapori", label: "Gusto & Sapori" },
-    { to: "/cultura-territorio", label: "Cultura & Territorio" },
-    { to: "/eventi-spettacoli", label: "Eventi & Spettacoli" },
-    { to: "/divertimento-famiglia", label: "Divertimento & Famiglia" }
-  ];
-
   return (
     <nav className="hidden lg:flex items-center space-x-1">
       {navigationItems.map((item) => (
