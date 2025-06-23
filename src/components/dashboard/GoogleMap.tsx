@@ -2,7 +2,6 @@
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
-import { useMapSync } from '@/contexts/MapSyncContext';
 import { Loader2 } from 'lucide-react';
 import OptimizedPOIPreview from './OptimizedPOIPreview';
 import MapControls from './MapControls';
@@ -26,28 +25,9 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
   const { pois, fetchPOIs, isLoading: isLoadingPOIs } = usePOIData();
   const { isLoaded, error } = useGoogleMapsInit();
-  const { setMapInstance, selectedPOIId } = useMapSync();
-  
   const mapInstance = useOptimizedMapInstance({ isLoaded, mapRef, userLocation });
 
-  // Register map instance with context when available
-  useEffect(() => {
-    if (mapInstance) {
-      setMapInstance(mapInstance);
-    }
-  }, [mapInstance, setMapInstance]);
-
-  // Handle POI selection from context
-  useEffect(() => {
-    if (selectedPOIId && pois.length > 0) {
-      const poi = pois.find(p => p.id === selectedPOIId);
-      if (poi) {
-        setSelectedPOI(poi);
-      }
-    }
-  }, [selectedPOIId, pois]);
-
-  // Use the optimized markers hook
+  // Use the optimized markers hook with proper POI data
   useOptimizedMapMarkers({
     map: mapInstance,
     pois,
@@ -55,29 +35,37 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     onPOISelect: setSelectedPOI
   });
 
-  // Transform filters for POI data service
+  // Transform filters for POI data service - SEMPLIFICATO per mostrare tutti i POI
   const poiFilters = useMemo(() => {
+    console.log('🗺️ GoogleMap: Filters ricevuti:', filters);
+    
+    // Se non ci sono filtri specifici, mostra TUTTI i POI
     const shouldShowAll = !filters.activityTypes || 
                          filters.activityTypes.length === 0 || 
                          filters.activityTypes.includes('tutto') ||
                          filters.activityTypes.includes('tutte');
     
     const transformedFilters = {
-      activityTypes: shouldShowAll ? [] : filters.activityTypes,
-      zone: filters.zone === 'tuttalromagna' ? '' : filters.zone,
+      activityTypes: shouldShowAll ? [] : filters.activityTypes, // Array vuoto = tutti i POI
+      zone: filters.zone === 'tuttalromagna' ? '' : filters.zone, // Stringa vuota = tutte le zone
       withChildren: filters.withChildren || 'no',
       period: undefined
     };
     
+    console.log('🗺️ GoogleMap: Filtri trasformati (semplificati):', transformedFilters);
+    console.log('🗺️ GoogleMap: shouldShowAll:', shouldShowAll);
+    
     return transformedFilters;
   }, [filters.activityTypes, filters.zone, filters.withChildren]);
 
-  // Memoized callbacks
+  // Memoized callbacks to prevent unnecessary re-renders
   const handleCenterOnUser = useCallback(() => {
     if (userLocation && mapInstance) {
+      console.log('🗺️ GoogleMap: Centrando mappa su utente:', userLocation);
       mapInstance.setCenter(userLocation);
       mapInstance.setZoom(15);
     } else {
+      console.log('🗺️ GoogleMap: Richiedendo posizione utente');
       getCurrentLocation();
     }
   }, [userLocation, mapInstance, getCurrentLocation]);
@@ -94,9 +82,36 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
 
   // Load POIs when map is ready or filters change
   useEffect(() => {
-    if (!mapInstance) return;
+    if (!mapInstance) {
+      console.log('🗺️ GoogleMap: Mappa non ancora pronta');
+      return;
+    }
+    
+    console.log('🗺️ GoogleMap: Caricamento POI con filtri:', poiFilters);
+    console.log('🗺️ GoogleMap: Stato mappa:', { 
+      mapReady: !!mapInstance,
+      isLoaded,
+      filtersReady: !!poiFilters 
+    });
+    
     fetchPOIs(poiFilters);
   }, [mapInstance, poiFilters, fetchPOIs, isLoaded]);
+
+  // Log dei POI ricevuti
+  useEffect(() => {
+    console.log('🗺️ GoogleMap: POI ricevuti dal database:', pois.length);
+    if (pois.length > 0) {
+      console.log('🗺️ GoogleMap: Primi 3 POI:', pois.slice(0, 3).map(poi => ({
+        id: poi.id,
+        name: poi.name,
+        latitude: poi.latitude,
+        longitude: poi.longitude,
+        category: poi.category
+      })));
+    } else {
+      console.log('🗺️ GoogleMap: Nessun POI ricevuto - verificare database e filtri');
+    }
+  }, [pois]);
 
   if (error) {
     return (
@@ -141,7 +156,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
         </div>
       )}
 
-      {/* Status indicator */}
+      {/* Indicatore migliorato con stato dettagliato */}
       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
         <div className="flex items-center gap-2 text-sm">
           <div 
@@ -150,8 +165,13 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
             }`}
           ></div>
           <span className="font-medium text-slate-700">
-            {isLoadingPOIs ? 'Caricamento...' : `${pois.length} POI`}
+            {isLoadingPOIs ? 'Caricamento...' : `${pois.length} POI${pois.length === 0 ? ' (verifica filtri)' : ''}`}
           </span>
+        </div>
+        {/* Debug info per sviluppo */}
+        <div className="text-xs text-slate-500 mt-1">
+          Mappa: {mapInstance ? '✓' : '✗'} | 
+          Filtri: {poiFilters.activityTypes.length === 0 ? 'Tutti' : poiFilters.activityTypes.join(',')}
         </div>
       </div>
     </div>

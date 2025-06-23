@@ -58,8 +58,6 @@ const RestaurantsCarousel: React.FC<RestaurantsCarouselProps> = ({
               images={restaurant.images}
               avg_rating={restaurant.avg_rating}
               price_info={restaurant.price_info}
-              latitude={restaurant.latitude}
-              longitude={restaurant.longitude}
             />
           ))
         )}

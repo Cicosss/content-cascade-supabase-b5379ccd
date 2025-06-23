@@ -57,8 +57,6 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
               images={exp.images}
               avg_rating={exp.avg_rating}
               price_info={exp.price_info}
-              latitude={exp.latitude}
-              longitude={exp.longitude}
             />
           ))
         )}

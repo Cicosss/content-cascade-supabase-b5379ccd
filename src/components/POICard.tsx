@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
 import { Skeleton } from '@/components/ui/skeleton';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
-import { useMapSync } from '@/contexts/MapSyncContext';
 
 interface POICardProps {
   id: string;
@@ -18,8 +17,6 @@ interface POICardProps {
   avg_rating?: number;
   price_info?: string;
   isLoading?: boolean;
-  latitude?: number;
-  longitude?: number;
 }
 
 const POICard: React.FC<POICardProps> = ({
@@ -30,31 +27,13 @@ const POICard: React.FC<POICardProps> = ({
   images,
   avg_rating,
   price_info,
-  isLoading = false,
-  latitude,
-  longitude
+  isLoading = false
 }) => {
   const navigate = useNavigate();
-  const { highlightPOI, centerOnPOI } = useMapSync();
   const coverImage = images && images.length > 0 ? images[0] : null;
 
   const handleCardClick = () => {
-    // If coordinates are available, center map and highlight
-    if (latitude && longitude) {
-      const poi = { id, name, category, description, images, avg_rating, price_info, latitude, longitude };
-      centerOnPOI(poi);
-    }
-    
-    // Navigate to detail page
     navigate(`/poi/${id}`);
-  };
-
-  const handleMouseEnter = () => {
-    highlightPOI(id);
-  };
-
-  const handleMouseLeave = () => {
-    highlightPOI(null);
   };
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -99,10 +78,8 @@ const POICard: React.FC<POICardProps> = ({
 
   return (
     <Card 
-      className="overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm hover:border-blue-300"
+      className="overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm"
       onClick={handleCardClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       {/* Immagine di copertina */}
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
@@ -122,9 +99,9 @@ const POICard: React.FC<POICardProps> = ({
           </div>
         )}
         
-        {/* Barra Azioni Rapide */}
+        {/* Barra Azioni Rapide - Vetro Smerigliato */}
         <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          <Badge className="bg-white/90 backdrop-blur-sm text-gray-900 text-xs border-0 shadow-sm group-hover:bg-blue-50 group-hover:text-blue-700 transition-colors">
+          <Badge className="bg-white/90 backdrop-blur-sm text-gray-900 text-xs border-0 shadow-sm">
             {category}
           </Badge>
           
