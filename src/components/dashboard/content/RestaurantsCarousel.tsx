@@ -1,7 +1,7 @@
 
 import React from 'react';
 import ContentCarousel from '@/components/ContentCarousel';
-import RestaurantCard from '@/components/RestaurantCard';
+import POICard from '@/components/POICard';
 import { ChefHat } from 'lucide-react';
 
 interface RestaurantsCarouselProps {
@@ -10,9 +10,14 @@ interface RestaurantsCarouselProps {
     isFirstVisit: boolean;
     withChildren: string;
   };
+  isLoading?: boolean;
 }
 
-const RestaurantsCarousel: React.FC<RestaurantsCarouselProps> = ({ restaurants, filters }) => {
+const RestaurantsCarousel: React.FC<RestaurantsCarouselProps> = ({ 
+  restaurants, 
+  filters, 
+  isLoading = false 
+}) => {
   const titleText = `Tradizione Culinaria${filters.isFirstVisit ? ' per Visitatori' : ' Autentica'}`;
   const subtitleText = `I sapori della Romagna ${filters.withChildren === 'sì' ? 'per tutta la famiglia' : 'selezionati per te'}`;
 
@@ -31,9 +36,31 @@ const RestaurantsCarousel: React.FC<RestaurantsCarouselProps> = ({ restaurants, 
         title=""
         subtitle=""
       >
-        {restaurants.map((restaurant, index) => (
-          <RestaurantCard key={restaurant.id || index} id={restaurant.id} {...restaurant} />
-        ))}
+        {isLoading ? (
+          // Mostra 4 skeleton loaders durante il caricamento
+          Array.from({ length: 4 }).map((_, index) => (
+            <POICard 
+              key={`skeleton-${index}`}
+              id=""
+              name=""
+              category=""
+              isLoading={true}
+            />
+          ))
+        ) : (
+          restaurants.map((restaurant, index) => (
+            <POICard 
+              key={restaurant.id || index} 
+              id={restaurant.id}
+              name={restaurant.name}
+              category={restaurant.category}
+              description={restaurant.description}
+              images={restaurant.images}
+              avg_rating={restaurant.avg_rating}
+              price_info={restaurant.price_info}
+            />
+          ))
+        )}
       </ContentCarousel>
     </div>
   );

@@ -164,15 +164,18 @@ const PersonalizedContent = () => {
         <ExperiencesCarousel 
           experiences={experiences}
           filters={activeFilters}
+          isLoading={isLoading}
         />
         
         <RestaurantsCarousel 
           restaurants={restaurants}
           filters={activeFilters}
+          isLoading={isLoading}
         />
         
         <EventsCarousel 
           events={events}
+          isLoading={isLoading}
         />
       </div>
     </div>
