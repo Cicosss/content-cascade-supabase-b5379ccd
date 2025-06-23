@@ -4,7 +4,7 @@
   --z-dropdown: 50;
   --z-sticky: 100;
   --z-sidebar: 998;
-  --z-header: 900;
+  --z-header: 1500;
   --z-overlay: 1000;
   --z-modal: 1001;
   --z-popover: 1002;
@@ -14,7 +14,7 @@
 
 /* Classi Tailwind personalizzate per z-index */
 .z-sidebar-custom { z-index: 998; }
-.z-header-custom { z-index: 900; }
+.z-header-custom { z-index: 1500; }
 .z-overlay-custom { z-index: 1000; }
 .z-modal-custom { z-index: 1001; }
 .z-popover-custom { z-index: 1002; }
