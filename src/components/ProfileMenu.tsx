@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -60,7 +59,7 @@ const ProfileMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-48 rounded-xl border border-slate-300 shadow-xl z-popover-custom"
+        className="w-48 rounded-xl border border-slate-300 shadow-xl z-profile-dropdown-custom"
         style={{ backgroundColor: '#2A3385' }}
       >
         <DropdownMenuItem 
