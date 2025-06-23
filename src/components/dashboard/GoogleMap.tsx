@@ -136,7 +136,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   }
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full z-map-container-custom google-maps-container">
       <div ref={mapRef} className="w-full h-full rounded-xl" />
       
       <MapLoadingIndicator isLoadingPOIs={isLoadingPOIs} />

@@ -1,24 +1,34 @@
 
-/* Sistema di z-index standardizzato */
+/* Sistema di z-index standardizzato - AGGIORNATO per risolvere bug navbar */
 :root {
   --z-dropdown: 50;
   --z-sticky: 100;
-  --z-sidebar: 998;
-  --z-header: 1500;
+  --z-sidebar: 2100;
+  --z-header: 2000;
   --z-overlay: 1000;
   --z-modal: 1001;
   --z-popover: 1002;
   --z-tooltip: 1003;
   --z-profile-dropdown: 9999;
+  --z-map-container: 1;
 }
 
-/* Classi Tailwind personalizzate per z-index */
-.z-sidebar-custom { z-index: 998; }
-.z-header-custom { z-index: 1500; }
+/* Classi Tailwind personalizzate per z-index - AGGIORNATE */
+.z-sidebar-custom { z-index: 2100; }
+.z-header-custom { 
+  z-index: 2000;
+  isolation: isolate;
+  transform: translateZ(0); 
+  will-change: transform;
+}
 .z-overlay-custom { z-index: 1000; }
 .z-modal-custom { z-index: 1001; }
 .z-popover-custom { z-index: 1002; }
 .z-profile-dropdown-custom { z-index: 9999; }
+.z-map-container-custom { 
+  z-index: 1;
+  position: relative;
+}
 
 /* Utility classes per la navbar */
 .nav-link-base {
@@ -31,4 +41,23 @@
 
 .auth-button-secondary {
   @apply bg-gradient-to-r from-red-500 via-orange-400 to-yellow-300 hover:from-red-600 hover:via-orange-500 hover:to-yellow-400 text-white text-sm px-4 py-2 h-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold;
+}
+
+/* Regole CSS specifiche per forzare l'header sopra Google Maps e altri contenuti */
+.header-force-top {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2000 !important;
+  isolation: isolate !important;
+  transform: translateZ(0) !important;
+}
+
+/* Assicura che la mappa di Google rimanga sotto l'header */
+.google-maps-container {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.google-maps-container > div {
+  z-index: 1 !important;
 }

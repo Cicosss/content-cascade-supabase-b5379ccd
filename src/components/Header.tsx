@@ -15,7 +15,7 @@ const Header = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <header className="w-full bg-[#0F172A] border-b border-slate-700 shadow-lg relative z-header-custom">
+    <header className="w-full bg-[#0F172A] border-b border-slate-700 shadow-lg relative z-header-custom header-force-top">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           
