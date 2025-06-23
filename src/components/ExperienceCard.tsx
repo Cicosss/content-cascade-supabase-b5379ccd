@@ -1,10 +1,9 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Clock, Euro, Calendar, User, Star } from 'lucide-react';
+import { MapPin, Clock, Euro, Calendar, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface ExperienceCardProps {
   id: string;
@@ -50,9 +49,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
   groupSize
 }) => {
   const navigate = useNavigate();
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
-  
   const displayName = name || title || '';
   const displayPrice = price_info || price || '';
   const displayDuration = duration_info || duration || '';
@@ -65,15 +61,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-  };
-
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
   };
 
   const formatDate = (dateString: string) => {
@@ -103,41 +90,30 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
       className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer group overflow-hidden"
       onClick={handleCardClick}
     >
+      <div onClick={handleFavoriteClick}>
+        <FavoriteButton
+          itemId={id}
+          itemType="poi"
+          className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
+        />
+      </div>
+      
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
-        {imageLoading && (
-          <Skeleton className="w-full h-full absolute inset-0" />
-        )}
-        
-        {coverImage && !imageError ? (
+        {coverImage ? (
           <img
             src={coverImage}
             alt={displayName}
-            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${
-              imageLoading ? 'opacity-0' : 'opacity-100'
-            }`}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
           />
         ) : (
-          !imageLoading && (
-            <div className="w-full h-full flex items-center justify-center bg-gray-100">
-              {getCategoryIcon()}
-            </div>
-          )
+          <div className="w-full h-full flex items-center justify-center text-gray-300">
+            {getCategoryIcon()}
+          </div>
         )}
-
-        <div onClick={handleFavoriteClick}>
-          <FavoriteButton
-            itemId={id}
-            itemType="poi"
-            className="absolute top-3 right-3 z-10"
-            size="md"
-          />
-        </div>
       </div>
 
-      <CardContent className="p-4 bg-white">
+      <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-gray-500 text-sm">
             {getCategoryIcon()}
@@ -145,7 +121,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           <span className="text-sm text-gray-600">{category}</span>
         </div>
 
-        <h3 className="font-bold text-lg mb-2 text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">
           {displayName}
         </h3>
 
@@ -159,7 +135,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           {(address || location_name) && (
             <div className="flex items-center text-sm text-gray-600">
               <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span className="line-clamp-1">
+              <span className="truncate">
                 {location_name || address}
               </span>
             </div>
@@ -178,7 +154,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           {!isEvent && opening_hours && (
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span className="line-clamp-1">{opening_hours}</span>
+              <span className="truncate">{opening_hours}</span>
             </div>
           )}
 
@@ -201,14 +177,14 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
           {displayPrice && (
             <div className="flex items-center text-green-600 font-medium">
               <Euro className="h-4 w-4 mr-1" />
-              <span className="text-sm">{displayPrice}</span>
+              <span>{displayPrice}</span>
             </div>
           )}
 
           {rating && (
             <div className="flex items-center">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-              <span className="text-sm font-medium text-gray-900">{rating}</span>
+              <span className="text-yellow-500 text-sm">★</span>
+              <span className="text-sm text-gray-600 ml-1">{rating}</span>
             </div>
           )}
         </div>

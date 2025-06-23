@@ -1,9 +1,8 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Eye, Calendar, AlertCircle } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface POISubmission {
   id: string;
@@ -23,9 +22,6 @@ interface ProposalCardProps {
 }
 
 const ProposalCard: React.FC<ProposalCardProps> = ({ submission }) => {
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
-  
   const getStatusInfo = (status: string) => {
     switch (status) {
       case 'approved':
@@ -74,41 +70,22 @@ const ProposalCard: React.FC<ProposalCardProps> = ({ submission }) => {
     });
   };
 
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-  };
-
   const CardContent = () => (
     <div className="bg-white rounded-lg border border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md">
       <div className="p-6">
         <div className="flex gap-4">
           {/* Thumbnail a sinistra */}
-          <div className="flex-shrink-0 relative">
-            {imageLoading && thumbnailImage && (
-              <Skeleton className="w-16 h-16 rounded-lg absolute inset-0" />
-            )}
-            
-            {thumbnailImage && !imageError ? (
+          <div className="flex-shrink-0">
+            {thumbnailImage ? (
               <img
                 src={thumbnailImage}
                 alt={submission.name}
-                className={`w-16 h-16 object-cover rounded-lg border ${
-                  imageLoading ? 'opacity-0' : 'opacity-100'
-                }`}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
+                className="w-16 h-16 object-cover rounded-lg border"
               />
             ) : (
-              !imageLoading && (
-                <div className="w-16 h-16 bg-gray-100 rounded-lg border flex items-center justify-center">
-                  <span className="text-gray-400 text-2xl">📍</span>
-                </div>
-              )
+              <div className="w-16 h-16 bg-gray-100 rounded-lg border flex items-center justify-center">
+                <span className="text-gray-400 text-2xl">📍</span>
+              </div>
             )}
           </div>
 

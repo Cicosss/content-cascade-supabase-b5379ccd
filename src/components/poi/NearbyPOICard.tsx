@@ -1,11 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin } from 'lucide-react';
 import { formatWalkingTime } from '@/utils/distanceCalculator';
 import { useNavigate } from 'react-router-dom';
-import { Skeleton } from '@/components/ui/skeleton';
 
 interface NearbyPOICardProps {
   id: string;
@@ -27,8 +26,6 @@ const NearbyPOICard: React.FC<NearbyPOICardProps> = ({
   onClick
 }) => {
   const navigate = useNavigate();
-  const [imageLoading, setImageLoading] = useState(true);
-  const [imageError, setImageError] = useState(false);
   const coverImage = images && images.length > 0 ? images[0] : null;
 
   const handleClick = () => {
@@ -39,50 +36,30 @@ const NearbyPOICard: React.FC<NearbyPOICardProps> = ({
     }
   };
 
-  const handleImageLoad = () => {
-    setImageLoading(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-  };
-
   return (
     <Card 
       className="overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
       onClick={handleClick}
     >
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-100">
-        {imageLoading && coverImage && (
-          <Skeleton className="w-full h-full absolute inset-0" />
-        )}
-        
-        {coverImage && !imageError ? (
+        {coverImage ? (
           <img
             src={coverImage}
             alt={name}
-            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${
-              imageLoading ? 'opacity-0' : 'opacity-100'
-            }`}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
           />
         ) : (
-          !imageLoading && (
-            <div className="w-full h-full flex items-center justify-center bg-gray-100">
-              <MapPin className="h-8 w-8 text-gray-300" />
-            </div>
-          )
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+            <span className="text-2xl opacity-50">📍</span>
+          </div>
         )}
-        
         <Badge className="absolute top-2 left-2 bg-white/90 text-gray-900 text-xs">
           {category}
         </Badge>
       </div>
 
-      <div className="p-3 bg-white">
+      <div className="p-3">
         <h4 className="font-semibold text-sm mb-1 line-clamp-1 group-hover:text-blue-600 transition-colors">
           {name}
         </h4>
