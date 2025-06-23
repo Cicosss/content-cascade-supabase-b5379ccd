@@ -55,21 +55,21 @@ const CoastalStatusWidget: React.FC = () => {
   };
 
   return (
-    <Card className="p-4 h-auto rounded-3xl border-0 shadow-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 text-white">
-      <div className="space-y-4">
+    <Card className="p-3 h-full rounded-3xl border-0 shadow-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 text-white flex flex-col justify-between">
+      <div className="space-y-3">
         {/* Header */}
         <div className="flex items-center gap-2">
-          <Waves className="h-5 w-5 text-cyan-200" />
-          <h3 className="text-lg font-bold text-white">{getTitle()}</h3>
+          <Waves className="h-4 w-4 text-cyan-200" />
+          <h3 className="text-base font-bold text-white">{getTitle()}</h3>
         </div>
 
         {/* Three Circular Indicators */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2">
           {/* Flag Safety Indicator */}
           <div className="text-center group cursor-pointer">
             <div className="relative mb-2 transform transition-transform duration-200 hover:scale-105">
-              <div className={`w-12 h-12 rounded-full ${getFlagColor()} flex items-center justify-center mx-auto shadow-lg`}>
-                <Flag className="h-6 w-6 text-white animate-pulse" />
+              <div className={`w-10 h-10 rounded-full ${getFlagColor()} flex items-center justify-center mx-auto shadow-lg`}>
+                <Flag className="h-5 w-5 text-white animate-pulse" />
               </div>
             </div>
             <div className="text-xs font-medium text-cyan-100">{flagStatus.text}</div>
@@ -79,8 +79,8 @@ const CoastalStatusWidget: React.FC = () => {
           {/* Water Temperature Indicator */}
           <div className="text-center group cursor-pointer">
             <div className="relative mb-2 transform transition-transform duration-200 hover:scale-105">
-              <div className="w-12 h-12 rounded-full bg-blue-400 flex items-center justify-center mx-auto shadow-lg">
-                <Thermometer className="h-6 w-6 text-white" />
+              <div className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center mx-auto shadow-lg">
+                <Thermometer className="h-5 w-5 text-white" />
               </div>
             </div>
             <div className="text-xs font-bold text-white">{waterTemperature}°C</div>
@@ -90,22 +90,22 @@ const CoastalStatusWidget: React.FC = () => {
           {/* Water Quality Indicator */}
           <div className="text-center group cursor-pointer">
             <div className="relative mb-2 transform transition-transform duration-200 hover:scale-105">
-              <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center mx-auto shadow-lg">
-                <Droplets className={`h-6 w-6 ${getQualityColor()}`} />
+              <div className="w-10 h-10 rounded-full bg-blue-300 flex items-center justify-center mx-auto shadow-lg">
+                <Droplets className={`h-5 w-5 ${getQualityColor()}`} />
               </div>
             </div>
             <div className="text-xs font-medium text-cyan-100">{waterQuality.text}</div>
             <div className="text-xs text-cyan-200">Qualità</div>
           </div>
         </div>
+      </div>
 
-        {/* Info Section */}
-        <div className="flex items-start gap-2 text-xs text-cyan-200 pt-3 border-t border-white/20">
-          <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
-          <button className="leading-tight hover:text-white transition-colors duration-200 text-left">
-            {getInfoMessage()}
-          </button>
-        </div>
+      {/* Info Section */}
+      <div className="flex items-start gap-2 text-xs text-cyan-200 pt-2 border-t border-white/20">
+        <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
+        <button className="leading-tight hover:text-white transition-colors duration-200 text-left text-xs">
+          {getInfoMessage()}
+        </button>
       </div>
     </Card>
   );

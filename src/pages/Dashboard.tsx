@@ -60,10 +60,14 @@ const Dashboard = () => {
               </div>
             </div>
             
-            {/* Colonna laterale - Meteo e Stato Costa */}
-            <div className="lg:col-span-1 space-y-4">
-              <PersonalizedWeather />
-              <CoastalStatusWidget />
+            {/* Colonna laterale - Meteo e Stato Costa con flexbox */}
+            <div className="lg:col-span-1 flex flex-col gap-3 h-full">
+              <div className="flex-1">
+                <PersonalizedWeather />
+              </div>
+              <div className="flex-1">
+                <CoastalStatusWidget />
+              </div>
             </div>
           </div>
 
