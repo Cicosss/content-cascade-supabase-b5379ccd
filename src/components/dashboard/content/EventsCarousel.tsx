@@ -50,6 +50,8 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({ events, isLoading = fal
               images={event.images}
               avg_rating={event.avg_rating}
               price_info={event.price_info}
+              latitude={event.latitude}
+              longitude={event.longitude}
             />
           ))
         )}
