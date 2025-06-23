@@ -25,7 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
           <div className="min-h-screen flex w-full">
             <AppSidebar />
             <SidebarInset className="flex-1 flex flex-col">
-              <div className="sticky top-0 z-[999]">
+              <div className="sticky top-0 z-header-custom">
                 <div className="flex items-center gap-2 px-4 py-2 bg-[#0F172A] border-b border-slate-700">
                   <div className="flex-1">
                     <Header />
@@ -46,7 +46,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
   return (
     <LocationProvider>
       <div className="min-h-screen bg-slate-50 flex flex-col">
-        <div className="sticky top-0 z-[999]">
+        <div className="sticky top-0 z-header-custom">
           <Header />
         </div>
         <main className="flex-1 relative z-[1]">
