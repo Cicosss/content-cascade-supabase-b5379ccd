@@ -12,7 +12,7 @@ import ServicesSection from '@/components/ServicesSection';
 import { useHomepageData } from '@/components/homepage/MockDataProvider';
 import TopSection from '@/components/homepage/TopSection';
 import RestaurantsSection from '@/components/homepage/RestaurantsSection';
-import ServicesSection as NearbyServicesSection from '@/components/homepage/ServicesSection';
+import NearbyServicesSection from '@/components/homepage/ServicesSection';
 import ExperiencesSection from '@/components/homepage/ExperiencesSection';
 import SafetyBanner from '@/components/homepage/SafetyBanner';
 import EventsSection from '@/components/homepage/EventsSection';
