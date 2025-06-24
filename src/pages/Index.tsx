@@ -6,6 +6,7 @@ import Layout from '@/components/Layout';
 import HeroSection from '@/components/HeroSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
 import TodayInRomagnaTeaser from '@/components/TodayInRomagnaTeaser';
+import PassportTeaser from '@/components/PassportTeaser';
 import ServicesSection from '@/components/ServicesSection';
 
 // Import the new homepage components
@@ -61,6 +62,9 @@ const Index = () => {
 
           {/* Widget Teaser "Oggi in Romagna" */}
           <TodayInRomagnaTeaser />
+
+          {/* Widget Teaser "Il Mio Passaporto" */}
+          <PassportTeaser />
 
           {/* Servizi Vicini */}
           <NearbyServicesSection services={services} />
