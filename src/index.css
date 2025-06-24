@@ -126,6 +126,31 @@
     }
   }
 
+  /* Nuove animazioni marine per il Bollettino del Mare */
+  @keyframes gradientWave {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes flagWaving {
+    0%, 100% { transform: rotate(-2deg) translateY(0px); }
+    25% { transform: rotate(1deg) translateY(-1px); }
+    50% { transform: rotate(-1deg) translateY(-2px); }
+    75% { transform: rotate(2deg) translateY(-1px); }
+  }
+
+  @keyframes seaDataPulse {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% { 
+      transform: scale(1.02);
+      opacity: 0.95;
+    }
+  }
+
   /* Classi di animazione essenziali */
   .animate-float {
     animation: float 4s ease-in-out infinite;
@@ -145,6 +170,25 @@
 
   .animate-button-glow {
     animation: button-glow 3s ease-in-out infinite;
+  }
+
+  /* Nuove classi per il Bollettino del Mare */
+  .animate-gradient-wave {
+    animation: gradientWave 15s ease infinite;
+  }
+
+  .animate-flag-waving {
+    animation: flagWaving 3s ease-in-out infinite;
+  }
+
+  .animate-sea-data-pulse {
+    animation: seaDataPulse 4s ease-in-out infinite;
+  }
+
+  /* Sfondo marino animato */
+  .sea-gradient-background {
+    background: linear-gradient(-45deg, #BDE0FE, #A2D2FF, #8ECAE6, #74C0FC);
+    background-size: 400% 400%;
   }
 
   /* Tease overlay effect */

@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +14,7 @@ import TopSection from '@/components/homepage/TopSection';
 import RestaurantsSection from '@/components/homepage/RestaurantsSection';
 import NearbyServicesSection from '@/components/homepage/ServicesSection';
 import ExperiencesSection from '@/components/homepage/ExperiencesSection';
-import SafetyBanner from '@/components/homepage/SafetyBanner';
+import SeaBulletinWidget from '@/components/homepage/SeaBulletinWidget';
 import EventsSection from '@/components/homepage/EventsSection';
 import HelpBanner from '@/components/homepage/HelpBanner';
 import FamilySection from '@/components/homepage/FamilySection';
@@ -72,8 +71,8 @@ const Index = () => {
           {/* Esperienze del Territorio */}
           <ExperiencesSection territoryExperiences={territoryExperiences} />
 
-          {/* Prudenza in Mare */}
-          <SafetyBanner />
+          {/* Bollettino del Mare - sostituisce il vecchio SafetyBanner */}
+          <SeaBulletinWidget />
 
           {/* Eventi Speciali */}
           <EventsSection events={events} />
