@@ -86,7 +86,64 @@
 }
 
 @layer utilities {
-  /* Ottimizzate le animazioni meteo */
+  /* Nuove animazioni futuristiche per il Weather Teaser riprogettato */
+  @keyframes satellite-orbit {
+    0% { transform: rotate(0deg) translateX(3px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(3px) rotate(-360deg); }
+  }
+
+  @keyframes data-glitch {
+    0%, 90% { opacity: 1; }
+    92% { opacity: 0.3; transform: translateX(1px); }
+    94% { opacity: 0.8; transform: translateX(-1px); }
+    96% { opacity: 0.4; transform: translateX(1px); }
+    98% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes scan-line {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(300%); opacity: 0; }
+  }
+
+  @keyframes container-glow {
+    0%, 100% { 
+      box-shadow: 
+        inset 0 0 20px rgba(6, 182, 212, 0.3),
+        0 0 30px rgba(6, 182, 212, 0.15);
+    }
+    50% { 
+      box-shadow: 
+        inset 0 0 25px rgba(6, 182, 212, 0.5),
+        0 0 40px rgba(6, 182, 212, 0.25);
+    }
+  }
+
+  @keyframes unlock-button-pulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+    }
+    50% { 
+      transform: scale(1.02);
+      box-shadow: 0 12px 35px rgba(245, 158, 11, 0.6);
+    }
+  }
+
+  @keyframes typing-cursor {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  @keyframes matrix-rain {
+    0% { transform: translateY(-20px); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(20px); opacity: 0; }
+  }
+
+  /* Ottimizzate le animazioni meteo esistenti */
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
@@ -125,6 +182,35 @@
       box-shadow: 0 6px 20px 0 rgba(251, 191, 36, 0.4);
     }
   }
+
+  /* Nuove classi di animazione futuristiche */
+  .animate-satellite-orbit {
+    animation: satellite-orbit 8s linear infinite;
+  }
+
+  .animate-data-glitch {
+    animation: data-glitch 2s infinite;
+  }
+
+  .animate-scan-line {
+    animation: scan-line 3s linear infinite;
+  }
+
+  .animate-container-glow {
+    animation: container-glow 4s ease-in-out infinite;
+  }
+
+  .animate-unlock-pulse {
+    animation: unlock-button-pulse 2s ease-in-out infinite;
+  }
+
+  .animate-typing-cursor {
+    animation: typing-cursor 1s infinite;
+  }
+
+  .animate-matrix-rain {
+    animation: matrix-rain 4s linear infinite;
+  }
   
   .animate-float {
     animation: float 4s ease-in-out infinite;
@@ -154,5 +240,31 @@
       rgba(255, 255, 255, 0.3) 50%,
       rgba(255, 255, 255, 0.6) 100%
     );
+  }
+
+  /* Nuovi stili futuristici */
+  .futuristic-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .data-stream-line {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    font-size: 14px;
+    color: #06d6a0;
+    opacity: 0.8;
+  }
+
+  .scan-line-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #06d6a0, transparent);
+    pointer-events: none;
   }
 }
