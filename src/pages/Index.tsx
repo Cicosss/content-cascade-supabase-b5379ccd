@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +11,7 @@ import EventCard from '@/components/EventCard';
 import RestaurantCard from '@/components/RestaurantCard';
 import ServicesSection from '@/components/ServicesSection';
 import ExperienceCard from '@/components/ExperienceCard';
+import TodayInRomagnaTeaser from '@/components/TodayInRomagnaTeaser';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Car, Zap, ParkingCircle, AlertTriangle, MessageCircle } from 'lucide-react';
@@ -312,6 +312,9 @@ const Index = () => {
               <RestaurantCard key={index} {...restaurant} />
             ))}
           </ContentCarousel>
+
+          {/* NUOVO: Widget Teaser "Oggi in Romagna" */}
+          <TodayInRomagnaTeaser />
 
           {/* Servizi Vicini Card */}
           <section className="mb-16">
