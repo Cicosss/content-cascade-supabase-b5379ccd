@@ -52,12 +52,37 @@
   transform: translateZ(0) !important;
 }
 
-/* Assicura che la mappa di Google rimanga sotto l'header */
+/* CORREZIONE: Assicura che la mappa di Google rimanga sotto l'header ma permette ai marker di essere visibili */
 .google-maps-container {
   position: relative !important;
   z-index: 1 !important;
 }
 
+/* RIMOSSA la regola invasiva che nascondeva i marker:
 .google-maps-container > div {
   z-index: 1 !important;
+}
+*/
+
+/* Nuove regole per garantire visibilità dei marker e controlli della mappa */
+.google-maps-container .gm-style {
+  z-index: auto !important;
+}
+
+.google-maps-container .gm-style > div {
+  z-index: auto !important;
+}
+
+/* Assicura che i controlli della mappa siano visibili */
+.google-maps-container .gm-bundled-control {
+  z-index: 1000 !important;
+}
+
+/* Stili per i controlli personalizzati della mappa */
+.map-controls-overlay {
+  z-index: 10 !important;
+}
+
+.map-poi-preview {
+  z-index: 20 !important;
 }

@@ -97,7 +97,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     fetchPOIs(poiFilters);
   }, [mapInstance, poiFilters, fetchPOIs, isLoaded]);
 
-  // Log dei POI ricevuti
+  // Log dei POI ricevuti - MIGLIORATO per debug marker
   useEffect(() => {
     console.log('🗺️ GoogleMap: POI ricevuti dal database:', pois.length);
     if (pois.length > 0) {
@@ -108,10 +108,14 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
         longitude: poi.longitude,
         category: poi.category
       })));
+      
+      // Debug specifico per i marker
+      console.log('🗺️ GoogleMap: Marker Debug - Mappa pronta:', !!mapInstance);
+      console.log('🗺️ GoogleMap: Marker Debug - Google Maps API:', !!window.google?.maps);
     } else {
       console.log('🗺️ GoogleMap: Nessun POI ricevuto - verificare database e filtri');
     }
-  }, [pois]);
+  }, [pois, mapInstance]);
 
   if (error) {
     return (
@@ -141,13 +145,15 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
       
       <MapLoadingIndicator isLoadingPOIs={isLoadingPOIs} />
       
-      <MapControls 
-        onCenterOnUser={handleCenterOnUser}
-        isLoadingLocation={isLoadingLocation}
-      />
+      <div className="map-controls-overlay">
+        <MapControls 
+          onCenterOnUser={handleCenterOnUser}
+          isLoadingLocation={isLoadingLocation}
+        />
+      </div>
 
       {selectedPOI && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 map-poi-preview">
           <OptimizedPOIPreview
             poi={selectedPOI}
             onClose={handleClosePreview}
@@ -156,8 +162,8 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
         </div>
       )}
 
-      {/* Indicatore migliorato con stato dettagliato */}
-      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+      {/* Indicatore migliorato con debug dettagliato */}
+      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border border-slate-200">
         <div className="flex items-center gap-2 text-sm">
           <div 
             className={`w-2 h-2 rounded-full ${
@@ -168,10 +174,14 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
             {isLoadingPOIs ? 'Caricamento...' : `${pois.length} POI${pois.length === 0 ? ' (verifica filtri)' : ''}`}
           </span>
         </div>
-        {/* Debug info per sviluppo */}
-        <div className="text-xs text-slate-500 mt-1">
-          Mappa: {mapInstance ? '✓' : '✗'} | 
-          Filtri: {poiFilters.activityTypes.length === 0 ? 'Tutti' : poiFilters.activityTypes.join(',')}
+        {/* Debug info migliorato */}
+        <div className="text-xs text-slate-600 mt-1 space-y-1">
+          <div>Mappa: {mapInstance ? '✅ Pronta' : '❌ Non pronta'}</div>
+          <div>Google API: {window.google?.maps ? '✅ Caricata' : '❌ Non caricata'}</div>
+          <div>Filtri: {poiFilters.activityTypes.length === 0 ? 'Tutti' : poiFilters.activityTypes.join(',')}</div>
+          {pois.length > 0 && (
+            <div className="text-green-700 font-medium">🎯 Marker dovrebbero essere visibili</div>
+          )}
         </div>
       </div>
     </div>

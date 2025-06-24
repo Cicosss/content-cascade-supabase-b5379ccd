@@ -14,19 +14,20 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
   const activeMarkersRef = useRef<Set<string>>(new Set());
   const userMarkerRef = useRef<any>(null);
 
-  // Memoize POI marker icon to avoid recreation
+  // Memoize POI marker icon to avoid recreation - MIGLIORATO per visibilità
   const poiMarkerIcon = useMemo(() => {
     if (!window.google?.maps) return null;
     
     return {
       url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="12" fill="#1e3a8a" stroke="white" stroke-width="3"/>
-          <circle cx="16" cy="16" r="4" fill="white"/>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="16" fill="#1e3a8a" stroke="white" stroke-width="4"/>
+          <circle cx="20" cy="20" r="6" fill="white"/>
         </svg>
       `),
-      scaledSize: new window.google.maps.Size(32, 32),
-      anchor: new window.google.maps.Point(16, 16)
+      scaledSize: new window.google.maps.Size(40, 40),
+      anchor: new window.google.maps.Point(20, 20),
+      zIndex: 1000 // Z-index esplicito per garantire visibilità
     };
   }, []);
 
@@ -36,13 +37,14 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
     
     return {
       url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="8" fill="#EF4444" stroke="white" stroke-width="3"/>
-          <circle cx="12" cy="12" r="3" fill="white"/>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="14" r="10" fill="#EF4444" stroke="white" stroke-width="4"/>
+          <circle cx="14" cy="14" r="4" fill="white"/>
         </svg>
       `),
-      scaledSize: new window.google.maps.Size(24, 24),
-      anchor: new window.google.maps.Point(12, 12)
+      scaledSize: new window.google.maps.Size(28, 28),
+      anchor: new window.google.maps.Point(14, 14),
+      zIndex: 999 // Z-index per utente
     };
   }, []);
 
@@ -72,7 +74,7 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
     return { lat: numLat, lng: numLng };
   };
 
-  // Optimized POI marker management
+  // Optimized POI marker management - MIGLIORATO per debug
   useEffect(() => {
     if (!map || !window.google || !poiMarkerIcon) {
       console.log('🗺️ Markers: Condizioni non soddisfatte:', { 
@@ -84,6 +86,8 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
     }
 
     console.log('🗺️ Aggiornamento markers per', pois.length, 'POI');
+    console.log('🗺️ Marker Debug: Mappa bounds:', map.getBounds()?.toString());
+    console.log('🗺️ Marker Debug: Centro mappa:', map.getCenter()?.toString());
 
     const currentPOIIds = new Set(pois.map(poi => poi.id));
     
@@ -101,6 +105,7 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
 
     let validMarkersCount = 0;
     let invalidMarkersCount = 0;
+    let newMarkersCreated = 0;
 
     // Show/create markers for current POIs with coordinate validation
     pois.forEach(poi => {
@@ -126,7 +131,10 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
         marker = new window.google.maps.Marker({
           position: coordinates,
           title: poi.name,
-          icon: poiMarkerIcon
+          icon: poiMarkerIcon,
+          zIndex: 1000, // Z-index esplicito
+          clickable: true,
+          visible: true
         });
 
         // Add click listener once
@@ -136,23 +144,39 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
         });
 
         markersPoolRef.current.set(poi.id, marker);
+        newMarkersCreated++;
       }
 
       // Show marker on map if not already active
       if (!activeMarkersRef.current.has(poi.id)) {
         console.log('🗺️ Mostrando marker sulla mappa:', poi.name);
         marker.setMap(map);
+        marker.setVisible(true); // Forza visibilità
         activeMarkersRef.current.add(poi.id);
         validMarkersCount++;
       }
     });
 
-    console.log('🗺️ Riepilogo markers:', {
+    console.log('🗺️ RIEPILOGO MARKER COMPLETO:', {
       totaliPOI: pois.length,
       markersValidi: validMarkersCount,
       markersNonValidi: invalidMarkersCount,
-      markersAttivi: activeMarkersRef.current.size
+      markersAttivi: activeMarkersRef.current.size,
+      nuoviMarkerCreati: newMarkersCreated,
+      mappaPresente: !!map,
+      googleAPIPresente: !!window.google.maps,
+      iconPresente: !!poiMarkerIcon
     });
+
+    // TEST: Forza un refresh della mappa dopo aver aggiunto i marker
+    if (validMarkersCount > 0) {
+      setTimeout(() => {
+        console.log('🗺️ Forzando refresh mappa per visibilità marker');
+        // Trigger a small map refresh
+        const currentZoom = map.getZoom();
+        map.setZoom(currentZoom);
+      }, 100);
+    }
 
   }, [map, pois, onPOISelect, poiMarkerIcon]);
 
@@ -167,7 +191,8 @@ export const useOptimizedMapMarkers = ({ map, pois, userLocation, onPOISelect }:
         userMarkerRef.current = new window.google.maps.Marker({
           position: userLocation,
           title: 'La tua posizione',
-          icon: userMarkerIcon
+          icon: userMarkerIcon,
+          zIndex: 999
         });
       } else {
         userMarkerRef.current.setPosition(userLocation);
