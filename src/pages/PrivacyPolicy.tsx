@@ -29,8 +29,9 @@ const PrivacyPolicy = () => {
                 1. Titolare del Trattamento dei Dati
               </h3>
               <div className="text-slate-600 leading-relaxed space-y-2">
-                <p>[Il tuo nome/nome della tua azienda]</p>
-                <p>[Il tuo indirizzo]</p>
+                <p>Miaromagna.it</p>
+                <p>Via Raffaello, 11</p>
+                <p>47838 Riccione (RN)</p>
                 <p>Email di contatto per la privacy: privacy@miaromagna.it</p>
               </div>
             </section>
