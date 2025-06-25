@@ -18,6 +18,7 @@ interface AuthTabsProps {
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSignIn: (e: React.FormEvent) => void;
   onSignUp: (e: React.FormEvent) => void;
+  onGoogleSignIn: () => void;
   showPassword: boolean;
   setShowPassword: (show: boolean) => void;
   isSubmitting: boolean;
@@ -32,6 +33,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
   onInputChange,
   onSignIn,
   onSignUp,
+  onGoogleSignIn,
   showPassword,
   setShowPassword,
   isSubmitting,
@@ -56,6 +58,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
           formData={formData}
           onInputChange={onInputChange}
           onSubmit={onSignIn}
+          onGoogleSignIn={onGoogleSignIn}
           showPassword={showPassword}
           setShowPassword={setShowPassword}
           isSubmitting={isSubmitting}
@@ -67,6 +70,7 @@ export const AuthTabs: React.FC<AuthTabsProps> = ({
           formData={formData}
           onInputChange={onInputChange}
           onSubmit={onSignUp}
+          onGoogleSignIn={onGoogleSignIn}
           showPassword={showPassword}
           setShowPassword={setShowPassword}
           isSubmitting={isSubmitting}

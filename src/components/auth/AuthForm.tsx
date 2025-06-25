@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -55,6 +54,23 @@ export const AuthForm = () => {
       ...prev,
       [e.target.name]: e.target.value
     }));
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (error) {
+        toast.error('Errore durante il login con Google: ' + error.message);
+      }
+    } catch (error) {
+      toast.error('Errore durante il login con Google');
+    }
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -201,6 +217,7 @@ export const AuthForm = () => {
             onInputChange={handleInputChange}
             onSignIn={handleSignIn}
             onSignUp={handleSignUp}
+            onGoogleSignIn={handleGoogleSignIn}
             showPassword={showPassword}
             setShowPassword={setShowPassword}
             isSubmitting={isSubmitting}
