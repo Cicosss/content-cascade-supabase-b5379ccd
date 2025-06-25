@@ -26,6 +26,7 @@ import TerritoryPromoter from '@/pages/TerritoryPromoter';
 import RespiroDelMare from '@/pages/RespiroDelMare';
 import OggiInRomagna from '@/pages/OggiInRomagna';
 import POIDetail from "@/pages/POIDetail";
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ function App() {
             <Route path="/webcams" element={<Webcams />} />
             <Route path="/partner" element={<Partner />} />
             <Route path="/chi-siamo" element={<ChiSiamo />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<AdminModerationPage />} />
             <Route path="/gusto-sapori" element={<GustoSapori />} />

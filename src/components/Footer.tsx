@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
@@ -121,9 +122,18 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright con Privacy Policy */}
         <div className="text-center text-slate-500 text-xs mt-6 pt-4 border-t border-slate-700">
-          © 2024 Mia Romagna. Tutti i diritti riservati.
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+            <span>© 2024 Mia Romagna. Tutti i diritti riservati.</span>
+            <span className="hidden sm:inline">•</span>
+            <Link 
+              to="/privacy-policy" 
+              className="text-slate-400 hover:text-white transition-colors underline"
+            >
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
