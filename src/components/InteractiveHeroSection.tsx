@@ -121,20 +121,8 @@ const InteractiveHeroSection = () => {
               </p>
             </div>
 
-            {/* CTA Button */}
-            <div className="flex justify-center mb-12">
-              <Button 
-                variant="outline" 
-                onClick={() => navigate('/experiences')} 
-                className="border-2 border-brand-blue-400/60 bg-brand-blue-600/20 text-white hover:bg-brand-blue-600/30 hover:border-brand-blue-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md drop-shadow-lg"
-              >
-                <Heart className="h-6 w-6 mr-3 text-brand-blue-300" />
-                Scopri le Esperienze
-              </Button>
-            </div>
-
             {/* Key features */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-base">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-base mb-12">
               <div className="flex items-center justify-center space-x-3 text-slate-200 bg-brand-blue-900/30 backdrop-blur-md rounded-2xl p-4 border border-brand-yellow-400/20 shadow-xl">
                 <div className="w-3 h-3 bg-brand-yellow-400 rounded-full animate-pulse shadow-lg"></div>
                 <span className="typography-body-small font-medium drop-shadow-lg text-white">Supporto 6 lingue complete</span>
