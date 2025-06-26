@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
@@ -122,12 +121,8 @@ const InteractiveHeroSection = () => {
               </p>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-              <Button className="border-2 border-brand-yellow-400/60 bg-brand-yellow-400/20 text-white hover:bg-brand-yellow-400/30 hover:border-brand-yellow-400/80 px-12 py-7 text-xl font-bold rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 backdrop-blur-md drop-shadow-lg animate-button-glow">
-                <Download className="h-6 w-6 mr-3 text-brand-yellow-300" />
-                Scarica l'App Gratis
-              </Button>
+            {/* CTA Button */}
+            <div className="flex justify-center mb-12">
               <Button 
                 variant="outline" 
                 onClick={() => navigate('/experiences')} 
