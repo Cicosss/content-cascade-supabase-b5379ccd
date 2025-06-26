@@ -200,37 +200,4 @@
       rgba(255, 255, 255, 0.6) 100%
     );
   }
-
-  /* Transizione curva Hero-to-Content - PORTATA IN PRIMO PIANO */
-  .hero-curved-transition::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: -75px;
-    left: -25%;
-    width: 150%;
-    height: 150px;
-    background-color: white;
-    border-radius: 50%;
-    z-index: 9999;
-  }
-
-  /* Responsive adjustments per il cuscino curvo */
-  @media (max-width: 768px) {
-    .hero-curved-transition::before {
-      height: 120px;
-      top: -60px;
-      width: 140%;
-      left: -20%;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .hero-curved-transition::before {
-      height: 100px;
-      top: -50px;
-      width: 130%;
-      left: -15%;
-    }
-  }
 }
