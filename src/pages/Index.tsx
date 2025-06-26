@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,6 @@ import AppFeaturesSection from '@/components/AppFeaturesSection';
 import TodayInRomagnaTeaser from '@/components/TodayInRomagnaTeaser';
 import PassportTeaser from '@/components/PassportTeaser';
 import ServicesSection from '@/components/ServicesSection';
-import CurvedDivider from '@/components/CurvedDivider';
 
 // Import the new homepage components
 import { useHomepageData } from '@/components/homepage/MockDataProvider';
@@ -86,13 +86,6 @@ const Index = () => {
           {/* Sezione Family */}
           <FamilySection familyExperiences={familyExperiences} />
         </div>
-
-        {/* Elegant curved divider before final CTA section */}
-        <CurvedDivider 
-          variant="gentle-wave" 
-          color="brand-blue" 
-          className="mt-20 mb-4" 
-        />
 
         {/* Services Section mantiene solo le funzionalità base */}
         <div className="mt-16">
