@@ -1,14 +1,15 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Heart } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
+
 const HeroSection = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
+
   const getUserGreeting = () => {
     if (user?.user_metadata?.first_name) {
       return `Benvenuto ${user.user_metadata.first_name}!`;
@@ -18,9 +19,17 @@ const HeroSection = () => {
     }
     return 'Benvenuto in Romagna!';
   };
-  return <div className="relative w-full h-screen overflow-hidden">
+
+  return (
+    <div className="relative w-full h-screen overflow-hidden hero-curved-transition">
       {/* Video Background */}
-      <iframe src="https://www.youtube.com/embed/0ZhNqBN9ZfQ?autoplay=1&loop=1&mute=1&playsinline=1&controls=0&showinfo=0&autohide=1&modestbranding=1&playlist=0ZhNqBN9ZfQ" className="absolute top-1/2 left-1/2 w-[177.77vh] h-screen transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[1]" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen />
+      <iframe 
+        src="https://www.youtube.com/embed/0ZhNqBN9ZfQ?autoplay=1&loop=1&mute=1&playsinline=1&controls=0&showinfo=0&autohide=1&modestbranding=1&playlist=0ZhNqBN9ZfQ" 
+        className="absolute top-1/2 left-1/2 w-[177.77vh] h-screen transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[1]" 
+        frameBorder="0" 
+        allow="autoplay; encrypted-media" 
+        allowFullScreen 
+      />
 
       {/* Content Overlay */}
       <div className="relative z-[2] text-white text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4">
@@ -75,6 +84,8 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default HeroSection;

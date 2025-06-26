@@ -74,7 +74,7 @@ const AppFeaturesSection = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50 overflow-hidden hero-curved-transition">
+    <section className="relative py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50 overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header Section migliorata */}
         <div className="text-center mb-16">
