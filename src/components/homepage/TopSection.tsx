@@ -2,7 +2,6 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import WeatherWidget from '@/components/WeatherWidget';
-import WeatherTeaser from '@/components/WeatherTeaser';
 import GuestCard from '@/components/GuestCard';
 
 const TopSection = () => {
@@ -10,8 +9,8 @@ const TopSection = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-      {/* Mostra WeatherWidget per utenti loggati, WeatherTeaser per non loggati */}
-      {!loading && user ? <WeatherWidget /> : <WeatherTeaser />}
+      {/* Mostra WeatherWidget per utenti loggati, niente per non loggati */}
+      {!loading && user && <WeatherWidget />}
       <GuestCard />
     </div>
   );
