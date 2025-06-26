@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import HeroSection from '@/components/HeroSection';
+import InteractiveHeroSection from '@/components/InteractiveHeroSection';
 import ValuePropositionSection from '@/components/ValuePropositionSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
 import TodayInRomagnaTeaser from '@/components/TodayInRomagnaTeaser';
@@ -49,7 +49,7 @@ const Index = () => {
 
   return (
     <Layout showSidebar={true}>
-      <HeroSection />
+      <InteractiveHeroSection />
       <ValuePropositionSection />
       <AppFeaturesSection />
       
