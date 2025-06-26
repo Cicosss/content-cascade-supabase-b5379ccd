@@ -74,7 +74,7 @@ const AppFeaturesSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50">
+    <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50 content-after-hero">
       <div className="container mx-auto px-4">
         {/* Header Section migliorata */}
         <div className="text-center mb-16">
@@ -128,7 +128,7 @@ const AppFeaturesSection = () => {
                 </div>
               </div>
               <h3 className="typography-h2 mb-4">Disponibile su Android & iOS</h3>
-              <p className="text-slate-200 mb-8 typography-body">
+              <pClassName="text-slate-200 mb-8 typography-body">
                 Unisciti a migliaia di esploratori che hanno già scoperto i segreti della Romagna
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

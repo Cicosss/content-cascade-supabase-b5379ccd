@@ -86,6 +86,46 @@
 }
 
 @layer utilities {
+  /* Hero Section Curved Bottom Design */
+  .hero-curved-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 80% 90%, 60% 95%, 40% 92%, 20% 88%, 0 82%);
+  }
+
+  /* Responsive curved bottom for different screen sizes */
+  @media (max-width: 768px) {
+    .hero-curved-bottom {
+      clip-path: polygon(0 0, 100% 0, 100% 88%, 75% 92%, 50% 95%, 25% 90%, 0 85%);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-curved-bottom {
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 70% 93%, 50% 96%, 30% 92%, 0 87%);
+    }
+  }
+
+  /* Content section overlap for seamless transition */
+  .content-after-hero {
+    margin-top: -120px;
+    position: relative;
+    z-index: 10;
+    padding-top: 140px;
+  }
+
+  @media (max-width: 768px) {
+    .content-after-hero {
+      margin-top: -80px;
+      padding-top: 100px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .content-after-hero {
+      margin-top: -60px;
+      padding-top: 80px;
+    }
+  }
+
   /* Animazioni essenziali e organiche */
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
