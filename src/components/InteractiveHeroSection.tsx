@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
@@ -140,9 +141,9 @@ const InteractiveHeroSection = () => {
         </div>
 
         {/* Interactive Navigation Bar - Bottom Center */}
-        <div className="pb-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex justify-center space-x-8 lg:space-x-12">
+        <div className="pb-8 px-2">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
               {heroCategories.map((category) => (
                 <div
                   key={category.id}
@@ -153,15 +154,15 @@ const InteractiveHeroSection = () => {
                   onClick={() => handleCategoryClick(category.route)}
                 >
                   <div className="text-center">
-                    <div className={`mb-2 px-4 py-2 rounded-lg transition-all duration-300 ${
+                    <div className={`mb-2 px-2 py-2 lg:px-3 lg:py-2 rounded-lg transition-all duration-300 ${
                       activeBackground === category.id 
                         ? 'bg-brand-yellow-400/30 border-2 border-brand-yellow-400/60' 
                         : 'bg-white/10 border-2 border-white/20 group-hover:bg-white/20 group-hover:border-white/40'
                     }`}>
-                      <h2 className="typography-h4 text-white font-bold mb-1 drop-shadow-lg">
+                      <h2 className="text-sm lg:text-base xl:text-lg text-white font-bold mb-1 drop-shadow-lg leading-tight">
                         {category.title}
                       </h2>
-                      <p className="typography-body-small text-slate-200 font-medium drop-shadow-lg">
+                      <p className="text-xs lg:text-sm text-slate-200 font-medium drop-shadow-lg leading-tight">
                         {category.subtitle}
                       </p>
                     </div>
