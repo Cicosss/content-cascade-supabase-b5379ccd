@@ -1,8 +1,10 @@
+
 import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import HeroSection from '@/components/HeroSection';
+import ValuePropositionSection from '@/components/ValuePropositionSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
 import TodayInRomagnaTeaser from '@/components/TodayInRomagnaTeaser';
 import PassportTeaser from '@/components/PassportTeaser';
@@ -48,6 +50,7 @@ const Index = () => {
   return (
     <Layout showSidebar={true}>
       <HeroSection />
+      <ValuePropositionSection />
       <AppFeaturesSection />
       
       <div className="container mx-auto px-4 py-12">
