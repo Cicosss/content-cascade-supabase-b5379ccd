@@ -32,7 +32,7 @@ export const heroCategories: HeroCategory[] = [
   },
   {
     id: 'divertimento-famiglia',
-    title: 'DIVERTIMENTO & FAMIGLIA',
+    title: 'FAMIGLIA',
     subtitle: 'parchi, spiagge, attività family',
     backgroundSrc: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2000&auto=format&fit=crop',
     route: '/divertimento-famiglia'
