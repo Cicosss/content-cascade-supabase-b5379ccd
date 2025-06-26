@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,13 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+				'lora': ['Lora', 'serif'],
+				'inter': ['Inter', 'sans-serif'],
+				'sans': ['Inter', 'system-ui', 'sans-serif'],
+				'serif': ['Playfair Display', 'serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -62,6 +68,34 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Palette Istituzionale Mia Romagna
+				brand: {
+					blue: {
+						50: '#f0f7ff',
+						100: '#e0efff',
+						200: '#bae0ff',
+						300: '#7cc8ff',
+						400: '#36abff',
+						500: '#0c8cef',
+						600: '#0066cc',
+						700: '#0052a3',
+						800: '#065296',
+						900: '#0F172A', // Blu scuro principale
+						950: '#0a0f1a'
+					},
+					yellow: {
+						50: '#fffbeb',
+						100: '#fef3c7',
+						200: '#fde68a',
+						300: '#fcd34d',
+						400: '#fbbf24', // Giallo/Arancione principale
+						500: '#f59e0b',
+						600: '#d97706',
+						700: '#b45309',
+						800: '#92400e',
+						900: '#78350f'
+					}
 				}
 			},
 			borderRadius: {
