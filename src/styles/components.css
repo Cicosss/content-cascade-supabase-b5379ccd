@@ -1,0 +1,27 @@
+
+@layer utilities {
+  /* Sfondo marino animato */
+  .sea-gradient-background {
+    background: linear-gradient(-45deg, #BDE0FE, #A2D2FF, #8ECAE6, #74C0FC);
+    background-size: 400% 400%;
+  }
+
+  /* Tease overlay effect */
+  .weather-tease-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.6) 100%
+    );
+  }
+
+  /* Brand Gradients */
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #0F172A 0%, #fbbf24 50%, #0F172A 100%);
+  }
+  
+  .bg-brand-gradient-soft {
+    background: linear-gradient(135deg, #f0f7ff 0%, #fef3c7 50%, #e0efff 100%);
+  }
+}
