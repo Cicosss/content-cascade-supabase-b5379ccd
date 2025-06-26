@@ -201,7 +201,7 @@
     );
   }
 
-  /* Transizione curva Hero-to-Content */
+  /* Transizione curva Hero-to-Content - PORTATA IN PRIMO PIANO */
   .hero-curved-transition::before {
     content: '';
     display: block;
@@ -212,7 +212,7 @@
     height: 150px;
     background-color: white;
     border-radius: 50%;
-    z-index: 1;
+    z-index: 100;
   }
 
   /* Responsive adjustments per il cuscino curvo */
