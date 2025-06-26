@@ -6,8 +6,6 @@ import Layout from '@/components/Layout';
 import InteractiveHeroSection from '@/components/InteractiveHeroSection';
 import ValuePropositionSection from '@/components/ValuePropositionSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
-import TodayInRomagnaTeaser from '@/components/TodayInRomagnaTeaser';
-import PassportTeaser from '@/components/PassportTeaser';
 import ServicesSection from '@/components/ServicesSection';
 
 // Import the new homepage components
@@ -62,19 +60,13 @@ const Index = () => {
           {/* Tradizione Culinaria */}
           <RestaurantsSection restaurants={restaurants} />
 
-          {/* Widget Teaser "Oggi in Romagna" */}
-          <TodayInRomagnaTeaser />
-
-          {/* Widget Teaser "Il Mio Passaporto" */}
-          <PassportTeaser />
-
           {/* Servizi Vicini */}
           <NearbyServicesSection services={services} />
 
           {/* Esperienze del Territorio */}
           <ExperiencesSection territoryExperiences={territoryExperiences} />
 
-          {/* Bollettino del Mare - sostituisce il vecchio SafetyBanner */}
+          {/* Bollettino del Mare */}
           <SeaBulletinWidget />
 
           {/* Eventi Speciali */}
