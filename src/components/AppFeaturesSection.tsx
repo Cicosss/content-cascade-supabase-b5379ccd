@@ -128,7 +128,7 @@ const AppFeaturesSection = () => {
                 </div>
               </div>
               <h3 className="typography-h2 mb-4">Disponibile su Android & iOS</h3>
-              <pClassName="text-slate-200 mb-8 typography-body">
+              <p className="text-slate-200 mb-8 typography-body">
                 Unisciti a migliaia di esploratori che hanno già scoperto i segreti della Romagna
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
