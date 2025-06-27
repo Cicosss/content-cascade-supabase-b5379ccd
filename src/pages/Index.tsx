@@ -23,16 +23,8 @@ const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   
-  // Get all homepage data from the centralized provider (now with real Supabase data)
-  const { 
-    events, 
-    restaurants, 
-    territoryExperiences, 
-    familyExperiences, 
-    services,
-    isLoading,
-    hasRealData
-  } = useHomepageData();
+  // Get all homepage data from the centralized provider
+  const { events, restaurants, territoryExperiences, familyExperiences, services } = useHomepageData();
 
   useEffect(() => {
     if (!loading && user) {
@@ -63,44 +55,28 @@ const Index = () => {
         {/* Top Section: Weather and Guest Card */}
         <TopSection />
 
-        {/* Main Content Sections with real data from Supabase */}
+        {/* Main Content Sections */}
         <div className="space-y-16">
-          {/* Tradizione Culinaria - Real data from Supabase */}
-          <RestaurantsSection 
-            restaurants={restaurants} 
-            isLoading={isLoading}
-            hasRealData={hasRealData.restaurants}
-          />
+          {/* Tradizione Culinaria */}
+          <RestaurantsSection restaurants={restaurants} />
 
           {/* Servizi Vicini */}
           <NearbyServicesSection services={services} />
 
-          {/* Esperienze del Territorio - Real data from Supabase */}
-          <ExperiencesSection 
-            territoryExperiences={territoryExperiences} 
-            isLoading={isLoading}
-            hasRealData={hasRealData.experiences}
-          />
+          {/* Esperienze del Territorio */}
+          <ExperiencesSection territoryExperiences={territoryExperiences} />
 
           {/* Bollettino del Mare */}
           <SeaBulletinWidget />
 
-          {/* Eventi Speciali - Real data from Supabase */}
-          <EventsSection 
-            events={events} 
-            isLoading={isLoading}
-            hasRealData={hasRealData.events}
-          />
+          {/* Eventi Speciali */}
+          <EventsSection events={events} />
 
           {/* Hai bisogno di aiuto? */}
           <HelpBanner />
 
-          {/* Sezione Family - Real data from Supabase */}
-          <FamilySection 
-            familyExperiences={familyExperiences} 
-            isLoading={isLoading}
-            hasRealData={hasRealData.experiences}
-          />
+          {/* Sezione Family */}
+          <FamilySection familyExperiences={familyExperiences} />
         </div>
 
         {/* Services Section mantiene solo le funzionalità base */}
