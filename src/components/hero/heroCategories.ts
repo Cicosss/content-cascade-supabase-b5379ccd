@@ -34,7 +34,7 @@ export const heroCategories: HeroCategory[] = [
     id: 'divertimento-famiglia',
     title: 'FAMIGLIA',
     subtitle: 'parchi, spiagge, attività family',
-    backgroundSrc: '/lovable-uploads/d2ce14d5-6566-4315-89b8-f8e1b0f47d89.png',
+    backgroundSrc: '/lovable-uploads/c4646084-7d55-48b0-9dbd-d735872e1b12.png',
     route: '/divertimento-famiglia'
   }
 ];
