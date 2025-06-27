@@ -9,6 +9,7 @@ import { Progress } from '@/components/ui/progress';
 import { useUserAchievements } from '@/hooks/useUserAchievements';
 import { useUserVisits } from '@/hooks/useUserVisits';
 import TravelDiary from '@/components/passport/TravelDiary';
+import ExplorerMap from '@/components/passport/ExplorerMap';
 import { Trophy, MapPin, Utensils, Camera, Heart, Star } from 'lucide-react';
 
 const MyPassport = () => {
@@ -73,17 +74,11 @@ const MyPassport = () => {
               <p className="text-slate-600">Raccogli badge esplorando la Romagna</p>
             </div>
           </div>
-          
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="font-semibold text-slate-700">Progresso Generale</span>
-              <Badge variant="secondary">{completedCount}/{achievements.length} Badge</Badge>
-            </div>
-            <Progress 
-              value={(completedCount / achievements.length) * 100} 
-              className="h-3"
-            />
-          </div>
+        </div>
+
+        {/* La Mappa dell'Esploratore - nuovo widget principale */}
+        <div className="mb-8">
+          <ExplorerMap />
         </div>
 
         {/* Badge Grid */}

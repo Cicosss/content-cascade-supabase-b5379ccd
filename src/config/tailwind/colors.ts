@@ -70,5 +70,19 @@ export const colors = {
       800: '#92400e',
       900: '#78350f'
     }
+  },
+  // Nuova palette oro per La Mappa dell'Esploratore
+  gold: {
+    50: '#fefce8',
+    100: '#fef9c3',
+    200: '#fef08a',
+    300: '#fde047',
+    400: '#CDA434', // Oro/bronzo metallico principale
+    500: '#eab308',
+    600: '#ca8a04',
+    700: '#a16207',
+    800: '#854d0e',
+    900: '#713f12',
+    950: '#422006'
   }
 };
