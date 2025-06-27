@@ -10,6 +10,11 @@ interface HeroNavigationProps {
 }
 
 const HeroNavigation = ({ categories, activeBackground, onCategoryHover, onCategoryClick }: HeroNavigationProps) => {
+  const handleCategoryHover = (categoryId: string) => {
+    console.log(`🖱️ Hover on category: ${categoryId}`);
+    onCategoryHover(categoryId);
+  };
+
   return (
     <div className="pb-8 px-2">
       <div className="max-w-5xl mx-auto">
@@ -20,7 +25,7 @@ const HeroNavigation = ({ categories, activeBackground, onCategoryHover, onCateg
               className={`group cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                 activeBackground === category.id ? 'scale-105' : ''
               }`}
-              onMouseEnter={() => onCategoryHover(category.id)}
+              onMouseEnter={() => handleCategoryHover(category.id)}
               onClick={() => onCategoryClick(category.route)}
             >
               <div className="text-center">

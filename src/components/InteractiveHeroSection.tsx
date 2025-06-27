@@ -7,21 +7,27 @@ import HeroBrandSection from './hero/HeroBrandSection';
 import UserGreeting from './hero/UserGreeting';
 import HeroFeatures from './hero/HeroFeatures';
 import HeroNavigation from './hero/HeroNavigation';
+import HeroImagePreloader from './hero/HeroImagePreloader';
 
 const InteractiveHeroSection = () => {
   const navigate = useNavigate();
   const [activeBackground, setActiveBackground] = useState('gusto-sapori');
 
   const handleCategoryHover = (categoryId: string) => {
+    console.log(`🎯 Setting active background to: ${categoryId}`);
     setActiveBackground(categoryId);
   };
 
   const handleCategoryClick = (route: string) => {
+    console.log(`🔗 Navigating to: ${route}`);
     navigate(route);
   };
   
   return (
     <div className="relative w-full h-screen overflow-hidden">
+      {/* Preload all hero images */}
+      <HeroImagePreloader categories={heroCategories} />
+
       {/* Dynamic Background Layers */}
       <HeroBackground categories={heroCategories} activeBackground={activeBackground} />
 
