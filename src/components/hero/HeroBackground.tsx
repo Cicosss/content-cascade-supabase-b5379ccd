@@ -12,13 +12,29 @@ const HeroBackground = ({ categories, activeBackground }: HeroBackgroundProps) =
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   const handleImageLoad = (categoryId: string) => {
-    console.log(`✅ Background image loaded: ${categoryId}`);
+    console.log(`✅ Background image loaded successfully: ${categoryId}`);
     setLoadedImages(prev => new Set([...prev, categoryId]));
   };
 
   const handleImageError = (categoryId: string, src: string) => {
     console.error(`❌ Background image failed to load: ${categoryId}`, src);
     setFailedImages(prev => new Set([...prev, categoryId]));
+  };
+
+  // Fallback gradient based on category
+  const getFallbackGradient = (categoryId: string) => {
+    switch (categoryId) {
+      case 'gusto-sapori':
+        return 'bg-gradient-to-br from-orange-600 via-red-600 to-pink-600';
+      case 'cultura-territorio':
+        return 'bg-gradient-to-br from-amber-600 via-yellow-600 to-orange-600';
+      case 'eventi-spettacoli':
+        return 'bg-gradient-to-br from-purple-600 via-pink-600 to-red-600';
+      case 'divertimento-famiglia':
+        return 'bg-gradient-to-br from-green-600 via-blue-600 to-purple-600';
+      default:
+        return 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600';
+    }
   };
 
   return (
@@ -55,8 +71,8 @@ const HeroBackground = ({ categories, activeBackground }: HeroBackgroundProps) =
                 onError={() => handleImageError(category.id, category.backgroundSrc)}
               />
             ) : (
-              // Fallback gradient per immagini che non si caricano
-              <div className="w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600" />
+              // Fallback gradient specifico per categoria
+              <div className={`w-full h-full ${getFallbackGradient(category.id)}`} />
             )}
           </div>
         );
