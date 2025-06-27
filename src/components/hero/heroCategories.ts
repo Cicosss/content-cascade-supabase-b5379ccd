@@ -20,7 +20,7 @@ export const heroCategories: HeroCategory[] = [
     id: 'cultura-territorio',
     title: 'CULTURA & TERRITORIO',
     subtitle: 'borghi, musei, tradizioni locali',
-    backgroundSrc: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6b?q=80&w=2000&auto=format&fit=crop',
+    backgroundSrc: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2000&auto=format&fit=crop',
     route: '/cultura-territorio'
   },
   {
@@ -34,7 +34,7 @@ export const heroCategories: HeroCategory[] = [
     id: 'divertimento-famiglia',
     title: 'FAMIGLIA',
     subtitle: 'parchi, spiagge, attività family',
-    backgroundSrc: '/lovable-uploads/c4646084-7d55-48b0-9dbd-d735872e1b12.png',
+    backgroundSrc: '/lovable-uploads/2f5ebae0-8ba7-4af2-9c1f-c0ff07377707.png',
     route: '/divertimento-famiglia'
   }
 ];
