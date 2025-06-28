@@ -5,7 +5,7 @@ import { SidebarHeader } from './sidebar/SidebarHeader';
 import { SidebarMenuItems } from './sidebar/SidebarMenuItems';
 import { SidebarFooter } from './sidebar/SidebarFooter';
 
-const AppSidebar = () => {
+const AppSidebar = React.memo(() => {
   return (
     <Sidebar className="border-r border-slate-200 bg-[#F8F9FA] z-sidebar-custom fixed" collapsible="icon">
       <SidebarHeader />
@@ -17,6 +17,8 @@ const AppSidebar = () => {
       <SidebarFooter />
     </Sidebar>
   );
-};
+});
+
+AppSidebar.displayName = 'AppSidebar';
 
 export default AppSidebar;
