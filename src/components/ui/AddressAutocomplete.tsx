@@ -2,7 +2,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useGoogleMapsInit } from '@/hooks/useGoogleMapsInit';
+import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import AddressFeedback from './AddressFeedback';
 
@@ -39,7 +39,7 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   className = "",
   required = false
 }) => {
-  const { isLoaded } = useGoogleMapsInit();
+  const { isLoaded } = useGoogleMapsLoader();
   
   const { inputRef, isLoading } = useAddressAutocomplete({ 
     isApiLoaded: isLoaded, 
