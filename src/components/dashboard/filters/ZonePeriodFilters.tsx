@@ -1,13 +1,14 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarIcon, X } from "lucide-react";
 import { useCalendarLogic } from "@/hooks/useCalendarLogic";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import CustomCalendar from "./CustomCalendar";
+import FilterSection from '@/components/filters/FilterSection';
+import { ZONES_CONFIG } from '@/config/filtersConfig';
 
 interface ZonePeriodFiltersProps {
   zone: string;
@@ -16,21 +17,12 @@ interface ZonePeriodFiltersProps {
   onPeriodChange: (period: DateRange | undefined) => void;
 }
 
-const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
+const ZonePeriodFilters = React.memo<ZonePeriodFiltersProps>(({
   zone,
   period,
   onZoneChange,
   onPeriodChange,
 }) => {
-  const zoneOptions = [
-    "Tutta la Romagna",
-    "Centro",
-    "Nord",
-    "Sud",
-    "Ovest",
-    "Est",
-  ];
-
   const {
     selectedDateRange,
     isOpen,
@@ -57,7 +49,7 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
     return { leftMonth: m, leftYear: y };
   });
 
-  function goToPreviousMonth() {
+  const goToPreviousMonth = React.useCallback(() => {
     setCalendarBase((prev) => {
       let month = prev.leftMonth - 1;
       let year = prev.leftYear;
@@ -67,8 +59,9 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
       }
       return { leftMonth: month, leftYear: year };
     });
-  }
-  function goToNextMonth() {
+  }, []);
+
+  const goToNextMonth = React.useCallback(() => {
     setCalendarBase((prev) => {
       let month = prev.leftMonth + 1;
       let year = prev.leftYear;
@@ -78,9 +71,9 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
       }
       return { leftMonth: month, leftYear: year };
     });
-  }
+  }, []);
 
-  function onDayClick(date: Date) {
+  const onDayClick = React.useCallback((date: Date) => {
     if (
       !selectedDateRange?.from ||
       (selectedDateRange?.from && selectedDateRange?.to)
@@ -95,38 +88,34 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
         handleDateRangeSelect({ from: date, to: undefined });
       }
     }
-  }
+  }, [selectedDateRange, handleDateRangeSelect]);
+
+  const selectedZoneLabel = ZONES_CONFIG.find(z => z.value === zone)?.label || 'Seleziona zona';
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Zona */}
-      <div className="space-y-3">
-        <Label className="text-lg font-semibold text-gray-800">Zona</Label>
+      <FilterSection title="Zona" icon="📍" description="Seleziona l'area della Romagna">
         <select
           value={zone}
           onChange={(e) => onZoneChange(e.target.value)}
-          className="border-2 rounded-lg h-12 bg-white px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border-2 rounded-lg h-12 bg-white px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          aria-label="Seleziona zona"
         >
-          <option value="" disabled>
-            Seleziona zona
-          </option>
-          {zoneOptions.map((zoneOption) => (
-            <option
-              key={zoneOption}
-              value={zoneOption.toLowerCase().replace(" ", "")}
-              className="font-normal"
-            >
-              {zoneOption}
+          {ZONES_CONFIG.map((zoneOption) => (
+            <option key={zoneOption.value} value={zoneOption.value}>
+              {zoneOption.label}
             </option>
           ))}
         </select>
-      </div>
+      </FilterSection>
 
       {/* Periodo Vacanza */}
-      <div className="space-y-3">
-        <Label className="text-lg font-semibold text-gray-800">
-          Periodo Vacanza
-        </Label>
+      <FilterSection 
+        title="Periodo Vacanza" 
+        icon="📅" 
+        description="Seleziona le date del tuo soggiorno"
+      >
         <div className="flex gap-2">
           <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
@@ -164,14 +153,17 @@ const ZonePeriodFilters: React.FC<ZonePeriodFiltersProps> = ({
               size="icon"
               onClick={clearDateRange}
               className="h-12 w-12 border-2 hover:bg-red-50 hover:border-red-300 transition-colors"
+              aria-label="Cancella periodo selezionato"
             >
               <X className="h-4 w-4 text-red-500" />
             </Button>
           )}
         </div>
-      </div>
+      </FilterSection>
     </div>
   );
-};
+});
+
+ZonePeriodFilters.displayName = 'ZonePeriodFilters';
 
 export default ZonePeriodFilters;
