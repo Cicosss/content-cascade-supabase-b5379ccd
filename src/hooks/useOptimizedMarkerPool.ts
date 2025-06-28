@@ -2,7 +2,6 @@
 import { POI } from '@/types/poi';
 import { useMarkerIcons } from './useMarkerIcons';
 import { usePOIValidation } from './usePOIValidation';
-import { useInfoWindow } from './useInfoWindow';
 import { useMarkerPool } from './useMarkerPool';
 import { useUserLocationMarker } from './useUserLocationMarker';
 
@@ -25,26 +24,12 @@ export const useOptimizedMarkerPool = ({
   // Get validated POIs
   const { validPOIs } = usePOIValidation(pois);
   
-  // Setup InfoWindow management
-  const { showInfoWindow, setupGlobalHandlers, closeInfoWindow } = useInfoWindow({
-    map,
-    onPOISelect
-  });
-  
-  // Handle marker click
-  const handleMarkerClick = (poi: POI & { coordinates: { lat: number; lng: number } }, marker: google.maps.Marker) => {
-    showInfoWindow(poi, marker);
-  };
-  
-  // Setup global handlers when validPOIs change
-  setupGlobalHandlers(validPOIs);
-  
-  // Manage marker pool
+  // Manage marker pool - directly pass onPOISelect
   const { clearMarkers, markerCount } = useMarkerPool({
     map,
     validPOIs,
     poiIcon,
-    onMarkerClick: handleMarkerClick
+    onPOISelect: (poi) => onPOISelect(poi)
   });
   
   // Manage user location marker
@@ -57,7 +42,6 @@ export const useOptimizedMarkerPool = ({
   const clearAllMarkers = () => {
     clearMarkers();
     clearUserMarker();
-    closeInfoWindow();
   };
 
   return { 

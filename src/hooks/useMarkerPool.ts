@@ -6,10 +6,10 @@ interface UseMarkerPoolProps {
   map: google.maps.Map | null;
   validPOIs: (POI & { coordinates: { lat: number; lng: number } })[];
   poiIcon: google.maps.Icon | null;
-  onMarkerClick: (poi: POI & { coordinates: { lat: number; lng: number } }, marker: google.maps.Marker) => void;
+  onPOISelect: (poi: POI & { coordinates: { lat: number; lng: number } }) => void;
 }
 
-export const useMarkerPool = ({ map, validPOIs, poiIcon, onMarkerClick }: UseMarkerPoolProps) => {
+export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarkerPoolProps) => {
   const markerPoolRef = useRef<Map<string, google.maps.Marker>>(new Map());
 
   // Manage POI markers with efficient pooling
@@ -38,9 +38,9 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onMarkerClick }: UseMar
           map: null // Don't add to map yet
         });
 
-        // Add click listener
+        // Add click listener - directly call onPOISelect
         marker.addListener('click', () => {
-          onMarkerClick(poi, marker);
+          onPOISelect(poi);
         });
 
         markerPoolRef.current.set(poi.id, marker);
@@ -51,7 +51,7 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onMarkerClick }: UseMar
       marker.setVisible(true);
     });
 
-  }, [map, validPOIs, poiIcon, onMarkerClick]);
+  }, [map, validPOIs, poiIcon, onPOISelect]);
 
   const clearMarkers = () => {
     markerPoolRef.current.forEach(marker => marker.setMap(null));
