@@ -97,20 +97,22 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
           activeCount={advancedFiltersCount}
         />
 
-        {/* Filtri avanzati con animazione */}
-        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        {/* Filtri avanzati con animazione fluida */}
+        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
           showAdvanced 
-            ? 'max-h-96 opacity-100' 
+            ? 'max-h-[600px] opacity-100' 
             : 'max-h-0 opacity-0'
         }`}>
-          <AdvancedFilters
-            budgets={filters.budgets || []}
-            timeSlots={filters.timeSlots || []}
-            specialPreferences={filters.specialPreferences || []}
-            onBudgetsChange={(budgets) => updateFilter('budgets', budgets)}
-            onTimeSlotsChange={(timeSlots) => updateFilter('timeSlots', timeSlots)}
-            onSpecialPreferencesChange={(preferences) => updateFilter('specialPreferences', preferences)}
-          />
+          {showAdvanced && (
+            <AdvancedFilters
+              budgets={filters.budgets || []}
+              timeSlots={filters.timeSlots || []}
+              specialPreferences={filters.specialPreferences || []}
+              onBudgetsChange={(budgets) => updateFilter('budgets', budgets)}
+              onTimeSlotsChange={(timeSlots) => updateFilter('timeSlots', timeSlots)}
+              onSpecialPreferencesChange={(preferences) => updateFilter('specialPreferences', preferences)}
+            />
+          )}
         </div>
       </div>
     </Card>
