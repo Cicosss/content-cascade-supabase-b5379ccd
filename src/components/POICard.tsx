@@ -2,12 +2,11 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, Euro, Calendar, Clock } from 'lucide-react';
+import { Star, Euro } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
 import { Skeleton } from '@/components/ui/skeleton';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
-import { formatDate, formatTime } from '@/utils/dateUtils';
 
 interface POICardProps {
   id: string;
@@ -17,9 +16,6 @@ interface POICardProps {
   images?: string[];
   avg_rating?: number;
   price_info?: string;
-  start_datetime?: string;
-  end_datetime?: string;
-  poi_type?: string;
   isLoading?: boolean;
 }
 
@@ -31,9 +27,6 @@ const POICard: React.FC<POICardProps> = ({
   images,
   avg_rating,
   price_info,
-  start_datetime,
-  end_datetime,
-  poi_type,
   isLoading = false
 }) => {
   const navigate = useNavigate();
@@ -56,23 +49,6 @@ const POICard: React.FC<POICardProps> = ({
     if (!rating || rating === 0) return null;
     return rating.toFixed(1);
   };
-
-  const formatEventDate = (startDate?: string, endDate?: string) => {
-    if (!startDate) return null;
-    
-    const start = new Date(startDate);
-    const end = endDate ? new Date(endDate) : null;
-    
-    // Evento di un giorno
-    if (!end || formatDate(startDate) === formatDate(endDate)) {
-      return `${formatDate(startDate)} alle ${formatTime(startDate)}`;
-    }
-    
-    // Evento multi-giorno
-    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
-  };
-
-  const isTemporaryEvent = poi_type === 'event' || poi_type === 'experience';
 
   // Skeleton loader component
   if (isLoading) {
@@ -146,14 +122,6 @@ const POICard: React.FC<POICardProps> = ({
         <h3 className="font-semibold text-lg mb-2 line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors">
           {name}
         </h3>
-        
-        {/* Data Evento per POI Temporanei */}
-        {isTemporaryEvent && start_datetime && (
-          <div className="flex items-center text-sm text-blue-600 font-medium mb-2">
-            <Calendar className="h-4 w-4 mr-2" />
-            <span>{formatEventDate(start_datetime, end_datetime)}</span>
-          </div>
-        )}
         
         {/* Descrizione Breve */}
         {description && (

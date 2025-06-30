@@ -50,9 +50,6 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({ events, isLoading = fal
               images={event.images}
               avg_rating={event.avg_rating}
               price_info={event.price_info}
-              start_datetime={event.start_datetime}
-              end_datetime={event.end_datetime}
-              poi_type={event.poi_type}
             />
           ))
         )}

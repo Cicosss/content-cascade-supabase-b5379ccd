@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Clock, Euro, Phone, Mail, Globe, Calendar, Users } from 'lucide-react';
@@ -39,7 +38,7 @@ const POIStickyDetailsCard: React.FC<POIStickyDetailsCardProps> = ({
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
 
-  const isEvent = poiType === 'experience' && (startDatetime || endDatetime);
+  const isEvent = (poiType === 'experience' || poiType === 'event') && (startDatetime || endDatetime);
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
