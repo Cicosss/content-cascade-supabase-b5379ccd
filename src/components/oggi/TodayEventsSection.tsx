@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +10,12 @@ interface Event {
   name: string;
   description: string;
   start_datetime: string;
+  end_datetime?: string;
   location_name?: string;
   address?: string;
   category?: string;
   price_info?: string;
+  poi_type?: string;
 }
 
 interface TodayEventsSectionProps {
