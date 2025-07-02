@@ -1,12 +1,11 @@
-
 import React from 'react';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Star, Euro } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import FavoriteButton from './FavoriteButton';
+import { MapPin, Star, Euro, Clock, Users, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
-import MiaRomagnaLogo from './MiaRomagnaLogo';
+import FavoriteButton from './FavoriteButton';
+import HtmlContent from '@/components/ui/html-content';
 
 interface POICardProps {
   id: string;
@@ -16,7 +15,13 @@ interface POICardProps {
   images?: string[];
   avg_rating?: number;
   price_info?: string;
+  duration_info?: string;
+  target_audience?: string;
+  address?: string;
   isLoading?: boolean;
+  startDatetime?: string;
+  endDatetime?: string;
+  poiType?: string;
 }
 
 const POICard: React.FC<POICardProps> = ({
@@ -27,134 +32,155 @@ const POICard: React.FC<POICardProps> = ({
   images,
   avg_rating,
   price_info,
-  isLoading = false
+  duration_info,
+  target_audience,
+  address,
+  isLoading = false,
+  startDatetime,
+  endDatetime,
+  poiType
 }) => {
-  const navigate = useNavigate();
-  const coverImage = images && images.length > 0 ? images[0] : null;
-
-  const handleCardClick = () => {
-    navigate(`/poi/${id}`);
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('it-IT', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
   };
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('it-IT', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
-  const formatDescription = (desc?: string) => {
-    if (!desc) return '';
-    return desc.length > 120 ? desc.substring(0, 120) + '...' : desc;
-  };
-
-  const formatRating = (rating?: number) => {
-    if (!rating || rating === 0) return null;
-    return rating.toFixed(1);
-  };
-
-  // Skeleton loader component
   if (isLoading) {
     return (
-      <Card className="overflow-hidden bg-white border border-gray-200 shadow-sm">
-        <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
-          <Skeleton className="w-full h-full" />
-          <div className="absolute top-3 left-3">
-            <Skeleton className="h-6 w-20 rounded-full" />
-          </div>
-          <div className="absolute top-3 right-3">
+      <Card className="w-full max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+        <div className="relative">
+          <Skeleton className="h-48 w-full" />
+          <div className="absolute top-2 right-2">
             <Skeleton className="h-8 w-8 rounded-full" />
           </div>
         </div>
-        <div className="p-4 space-y-3">
+        <CardHeader className="pb-2">
           <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </CardHeader>
+        <CardContent className="space-y-3">
           <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-2/3" />
+          <Skeleton className="h-4 w-4/5" />
           <div className="flex justify-between items-center">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-4 w-12" />
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-4 w-1/4" />
           </div>
-        </div>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card 
-      className="overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm"
-      onClick={handleCardClick}
-    >
-      {/* Immagine di copertina */}
-      <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
-        {coverImage ? (
+    <Card className="w-full max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+      {images && images.length > 0 ? (
+        <div className="relative">
           <img
-            src={coverImage}
+            src={images[0]}
             alt={name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
+            className="w-full h-48 object-cover rounded-t-md"
           />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-            <div className="flex flex-col items-center space-y-2">
-              <MiaRomagnaLogo width={32} height={32} className="opacity-60" />
-              <span className="text-xs text-gray-500 font-medium">Mia Romagna</span>
-            </div>
-          </div>
-        )}
-        
-        {/* Barra Azioni Rapide - Vetro Smerigliato */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          <Badge className="bg-white/90 backdrop-blur-sm text-gray-900 text-xs border-0 shadow-sm">
-            {category}
-          </Badge>
-          
-          <div onClick={handleFavoriteClick}>
-            <FavoriteButton 
-              itemType="poi"
-              itemId={id}
-              itemData={{ id, name, category, description, images, avg_rating, price_info }}
-              className="opacity-90 hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm shadow-sm"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Corpo Informativo */}
-      <div className="p-4">
-        {/* Titolo del POI */}
-        <h3 className="font-semibold text-lg mb-2 line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors">
-          {name}
-        </h3>
-        
-        {/* Descrizione Breve */}
-        {description && (
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-            {formatDescription(description)}
-          </p>
-        )}
-
-        {/* Riga dei Dati Chiave */}
-        <div className="flex items-center justify-between">
-          {/* Valutazione */}
-          <div className="flex items-center">
-            {avg_rating && avg_rating > 0 ? (
-              <>
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                <span className="text-sm font-medium text-gray-900">
-                  {formatRating(avg_rating)}
-                </span>
-              </>
-            ) : (
-              <span className="text-sm text-gray-500">Nuovo</span>
+          <div className="absolute top-2 right-2">
+            {avg_rating && (
+              <Badge>
+                <Star className="mr-1 h-4 w-4" />
+                {avg_rating.toFixed(1)}
+              </Badge>
             )}
           </div>
-          
-          {/* Prezzo */}
-          {price_info && (
-            <div className="flex items-center text-green-600 font-medium">
-              <Euro className="h-4 w-4 mr-1" />
-              <span className="text-sm">{price_info}</span>
+        </div>
+      ) : (
+        <div className="relative">
+          <img
+            src="/placeholder-image.jpg"
+            alt="Placeholder"
+            className="w-full h-48 object-cover rounded-t-md"
+          />
+          <div className="absolute top-2 right-2">
+            {avg_rating && (
+              <Badge>
+                <Star className="mr-1 h-4 w-4" />
+                {avg_rating.toFixed(1)}
+              </Badge>
+            )}
+          </div>
+        </div>
+      )}
+
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <div className="flex-1 min-w-0 pr-2">
+            <Link to={`/poi/${id}`} className="block">
+              <h3 className="font-semibold text-base text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                {name}
+              </h3>
+            </Link>
+            <Badge variant="secondary" className="mt-1 text-xs">
+              {category}
+            </Badge>
+          </div>
+          <FavoriteButton itemId={id} itemType="poi" />
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3">
+        {description && (
+          <HtmlContent 
+            content={description} 
+            className="text-sm text-gray-600 line-clamp-2"
+          />
+        )}
+
+        <div className="flex flex-wrap gap-2 text-sm">
+          {address && (
+            <div className="flex items-center gap-1">
+              <MapPin className="h-4 w-4 text-gray-500" />
+              <span>{address}</span>
             </div>
           )}
+          {price_info && (
+            <div className="flex items-center gap-1">
+              <Euro className="h-4 w-4 text-gray-500" />
+              <span>{price_info}</span>
+            </div>
+          )}
+          {duration_info && (
+            <div className="flex items-center gap-1">
+              <Clock className="h-4 w-4 text-gray-500" />
+              <span>{duration_info}</span>
+            </div>
+          )}
+          {target_audience && target_audience !== 'everyone' && (
+            <div className="flex items-center gap-1">
+              <Users className="h-4 w-4 text-gray-500" />
+              <span>{target_audience}</span>
+            </div>
+          )}
+          {startDatetime && endDatetime && poiType === 'event' && (
+            <>
+              <div className="flex items-center gap-1">
+                <Calendar className="h-4 w-4 text-gray-500" />
+                <span>{formatDate(startDatetime)}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4 text-gray-500" />
+                <span>{formatTime(startDatetime)} - {formatTime(endDatetime)}</span>
+              </div>
+            </>
+          )}
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 };

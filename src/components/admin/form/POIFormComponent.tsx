@@ -1,8 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -16,6 +14,7 @@ import { FormData, initialFormData } from './POIFormData';
 import { useGoogleMaps } from './useGoogleMaps';
 import { useFormValidation } from './useFormValidation';
 import MediaUploader from '@/components/admin/MediaUploader';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 const POIFormComponent: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -234,11 +233,14 @@ const POIFormComponent: React.FC = () => {
 
           <div>
             <Label htmlFor="description">Descrizione</Label>
-            <Textarea
-              id="description"
+            <RichTextEditor
               value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              rows={3}
+              onChange={(value) => handleInputChange('description', value)}
+              placeholder={
+                formData.poi_type === 'event' 
+                  ? 'Descrivi l\'evento, il programma, cosa aspettarsi...'
+                  : 'Descrivi il luogo, i servizi offerti, l\'atmosfera...'
+              }
             />
           </div>
 

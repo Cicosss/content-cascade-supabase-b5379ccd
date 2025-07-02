@@ -2,11 +2,11 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MACRO_AREAS } from '@/config/categoryMapping';
 import { FormData } from '@/hooks/usePOIFormData';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 interface Step1BasicInfoProps {
   formData: FormData;
@@ -38,6 +38,17 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
         return 'es. Concerto Estate 2024, Sagra del Pesce...';
       default:
         return '';
+    }
+  };
+
+  const getDescriptionPlaceholder = () => {
+    switch (formData.poi_type) {
+      case 'place':
+        return 'Descrivi il luogo, i servizi offerti, l\'atmosfera...';
+      case 'event':
+        return 'Descrivi l\'evento, il programma, cosa aspettarsi...';
+      default:
+        return 'Descrivi questa esperienza...';
     }
   };
 
@@ -75,16 +86,10 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
 
         <div>
           <Label htmlFor="description">Descrizione</Label>
-          <Textarea
-            id="description"
+          <RichTextEditor
             value={formData.description}
-            onChange={(e) => onInputChange('description', e.target.value)}
-            placeholder={
-              formData.poi_type === 'place' 
-                ? 'Descrivi il luogo, i servizi offerti, l\'atmosfera...'
-                : 'Descrivi l\'evento, il programma, cosa aspettarsi...'
-            }
-            rows={4}
+            onChange={(value) => onInputChange('description', value)}
+            placeholder={getDescriptionPlaceholder()}
           />
         </div>
 
