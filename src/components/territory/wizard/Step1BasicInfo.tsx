@@ -1,12 +1,11 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MACRO_AREAS } from '@/config/categoryMapping';
 import { FormData } from '@/hooks/usePOIFormData';
-import RichTextEditor from '@/components/ui/rich-text-editor';
 
 interface Step1BasicInfoProps {
   formData: FormData;
@@ -86,10 +85,12 @@ const Step1BasicInfo: React.FC<Step1BasicInfoProps> = ({
 
         <div>
           <Label htmlFor="description">Descrizione</Label>
-          <RichTextEditor
+          <Textarea
+            id="description"
             value={formData.description}
-            onChange={(value) => onInputChange('description', value)}
+            onChange={(e) => onInputChange('description', e.target.value)}
             placeholder={getDescriptionPlaceholder()}
+            rows={4}
           />
         </div>
 
