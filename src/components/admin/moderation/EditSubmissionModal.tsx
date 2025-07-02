@@ -3,12 +3,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { POISubmission } from './POISubmission';
 import { MACRO_AREAS, getCategoriesForMacroArea } from '@/config/categoryMapping';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 interface EditSubmissionModalProps {
   submission: POISubmission | null;
@@ -145,12 +145,10 @@ const EditSubmissionModal: React.FC<EditSubmissionModalProps> = ({
 
           <div>
             <Label htmlFor="description">Descrizione</Label>
-            <Textarea
-              id="description"
+            <RichTextEditor
               value={formData.description || ''}
-              onChange={(e) => handleInputChange('description', e.target.value)}
+              onChange={(value) => handleInputChange('description', value)}
               placeholder="Descrivi l'esperienza, i servizi offerti, l'atmosfera..."
-              rows={4}
             />
           </div>
 

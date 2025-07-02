@@ -16,6 +16,7 @@ import { FormData, initialFormData } from './POIFormData';
 import { useGoogleMaps } from './useGoogleMaps';
 import { useFormValidation } from './useFormValidation';
 import MediaUploader from '@/components/admin/MediaUploader';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 const POIFormComponent: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -234,16 +235,14 @@ const POIFormComponent: React.FC = () => {
 
           <div>
             <Label htmlFor="description">Descrizione</Label>
-            <Textarea
-              id="description"
+            <RichTextEditor
               value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
+              onChange={(value) => handleInputChange('description', value)}
               placeholder={
                 formData.poi_type === 'event' 
                   ? 'Descrivi l\'evento, il programma, cosa aspettarsi...'
                   : 'Descrivi il luogo, i servizi offerti, l\'atmosfera...'
               }
-              rows={4}
             />
           </div>
 
