@@ -107,7 +107,7 @@ const AppFeaturesSection = () => {
         </div>
 
         {/* Additional Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {additionalFeatures.map((feature, index) => (
             <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300 bg-white border-brand-blue-100">
               <feature.icon className="h-10 w-10 mx-auto mb-4 text-brand-blue-600" />
@@ -115,37 +115,6 @@ const AppFeaturesSection = () => {
               <p className="typography-body-small">{feature.description}</p>
             </Card>
           ))}
-        </div>
-
-        {/* Enhanced CTA Section */}
-        <div className="text-center">
-          <Card className="p-12 bg-brand-gradient text-white border-0 shadow-2xl rounded-3xl">
-            <div className="max-w-3xl mx-auto space-y-8">
-              <div className="flex justify-center mb-8">
-                <div className="flex items-center space-x-2 bg-brand-yellow-400 text-brand-blue-900 px-8 py-4 rounded-full font-bold shadow-lg">
-                  <span className="text-xl">✅</span>
-                  <span className="typography-body-small font-bold">100% Gratuita per Tutti</span>
-                </div>
-              </div>
-              <h3 className="typography-h2 mb-6">Disponibile su Android & iOS</h3>
-              <p className="typography-body-large text-slate-200 mb-10">
-                Unisciti a migliaia di esploratori che hanno già scoperto i segreti della Romagna
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Button className="bg-white text-brand-blue-900 hover:bg-slate-100 px-10 py-5 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <Smartphone className="h-5 w-5 mr-2" />
-                  Scarica per Android
-                </Button>
-                <Button className="bg-white text-brand-blue-900 hover:bg-slate-100 px-10 py-5 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <Smartphone className="h-5 w-5 mr-2" />
-                  Scarica per iOS
-                </Button>
-              </div>
-              <p className="typography-body-small text-slate-300 mt-6">
-                * Nessuna registrazione richiesta • Aggiornamenti gratuiti a vita • Supporto clienti 24/7
-              </p>
-            </div>
-          </Card>
         </div>
       </div>
     </section>
