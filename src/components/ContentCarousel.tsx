@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LucideProps } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ExperienceCard from './ExperienceCard';
 
@@ -8,7 +7,7 @@ interface ContentCarouselProps {
   title: string;
   subtitle?: string;
   children?: React.ReactNode;
-  icon?: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon?: React.ComponentType<LucideProps>;
 }
 
 const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, children, icon: Icon }) => {
