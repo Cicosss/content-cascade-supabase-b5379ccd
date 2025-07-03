@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Card } from '@/components/ui/card';
 import { MapPin, ChefHat, Camera } from 'lucide-react';
 
 const ValuePropositionSection = () => {
@@ -25,13 +24,9 @@ const ValuePropositionSection = () => {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-2 bg-brand-blue-50 text-brand-blue-700 px-6 py-3 rounded-full typography-body-small font-semibold mb-8">
-            <span>✨</span>
-            <span>La Differenza Mia Romagna</span>
-          </div>
-          <h2 className="typography-h2 typography-brand-primary mb-6">
+        {/* Header Section - Semplificato */}
+        <div className="text-center mb-20">
+          <h2 className="typography-h2 typography-brand-primary mb-8">
             3 Modi per Vivere la Romagna Autentica
           </h2>
           <p className="typography-body-large max-w-3xl mx-auto text-slate-600">
@@ -40,32 +35,39 @@ const ValuePropositionSection = () => {
           </p>
         </div>
 
-        {/* Value Propositions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* I Pilastri - Design Aperto ed Elegante */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {propositions.map((prop, index) => (
-            <Card key={index} className="group p-8 text-center hover:shadow-2xl transition-all duration-500 border-0 shadow-lg hover:scale-105 transform bg-white">
-              <div className="space-y-6">
-                {/* Icon */}
-                <div className="mx-auto w-20 h-20 bg-gradient-to-br from-brand-blue-600 to-brand-blue-800 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                  <prop.icon className="h-10 w-10 text-white stroke-1" />
-                </div>
-                
-                {/* Content */}
-                <div className="space-y-4">
-                  <h3 className="typography-h4 typography-brand-primary group-hover:text-brand-blue-700 transition-colors">
-                    {prop.title}
-                  </h3>
-                  <p className="typography-body leading-relaxed text-slate-600">
-                    {prop.description}
-                  </p>
-                </div>
+            <div 
+              key={index} 
+              className={`text-center px-8 ${
+                index === 1 
+                  ? 'md:border-l md:border-r md:border-slate-200' 
+                  : index === 2 
+                  ? 'md:border-l md:border-slate-200' 
+                  : ''
+              }`}
+            >
+              {/* Icona Outline Grande */}
+              <div className="mb-8">
+                <prop.icon className="h-12 w-12 mx-auto text-brand-yellow-400 stroke-1" />
               </div>
-            </Card>
+              
+              {/* Titolo del Pilastro */}
+              <h4 className="typography-h4 typography-brand-primary mb-6 font-bold">
+                {prop.title}
+              </h4>
+              
+              {/* Descrizione con Larghezza Limitata */}
+              <p className="typography-body text-slate-600 leading-relaxed max-w-sm mx-auto">
+                {prop.description}
+              </p>
+            </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
+        {/* Bottom CTA - Manteniamo l'elemento esistente */}
+        <div className="text-center mt-20">
           <div className="inline-flex items-center space-x-2 text-brand-yellow-600">
             <span className="w-2 h-2 bg-brand-yellow-400 rounded-full animate-pulse"></span>
             <span className="typography-body-small font-medium">
