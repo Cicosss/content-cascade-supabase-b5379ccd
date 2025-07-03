@@ -8,9 +8,10 @@ interface ContentCarouselProps {
   title: string;
   subtitle?: string;
   children?: React.ReactNode;
+  icon?: React.ComponentType<{ className?: string; strokeWidth?: number }>;
 }
 
-const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, children }) => {
+const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, children, icon: Icon }) => {
   const experiences = [
     {
       id: 'tour-centro-storico-rimini',
@@ -61,11 +62,16 @@ const ContentCarousel: React.FC<ContentCarouselProps> = ({ title, subtitle, chil
   return (
     <section className="py-8">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="typography-h2 text-gray-900">{title}</h2>
-          {subtitle && (
-            <p className="text-gray-600 mt-1 typography-body">{subtitle}</p>
+        <div className="flex items-center gap-3">
+          {Icon && (
+            <Icon className="h-6 w-6 text-blue-800" strokeWidth={1.5} />
           )}
+          <div>
+            <h2 className="text-2xl font-bold text-blue-800">{title}</h2>
+            {subtitle && (
+              <p className="text-slate-600 text-sm mt-1">{subtitle}</p>
+            )}
+          </div>
         </div>
         <div className="flex space-x-2">
           <Button variant="outline" size="icon" className="rounded-full">
