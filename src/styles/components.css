@@ -25,7 +25,7 @@
     background: linear-gradient(135deg, #f0f7ff 0%, #fef3c7 50%, #e0efff 100%);
   }
 
-  /* Animazioni per Servizi Vicini */
+  /* Animazioni per Servizi Vicini - Versione Rinforzata */
   @keyframes taxiMovement {
     0% { transform: translateX(0) rotate(0deg); }
     25% { transform: translateX(3px) rotate(1deg); }
@@ -70,27 +70,65 @@
     100% { transform: scale(1) rotate(0deg); }
   }
 
-  /* Classi di animazione per i servizi */
+  /* Classi di animazione per i servizi - Con maggiore specificità */
+  .service-card .service-taxi-icon:hover {
+    animation: taxiMovement 1.2s ease-in-out !important;
+  }
+
+  .service-card .service-ev-icon:hover {
+    animation: evCharge 1.5s ease-in-out !important;
+  }
+
+  .service-card .service-parking-icon:hover {
+    animation: parkingConfirm 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+  }
+
+  /* Versione alternativa senza hover - per test */
+  .service-taxi-icon {
+    transition: transform 0.3s ease !important;
+  }
+
+  .service-ev-icon {
+    transition: transform 0.3s ease !important;
+  }
+
+  .service-parking-icon {
+    transition: transform 0.3s ease !important;
+  }
+
+  /* Test con hover diretto sulle icone */
   .service-taxi-icon:hover {
-    animation: taxiMovement 1.2s ease-in-out;
+    animation: taxiMovement 1.2s ease-in-out !important;
   }
 
   .service-ev-icon:hover {
-    animation: evCharge 1.5s ease-in-out;
+    animation: evCharge 1.5s ease-in-out !important;
   }
 
   .service-parking-icon:hover {
-    animation: parkingConfirm 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: parkingConfirm 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
   }
 
   /* Effetto generale per tutte le card servizi */
   .service-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
   .service-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  /* Container per le icone */
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Test con animazione sempre attiva per debug */
+  .debug-animation {
+    animation: evCharge 2s ease-in-out infinite !important;
   }
 
   /* Animazione per accessibilità - rispetta prefers-reduced-motion */
@@ -98,9 +136,9 @@
     .service-taxi-icon:hover,
     .service-ev-icon:hover,
     .service-parking-icon:hover {
-      animation: none;
-      transform: scale(1.05);
-      transition: transform 0.2s ease;
+      animation: none !important;
+      transform: scale(1.05) !important;
+      transition: transform 0.2s ease !important;
     }
   }
 }

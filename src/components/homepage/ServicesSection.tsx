@@ -15,6 +15,7 @@ interface ServicesSectionProps {
 
 const ServicesSection: React.FC<ServicesSectionProps> = ({ services }) => {
   const getIconComponent = (iconName: string) => {
+    console.log('Getting icon component for:', iconName);
     switch (iconName) {
       case 'Car':
         return Car;
@@ -28,16 +29,11 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ services }) => {
   };
 
   const getAnimationClass = (iconName: string) => {
-    switch (iconName) {
-      case 'Car':
-        return 'service-taxi-icon';
-      case 'Zap':
-        return 'service-ev-icon';
-      case 'ParkingCircle':
-        return 'service-parking-icon';
-      default:
-        return '';
-    }
+    const animationClass = iconName === 'Car' ? 'service-taxi-icon' :
+                          iconName === 'Zap' ? 'service-ev-icon' :
+                          iconName === 'ParkingCircle' ? 'service-parking-icon' : '';
+    console.log('Animation class for', iconName, ':', animationClass);
+    return animationClass;
   };
 
   return (
@@ -48,15 +44,21 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ services }) => {
           const IconComponent = getIconComponent(service.icon);
           const animationClass = getAnimationClass(service.icon);
           
+          console.log('Rendering service:', service.label, 'with animation class:', animationClass);
+          
           return (
             <Card 
               key={index} 
-              className="service-card p-6 text-center cursor-pointer border-2 hover:border-blue-200"
+              className="service-card p-6 text-center cursor-pointer border-2 hover:border-blue-200 transition-all duration-300"
+              onMouseEnter={() => console.log('Mouse entered card:', service.label)}
+              onMouseLeave={() => console.log('Mouse left card:', service.label)}
             >
-              <IconComponent 
-                className={`h-12 w-12 mx-auto mb-4 text-blue-600 ${animationClass}`}
-                strokeWidth={1.5}
-              />
+              <div className="icon-container">
+                <IconComponent 
+                  className={`h-12 w-12 mx-auto mb-4 text-blue-600 ${animationClass} transition-all duration-300`}
+                  strokeWidth={1.5}
+                />
+              </div>
               <div className="font-semibold text-lg mb-2 text-gray-800">{service.label}</div>
               <div className="text-gray-600 text-sm leading-relaxed">{service.desc}</div>
             </Card>
