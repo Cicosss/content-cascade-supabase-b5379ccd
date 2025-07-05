@@ -10,6 +10,6 @@
 @import './styles/typography.css';
 @import './styles/animations.css';
 @import './styles/components.css';
-@import './styles/services-debug.css';
+@import './styles/services-optimized.css';
 @import './styles/zIndex.css';
 @import './styles/sidebar.css';

@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Car, Zap, ParkingCircle } from 'lucide-react';
+import ServiceCard from './ServiceCard';
 
 interface Service {
   icon: string;
@@ -14,56 +13,22 @@ interface ServicesSectionProps {
 }
 
 const ServicesSection: React.FC<ServicesSectionProps> = ({ services }) => {
-  const getIconComponent = (iconName: string) => {
-    console.log('Getting icon component for:', iconName);
-    switch (iconName) {
-      case 'Car':
-        return Car;
-      case 'Zap':
-        return Zap;
-      case 'ParkingCircle':
-        return ParkingCircle;
-      default:
-        return Car;
-    }
-  };
-
-  const getAnimationClass = (iconName: string) => {
-    const animationClass = iconName === 'Car' ? 'service-taxi-icon' :
-                          iconName === 'Zap' ? 'service-ev-icon' :
-                          iconName === 'ParkingCircle' ? 'service-parking-icon' : '';
-    console.log('Animation class for', iconName, ':', animationClass);
-    return animationClass;
-  };
-
   return (
-    <section className="mb-16">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Servizi Vicini</h2>
+    <section className="mb-16" role="region" aria-labelledby="services-heading">
+      <h2 
+        id="services-heading" 
+        className="text-2xl font-bold text-gray-900 mb-6"
+      >
+        Servizi Vicini
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {services.map((service, index) => {
-          const IconComponent = getIconComponent(service.icon);
-          const animationClass = getAnimationClass(service.icon);
-          
-          console.log('Rendering service:', service.label, 'with animation class:', animationClass);
-          
-          return (
-            <Card 
-              key={index} 
-              className="service-card p-6 text-center cursor-pointer border-2 hover:border-blue-200 transition-all duration-300"
-              onMouseEnter={() => console.log('Mouse entered card:', service.label)}
-              onMouseLeave={() => console.log('Mouse left card:', service.label)}
-            >
-              <div className="icon-container">
-                <IconComponent 
-                  className={`h-12 w-12 mx-auto mb-4 text-blue-600 ${animationClass} transition-all duration-300`}
-                  strokeWidth={1.5}
-                />
-              </div>
-              <div className="font-semibold text-lg mb-2 text-gray-800">{service.label}</div>
-              <div className="text-gray-600 text-sm leading-relaxed">{service.desc}</div>
-            </Card>
-          );
-        })}
+        {services.map((service, index) => (
+          <ServiceCard 
+            key={`${service.icon}-${index}`}
+            {...service}
+            index={index}
+          />
+        ))}
       </div>
     </section>
   );
