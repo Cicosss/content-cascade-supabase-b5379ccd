@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 
@@ -40,9 +41,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           <div className="absolute top-1/2 left-1/2 w-[177.77vh] min-w-full min-h-full h-[56.25vw] -translate-x-1/2 -translate-y-1/2">
             <ReactPlayer
               url={videoUrl}
-              playing
-              loop
-              muted
+              playing={true}
+              loop={true}
+              muted={true}
               controls={false}
               width="100%"
               height="100%"
