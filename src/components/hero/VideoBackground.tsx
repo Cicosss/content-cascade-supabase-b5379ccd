@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import ReactPlayer from 'react-player';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -16,19 +15,32 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  const handleVideoReady = () => {
+  // Estrae l'ID del video da YouTube URL
+  const getYouTubeVideoId = (url: string) => {
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+    return match ? match[1] : null;
+  };
+
+  const videoId = getYouTubeVideoId(videoUrl);
+  
+  // URL embed ottimizzato per background video
+  const embedUrl = videoId ? 
+    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` 
+    : null;
+
+  const handleIframeLoad = () => {
     console.log('🎥 Video background ready');
     setIsVideoReady(true);
   };
 
-  const handleVideoError = (error: any) => {
-    console.error('❌ Video background error:', error);
+  const handleIframeError = () => {
+    console.error('❌ Video background error');
     setVideoError(true);
   };
 
   return (
     <div className="absolute inset-0 w-full h-full">
-      {isMobile || videoError ? (
+      {isMobile || videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
           className="w-full h-full bg-cover bg-center bg-no-repeat"
@@ -39,37 +51,23 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         <div className="absolute inset-0 overflow-hidden">
           {/* Video container with proper aspect ratio for full coverage */}
           <div className="absolute top-1/2 left-1/2 w-[177.77vh] min-w-full min-h-full h-[56.25vw] -translate-x-1/2 -translate-y-1/2">
-            <ReactPlayer
-              url={videoUrl}
-              playing={true}
-              loop={true}
-              muted={true}
-              controls={false}
+            <iframe
+              src={embedUrl}
               width="100%"
               height="100%"
-              onReady={handleVideoReady}
-              onError={handleVideoError}
-              config={{
-                youtube: {
-                  playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    showinfo: 0,
-                    modestbranding: 1,
-                    playsinline: 1,
-                    rel: 0,
-                    fs: 0,
-                    cc_load_policy: 0,
-                    iv_load_policy: 3,
-                    autohide: 0
-                  }
-                }
-              }}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              onLoad={handleIframeLoad}
+              onError={handleIframeError}
               style={{
                 position: 'absolute',
                 top: 0,
-                left: 0
+                left: 0,
+                pointerEvents: 'none' // Impedisce l'interazione con il video
               }}
+              title="YouTube video background"
             />
           </div>
           
