@@ -9,7 +9,7 @@ interface UseServiceVisibilityOptions {
 export const useServiceVisibility = (options: UseServiceVisibilityOptions = {}) => {
   const { threshold = 0.1, rootMargin = '50px' } = options;
   const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLElement>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
