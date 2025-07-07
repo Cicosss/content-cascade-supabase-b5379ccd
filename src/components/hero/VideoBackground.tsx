@@ -29,12 +29,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     : null;
 
   const handleIframeLoad = () => {
-    console.log('🎥 Video background ready');
     setIsVideoReady(true);
   };
 
   const handleIframeError = () => {
-    console.error('❌ Video background error');
     setVideoError(true);
   };
 
@@ -65,7 +63,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                pointerEvents: 'none' // Impedisce l'interazione con il video
+                pointerEvents: 'none'
               }}
               title="YouTube video background"
             />

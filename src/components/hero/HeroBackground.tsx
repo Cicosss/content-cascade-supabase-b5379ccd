@@ -12,8 +12,6 @@ interface HeroBackgroundProps {
 const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered }) => {
   const isMobile = useIsMobile();
 
-  console.log('🎯 HeroBackground render:', { isMobile, isHovered });
-
   return (
     <div className="absolute inset-0">
       {/* Video/Image Background */}

@@ -10,22 +10,17 @@ import HeroNavigation from './hero/HeroNavigation';
 
 const InteractiveHeroSection = () => {
   const navigate = useNavigate();
-  const [activeBackground, setActiveBackground] = useState('gusto-sapori');
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleCategoryHover = (categoryId: string) => {
-    console.log(`🎯 Setting active background to: ${categoryId}`);
-    setActiveBackground(categoryId);
+  const handleCategoryHover = () => {
     setIsHovered(true);
   };
 
   const handleCategoryLeave = () => {
-    console.log('🎯 Category hover ended');
     setIsHovered(false);
   };
 
   const handleCategoryClick = (route: string) => {
-    console.log(`🔗 Navigating to: ${route}`);
     navigate(route);
   };
   
@@ -62,7 +57,6 @@ const InteractiveHeroSection = () => {
         <div onMouseLeave={handleCategoryLeave}>
           <HeroNavigation 
             categories={heroCategories}
-            activeBackground={activeBackground}
             onCategoryHover={handleCategoryHover}
             onCategoryClick={handleCategoryClick}
           />
