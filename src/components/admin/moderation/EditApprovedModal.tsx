@@ -10,7 +10,7 @@ import { ApprovedExperience } from '@/hooks/useApprovedExperiences';
 import { MACRO_AREAS, getCategoriesForMacroArea } from '@/config/categoryMapping';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import MediaUploader from '@/components/admin/MediaUploader';
+import CompactMediaUploader from '@/components/admin/CompactMediaUploader';
 
 interface EditApprovedModalProps {
   experience: ApprovedExperience | null;
@@ -102,20 +102,21 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Modifica Esperienza Live: {experience.name}</DialogTitle>
+      <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] overflow-hidden flex flex-col">
+        <DialogHeader className="flex-shrink-0">
+          <DialogTitle className="text-xl">Modifica Esperienza Live: {experience.name}</DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-            <p className="text-sm text-blue-800">
-              ⚡ Stai modificando un'esperienza <strong>già pubblicata</strong>. 
-              Le modifiche saranno immediatamente visibili agli utenti.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto px-1">
+          <div className="space-y-6 pb-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+              <p className="text-sm text-blue-800">
+                ⚡ Stai modificando un'esperienza <strong>già pubblicata</strong>. 
+                Le modifiche saranno immediatamente visibili agli utenti.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="name">Nome *</Label>
               <Input
@@ -179,14 +180,14 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
               onChange={(e) => handleInputChange('address', e.target.value)}
             />
           </div>
-
-          {/* Sezione Galleria Immagini */}
-          <MediaUploader
-            images={formData.images || []}
-            onImagesChange={handleImagesChange}
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Sezione Galleria Immagini - Compatta */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+              <CompactMediaUploader
+                images={formData.images || []}
+                onImagesChange={handleImagesChange}
+              />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="price_info">Prezzo</Label>
               <Input
@@ -205,8 +206,7 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
               />
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div>
               <Label htmlFor="phone">Telefono</Label>
               <Input
@@ -235,9 +235,13 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
                 onChange={(e) => handleInputChange('website_url', e.target.value)}
               />
             </div>
+            </div>
           </div>
+        </div>
 
-          <div className="flex gap-4 pt-4">
+        {/* Fixed footer with action buttons */}
+        <div className="flex-shrink-0 border-t bg-gray-50 px-6 py-4 mt-4">
+          <div className="flex gap-4">
             <Button
               onClick={handleSave}
               disabled={isSaving}
@@ -250,6 +254,7 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
               variant="outline"
               onClick={onClose}
               disabled={isSaving}
+              className="min-w-[100px]"
             >
               Annulla
             </Button>
