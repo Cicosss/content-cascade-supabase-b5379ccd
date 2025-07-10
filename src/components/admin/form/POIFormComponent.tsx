@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Loader2, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,6 +18,7 @@ import { useGoogleMaps } from './useGoogleMaps';
 import { useFormValidation } from './useFormValidation';
 import MediaUploader from '@/components/admin/MediaUploader';
 import RichTextEditor from '@/components/ui/rich-text-editor';
+import DynamicCsvUploader from '@/components/admin/DynamicCsvUploader';
 
 const POIFormComponent: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -147,7 +149,14 @@ const POIFormComponent: React.FC = () => {
         <CardTitle>Aggiungi Nuova Esperienza</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <Tabs defaultValue="manual" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="manual">📝 Inserimento Manuale</TabsTrigger>
+            <TabsTrigger value="csv">📊 Upload CSV</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="manual" className="mt-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
           
           {/* Errori di validazione */}
           {validationErrors.length > 0 && (
@@ -491,7 +500,13 @@ const POIFormComponent: React.FC = () => {
             </Button>
           </div>
 
-        </form>
+            </form>
+          </TabsContent>
+          
+          <TabsContent value="csv" className="mt-6">
+            <DynamicCsvUploader onSuccess={() => toast.success('CSV importato con successo!')} />
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );

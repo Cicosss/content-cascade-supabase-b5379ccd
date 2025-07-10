@@ -31,17 +31,18 @@ const ExperienceCsvUploader: React.FC<ExperienceCsvUploaderProps> = ({ onExperie
       const { headers, lines } = parseCSV(text);
       
       const { experiences, successCount, errorCount } = processCsvData(headers, lines);
+      const submissions = experiences; // Use experiences from return value
 
-      if (experiences.length === 0) {
-        toast.error('Nessuna esperienza valida trovata nel CSV. Controlla che ci sia almeno una colonna "name" o "nome" con valori.');
+      if (submissions.length === 0) {
+        toast.error('Nessuna submission valida trovata nel CSV. Controlla che ci sia almeno una colonna "name" o "nome" con valori.');
         return;
       }
 
-      console.log('💾 Inserimento in database...', experiences.length, 'esperienze');
+      console.log('💾 Inserimento in database...', submissions.length, 'submissions');
 
       const { error } = await supabase
-        .from('points_of_interest')
-        .insert(experiences);
+        .from('poi_submissions')
+        .insert(submissions);
 
       if (error) {
         console.error('❌ Errore inserimento database:', error);
@@ -50,8 +51,8 @@ const ExperienceCsvUploader: React.FC<ExperienceCsvUploaderProps> = ({ onExperie
       }
 
       const message = errorCount > 0 
-        ? `${successCount} esperienze inserite con successo! ${errorCount} righe ignorate per errori.`
-        : `${successCount} esperienze inserite con successo!`;
+        ? `${successCount} submissions inserite con successo! ${errorCount} righe ignorate per errori.`
+        : `${successCount} submissions inserite con successo!`;
       
       toast.success(message);
       setCsvFile(null);
