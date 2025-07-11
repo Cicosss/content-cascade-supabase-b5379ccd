@@ -9,7 +9,6 @@ import { it } from 'date-fns/locale';
 interface AppliedFiltersProps {
   filters: {
     categories: string[];
-    zone: string;
     period: DateRange | undefined;
     timeSlots?: string[];
     budgets?: string[];
@@ -22,22 +21,6 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
   const getActiveFilters = () => {
     const activeFilters = [];
 
-    // Zone filter
-    if (filters.zone && filters.zone !== 'tuttalromagna') {
-      const zoneNames: { [key: string]: string } = {
-        centro: 'Centro',
-        nord: 'Nord', 
-        sud: 'Sud',
-        ovest: 'Ovest',
-        est: 'Est'
-      };
-      activeFilters.push({
-        type: 'zone',
-        label: zoneNames[filters.zone] || filters.zone,
-        icon: MapPin,
-        onRemove: () => onRemoveFilter('zone')
-      });
-    }
 
     // Categories filter
     if (filters.categories.length > 0 && !filters.categories.includes('tutte')) {

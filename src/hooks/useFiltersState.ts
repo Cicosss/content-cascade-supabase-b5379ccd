@@ -6,7 +6,6 @@ import { FILTERS_CONFIG } from '@/config/filtersConfig';
 
 export interface FiltersState {
   categories: string[];
-  zone: string;
   period: DateRange | undefined;
   timeSlots: string[];
   budgets: string[];
@@ -25,7 +24,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
   const [filters, setFilters] = useState<FiltersState>(() => {
     const initialState: FiltersState = {
       categories: ['tutte'],
-      zone: 'tuttalromagna',
       period: undefined,
       timeSlots: [],
       budgets: [],
@@ -44,9 +42,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
     setFilters(prev => ({ ...prev, categories }));
   }, []);
 
-  const updateZone = useCallback((zone: string) => {
-    setFilters(prev => ({ ...prev, zone }));
-  }, []);
 
   const updatePeriod = useCallback((period: DateRange | undefined) => {
     setFilters(prev => ({ ...prev, period }));
@@ -71,7 +66,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
   const resetFilters = useCallback(() => {
     setFilters({
       categories: ['tutte'],
-      zone: 'tuttalromagna',
       period: undefined,
       timeSlots: [],
       budgets: [],
@@ -87,7 +81,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (filters.categories.length > 0 && !filters.categories.includes('tutte')) count++;
-    if (filters.zone !== 'tuttalromagna') count++;
     if (filters.period?.from) count++;
     if (filters.timeSlots.length > 0) count++;
     if (filters.budgets.length > 0) count++;
@@ -113,7 +106,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
     
     // Actions
     updateCategories,
-    updateZone,
     updatePeriod,
     updateTimeSlots,
     updateBudgets,

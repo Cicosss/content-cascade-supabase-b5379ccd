@@ -6,14 +6,13 @@ import { RotateCcw } from 'lucide-react';
 import { useFiltersState } from '@/hooks/useFiltersState';
 import FilterHeader from './filters/FilterHeader';
 import CategoryFilters from './filters/CategoryFilters';
-import ZonePeriodFilters from './filters/ZonePeriodFilters';
+import PeriodFilters from './filters/PeriodFilters';
 import AdvancedFilters from './filters/AdvancedFilters';
 import FilterToggle from '@/components/filters/FilterToggle';
 
 interface ExperienceFiltersProps {
   filters: {
     categories: string[];
-    zone: string;
     period: any;
     timeSlots?: string[];
     budgets?: string[];
@@ -51,7 +50,6 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
     resetFilters();
     setFilters({
       categories: ['tutte'],
-      zone: 'tuttalromagna',
       period: undefined,
       timeSlots: [],
       budgets: [],
@@ -83,10 +81,8 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
           onCategoriesChange={(categories) => updateFilter('categories', categories)}
         />
         
-        <ZonePeriodFilters 
-          zone={filters.zone}
+        <PeriodFilters 
           period={filters.period}
-          onZoneChange={(zone) => updateFilter('zone', zone)}
           onPeriodChange={(period) => updateFilter('period', period)}
         />
 

@@ -40,16 +40,16 @@ export const usePOIData = () => {
       
       // Determina se usare i dati di fallback
       const hasActiveFilters = filters.activityTypes.length > 0 || 
-                              filters.zone !== '' || 
-                              filters.withChildren === 'si' ||
-                              filters.period?.from;
+                               filters.withChildren === 'si' ||
+                               filters.period?.from ||
+                               filters.bounds;
       
       console.log('🔍 Analisi filtri:', {
         hasActiveFilters,
         activityTypes: filters.activityTypes,
-        zone: filters.zone,
         withChildren: filters.withChildren,
-        hasPeriod: !!filters.period?.from
+        hasPeriod: !!filters.period?.from,
+        hasBounds: !!filters.bounds
       });
       
       // Usa i dati di fallback SOLO se non ci sono POI E non ci sono filtri attivi

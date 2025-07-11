@@ -2,9 +2,11 @@
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { usePOIData } from '@/hooks/usePOIData';
+import { useMapBoundsSearch } from '@/hooks/useMapBoundsSearch';
 import { Loader2 } from 'lucide-react';
 import OptimizedPOIPreview from './OptimizedPOIPreview';
 import MapControls from './MapControls';
+import MapSearchControls from './MapSearchControls';
 import MapLoadingIndicator from './MapLoadingIndicator';
 import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
 import { useMapInitialization } from '@/hooks/useMapInitialization';
@@ -13,8 +15,8 @@ import { useOptimizedMarkerPool } from '@/hooks/useOptimizedMarkerPool';
 interface GoogleMapProps {
   filters: {
     activityTypes: string[];
-    zone: string;
     withChildren: string;
+    period?: any;
   };
 }
 
@@ -35,7 +37,9 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     isGoogleMapsLoaded: isLoaded
   });
 
-  // Transform filters for POI data service
+  // Transform filters for POI data service with map bounds
+  const [mapBounds, setMapBounds] = useState<any>(null);
+  
   const poiFilters = useMemo(() => {
     const shouldShowAll = !filters.activityTypes || 
                          filters.activityTypes.length === 0 || 
@@ -44,11 +48,11 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     
     return {
       activityTypes: shouldShowAll ? [] : filters.activityTypes,
-      zone: filters.zone === 'tuttalromagna' ? '' : filters.zone,
       withChildren: filters.withChildren || 'no',
-      period: undefined
+      period: filters.period,
+      bounds: mapBounds
     };
-  }, [filters.activityTypes, filters.zone, filters.withChildren]);
+  }, [filters.activityTypes, filters.withChildren, filters.period, mapBounds]);
 
   // Memoized callbacks
   const handleCenterOnUser = useCallback(() => {
@@ -70,7 +74,27 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     setSelectedPOI(null);
   }, []);
 
-  // Load POIs when map is ready or filters change
+  // Map bounds search functionality
+  const {
+    isSearching,
+    showSearchButton,
+    triggerBoundsSearch,
+    initializeMapListeners
+  } = useMapBoundsSearch({
+    map: mapInstance,
+    onBoundsChange: setMapBounds,
+    debounceMs: 500
+  });
+
+  // Initialize map listeners when map is ready
+  useEffect(() => {
+    if (mapInstance && isLoaded) {
+      const cleanup = initializeMapListeners();
+      return cleanup;
+    }
+  }, [mapInstance, isLoaded, initializeMapListeners]);
+
+  // Load POIs when filters change
   useEffect(() => {
     if (!mapInstance) return;
     fetchPOIs(poiFilters);
@@ -111,6 +135,14 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
       
       <MapLoadingIndicator isLoadingPOIs={isLoadingPOIs} />
       
+      {/* Map Search Controls */}
+      <MapSearchControls
+        isSearching={isSearching}
+        showSearchButton={showSearchButton}
+        onSearch={triggerBoundsSearch}
+        poiCount={validPOICount}
+      />
+      
       <div className="map-controls-overlay">
         <MapControls 
           onCenterOnUser={handleCenterOnUser}
@@ -127,20 +159,6 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
           />
         </div>
       )}
-
-      {/* Status indicator ottimizzato */}
-      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border border-slate-200">
-        <div className="flex items-center gap-2 text-sm">
-          <div 
-            className={`w-2 h-2 rounded-full ${
-              validPOICount > 0 ? 'bg-green-600' : isLoadingPOIs ? 'bg-yellow-500' : 'bg-red-500'
-            }`}
-          ></div>
-          <span className="font-medium text-slate-700">
-            {isLoadingPOIs ? 'Caricamento...' : `${validPOICount} POI attivi`}
-          </span>
-        </div>
-      </div>
     </div>
   );
 });

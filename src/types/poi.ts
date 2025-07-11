@@ -17,7 +17,12 @@ export interface POI {
 
 export interface POIFilters {
   activityTypes: string[];
-  zone: string;
   withChildren: string;
   period?: DateRange;
+  bounds?: {
+    north: number;
+    south: number;
+    east: number;
+    west: number;
+  };
 }

@@ -27,11 +27,14 @@ export class POIDataService {
       console.log('🌍 Nessun filtro categorie - mostrando TUTTI i POI approvati');
     }
 
-    // Apply zone filter solo se specificata
-    if (filters.zone && filters.zone !== '') {
-      console.log('📍 Applicando filtro zona:', filters.zone);
-      // Assumiamo che ci sia un campo 'zone' o 'macro_area' per filtrare per zona
-      // Se non esiste, questo filtro non avrà effetto
+    // Apply bounds filter if provided (for map-based search)
+    if (filters.bounds) {
+      console.log('🗺️ Applicando filtro geografico:', filters.bounds);
+      query = query
+        .gte('latitude', filters.bounds.south)
+        .lte('latitude', filters.bounds.north)
+        .gte('longitude', filters.bounds.west)
+        .lte('longitude', filters.bounds.east);
     }
 
     // Apply children filter
@@ -135,7 +138,7 @@ export class POIDataService {
     console.log(message);
     console.log('🔍 Riepilogo filtri applicati:', {
       categorie: filters.activityTypes.length > 0 ? filters.activityTypes : 'Tutte',
-      zona: filters.zone || 'Tutte',
+      area: filters.bounds ? 'Area mappa selezionata' : 'Tutte le aree',
       bambini: filters.withChildren,
       periodo: periodText
     });
