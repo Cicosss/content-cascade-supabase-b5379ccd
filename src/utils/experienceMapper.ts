@@ -13,7 +13,6 @@ export const mapCsvRowToExperience = (values: string[], headers: string[], rowIn
   const submission: any = {
     submitter_email: 'admin@miaromagna.it',
     poi_type: 'place',
-    macro_area: 'Gusto & Sapori',
     category: 'Ristoranti',
     target_audience: 'everyone',
     status: 'pending'
@@ -37,8 +36,6 @@ export const mapCsvRowToExperience = (values: string[], headers: string[], rowIn
       submission.description = value || null;
     } else if (lowerHeader.includes('poi_type') || lowerHeader.includes('tipo')) {
       submission.poi_type = value || 'place';
-    } else if (lowerHeader.includes('macro_area') || lowerHeader.includes('area')) {
-      submission.macro_area = value || 'Gusto & Sapori';
     } else if (lowerHeader.includes('category') || lowerHeader.includes('categoria')) {
       submission.category = value || 'Ristoranti';
     } else if (lowerHeader.includes('address') || lowerHeader.includes('indirizzo')) {

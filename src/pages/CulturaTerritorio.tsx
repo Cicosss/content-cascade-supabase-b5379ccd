@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, Euro } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCategoriesForNavbar } from '@/config/categoryMapping';
 
 interface POI {
   id: string;
@@ -28,7 +29,7 @@ const CulturaTerritorio = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('tutte');
 
-  const categories = ['Musei', 'Borghi', 'Castelli', 'Arte', 'Artigianato'];
+  const categories = getCategoriesForNavbar('Cultura & Territorio');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -45,11 +46,7 @@ const CulturaTerritorio = () => {
       let query = supabase
         .from('points_of_interest')
         .select('*')
-        .eq('macro_area', 'Cultura & Territorio');
-
-      if (selectedCategory !== 'tutte') {
-        query = query.eq('category', selectedCategory);
-      }
+        .in('category', selectedCategory === 'tutte' ? categories : [selectedCategory]);
 
       const { data, error } = await query;
       

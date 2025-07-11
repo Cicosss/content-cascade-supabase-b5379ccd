@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useSchemaColumns } from '@/hooks/useSchemaColumns';
 import { parseCSVLine } from '@/utils/csvParser';
-import { validateMacroArea, validateCategory, validatePoiType, validateTargetAudience } from '@/utils/csvValidationRules';
+import { validateCategory, validatePoiType, validateTargetAudience } from '@/utils/csvValidationRules';
 
 interface DynamicCsvUploaderProps {
   onSuccess: () => void;
@@ -125,8 +125,6 @@ const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) =>
                 rowData[header] = value.split(',').map(t => t.trim()).filter(t => t);
               } else if (header === 'images' && value) {
                 rowData[header] = value.split(',').map(t => t.trim()).filter(t => t);
-              } else if (header === 'macro_area') {
-                rowData[header] = validateMacroArea(value);
               } else if (header === 'poi_type') {
                 rowData[header] = validatePoiType(value);
               } else if (header === 'target_audience') {
@@ -137,9 +135,9 @@ const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) =>
             }
           });
 
-          // Validazione speciale per category (dipende da macro_area)
+          // Validazione per category
           if (rowData.category) {
-            rowData.category = validateCategory(rowData.category, rowData.macro_area || 'Gusto & Sapori');
+            rowData.category = validateCategory(rowData.category);
           }
 
           // Controllo campi obbligatori
@@ -251,7 +249,7 @@ const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) =>
             <h4 className="font-medium mb-2">Valori Ammessi per Campi Specifici:</h4>
             <div className="space-y-2 text-sm">
               <div>
-                <strong>macro_area:</strong> {getValidationInfo().macroAreaValues.join(', ')}
+                <strong>category:</strong> {getValidationInfo().officialCategories.join(', ')}
               </div>
               <div>
                 <strong>poi_type:</strong> {getValidationInfo().poiTypeValues.join(', ')}

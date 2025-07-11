@@ -1,76 +1,4 @@
-export const MACRO_AREA_VALUES = [
-  'Gusto & Sapori',
-  'Cultura & Territorio',
-  'Divertimento & Famiglia',
-  'Eventi & Spettacoli'
-] as const;
-
-export const CATEGORY_MAPPING: Record<string, string> = {
-  // Gusto & Sapori
-  'ristoranti': 'Ristoranti',
-  'restaurant': 'Ristoranti', 
-  'restaurants': 'Ristoranti',
-  'food': 'Ristoranti',
-  'dining': 'Ristoranti',
-  'bar': 'Bar',
-  'bars': 'Bar',
-  'pub': 'Bar',
-  'pubs': 'Bar',
-  'wine': 'Enoteche',
-  'winery': 'Enoteche',
-  'wineries': 'Enoteche',
-  'enoteca': 'Enoteche',
-  'enoteche': 'Enoteche',
-  
-  // Cultura & Territorio
-  'museo': 'Musei',
-  'musei': 'Musei',
-  'museum': 'Musei',
-  'museums': 'Musei',
-  'arte': 'Arte',
-  'art': 'Arte',
-  'gallery': 'Arte',
-  'galleria': 'Arte',
-  'chiesa': 'Chiese',
-  'chiese': 'Chiese',
-  'church': 'Chiese',
-  'churches': 'Chiese',
-  'monument': 'Monumenti',
-  'monumento': 'Monumenti',
-  'monumenti': 'Monumenti',
-  
-  // Divertimento & Famiglia
-  'sport': 'Sport',
-  'sports': 'Sport',
-  'beach': 'Spiagge',
-  'beaches': 'Spiagge',
-  'spiaggia': 'Spiagge',
-  'spiagge': 'Spiagge',
-  'park': 'Parchi',
-  'parks': 'Parchi',
-  'parco': 'Parchi',
-  'parchi': 'Parchi',
-  'activity': 'Attività',
-  'activities': 'Attività',
-  'attività': 'Attività',
-  
-  // Eventi & Spettacoli
-  'evento': 'Concerti',
-  'eventi': 'Concerti',
-  'event': 'Concerti',
-  'events': 'Concerti',
-  'concerto': 'Concerti',
-  'concerti': 'Concerti',
-  'concert': 'Concerti',
-  'concerts': 'Concerti',
-  'show': 'Spettacoli',
-  'shows': 'Spettacoli',
-  'spettacolo': 'Spettacoli',
-  'spettacoli': 'Spettacoli',
-  'theater': 'Teatro',
-  'theatre': 'Teatro',
-  'teatro': 'Teatro'
-};
+import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 
 export const POI_TYPE_VALUES = ['place', 'experience'] as const;
 
@@ -83,51 +11,58 @@ export const TARGET_AUDIENCE_VALUES = [
   'seniors'
 ] as const;
 
-export const validateMacroArea = (value: string): string => {
-  if (!value) return 'Gusto & Sapori'; // Default
+export const validateCategory = (value: string): string => {
+  if (!value) return 'Ristoranti'; // Default category
   
   const normalized = value.trim();
-  if (MACRO_AREA_VALUES.includes(normalized as any)) {
+  
+  // Check if it's already a valid category
+  if (OFFICIAL_CATEGORIES.includes(normalized as any)) {
     return normalized;
   }
   
-  // Try to match by keywords
+  // Simple mapping for common variations
+  const categoryMapping: Record<string, string> = {
+    'ristoranti': 'Ristoranti',
+    'restaurant': 'Ristoranti', 
+    'restaurants': 'Ristoranti',
+    'food': 'Ristoranti',
+    'dining': 'Ristoranti',
+    'museo': 'Musei',
+    'musei': 'Musei',
+    'museum': 'Musei',
+    'museums': 'Musei',
+    'arte': 'Musei',
+    'art': 'Musei',
+    'gallery': 'Musei',
+    'galleria': 'Musei',
+    'sport': 'Sport',
+    'sports': 'Sport',
+    'beach': 'Spiagge',
+    'beaches': 'Spiagge',
+    'spiaggia': 'Spiagge',
+    'spiagge': 'Spiagge',
+    'park': 'Parchi Naturali e Riserve',
+    'parks': 'Parchi Naturali e Riserve',
+    'parco': 'Parchi Naturali e Riserve',
+    'parchi': 'Parchi Naturali e Riserve',
+    'evento': 'Eventi',
+    'eventi': 'Eventi',
+    'event': 'Eventi',
+    'events': 'Eventi',
+    'concerto': 'Eventi',
+    'concerti': 'Eventi',
+    'concert': 'Eventi',
+    'concerts': 'Eventi'
+  };
+  
   const lower = normalized.toLowerCase();
-  if (lower.includes('food') || lower.includes('ristoran') || lower.includes('sapor')) {
-    return 'Gusto & Sapori';
-  }
-  if (lower.includes('cultur') || lower.includes('museo') || lower.includes('arte') || lower.includes('territori')) {
-    return 'Cultura & Territorio';
-  }
-  if (lower.includes('divertimento') || lower.includes('famiglia') || lower.includes('sport') || lower.includes('spiaggia')) {
-    return 'Divertimento & Famiglia';
-  }
-  if (lower.includes('event') || lower.includes('concerto') || lower.includes('spettacol')) {
-    return 'Eventi & Spettacoli';
-  }
-  
-  return 'Gusto & Sapori'; // Default fallback
-};
-
-export const validateCategory = (value: string, macroArea: string): string => {
-  if (!value) {
-    // Return default based on macro_area
-    switch (macroArea) {
-      case 'Gusto & Sapori': return 'Ristoranti';
-      case 'Cultura & Territorio': return 'Musei';
-      case 'Divertimento & Famiglia': return 'Sport';
-      case 'Eventi & Spettacoli': return 'Concerti';
-      default: return 'Ristoranti';
-    }
-  }
-  
-  const normalized = value.trim().toLowerCase();
-  const mapped = CATEGORY_MAPPING[normalized];
+  const mapped = categoryMapping[lower];
   
   if (mapped) return mapped;
   
-  // If no mapping found, capitalize first letter
-  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  // If no mapping found, return the first valid category as fallback
+  return 'Ristoranti';
 };
 
 export const validatePoiType = (value: string): string => {

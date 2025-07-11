@@ -11,7 +11,6 @@ interface POISubmission {
   submitter_email: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   address: string;
   latitude: number;

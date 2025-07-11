@@ -5,7 +5,6 @@ export interface POI {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   latitude: number;
   longitude: number;

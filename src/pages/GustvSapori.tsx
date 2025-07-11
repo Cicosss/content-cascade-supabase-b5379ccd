@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, Euro } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCategoriesForNavbar } from '@/config/categoryMapping';
 
 interface POI {
   id: string;
@@ -28,7 +29,7 @@ const GustoSapori = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('tutte');
 
-  const categories = ['Ristoranti', 'Agriturismi', 'Cantine', 'Street Food', 'Mercati'];
+  const categories = getCategoriesForNavbar('Gusto & Sapori');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -45,11 +46,7 @@ const GustoSapori = () => {
       let query = supabase
         .from('points_of_interest')
         .select('*')
-        .in('category', ['Ristoranti', 'Enoteche', 'Pizzerie', 'Gelaterie', 'Bar e Caffè', 'Mercati Locali']);
-
-      if (selectedCategory !== 'tutte') {
-        query = query.eq('category', selectedCategory);
-      }
+        .in('category', selectedCategory === 'tutte' ? categories : [selectedCategory]);
 
       const { data, error } = await query;
       

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { MACRO_AREA_VALUES, CATEGORY_MAPPING, POI_TYPE_VALUES, TARGET_AUDIENCE_VALUES } from '@/utils/csvValidationRules';
+import { POI_TYPE_VALUES, TARGET_AUDIENCE_VALUES } from '@/utils/csvValidationRules';
+import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 
 interface ColumnInfo {
   column_name: string;
@@ -25,7 +26,6 @@ export const useSchemaColumns = () => {
           { column_name: 'name', data_type: 'text', is_nullable: 'NO', column_default: null },
           { column_name: 'description', data_type: 'text', is_nullable: 'YES', column_default: null },
           { column_name: 'poi_type', data_type: 'text', is_nullable: 'YES', column_default: "'place'::text" },
-          { column_name: 'macro_area', data_type: 'text', is_nullable: 'NO', column_default: "'Gusto & Sapori'::text" },
           { column_name: 'category', data_type: 'text', is_nullable: 'NO', column_default: "'Ristoranti'::text" },
           { column_name: 'address', data_type: 'text', is_nullable: 'YES', column_default: null },
           { column_name: 'latitude', data_type: 'numeric', is_nullable: 'YES', column_default: null },
@@ -77,7 +77,6 @@ export const useSchemaColumns = () => {
         case 'name': return 'Nome del POI';
         case 'description': return 'Descrizione del punto di interesse';
         case 'poi_type': return 'place';
-        case 'macro_area': return 'Gusto & Sapori';
         case 'category': return 'Ristoranti';
         case 'address': return 'Via Roma 1, Rimini';
         case 'latitude': return '44.0678';
@@ -111,8 +110,7 @@ export const useSchemaColumns = () => {
   };
 
   const getValidationInfo = () => ({
-    macroAreaValues: MACRO_AREA_VALUES,
-    categoryMapping: CATEGORY_MAPPING,
+    officialCategories: OFFICIAL_CATEGORIES,
     poiTypeValues: POI_TYPE_VALUES,
     targetAudienceValues: TARGET_AUDIENCE_VALUES
   });

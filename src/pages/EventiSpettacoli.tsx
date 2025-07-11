@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Clock, Euro, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCategoriesForNavbar } from '@/config/categoryMapping';
 
 interface POI {
   id: string;
@@ -30,7 +31,7 @@ const EventiSpettacoli = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('tutte');
 
-  const categories = ['Concerti', 'Festival', 'Teatro', 'Cinema', 'Mostre'];
+  const categories = getCategoriesForNavbar('Eventi & Spettacoli');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -47,11 +48,7 @@ const EventiSpettacoli = () => {
       let query = supabase
         .from('points_of_interest')
         .select('*')
-        .eq('macro_area', 'Eventi & Spettacoli');
-
-      if (selectedCategory !== 'tutte') {
-        query = query.eq('category', selectedCategory);
-      }
+        .in('category', selectedCategory === 'tutte' ? categories : [selectedCategory]);
 
       const { data, error } = await query;
       
