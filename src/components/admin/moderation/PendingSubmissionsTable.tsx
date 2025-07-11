@@ -90,10 +90,7 @@ const PendingSubmissionsTable: React.FC<PendingSubmissionsTableProps> = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div>
-                    <div className="text-sm text-gray-600">{submission.macro_area}</div>
-                    <div className="font-medium">{submission.category}</div>
-                  </div>
+                  <div className="font-medium">{submission.category}</div>
                 </TableCell>
                 <TableCell>{submission.submitter_email}</TableCell>
                 <TableCell>

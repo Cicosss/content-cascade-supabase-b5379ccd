@@ -16,7 +16,6 @@ export const useModerationActions = () => {
       description: submission.description,
       poi_type: submission.poi_type || 'place',
       category: submission.category,
-      macro_area: submission.macro_area,
       address: submission.address,
       latitude: submission.latitude,
       longitude: submission.longitude,

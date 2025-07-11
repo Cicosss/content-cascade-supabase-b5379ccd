@@ -8,7 +8,6 @@ interface POISubmission {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   status: string;
   created_at: string;
@@ -116,7 +115,7 @@ const ProposalCard: React.FC<ProposalCardProps> = ({ submission }) => {
             )}
 
             <div className="mt-3 text-xs text-gray-500">
-              {submission.macro_area} • {submission.category}
+              {submission.category}
             </div>
           </div>
         </div>

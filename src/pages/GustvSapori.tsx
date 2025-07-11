@@ -45,7 +45,7 @@ const GustoSapori = () => {
       let query = supabase
         .from('points_of_interest')
         .select('*')
-        .eq('macro_area', 'Gusto & Sapori');
+        .in('category', ['Ristoranti', 'Enoteche', 'Pizzerie', 'Gelaterie', 'Bar e Caffè', 'Mercati Locali']);
 
       if (selectedCategory !== 'tutte') {
         query = query.eq('category', selectedCategory);

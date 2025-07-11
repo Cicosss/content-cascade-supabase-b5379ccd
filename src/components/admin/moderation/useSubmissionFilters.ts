@@ -5,7 +5,6 @@ import { POISubmission } from './POISubmission';
 interface Filters {
   status: string;
   category: string;
-  macroArea: string;
   searchTerm: string;
 }
 
@@ -14,7 +13,6 @@ export const useSubmissionFilters = (submissions: POISubmission[]) => {
   const [filters, setFilters] = useState<Filters>({
     status: 'tutti',
     category: 'tutti',
-    macroArea: 'tutti',
     searchTerm: ''
   });
 
@@ -29,9 +27,6 @@ export const useSubmissionFilters = (submissions: POISubmission[]) => {
       filtered = filtered.filter(sub => sub.category === filters.category);
     }
 
-    if (filters.macroArea !== 'tutti') {
-      filtered = filtered.filter(sub => sub.macro_area === filters.macroArea);
-    }
 
     if (filters.searchTerm.trim()) {
       const searchLower = filters.searchTerm.toLowerCase();
@@ -50,7 +45,6 @@ export const useSubmissionFilters = (submissions: POISubmission[]) => {
     const activeFilters = [];
     if (filters.status !== 'tutti') activeFilters.push(`Status: ${filters.status}`);
     if (filters.category !== 'tutti') activeFilters.push(`Categoria: ${filters.category}`);
-    if (filters.macroArea !== 'tutti') activeFilters.push(`Macro-Area: ${filters.macroArea}`);
     if (filters.searchTerm) activeFilters.push(`Ricerca: "${filters.searchTerm}"`);
     
     return activeFilters.length > 0 ? activeFilters.join(' • ') : 'Nessun filtro attivo';

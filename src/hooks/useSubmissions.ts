@@ -6,7 +6,6 @@ interface POISubmission {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   status: string;
   created_at: string;

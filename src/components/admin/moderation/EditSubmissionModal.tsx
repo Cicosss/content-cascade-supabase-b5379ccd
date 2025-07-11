@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { POISubmission } from './POISubmission';
-import { MACRO_AREAS, getCategoriesForMacroArea } from '@/config/categoryMapping';
+import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import RichTextEditor from '@/components/ui/rich-text-editor';
@@ -24,26 +24,13 @@ const EditSubmissionModal: React.FC<EditSubmissionModalProps> = ({
   onSave
 }) => {
   const [formData, setFormData] = useState<Partial<POISubmission>>({});
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (submission) {
       setFormData({ ...submission });
-      const categories = getCategoriesForMacroArea(submission.macro_area);
-      setAvailableCategories(categories);
     }
   }, [submission]);
-
-  useEffect(() => {
-    if (formData.macro_area) {
-      const categories = getCategoriesForMacroArea(formData.macro_area);
-      setAvailableCategories(categories);
-      if (!categories.includes(formData.category || '')) {
-        setFormData(prev => ({ ...prev, category: categories[0] || '' }));
-      }
-    }
-  }, [formData.macro_area, formData.category]);
 
   const handleInputChange = (field: keyof POISubmission, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -59,7 +46,6 @@ const EditSubmissionModal: React.FC<EditSubmissionModalProps> = ({
         .update({
           name: formData.name,
           description: formData.description,
-          macro_area: formData.macro_area,
           category: formData.category,
           address: formData.address,
           price_info: formData.price_info,
@@ -109,39 +95,23 @@ const EditSubmissionModal: React.FC<EditSubmissionModalProps> = ({
             </div>
             
             <div>
-              <Label htmlFor="macro_area">Macro-Area *</Label>
+              <Label htmlFor="category">Categoria *</Label>
               <Select 
-                value={formData.macro_area || ''} 
-                onValueChange={(value) => handleInputChange('macro_area', value)}
+                value={formData.category || ''} 
+                onValueChange={(value) => handleInputChange('category', value)}
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.keys(MACRO_AREAS).map((area) => (
-                    <SelectItem key={area} value={area}>{area}</SelectItem>
+                  {OFFICIAL_CATEGORIES.map((category) => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="category">Categoria *</Label>
-            <Select 
-              value={formData.category || ''} 
-              onValueChange={(value) => handleInputChange('category', value)}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {availableCategories.map((category) => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
 
           <div>
             <Label htmlFor="description">Descrizione</Label>

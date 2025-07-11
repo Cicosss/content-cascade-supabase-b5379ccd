@@ -6,7 +6,6 @@ interface POISubmission {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   status: string;
   created_at: string;
@@ -65,7 +64,7 @@ const SubmissionsList: React.FC<SubmissionsListProps> = ({ submissions }) => {
               </div>
               <p className="text-slate-600 text-sm line-clamp-2">{submission.description}</p>
               <div className="flex justify-between items-center text-xs text-slate-500">
-                <span>{submission.macro_area} - {submission.category}</span>
+                <span>{submission.category}</span>
                 <span>{new Date(submission.created_at).toLocaleDateString('it-IT')}</span>
               </div>
             </div>

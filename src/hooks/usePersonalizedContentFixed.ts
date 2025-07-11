@@ -36,9 +36,6 @@ export const usePersonalizedContent = (filters?: any) => {
 
       // Only apply filters if they exist and are different from previous
       if (filters && typeof filters === 'object') {
-        if (filters.zone && filters.zone !== 'tuttalromagna') {
-          query = query.eq('macro_area', filters.zone);
-        }
         if (filters.category) {
           query = query.eq('category', filters.category);
         }

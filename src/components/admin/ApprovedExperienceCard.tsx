@@ -8,7 +8,6 @@ interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -93,7 +92,6 @@ const ApprovedExperienceCard: React.FC<ApprovedExperienceCardProps> = ({
       <CardContent>
         <div className="grid md:grid-cols-2 gap-4 mb-4">
           <div>
-            <p><strong>Macro-Area:</strong> {experience.macro_area}</p>
             <p><strong>Categoria:</strong> {experience.category}</p>
             <p><strong>Target:</strong> {experience.target_audience}</p>
             {experience.address && (

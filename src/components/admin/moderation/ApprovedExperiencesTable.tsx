@@ -85,10 +85,7 @@ const ApprovedExperiencesTable: React.FC<ApprovedExperiencesTableProps> = ({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div>
-                    <div className="text-sm text-gray-600">{experience.macro_area}</div>
-                    <div className="font-medium">{experience.category}</div>
-                  </div>
+                  <div className="font-medium">{experience.category}</div>
                 </TableCell>
                 <TableCell>
                   {formatDistanceToNow(new Date(experience.created_at), {
