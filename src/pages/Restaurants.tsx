@@ -21,14 +21,19 @@ const Restaurants = () => {
 
   const fetchRestaurants = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('points_of_interest')
-      .select('*')
-      .eq('macro_area', 'Gusto & Sapori')
-      .order('created_at', { ascending: false });
+    try {
+      // @ts-ignore - Workaround for Supabase TypeScript issue
+      const { data, error } = await supabase
+        .from('points_of_interest')
+        .select('*')
+        .eq('macro_area', 'Gusto & Sapori')
+        .order('created_at', { ascending: false });
 
-    if (data) {
-      setRestaurants(data);
+      if (data && !error) {
+        setRestaurants(data as Restaurant[]);
+      }
+    } catch (error) {
+      console.error('Error fetching restaurants:', error);
     }
     setLoading(false);
   };
