@@ -88,16 +88,18 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] overflow-hidden flex flex-col">
+      <DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] overflow-hidden flex flex-col bg-white dark:bg-gray-800 border shadow-lg"
+                     aria-describedby="edit-description"
+      >
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-xl">Modifica Esperienza Live: {experience.name}</DialogTitle>
         </DialogHeader>
         
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto px-1">
+        <div id="edit-description" className="flex-1 overflow-y-auto px-1">
           <div className="space-y-6 pb-4">
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-              <p className="text-sm text-blue-800">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-3">
+              <p className="text-sm text-blue-800 dark:text-blue-200">
                 ⚡ Stai modificando un'esperienza <strong>già pubblicata</strong>. 
                 Le modifiche saranno immediatamente visibili agli utenti.
               </p>
