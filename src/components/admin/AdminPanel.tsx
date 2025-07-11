@@ -45,7 +45,7 @@ const AdminPanel: React.FC = () => {
         </TabsContent>
         
         <TabsContent value="add-new" className="mt-6">
-          <POIFormComponent />
+          <POIFormComponent onRefreshSubmissions={() => {}} />
         </TabsContent>
       </Tabs>
     </div>

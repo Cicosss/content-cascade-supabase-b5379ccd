@@ -7,7 +7,6 @@ export const useFormValidation = () => {
 
     // Campi obbligatori
     if (!formData.name.trim()) errors.push('Il nome è obbligatorio');
-    if (!formData.macro_area) errors.push('La macro-area è obbligatoria');
     if (!formData.category) errors.push('La categoria è obbligatoria');
     if (!formData.address.trim()) errors.push('L\'indirizzo è obbligatorio');
     

@@ -17,7 +17,7 @@ export const usePOIFormValidation = () => {
         return true;
 
       case 1: // Info principali
-        if (!formData.submitter_email || !formData.name || !formData.macro_area || !formData.category) {
+        if (!formData.submitter_email || !formData.name || !formData.category) {
           toast({
             title: "Campi obbligatori mancanti",
             description: "Compila tutti i campi obbligatori contrassegnati con *",

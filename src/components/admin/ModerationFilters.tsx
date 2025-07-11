@@ -6,13 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Filter, Search } from 'lucide-react';
-import { MACRO_AREAS, getAllCategories } from '@/config/categoryMapping';
+import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 
 interface ModerationFiltersProps {
   filters: {
     status: string;
     category: string;
-    macroArea: string;
     searchTerm: string;
   };
   setFilters: (filters: any) => void;
@@ -20,8 +19,7 @@ interface ModerationFiltersProps {
 
 const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilters }) => {
   const statusOptions = ['tutti', 'pending', 'approved', 'rejected', 'edited'];
-  const allCategories = getAllCategories();
-  const macroAreaOptions = ['tutti', ...Object.keys(MACRO_AREAS)];
+  const allCategories = [...OFFICIAL_CATEGORIES];
 
   const updateFilter = (key: string, value: string) => {
     setFilters({ ...filters, [key]: value });
@@ -31,7 +29,6 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
     setFilters({
       status: 'tutti',
       category: 'tutti',
-      macroArea: 'tutti',
       searchTerm: ''
     });
   };
@@ -47,7 +44,7 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         
         {/* Ricerca testuale */}
         <div className="space-y-2">
@@ -75,23 +72,6 @@ const ModerationFilters: React.FC<ModerationFiltersProps> = ({ filters, setFilte
                 <SelectItem key={status} value={status}>
                   {status === 'tutti' ? 'Tutti' : status === 'pending' ? 'In Attesa' : 
                    status === 'approved' ? 'Approvati' : status === 'rejected' ? 'Rifiutati' : 'Modificati'}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Macro-Area */}
-        <div className="space-y-2">
-          <Label className="font-semibold text-gray-700">Macro-Area</Label>
-          <Select value={filters.macroArea} onValueChange={(value) => updateFilter('macroArea', value)}>
-            <SelectTrigger className="border-2">
-              <SelectValue placeholder="Seleziona macro-area" />
-            </SelectTrigger>
-            <SelectContent>
-              {macroAreaOptions.map((macroArea) => (
-                <SelectItem key={macroArea} value={macroArea}>
-                  {macroArea === 'tutti' ? 'Tutte' : macroArea}
                 </SelectItem>
               ))}
             </SelectContent>

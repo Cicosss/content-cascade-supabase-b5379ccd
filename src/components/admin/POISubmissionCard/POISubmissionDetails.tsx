@@ -11,7 +11,6 @@ const POISubmissionDetails = ({ submission }: POISubmissionDetailsProps) => {
   return (
     <div className="grid md:grid-cols-2 gap-4 mb-4">
       <div>
-        <p><strong>Macro-Area:</strong> {submission.macro_area}</p>
         <p><strong>Categoria:</strong> {submission.category}</p>
         <p><strong>Target:</strong> {submission.target_audience}</p>
         {submission.address && (

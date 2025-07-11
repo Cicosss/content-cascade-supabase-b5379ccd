@@ -25,7 +25,6 @@ export const usePOIFormSubmission = () => {
         submitter_email: formData.submitter_email,
         name: formData.name,
         description: formData.description,
-        macro_area: formData.macro_area,
         category: formData.category,
         tags: formData.tags,
         address: formData.address,

@@ -6,7 +6,8 @@ import DeApprovalConfirmDialog from './DeApprovalConfirmDialog';
 import ApprovedExperiencesHeader from './ApprovedExperiencesHeader';
 import ApprovedExperiencesSummary from './ApprovedExperiencesSummary';
 import ApprovedExperiencesList from './ApprovedExperiencesList';
-import { useApprovedExperiences, ApprovedExperience } from '@/hooks/useApprovedExperiences';
+import { useApprovedExperiences } from '@/hooks/useApprovedExperiences';
+import type { ApprovedExperience } from '@/hooks/useApprovedExperiences';
 import { useExperienceFilters } from '@/hooks/useExperienceFilters';
 
 const ApprovedExperiencesPanel = () => {

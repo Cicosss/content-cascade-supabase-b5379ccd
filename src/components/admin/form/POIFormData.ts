@@ -2,7 +2,6 @@
 export interface FormData {
   poi_type: 'place' | 'event';
   name: string;
-  macro_area: string;
   category: string;
   description: string;
   address: string;
@@ -26,7 +25,6 @@ export interface FormData {
 export const initialFormData: FormData = {
   poi_type: 'place',
   name: '',
-  macro_area: 'Gusto & Sapori',
   category: 'Ristoranti',
   description: '',
   address: '',
