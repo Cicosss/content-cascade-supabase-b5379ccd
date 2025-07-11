@@ -23,8 +23,8 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
   });
 
   const displayText = selectedDateRange?.from 
-    ? formatDisplayDateRange(selectedDateRange)
-    : 'Seleziona le date del tuo soggiorno';
+    ? formatDisplayDateRange(selectedDateRange) || (selectedDateRange.to ? '' : 'Seleziona data di fine')
+    : 'Seleziona data di arrivo e partenza';
 
   const hasSelection = !!selectedDateRange?.from;
 
@@ -55,8 +55,25 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
               onPrevMonth={() => {}}
               onNextMonth={() => {}}
               onDayClick={(date: Date) => {
-                const newRange = { from: date, to: undefined };
-                handleDateRangeSelect(newRange);
+                if (!selectedDateRange?.from) {
+                  // Prima selezione: imposta data di inizio
+                  const newRange = { from: date, to: undefined };
+                  handleDateRangeSelect(newRange);
+                } else if (!selectedDateRange.to) {
+                  // Seconda selezione: imposta data di fine o ricomincia
+                  if (date >= selectedDateRange.from) {
+                    const newRange = { from: selectedDateRange.from, to: date };
+                    handleDateRangeSelect(newRange);
+                  } else {
+                    // Data precedente a quella di inizio: ricomincia
+                    const newRange = { from: date, to: undefined };
+                    handleDateRangeSelect(newRange);
+                  }
+                } else {
+                  // Range già completo: ricomincia
+                  const newRange = { from: date, to: undefined };
+                  handleDateRangeSelect(newRange);
+                }
               }}
               range={selectedDateRange}
             />

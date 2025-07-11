@@ -49,9 +49,12 @@ export class POIDataService {
       const endDate = filters.period.to ? endOfDay(filters.period.to) : endOfDay(filters.period.from);
       
       console.log('📅 Applicando filtro data:', { startDate, endDate });
-      query = query.or(
-        `start_datetime.is.null,start_datetime.lte.${endDate.toISOString()},end_datetime.gte.${startDate.toISOString()}`
-      );
+      
+      // Logic: Events that overlap with vacation period
+      // Event overlaps with vacation if: event.start <= vacation.end AND (event.end >= vacation.start OR event.end is null)
+      query = query
+        .lte('start_datetime', endDate.toISOString())
+        .or(`end_datetime.gte.${startDate.toISOString()},end_datetime.is.null`);
     }
 
     console.log('🔍 Eseguendo query al database...');

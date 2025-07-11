@@ -66,16 +66,39 @@ function isToday(date: Date) {
 }
 
 const CustomCalendar: React.FC<CustomCalendarProps> = ({
-  leftMonth,
-  leftYear,
+  leftMonth: initialLeftMonth,
+  leftYear: initialLeftYear,
   onPrevMonth,
   onNextMonth,
   onDayClick,
   range,
 }) => {
+  const [leftMonth, setLeftMonth] = React.useState(initialLeftMonth);
+  const [leftYear, setLeftYear] = React.useState(initialLeftYear);
+  
   let rightMonth = leftMonth + 1;
   let rightYear = leftYear;
   if (rightMonth > 11) { rightMonth = 0; rightYear++; }
+
+  const handlePrevMonth = () => {
+    if (leftMonth === 0) {
+      setLeftMonth(11);
+      setLeftYear(leftYear - 1);
+    } else {
+      setLeftMonth(leftMonth - 1);
+    }
+    onPrevMonth();
+  };
+
+  const handleNextMonth = () => {
+    if (leftMonth === 11) {
+      setLeftMonth(0);
+      setLeftYear(leftYear + 1);
+    } else {
+      setLeftMonth(leftMonth + 1);
+    }
+    onNextMonth();
+  };
 
   function renderMonth(month: number, year: number, isLeft: boolean) {
     const daysMatrix = getDaysMatrix(month, year);
@@ -86,7 +109,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
         <div className="flex items-center justify-between mb-2">
           {isLeft ? (
             <button
-              onClick={onPrevMonth}
+              onClick={handlePrevMonth}
               className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
               aria-label="Mese precedente"
               type="button"
@@ -99,7 +122,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
           </span>
           {!isLeft ? (
             <button
-              onClick={onNextMonth}
+              onClick={handleNextMonth}
               className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
               aria-label="Mese successivo"
               type="button"
