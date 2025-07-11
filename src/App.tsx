@@ -18,10 +18,6 @@ import Auth from './pages/Auth';
 import AdminModerationPage from './pages/AdminModerationPage';
 import ScrollToTop from './components/ScrollToTop';
 import NotFound from './pages/NotFound';
-import GustoSapori from '@/pages/GustvSapori';
-import CulturaTerritorio from '@/pages/CulturaTerritorio';
-import EventiSpettacoli from '@/pages/EventiSpettacoli';
-import DivertimentoFamiglia from '@/pages/DivertimentoFamiglia';
 import TerritoryPromoter from '@/pages/TerritoryPromoter';
 import RespiroDelMare from '@/pages/RespiroDelMare';
 import OggiInRomagna from '@/pages/OggiInRomagna';
@@ -52,10 +48,6 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<AdminModerationPage />} />
-            <Route path="/gusto-sapori" element={<GustoSapori />} />
-            <Route path="/cultura-territorio" element={<CulturaTerritorio />} />
-            <Route path="/eventi-spettacoli" element={<EventiSpettacoli />} />
-            <Route path="/divertimento-famiglia" element={<DivertimentoFamiglia />} />
             <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
             <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
             <Route path="/poi/:id" element={<POIDetail />} />
