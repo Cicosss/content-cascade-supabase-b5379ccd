@@ -178,7 +178,6 @@ export type Database = {
           latitude: number | null
           location_name: string | null
           longitude: number | null
-          macro_area: string
           name: string
           organizer_info: string | null
           price_info: string | null
@@ -198,7 +197,6 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
-          macro_area?: string
           name: string
           organizer_info?: string | null
           price_info?: string | null
@@ -218,7 +216,6 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
-          macro_area?: string
           name?: string
           organizer_info?: string | null
           price_info?: string | null
@@ -385,7 +382,6 @@ export type Database = {
           latitude: number | null
           location_name: string | null
           longitude: number | null
-          macro_area: string
           moderated_at: string | null
           moderated_by: string | null
           name: string
@@ -417,7 +413,6 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
-          macro_area?: string
           moderated_at?: string | null
           moderated_by?: string | null
           name: string
@@ -449,7 +444,6 @@ export type Database = {
           latitude?: number | null
           location_name?: string | null
           longitude?: number | null
-          macro_area?: string
           moderated_at?: string | null
           moderated_by?: string | null
           name?: string
@@ -484,7 +478,6 @@ export type Database = {
           latitude: number
           location_name: string | null
           longitude: number
-          macro_area: string
           name: string
           opening_hours: string | null
           organizer_info: string | null
@@ -512,7 +505,6 @@ export type Database = {
           latitude: number
           location_name?: string | null
           longitude: number
-          macro_area?: string
           name: string
           opening_hours?: string | null
           organizer_info?: string | null
@@ -540,7 +532,6 @@ export type Database = {
           latitude?: number
           location_name?: string | null
           longitude?: number
-          macro_area?: string
           name?: string
           opening_hours?: string | null
           organizer_info?: string | null

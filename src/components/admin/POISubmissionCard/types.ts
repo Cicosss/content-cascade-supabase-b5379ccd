@@ -4,7 +4,6 @@ export interface POISubmission {
   submitter_email: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -28,6 +27,8 @@ export interface POISubmission {
   moderated_at: string;
   moderated_by: string;
   tags: string[];
+  poi_type: string;
+  opening_hours: string;
 }
 
 export interface POISubmissionCardProps {

@@ -3,7 +3,6 @@ export interface Restaurant {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   address: string;
   latitude: number;

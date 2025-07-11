@@ -4,13 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MACRO_AREAS, getCategoriesForMacroArea } from '@/config/categoryMapping';
+import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 
 interface BasicInfoFieldsProps {
   formData: {
     poi_type: string;
     name: string;
-    macro_area: string;
     category: string;
     description: string;
     opening_hours: string;
@@ -19,21 +18,10 @@ interface BasicInfoFieldsProps {
 }
 
 const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({ formData, onInputChange }) => {
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
-  const macroAreaKeys = useMemo(() => Object.keys(MACRO_AREAS), []);
+  // Ora usiamo direttamente tutte le 17 categorie ufficiali
+  const availableCategories = OFFICIAL_CATEGORIES;
   const isEvent = formData.poi_type === 'event';
   const isPlace = formData.poi_type === 'place';
-
-  useEffect(() => {
-    if (formData.macro_area) {
-      const categories = getCategoriesForMacroArea(formData.macro_area);
-      setAvailableCategories(categories);
-      
-      if (formData.category && !categories.includes(formData.category)) {
-        onInputChange('category', '');
-      }
-    }
-  }, [formData.macro_area, formData.category, onInputChange]);
 
   return (
     <>
@@ -51,40 +39,23 @@ const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({ formData, onInputChan
         </div>
         
         <div>
-          <Label htmlFor="macro_area">Macro-Area *</Label>
-          <Select value={formData.macro_area} onValueChange={(value) => onInputChange('macro_area', value)}>
+          <Label htmlFor="category">Categoria *</Label>
+          <Select 
+            value={formData.category} 
+            onValueChange={(value) => onInputChange('category', value)}
+          >
             <SelectTrigger>
-              <SelectValue placeholder="Seleziona macro-area" />
+              <SelectValue placeholder="Seleziona la categoria" />
             </SelectTrigger>
             <SelectContent>
-              {macroAreaKeys.map((macroArea) => (
-                <SelectItem key={macroArea} value={macroArea}>
-                  {macroArea}
+              {availableCategories.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-      </div>
-
-      <div>
-        <Label htmlFor="category">Categoria *</Label>
-        <Select 
-          value={formData.category} 
-          onValueChange={(value) => onInputChange('category', value)}
-          disabled={!formData.macro_area}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder={formData.macro_area ? "Seleziona categoria" : "Seleziona prima una macro-area"} />
-          </SelectTrigger>
-          <SelectContent>
-            {availableCategories.map((category) => (
-              <SelectItem key={category} value={category}>
-                {category}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
       <div>

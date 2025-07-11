@@ -1,13 +1,12 @@
 
 import { useState, useEffect } from 'react';
-import { getCategoriesForMacroArea } from '@/config/categoryMapping';
+import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 
 interface FormData {
   poi_type: 'place' | 'event' | '';
   submitter_email: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   tags: string[];
   address: string;
@@ -32,7 +31,6 @@ const initialFormData: FormData = {
   submitter_email: '',
   name: '',
   description: '',
-  macro_area: '',
   category: '',
   tags: [],
   address: '',
@@ -54,18 +52,8 @@ const initialFormData: FormData = {
 
 export const usePOIFormData = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (formData.macro_area) {
-      const categories = getCategoriesForMacroArea(formData.macro_area);
-      setAvailableCategories(categories);
-      
-      if (formData.category && !categories.includes(formData.category)) {
-        setFormData(prev => ({ ...prev, category: '' }));
-      }
-    }
-  }, [formData.macro_area]);
+  // Ora usiamo direttamente tutte le 17 categorie ufficiali
+  const availableCategories = [...OFFICIAL_CATEGORIES];
 
   const handleInputChange = (field: string, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));

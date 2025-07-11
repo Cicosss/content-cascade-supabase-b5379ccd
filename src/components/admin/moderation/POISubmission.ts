@@ -4,7 +4,6 @@ export interface POISubmission {
   submitter_email: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   tags: string[];
   address: string;

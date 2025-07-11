@@ -7,7 +7,6 @@ export interface ApprovedExperience {
   id: string;
   name: string;
   description: string;
-  macro_area: string;
   category: string;
   address: string;
   latitude: number;
@@ -34,7 +33,6 @@ export interface ApprovedExperience {
 interface Filters {
   status: string;
   category: string;
-  macroArea: string;
   searchTerm: string;
   poiType: string;
 }
@@ -85,9 +83,7 @@ export const useApprovedExperiences = () => {
       filtered = filtered.filter(exp => exp.category === filters.category);
     }
 
-    if (filters.macroArea !== 'tutti') {
-      filtered = filtered.filter(exp => exp.macro_area === filters.macroArea);
-    }
+    // Filtro macro_area rimosso - ora si usa solo category
 
     // Nuovo filtro per tipo POI
     if (filters.poiType !== 'tutti') {
@@ -155,7 +151,6 @@ export const useApprovedExperiences = () => {
           submitter_email: experience.email || 'admin@miaromagna.it',
           name: experience.name,
           description: experience.description,
-          macro_area: experience.macro_area,
           category: experience.category,
           address: experience.address,
           latitude: experience.latitude,
