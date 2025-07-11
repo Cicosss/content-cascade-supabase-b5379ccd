@@ -9,13 +9,14 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useSchemaColumns } from '@/hooks/useSchemaColumns';
 import { parseCSVLine } from '@/utils/csvParser';
+import { validateMacroArea, validateCategory, validatePoiType, validateTargetAudience } from '@/utils/csvValidationRules';
 
 interface DynamicCsvUploaderProps {
   onSuccess: () => void;
 }
 
 const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) => {
-  const { columns, requiredColumns, optionalColumns, loading, error, downloadTemplate } = useSchemaColumns();
+  const { columns, requiredColumns, optionalColumns, loading, error, downloadTemplate, getValidationInfo } = useSchemaColumns();
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [previewData, setPreviewData] = useState<any[]>([]);
@@ -111,12 +112,12 @@ const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) =>
             status: 'pending'
           };
 
-          // Mapping dei valori
+          // Mapping e validazione dei valori
           fileHeaders.forEach((header, colIdx) => {
             if (values[colIdx] && values[colIdx].trim()) {
               const value = values[colIdx].trim();
               
-              // Conversioni per tipi specifici
+              // Conversioni e validazioni per tipi specifici
               if (header === 'latitude' || header === 'longitude') {
                 const num = parseFloat(value);
                 if (!isNaN(num)) rowData[header] = num;
@@ -124,11 +125,22 @@ const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) =>
                 rowData[header] = value.split(',').map(t => t.trim()).filter(t => t);
               } else if (header === 'images' && value) {
                 rowData[header] = value.split(',').map(t => t.trim()).filter(t => t);
+              } else if (header === 'macro_area') {
+                rowData[header] = validateMacroArea(value);
+              } else if (header === 'poi_type') {
+                rowData[header] = validatePoiType(value);
+              } else if (header === 'target_audience') {
+                rowData[header] = validateTargetAudience(value);
               } else {
                 rowData[header] = value;
               }
             }
           });
+
+          // Validazione speciale per category (dipende da macro_area)
+          if (rowData.category) {
+            rowData.category = validateCategory(rowData.category, rowData.macro_area || 'Gusto & Sapori');
+          }
 
           // Controllo campi obbligatori
           const hasRequiredFields = requiredColumns.every(col => 
@@ -233,6 +245,21 @@ const DynamicCsvUploader: React.FC<DynamicCsvUploaderProps> = ({ onSuccess }) =>
             <code className="text-sm bg-muted p-2 rounded block">
               {optionalColumns.map(col => col.column_name).join(', ')}
             </code>
+          </div>
+
+          <div>
+            <h4 className="font-medium mb-2">Valori Ammessi per Campi Specifici:</h4>
+            <div className="space-y-2 text-sm">
+              <div>
+                <strong>macro_area:</strong> {getValidationInfo().macroAreaValues.join(', ')}
+              </div>
+              <div>
+                <strong>poi_type:</strong> {getValidationInfo().poiTypeValues.join(', ')}
+              </div>
+              <div>
+                <strong>target_audience:</strong> {getValidationInfo().targetAudienceValues.join(', ')}
+              </div>
+            </div>
           </div>
 
           <Button 
