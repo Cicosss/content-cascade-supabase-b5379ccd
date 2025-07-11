@@ -1,10 +1,10 @@
 
 import { useMemo } from 'react';
 
-export const useMarkerIcons = () => {
+export const useMarkerIcons = (isGoogleMapsLoaded?: boolean) => {
   // Memoized POI icon configuration
   const poiIcon = useMemo(() => {
-    if (!window.google?.maps) return null;
+    if (!window.google?.maps?.Size || !isGoogleMapsLoaded) return null;
     
     return {
       url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
@@ -16,11 +16,11 @@ export const useMarkerIcons = () => {
       scaledSize: new window.google.maps.Size(32, 32),
       anchor: new window.google.maps.Point(16, 16),
     };
-  }, []);
+  }, [isGoogleMapsLoaded]);
 
   // Memoized user location icon configuration
   const userIcon = useMemo(() => {
-    if (!window.google?.maps) return null;
+    if (!window.google?.maps?.Size || !isGoogleMapsLoaded) return null;
     
     return {
       url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
@@ -32,7 +32,7 @@ export const useMarkerIcons = () => {
       scaledSize: new window.google.maps.Size(24, 24),
       anchor: new window.google.maps.Point(12, 12),
     };
-  }, []);
+  }, [isGoogleMapsLoaded]);
 
   return { poiIcon, userIcon };
 };

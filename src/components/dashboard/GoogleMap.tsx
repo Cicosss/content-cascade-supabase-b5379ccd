@@ -31,7 +31,8 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     map: mapInstance,
     pois,
     userLocation,
-    onPOISelect: setSelectedPOI
+    onPOISelect: setSelectedPOI,
+    isGoogleMapsLoaded: isLoaded
   });
 
   // Transform filters for POI data service

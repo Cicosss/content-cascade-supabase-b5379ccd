@@ -10,16 +10,18 @@ interface UseOptimizedMarkerPoolProps {
   pois: POI[];
   userLocation: { lat: number; lng: number } | null;
   onPOISelect: (poi: POI) => void;
+  isGoogleMapsLoaded?: boolean;
 }
 
 export const useOptimizedMarkerPool = ({ 
   map, 
   pois, 
   userLocation, 
-  onPOISelect 
+  onPOISelect,
+  isGoogleMapsLoaded 
 }: UseOptimizedMarkerPoolProps) => {
   // Get memoized icons
-  const { poiIcon, userIcon } = useMarkerIcons();
+  const { poiIcon, userIcon } = useMarkerIcons(isGoogleMapsLoaded);
   
   // Get validated POIs
   const { validPOIs } = usePOIValidation(pois);

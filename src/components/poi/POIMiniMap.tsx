@@ -14,7 +14,7 @@ const POIMiniMap: React.FC<POIMiniMapProps> = ({ latitude, longitude, name }) =>
 
   useEffect(() => {
     const loadGoogleMaps = () => {
-      if (!window.google) {
+      if (!window.google?.maps?.Size) {
         const script = document.createElement('script');
         script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBYu9y2Rig3ueioFfy-Ait65lRcOTIIR6A&libraries=places`;
         script.async = true;
@@ -47,7 +47,12 @@ const POIMiniMap: React.FC<POIMiniMapProps> = ({ latitude, longitude, name }) =>
         ]
       });
 
-      // Add marker
+      // Add marker with better error checking
+      if (!window.google?.maps?.Size || !window.google?.maps?.Point) {
+        console.warn('Google Maps Size or Point not available yet');
+        return;
+      }
+
       new window.google.maps.Marker({
         position: position,
         map: mapInstanceRef.current,
