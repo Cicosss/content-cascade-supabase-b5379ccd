@@ -69,7 +69,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
               id="confirm"
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
-              placeholder="Digita il nome dell'esperienza"
+              placeholder={`Digita: ${experience.name}`}
               className={!isConfirmValid && confirmText ? 'border-red-300' : ''}
             />
             {confirmText && !isConfirmValid && (

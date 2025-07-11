@@ -46,7 +46,7 @@ const Experiences = () => {
     const { data, error } = await supabase
       .from('points_of_interest')
       .select('id, name, description, category, address, duration_info, avg_rating, price_info, created_at')
-      .eq('macro_area', 'Divertimento & Famiglia')
+      .in('category', ['Attrazioni per Famiglie', 'Sport e Attività all\'Aperto', 'Parchi Divertimento'])
       .order('created_at', { ascending: false });
 
     if (data) {
