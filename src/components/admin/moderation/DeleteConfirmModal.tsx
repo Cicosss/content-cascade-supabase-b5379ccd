@@ -41,7 +41,9 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md bg-white dark:bg-gray-800 border shadow-lg"
+                     aria-describedby="delete-description"
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-red-500" />
@@ -49,9 +51,9 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-4">
-          <div className="bg-red-50 border border-red-200 rounded-md p-4">
-            <div className="text-sm text-red-800 space-y-2">
+         <div id="delete-description" className="space-y-4">
+           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-4">
+             <div className="text-sm text-red-800 dark:text-red-200 space-y-2">
               <p className="font-medium">⚠️ ATTENZIONE: Questa azione è irreversibile!</p>
               <p>
                 Stai per eliminare definitivamente l'esperienza <strong>"{experience.name}"</strong> 
