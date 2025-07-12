@@ -68,31 +68,7 @@ export const useSchemaColumns = () => {
 
   const generateCsvTemplate = () => {
     const headers = userEditableColumns.map(col => col.column_name);
-    let csvContent = headers.join(',') + '\n';
-    
-    // Add example row with valid values
-    const exampleRow = userEditableColumns.map(col => {
-      switch (col.column_name) {
-        case 'submitter_email': return 'admin@miaromagna.it';
-        case 'name': return 'Nome del POI';
-        case 'description': return 'Descrizione del punto di interesse';
-        case 'poi_type': return 'place';
-        case 'category': return 'Ristoranti';
-        case 'address': return 'Via Roma 1, Rimini';
-        case 'latitude': return '44.0678';
-        case 'longitude': return '12.5695';
-        case 'location_name': return 'Centro Storico';
-        case 'price_info': return '€€';
-        case 'target_audience': return 'everyone';
-        case 'phone': return '+39 0541 123456';
-        case 'email': return 'info@poi.it';
-        case 'website_url': return 'https://www.poi.it';
-        case 'tags': return 'ristorante,cucina italiana';
-        default: return '';
-      }
-    });
-    
-    csvContent += exampleRow.join(',') + '\n';
+    const csvContent = headers.join(',') + '\n';
     return csvContent;
   };
 
