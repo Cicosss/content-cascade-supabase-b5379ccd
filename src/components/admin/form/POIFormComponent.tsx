@@ -13,11 +13,11 @@ import { Loader2, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { OFFICIAL_CATEGORIES, AVAILABLE_TAGS } from '@/config/categoryMapping';
 import { FormData, initialFormData } from './POIFormData';
-import { useGoogleMaps } from './useGoogleMaps';
 import { useFormValidation } from './useFormValidation';
 import MediaUploader from '@/components/admin/MediaUploader';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 import DynamicCsvUploader from '@/components/admin/DynamicCsvUploader';
+import AddressAutocomplete from '@/components/ui/AddressAutocomplete';
 
 interface POIFormComponentProps {
   onRefreshSubmissions: () => void;
@@ -30,7 +30,6 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const { isGoogleMapsLoaded, addressInputRef } = useGoogleMaps(formData, setFormData, setIsAddressConfirmed);
   const { validateForm } = useFormValidation();
 
   // Ora usiamo direttamente tutte le 17 categorie ufficiali
@@ -46,9 +45,28 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
     }
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleInputChange('address', e.target.value);
+  const handleAddressChange = (value: string) => {
+    handleInputChange('address', value);
     setIsAddressConfirmed(false);
+  };
+
+  const handleAddressSelect = (addressData: { address: string; latitude: number; longitude: number; city?: string; province?: string; postalCode?: string; country?: string; }) => {
+    console.log('🏠 Indirizzo selezionato:', addressData);
+    
+    // Aggiorna i dati del form con le informazioni dell'indirizzo
+    setFormData(prev => ({
+      ...prev,
+      address: addressData.address,
+      latitude: addressData.latitude.toString(),
+      longitude: addressData.longitude.toString(),
+      location_name: prev.location_name || addressData.city || '' // Usa location_name esistente o città
+    }));
+    
+    setIsAddressConfirmed(true);
+  };
+
+  const handleAddressConfirmationChange = (isConfirmed: boolean) => {
+    setIsAddressConfirmed(isConfirmed);
   };
 
   const handleTagChange = (tag: string, checked: boolean) => {
@@ -251,28 +269,26 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
 
               {/* Indirizzo e posizione */}
               <div className="space-y-4">
+                <AddressAutocomplete
+                  label="Indirizzo *"
+                  placeholder="Inserisci l'indirizzo completo"
+                  value={formData.address}
+                  onChange={handleAddressChange}
+                  onAddressSelect={handleAddressSelect}
+                  onConfirmationChange={handleAddressConfirmationChange}
+                  isConfirmed={isAddressConfirmed}
+                  required
+                />
+                {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
+
                 <div>
-                  <Label htmlFor="address">Indirizzo *</Label>
-                  <div className="relative">
-                    <Input
-                      id="address"
-                      ref={addressInputRef}
-                      value={formData.address}
-                      onChange={handleAddressChange}
-                      placeholder="Inserisci l'indirizzo completo"
-                    />
-                    {isAddressConfirmed ? (
-                      <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
-                    ) : (
-                      <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-amber-500" />
-                    )}
-                  </div>
-                  {!isAddressConfirmed && formData.address && (
-                    <p className="text-sm text-amber-600 mt-1">
-                      Seleziona l'indirizzo dai suggerimenti per confermare la posizione
-                    </p>
-                  )}
-                  {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
+                  <Label htmlFor="location_name">Nome Località</Label>
+                  <Input
+                    id="location_name"
+                    value={formData.location_name}
+                    onChange={(e) => handleInputChange('location_name', e.target.value)}
+                    placeholder="Es: Centro Storico, Borgo Marina"
+                  />
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
@@ -426,7 +442,7 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
               <Button 
                 type="submit" 
                 className="w-full" 
-                disabled={isSubmitting || !isGoogleMapsLoaded}
+                disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
