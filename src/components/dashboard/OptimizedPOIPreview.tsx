@@ -66,7 +66,9 @@ const truncateDescription = (text: string, maxWords: number = 18): string => {
 const shouldShowPrice = (price_info?: string): boolean => {
   if (!price_info) return false;
   const trimmedPrice = price_info.trim();
-  if (trimmedPrice === '' || trimmedPrice === '0' || trimmedPrice === '0€') return false;
+  if (trimmedPrice === '' || trimmedPrice === '0' || trimmedPrice === '0€' || trimmedPrice === '0 €' || trimmedPrice.toLowerCase() === 'null') return false;
+  // Controlla se è solo un numero 0
+  if (parseFloat(trimmedPrice) === 0) return false;
   return true;
 };
 
