@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ApprovedExperience } from '@/hooks/useApprovedExperiences';
@@ -11,6 +11,7 @@ import { OFFICIAL_CATEGORIES } from '@/config/categoryMapping';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import CompactMediaUploader from '@/components/admin/CompactMediaUploader';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 interface EditApprovedModalProps {
   experience: ApprovedExperience | null;
@@ -136,11 +137,10 @@ const EditApprovedModal: React.FC<EditApprovedModalProps> = ({
 
           <div>
             <Label htmlFor="description">Descrizione</Label>
-            <Textarea
-              id="description"
+            <RichTextEditor
               value={formData.description || ''}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              rows={3}
+              onChange={(value) => handleInputChange('description', value)}
+              placeholder="Descrivi l'esperienza in dettaglio..."
             />
           </div>
 
