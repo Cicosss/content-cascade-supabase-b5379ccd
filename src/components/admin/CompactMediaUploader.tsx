@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { X, Upload, Image, Loader2 } from 'lucide-react';
+import { X, Upload, Image, Loader2, Trash2, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
@@ -15,39 +15,38 @@ const CompactMediaUploader: React.FC<CompactMediaUploaderProps> = ({
   images,
   onImagesChange
 }) => {
-  const [imageInputs, setImageInputs] = useState<string[]>(images.length > 0 ? images : ['']);
   const { uploadImage, isUploading } = useImageUpload();
-
-  const handleImageUrlChange = (index: number, url: string) => {
-    const newInputs = [...imageInputs];
-    newInputs[index] = url;
-    setImageInputs(newInputs);
-    
-    const validUrls = newInputs.filter(url => url.trim() !== '');
-    onImagesChange(validUrls);
+  
+  // Funzione per eliminare un'immagine
+  const removeImage = (indexToRemove: number) => {
+    const newImages = images.filter((_, index) => index !== indexToRemove);
+    onImagesChange(newImages);
+    toast.success('Immagine eliminata');
   };
 
-  const handleFileUpload = async (file: File, index: number) => {
+  // Funzione per sostituire un'immagine
+  const replaceImage = async (file: File, indexToReplace: number) => {
     const uploadedUrl = await uploadImage(file);
     if (uploadedUrl) {
-      handleImageUrlChange(index, uploadedUrl);
+      const newImages = [...images];
+      newImages[indexToReplace] = uploadedUrl;
+      onImagesChange(newImages);
+      toast.success('Immagine sostituita');
     }
   };
 
-  const addImageInput = () => {
-    if (imageInputs.length >= 4) {
-      toast.error('Massimo 4 immagini');
-      return;
-    }
-    setImageInputs([...imageInputs, '']);
-  };
-
-  const removeImageInput = (index: number) => {
-    const newInputs = imageInputs.filter((_, i) => i !== index);
-    setImageInputs(newInputs.length > 0 ? newInputs : ['']);
-    
-    const validUrls = newInputs.filter(url => url.trim() !== '');
-    onImagesChange(validUrls);
+  // Triggerare il file picker per sostituire un'immagine
+  const triggerFileReplace = (indexToReplace: number) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        replaceImage(file, indexToReplace);
+      }
+    };
+    input.click();
   };
 
   return (
@@ -63,94 +62,8 @@ const CompactMediaUploader: React.FC<CompactMediaUploaderProps> = ({
       </div>
 
       <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded border">
-        💡 La prima immagine sarà la copertina
+        💡 Passa il mouse sopra le immagini per modificarle o eliminarle
       </div>
-
-      {imageInputs.map((url, index) => (
-        <div key={index} className={`p-3 border rounded-lg ${
-          index === 0 ? 'bg-blue-50 border-blue-200' : 'bg-gray-50'
-        }`}>
-          <div className="flex items-center justify-between mb-2">
-            <span className={`text-xs font-medium ${
-              index === 0 ? 'text-blue-700' : 'text-gray-700'
-            }`}>
-              {index === 0 ? '🌟 Copertina' : `Img ${index + 1}`}
-            </span>
-            {imageInputs.length > 1 && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => removeImageInput(index)}
-                className="h-6 w-6 p-0"
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            )}
-          </div>
-          
-          <div className="grid grid-cols-1 gap-2">
-            {/* File Upload */}
-            <div className="flex items-center gap-2">
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    handleFileUpload(file, index);
-                  }
-                }}
-                disabled={isUploading}
-                className="text-xs"
-              />
-              {isUploading && <Loader2 className="h-3 w-3 animate-spin" />}
-            </div>
-
-            {/* URL Input */}
-            <Input
-              value={url}
-              onChange={(e) => handleImageUrlChange(index, e.target.value)}
-              placeholder="https://esempio.com/immagine.jpg"
-              type="url"
-              className="text-xs"
-            />
-          </div>
-
-          {/* Compact Preview */}
-          {url && (
-            <div className="mt-2 flex items-center gap-2">
-              <img 
-                src={url} 
-                alt={`Preview ${index + 1}`}
-                className={`object-cover rounded border ${
-                  index === 0 ? 'w-16 h-16 border-2 border-blue-300' : 'w-12 h-12'
-                }`}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-              {index === 0 && (
-                <span className="text-xs text-blue-600">✨ Copertina</span>
-              )}
-            </div>
-          )}
-        </div>
-      ))}
-      
-      {imageInputs.length < 4 && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={addImageInput}
-          className="w-full h-8 text-xs"
-          disabled={isUploading}
-        >
-          <Upload className="h-3 w-3 mr-1" />
-          Aggiungi ({imageInputs.length}/4)
-        </Button>
-      )}
 
       {/* Gallery Preview */}
       {images.length > 0 && (
@@ -177,6 +90,32 @@ const CompactMediaUploader: React.FC<CompactMediaUploaderProps> = ({
                     e.currentTarget.style.display = 'none';
                   }}
                 />
+                
+                {/* Overlay Buttons */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 rounded">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => triggerFileReplace(idx)}
+                    disabled={isUploading}
+                    className="h-6 w-6 p-0 bg-blue-600 hover:bg-blue-700 text-white"
+                    title="Sostituisci immagine"
+                  >
+                    <RefreshCw className="h-3 w-3" />
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => removeImage(idx)}
+                    className="h-6 w-6 p-0"
+                    title="Elimina immagine"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
+                
                 {idx === 0 && (
                   <div className="absolute top-1 left-1 bg-blue-600 text-white text-xs px-1.5 py-0.5 rounded">
                     🌟 Copertina
