@@ -63,6 +63,13 @@ const truncateDescription = (text: string, maxWords: number = 18): string => {
   return words.slice(0, maxWords).join(' ') + '...';
 };
 
+const shouldShowPrice = (price_info?: string): boolean => {
+  if (!price_info) return false;
+  const trimmedPrice = price_info.trim();
+  if (trimmedPrice === '' || trimmedPrice === '0' || trimmedPrice === '0€') return false;
+  return true;
+};
+
 const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ poi, onClose, onGetDirections }) => {
   const navigate = useNavigate();
 
@@ -137,7 +144,7 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ poi, onC
             )}
           </div>
           
-          {poi.price_info && (
+          {shouldShowPrice(poi.price_info) && (
             <div className="flex items-center text-green-600 font-medium">
               <Euro className="h-4 w-4 mr-1" />
               <span className="text-sm">{poi.price_info}</span>
