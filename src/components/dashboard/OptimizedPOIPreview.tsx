@@ -1,4 +1,3 @@
-
 import React, { memo } from 'react';
 import { MapPin, Euro, Star, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,57 +23,95 @@ interface OptimizedPOIPreviewProps {
   onGetDirections: (poi: POI) => void;
 }
 
+// Utility functions for data processing
+const categoryIconMap: Record<string, string> = {
+  'Ristoranti': '🍽️',
+  'Arte': '🏛️',
+  'Sport': '⚽',
+  'Concerti': '🎵',
+  'Parchi': '🌳',
+  'Spiagge': '🏖️',
+  'Musei': '🏛️',
+  'Agriturismi': '🚜',
+  'Cantine': '🍷',
+  'Street Food': '🍕',
+  'Mercati': '🛒',
+  'Borghi': '🏘️',
+  'Castelli': '🏰',
+  'Artigianato': '🎨',
+  'Festival': '🎭',
+  'Teatro': '🎭',
+  'Cinema': '🎬',
+  'Mostre': '🖼️',
+  'Attività per Bambini': '🎠',
+  'Natura': '🌲'
+};
+
 const getCategoryIcon = (category: string): string => {
-  const icons: Record<string, string> = {
-    'Ristoranti': '🍽️',
-    'Arte': '🏛️',
-    'Sport': '⚽',
-    'Concerti': '🎵',
-    'Parchi': '🌳',
-    'Spiagge': '🏖️',
-    'Musei': '🏛️',
-    'Agriturismi': '🚜',
-    'Cantine': '🍷',
-    'Street Food': '🍕',
-    'Mercati': '🛒',
-    'Borghi': '🏘️',
-    'Castelli': '🏰',
-    'Artigianato': '🎨',
-    'Festival': '🎭',
-    'Teatro': '🎭',
-    'Cinema': '🎬',
-    'Mostre': '🖼️',
-    'Attività per Bambini': '🎠',
-    'Natura': '🌲'
-  };
-  return icons[category] || '📍';
+  return categoryIconMap[category] || '📍';
 };
 
-const stripHtmlTags = (html: string): string => {
-  if (!html) return '';
-  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+const sanitizeHtmlText = (htmlString: string): string => {
+  if (!htmlString || typeof htmlString !== 'string') return '';
+  
+  return htmlString
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .trim();
 };
 
-const truncateDescription = (text: string, maxWords: number = 18): string => {
+const truncateText = (text: string, maxWords: number = 18): string => {
   if (!text) return '';
-  const cleanText = stripHtmlTags(text);
-  const words = cleanText.split(' ');
+  
+  const cleanText = sanitizeHtmlText(text);
+  const words = cleanText.split(/\s+/).filter(word => word.length > 0);
+  
   if (words.length <= maxWords) return cleanText;
   return words.slice(0, maxWords).join(' ') + '...';
 };
 
-const shouldShowPrice = (price_info?: string): boolean => {
-  if (!price_info) return false;
-  const trimmedPrice = price_info.trim();
-  if (trimmedPrice === '' || trimmedPrice === '0' || trimmedPrice === '0€' || trimmedPrice === '0 €' || trimmedPrice.toLowerCase() === 'null') return false;
-  // Controlla se è solo un numero 0
-  if (parseFloat(trimmedPrice) === 0) return false;
+const validatePriceInfo = (priceInfo?: string): boolean => {
+  if (!priceInfo) return false;
+  
+  const normalizedPrice = priceInfo.toString().trim().toLowerCase();
+  
+  // Lista di valori che indicano "nessun prezzo valido"
+  const invalidPriceValues = [
+    '', '0', '0€', '0 €', '€0', '€ 0',
+    'null', 'undefined', 'nan', '0.00', '0,00'
+  ];
+  
+  if (invalidPriceValues.includes(normalizedPrice)) return false;
+  
+  // Controlla se è solo un numero che vale 0
+  const numericValue = parseFloat(normalizedPrice.replace(/[€\s]/g, ''));
+  if (!isNaN(numericValue) && numericValue === 0) return false;
+  
   return true;
 };
 
-const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ poi, onClose, onGetDirections }) => {
+const validateRating = (rating?: number): boolean => {
+  return typeof rating === 'number' && rating > 0 && rating <= 5;
+};
+
+const formatRating = (rating: number): string => {
+  return rating.toFixed(1);
+};
+
+// Main component
+const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ 
+  poi, 
+  onClose, 
+  onGetDirections 
+}) => {
   const navigate = useNavigate();
 
+  // Event handlers
   const handleDiscoverMore = () => {
     navigate(`/poi/${poi.id}`);
   };
@@ -83,70 +120,82 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ poi, onC
     onGetDirections(poi);
   };
 
-  const placeholderImage = `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop&crop=center`;
+  // Data processing
+  const categoryIcon = getCategoryIcon(poi.category);
+  const truncatedDescription = truncateText(poi.description);
+  const hasValidPrice = validatePriceInfo(poi.price_info);
+  const hasValidRating = validateRating(poi.avg_rating);
+  
+  // Image handling
+  const placeholderImage = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop&crop=center';
+  const primaryImage = poi.images?.[0] || placeholderImage;
 
   return (
     <Card className="max-w-[300px] overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm relative p-4">
+      {/* Close button */}
       <button
         onClick={onClose}
         className="absolute top-2 right-2 z-10 w-6 h-6 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors"
+        aria-label="Chiudi anteprima"
       >
         <X className="h-3 w-3 text-white" />
       </button>
 
+      {/* Image section */}
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-50 rounded-lg">
-        {poi.images?.[0] ? (
-          <img
-            src={poi.images[0]}
-            alt={poi.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
+        <img
+          src={primaryImage}
+          alt={poi.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== placeholderImage) {
               target.src = placeholderImage;
-            }}
-          />
-        ) : (
-          <img
-            src={placeholderImage}
-            alt={poi.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-        )}
+            }
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
       </div>
 
+      {/* Content section */}
       <CardContent className="space-y-3 mt-4 p-0">
+        {/* Title and category */}
         <div>
           <h4 className="font-semibold text-lg mb-2 line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
             {poi.name}
           </h4>
           <div className="flex items-center gap-1 text-sm text-gray-600">
-            <span className="text-base">{getCategoryIcon(poi.category)}</span>
+            <span className="text-base" role="img" aria-label={poi.category}>
+              {categoryIcon}
+            </span>
             <span>{poi.category}</span>
           </div>
         </div>
 
-        {poi.description && (
+        {/* Description */}
+        {truncatedDescription && (
           <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
-            {truncateDescription(poi.description)}
+            {truncatedDescription}
           </p>
         )}
 
+        {/* Rating and price row */}
         <div className="flex items-center justify-between">
+          {/* Rating section */}
           <div className="flex items-center">
-            {poi.avg_rating && poi.avg_rating > 0 && (
+            {hasValidRating && (
               <>
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
                 <span className="text-sm font-medium text-gray-900">
-                  {poi.avg_rating.toFixed(1)}
+                  {formatRating(poi.avg_rating!)}
                 </span>
               </>
             )}
           </div>
           
-          {shouldShowPrice(poi.price_info) && (
+          {/* Price section */}
+          {hasValidPrice && (
             <div className="flex items-center text-green-600 font-medium">
               <Euro className="h-4 w-4 mr-1" />
               <span className="text-sm">{poi.price_info}</span>
@@ -154,6 +203,7 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ poi, onC
           )}
         </div>
 
+        {/* Action buttons */}
         <div className="flex gap-2 pt-2">
           <Button
             onClick={handleDiscoverMore}
