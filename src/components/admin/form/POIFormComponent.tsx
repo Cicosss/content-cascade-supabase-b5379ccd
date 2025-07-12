@@ -52,6 +52,7 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
 
   const handleAddressSelect = (addressData: { address: string; latitude: number; longitude: number; city?: string; province?: string; postalCode?: string; country?: string; }) => {
     console.log('🏠 Indirizzo selezionato:', addressData);
+    console.log('📍 Coordinate ricevute:', { lat: addressData.latitude, lng: addressData.longitude });
     
     // Aggiorna i dati del form con le informazioni dell'indirizzo
     setFormData(prev => ({
@@ -62,10 +63,15 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
       location_name: prev.location_name || addressData.city || '' // Usa location_name esistente o città
     }));
     
-    setIsAddressConfirmed(true);
+    // Conferma l'indirizzo dopo aver aggiornato i dati
+    setTimeout(() => {
+      console.log('✅ Confermando indirizzo...');
+      setIsAddressConfirmed(true);
+    }, 100);
   };
 
   const handleAddressConfirmationChange = (isConfirmed: boolean) => {
+    console.log('🔄 Stato conferma indirizzo cambiato:', isConfirmed);
     setIsAddressConfirmed(isConfirmed);
   };
 
@@ -89,15 +95,17 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validazione di base
+    console.log('🚀 Tentativo di submit con stato:', { 
+      isAddressConfirmed, 
+      hasCoordinates: !!formData.latitude && !!formData.longitude,
+      address: formData.address 
+    });
+    
+    // Validazione di base (rimuoviamo la doppia validazione dell'indirizzo)
     const validationErrors = validateForm(formData, isAddressConfirmed);
     if (validationErrors.length > 0) {
+      console.log('❌ Errori validazione:', validationErrors);
       toast.error(validationErrors[0]);
-      return;
-    }
-
-    if (!isAddressConfirmed) {
-      toast.error('Conferma l\'indirizzo selezionandolo dai suggerimenti di Google Maps');
       return;
     }
 
