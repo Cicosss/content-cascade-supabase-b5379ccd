@@ -1,5 +1,6 @@
 
 import React from 'react';
+import HtmlContent from '@/components/ui/html-content';
 
 interface POIDetailContentProps {
   description?: string;
@@ -15,9 +16,10 @@ const POIDetailContent: React.FC<POIDetailContentProps> = ({
       <div className="mb-6">
         <h2 className="text-2xl font-semibold text-gray-900 mb-4">Descrizione</h2>
         {description ? (
-          <div className="prose prose-gray max-w-none">
-            <p className="text-gray-700 leading-relaxed text-lg">{description}</p>
-          </div>
+          <HtmlContent 
+            content={description} 
+            className="prose prose-gray max-w-none text-gray-700 leading-relaxed text-lg" 
+          />
         ) : (
           <p className="text-gray-500 italic">Nessuna descrizione disponibile.</p>
         )}

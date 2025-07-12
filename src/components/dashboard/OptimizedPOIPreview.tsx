@@ -50,10 +50,16 @@ const getCategoryIcon = (category: string): string => {
   return icons[category] || '📍';
 };
 
+const stripHtmlTags = (html: string): string => {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+};
+
 const truncateDescription = (text: string, maxWords: number = 18): string => {
   if (!text) return '';
-  const words = text.split(' ');
-  if (words.length <= maxWords) return text;
+  const cleanText = stripHtmlTags(text);
+  const words = cleanText.split(' ');
+  if (words.length <= maxWords) return cleanText;
   return words.slice(0, maxWords).join(' ') + '...';
 };
 
