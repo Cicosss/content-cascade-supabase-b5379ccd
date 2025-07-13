@@ -3,7 +3,7 @@ import VaporizeTextCycle, { Tag } from "@/components/ui/vaporize-text-effect";
 
 const HeroBrandSection = () => {
   return (
-    <div className="flex items-center justify-center mb-8 h-40">
+    <div className="flex items-center justify-center mb-8 h-96">
       <VaporizeTextCycle
         texts={[
           "Il territorio",
@@ -12,7 +12,7 @@ const HeroBrandSection = () => {
         ]}
         font={{
           fontFamily: "'Playfair Display', serif",
-          fontSize: "8rem",
+          fontSize: "24rem",
           fontWeight: 700
         }}
         color="rgba(255, 255, 255, 0.9)"
