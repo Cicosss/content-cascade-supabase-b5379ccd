@@ -87,12 +87,13 @@ const YouTubeVideoBackground: React.FC<YouTubeVideoBackgroundProps> = ({ videoId
             onReady: (event: any) => {
               console.log('YouTube player ready');
               event.target.mute();
+              event.target.seekTo(1); // Inizia dal secondo 1 per nascondere il titolo
               event.target.playVideo();
             },
             onStateChange: (event: any) => {
-              // Loop il video quando finisce
+              // Loop il video quando finisce, ripartendo dal secondo 1
               if (event.data === window.YT.PlayerState.ENDED) {
-                event.target.seekTo(0);
+                event.target.seekTo(1);
                 event.target.playVideo();
               }
             },
