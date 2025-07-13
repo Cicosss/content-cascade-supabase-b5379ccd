@@ -22,21 +22,22 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
     return (
       <LocationProvider>
         <SidebarProvider defaultOpen={false}>
-          <div className="min-h-screen flex w-full">
-            <AppSidebar />
-            <SidebarInset className="flex-1 flex flex-col">
-              <div className="sticky top-0 z-header-custom header-force-top">
-                <div className="flex items-center gap-2 px-4 py-2 bg-[#0F172A] border-b border-slate-700">
-                  <div className="flex-1">
-                    <Header />
-                  </div>
-                </div>
-              </div>
-              <main className="flex-1 p-4 pl-6 z-[1] relative">
-                {children}
-              </main>
-              <Footer />
-            </SidebarInset>
+          <div className="min-h-screen flex flex-col w-full">
+            {/* Header sempre fisso sopra tutto */}
+            <div className="sticky top-0 z-header-custom header-force-top">
+              <Header />
+            </div>
+            
+            {/* Layout principale con sidebar */}
+            <div className="flex flex-1 w-full">
+              <AppSidebar />
+              <SidebarInset className="flex-1 flex flex-col">
+                <main className="flex-1 p-4 pl-6 z-[1] relative">
+                  {children}
+                </main>
+                <Footer />
+              </SidebarInset>
+            </div>
           </div>
         </SidebarProvider>
       </LocationProvider>
