@@ -13,6 +13,10 @@ const UserGreeting = () => {
     }
     return 'Benvenuto in Romagna!';
   };
-  return;
+  return (
+    <h2 className="typography-h2 text-white drop-shadow-lg text-center mb-6">
+      {getUserGreeting()}
+    </h2>
+  );
 };
 export default UserGreeting;
