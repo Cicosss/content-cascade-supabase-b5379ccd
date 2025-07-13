@@ -37,16 +37,6 @@ const InteractiveHeroSection = () => {
             {/* Brand Section */}
             <HeroBrandSection />
             
-            <div className="space-y-8 mb-12">
-              <UserGreeting />
-              <p className="typography-body-large text-slate-100 font-medium leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
-                L'applicazione ufficiale per scoprire le autentiche meraviglie della Provincia di Rimini
-              </p>
-              <p className="typography-story-intro text-slate-50 max-w-3xl mx-auto drop-shadow-lg">
-                Dalla tradizione culinaria ai tesori nascosti, dalle esperienze culturali alle attività marittime. 
-                Vivi la Romagna come un locale con guide certificate e itinerari personalizzati.
-              </p>
-            </div>
 
             {/* Key features */}
             <HeroFeatures />
