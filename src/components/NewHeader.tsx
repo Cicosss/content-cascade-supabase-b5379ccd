@@ -12,7 +12,6 @@ import { useAdminAuth } from '@/hooks/useAdminAuth';
 import MainNavbar from './layout/MainNavbar';
 import LanguageSelector from './header/LanguageSelector';
 import ProfileMenu from './ProfileMenu';
-import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const NewHeader = () => {
   const { user } = useAuth();
@@ -80,10 +79,10 @@ const NewHeader = () => {
           <ProfileMenu />
         ) : (
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm" className="border-[#334155] text-[#E2E8F0] hover:bg-[#1E293B] hover:text-white bg-transparent">
+            <Button asChild variant="outline" size="sm" className="border-slate-600 text-slate-200 hover:bg-slate-800 hover:text-white bg-transparent transition-colors duration-200">
               <a href="/auth">Accedi</a>
             </Button>
-            <Button asChild size="sm" className="bg-white text-[#020817] hover:bg-gray-100">
+            <Button asChild size="sm" className="bg-white text-slate-900 hover:bg-slate-100 transition-colors duration-200 font-medium">
               <a href="/auth">Registrati</a>
             </Button>
           </div>
