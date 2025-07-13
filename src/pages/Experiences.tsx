@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import EmptyState from '@/components/EmptyState';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -70,8 +70,8 @@ const Experiences = () => {
   const hasActiveFilters = searchTerm.trim() !== '' || selectedCategory !== 'all';
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <Layout>
+      <div className="min-h-screen bg-gray-50">
       
       {/* Hero Section */}
       <div className="hero-gradient text-white py-16">
@@ -182,8 +182,9 @@ const Experiences = () => {
             ))}
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

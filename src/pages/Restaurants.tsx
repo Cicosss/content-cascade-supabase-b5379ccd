@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import EmptyState from '@/components/EmptyState';
 import RestaurantsHero from '@/components/restaurants/RestaurantsHero';
 import RestaurantFilters from '@/components/restaurants/RestaurantFilters';
@@ -53,9 +53,9 @@ const Restaurants = () => {
   const hasActiveFilters = searchTerm.trim() !== '' || selectedCategory !== 'all';
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      <RestaurantsHero />
+    <Layout>
+      <div className="min-h-screen bg-gray-50">
+        <RestaurantsHero />
 
       <div className="container mx-auto px-4 py-8">
         <RestaurantFilters
@@ -91,8 +91,9 @@ const Restaurants = () => {
         ) : (
           <RestaurantGrid restaurants={filteredRestaurants} loading={false} />
         )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

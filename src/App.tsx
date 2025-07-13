@@ -23,6 +23,9 @@ import RespiroDelMare from '@/pages/RespiroDelMare';
 import OggiInRomagna from '@/pages/OggiInRomagna';
 import POIDetail from "@/pages/POIDetail";
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import Restaurants from '@/pages/Restaurants';
+import Experiences from '@/pages/Experiences';
+import Family from '@/pages/Family';
 
 const queryClient = new QueryClient();
 
@@ -50,6 +53,9 @@ function App() {
             <Route path="/admin" element={<AdminModerationPage />} />
             <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
             <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
+            <Route path="/restaurants" element={<Restaurants />} />
+            <Route path="/experiences" element={<Experiences />} />
+            <Route path="/family" element={<Family />} />
             <Route path="/poi/:id" element={<POIDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

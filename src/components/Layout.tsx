@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import AppSidebar from './AppSidebar';
-import Header from './Header';
+import NewHeader from './NewHeader';
 import Footer from './Footer';
 
 interface LayoutProps {
@@ -25,7 +25,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
           <div className="min-h-screen flex flex-col w-full">
             {/* Header sempre fisso sopra tutto */}
             <div className="sticky top-0 z-header-custom header-force-top">
-              <Header />
+              <NewHeader />
             </div>
             
             {/* Layout principale con sidebar */}
@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
     <LocationProvider>
       <div className="min-h-screen bg-slate-50 flex flex-col">
         <div className="sticky top-0 z-header-custom header-force-top">
-          <Header />
+          <NewHeader />
         </div>
         <main className="flex-1 relative z-[1]">
           {children}
