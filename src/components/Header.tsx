@@ -13,7 +13,7 @@ const Header = React.memo(() => {
 
   return (
     <header 
-      className="w-full bg-[#0F172A] border-b border-slate-700 shadow-lg relative z-header-custom header-force-top"
+      className="w-full shadow-lg header-force-top"
       role="banner"
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-8">

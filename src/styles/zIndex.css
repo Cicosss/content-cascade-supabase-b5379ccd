@@ -48,8 +48,6 @@
   position: sticky !important;
   top: 0 !important;
   z-index: 2000 !important;
-  isolation: isolate !important;
-  transform: translateZ(0) !important;
   background: #0F172A !important;
   border-bottom: 1px solid rgb(51 65 85) !important;
   /* Fallback per browser che non supportano sticky completamente */
