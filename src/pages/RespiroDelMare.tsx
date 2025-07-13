@@ -19,6 +19,7 @@ const RespiroDelMare: React.FC = () => {
             <TypingAnimation
               text="Respiro del Mare"
               duration={150}
+              delay={1000}
               className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight drop-shadow-2xl"
             />
             <h2 className="text-xl md:text-3xl lg:text-4xl font-light max-w-4xl mx-auto leading-relaxed drop-shadow-lg">
