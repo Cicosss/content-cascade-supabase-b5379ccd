@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-
 const UserGreeting = () => {
-  const { user } = useAuth();
-  
+  const {
+    user
+  } = useAuth();
   const getUserGreeting = () => {
     if (user?.user_metadata?.first_name) {
       return `Benvenuto ${user.user_metadata.first_name}!`;
@@ -14,12 +13,6 @@ const UserGreeting = () => {
     }
     return 'Benvenuto in Romagna!';
   };
-
-  return (
-    <h1 className="typography-hero text-white drop-shadow-2xl">
-      {getUserGreeting()}
-    </h1>
-  );
+  return;
 };
-
 export default UserGreeting;
