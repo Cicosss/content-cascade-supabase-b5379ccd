@@ -10,6 +10,42 @@ export const useModerationActions = () => {
   const copyToMainTable = async (submission: POISubmission) => {
     console.log('🔄 Copying submission to points_of_interest:', submission.name);
     
+    // 🔍 DEBUG: Controllo dettagliato coordinate
+    console.log('🔍 Controllo coordinate:', {
+      latitude: submission.latitude,
+      longitude: submission.longitude,
+      latType: typeof submission.latitude,
+      lngType: typeof submission.longitude
+    });
+    
+    // ✅ VALIDAZIONE: Coordinate obbligatorie
+    if (!submission.latitude || !submission.longitude) {
+      console.error('❌ Coordinate mancanti:', { 
+        latitude: submission.latitude, 
+        longitude: submission.longitude 
+      });
+      throw new Error(`Impossibile approvare: mancano le coordinate geografiche nella proposta "${submission.name}"`);
+    }
+
+    // 🔄 CONVERSIONE: Assicurati che siano numeri
+    const latitude = typeof submission.latitude === 'string' 
+      ? parseFloat(submission.latitude) 
+      : submission.latitude;
+    const longitude = typeof submission.longitude === 'string' 
+      ? parseFloat(submission.longitude) 
+      : submission.longitude;
+
+    // ✅ VALIDAZIONE: Numeri validi
+    if (isNaN(latitude) || isNaN(longitude)) {
+      console.error('❌ Coordinate non valide:', { 
+        original_lat: submission.latitude,
+        original_lng: submission.longitude,
+        parsed_lat: latitude,
+        parsed_lng: longitude
+      });
+      throw new Error(`Coordinate non valide per "${submission.name}": lat=${latitude}, lng=${longitude}`);
+    }
+    
     const poiData = {
       id: submission.id,
       name: submission.name,
@@ -17,8 +53,8 @@ export const useModerationActions = () => {
       poi_type: submission.poi_type || 'place',
       category: submission.category,
       address: submission.address,
-      latitude: submission.latitude,
-      longitude: submission.longitude,
+      latitude: latitude, // 🔧 Usa i valori validati e convertiti
+      longitude: longitude, // 🔧 Usa i valori validati e convertiti
       price_info: submission.price_info,
       duration_info: submission.duration_info,
       target_audience: submission.target_audience,
@@ -35,7 +71,12 @@ export const useModerationActions = () => {
       status: 'approved'
     };
 
-    console.log('🔄 POI data to insert:', poiData);
+    console.log('🔄 POI data to insert (VALIDATED):', {
+      ...poiData,
+      coordinates_validated: true,
+      lat_type: typeof poiData.latitude,
+      lng_type: typeof poiData.longitude
+    });
 
     const { error: insertError } = await supabase
       .from('points_of_interest')
@@ -94,8 +135,16 @@ export const useModerationActions = () => {
         await sendModerationNotification(submission, status, notes);
       }
     } catch (error) {
-      console.error('Error:', error);
-      toast.error('Errore nell\'aggiornamento dello status');
+      console.error('🚨 ERRORE COMPLETO durante aggiornamento status:', error);
+      
+      // 🔧 Gestione errori specifici per coordinate mancanti
+      if (error instanceof Error && error.message.includes('coordinate geografiche')) {
+        toast.error(`❌ ${error.message}`);
+      } else if (error instanceof Error && error.message.includes('Coordinate non valide')) {
+        toast.error(`❌ ${error.message}`);
+      } else {
+        toast.error('Errore nell\'aggiornamento dello status');
+      }
     } finally {
       setUpdating(false);
     }
