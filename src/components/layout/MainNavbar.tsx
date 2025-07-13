@@ -75,7 +75,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
               <img 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="h-18 w-auto object-contain"
+                className="h-16 w-auto object-contain"
               />
             ) : (
               <div className="h-18 w-18 rounded bg-white flex items-center justify-center">
