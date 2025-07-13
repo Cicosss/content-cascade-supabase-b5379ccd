@@ -69,7 +69,7 @@ const NewHeader = () => {
 
   return (
     <MainNavbar 
-      logo={{...miaRomagnaNavData.logo, size: 'lg'}}
+      logo={{...miaRomagnaNavData.logo, size: 'xl'}}
       menu={miaRomagnaNavData.menu}
     >
       <div className="flex items-center gap-4">

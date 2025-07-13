@@ -6,14 +6,15 @@ interface NavLogoProps {
   src?: string;
   alt: string;
   title: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   onClick?: (e: React.MouseEvent) => void;
 }
 
 const sizeClasses = {
   sm: 'h-12',
   md: 'h-18', 
-  lg: 'h-20'
+  lg: 'h-20',
+  xl: 'h-24'
 };
 
 export const NavLogo: React.FC<NavLogoProps> = ({ 

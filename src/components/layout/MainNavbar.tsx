@@ -18,7 +18,7 @@ interface Logo {
   src?: string;
   alt: string;
   title: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 interface MainNavbarProps {
