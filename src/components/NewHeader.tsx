@@ -12,6 +12,7 @@ import { useAdminAuth } from '@/hooks/useAdminAuth';
 import MainNavbar from './layout/MainNavbar';
 import LanguageSelector from './header/LanguageSelector';
 import ProfileMenu from './ProfileMenu';
+import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const NewHeader = () => {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ const NewHeader = () => {
   const miaRomagnaNavData = {
     logo: {
       url: "/",
+      src: "/lovable-uploads/673fa174-b69d-4246-a652-97158e041630.png",
       alt: "Logo Mia Romagna",
       title: "Mia Romagna"
     },

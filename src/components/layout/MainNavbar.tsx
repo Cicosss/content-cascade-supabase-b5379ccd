@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSidebar } from "@/components/ui/sidebar";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -38,6 +39,14 @@ interface MainNavbarProps {
 const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  
+  // Controlla se siamo dentro un SidebarProvider
+  let sidebarState = null;
+  try {
+    sidebarState = useSidebar();
+  } catch {
+    // Non siamo dentro un SidebarProvider
+  }
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -51,7 +60,10 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#1E293B] bg-[#020817]">
-      <div className="flex h-20 items-center px-8 lg:px-12 max-w-screen-2xl mx-auto">
+      <div className={cn(
+        "flex h-20 items-center px-8 lg:px-12 max-w-screen-2xl mx-auto transition-all duration-200",
+        sidebarState && "lg:pl-20" // Aggiungi padding-left quando la sidebar è presente
+      )}>
         {/* Logo */}
         <div className="mr-8 flex">
           <Link 
@@ -63,7 +75,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
               <img 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="h-8 w-8"
+                className="h-8 w-auto filter brightness-0 invert"
               />
             ) : (
               <div className="h-8 w-8 rounded bg-white flex items-center justify-center">
@@ -155,7 +167,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                   <img 
                     src={logo.src} 
                     alt={logo.alt} 
-                    className="h-6 w-6"
+                    className="h-6 w-auto filter brightness-0 invert"
                   />
                 ) : (
                   <div className="h-6 w-6 rounded bg-white flex items-center justify-center">
