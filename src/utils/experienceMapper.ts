@@ -1,6 +1,13 @@
 
 import { parseCSVLine } from './csvParser';
 
+// Funzione per validare URL delle immagini
+const validateImageUrl = (url: string): boolean => {
+  if (!url || typeof url !== 'string') return false;
+  const trimmedUrl = url.trim();
+  return trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://');
+};
+
 export const mapCsvRowToExperience = (values: string[], headers: string[], rowIndex: number) => {
   console.log(`📝 Riga ${rowIndex + 1}:`, { values: values.slice(0, 5) });
   
@@ -92,9 +99,34 @@ export const mapCsvRowToExperience = (values: string[], headers: string[], rowIn
       if (value) {
         submission.tags = value.split(',').map(t => t.trim()).filter(t => t);
       }
+    } else if (lowerHeader.includes('cover_image') || lowerHeader.includes('immagine_copertina') || lowerHeader.includes('cover')) {
+      if (value) {
+        console.log(`🖼️ Processando cover_image: ${value}`);
+        if (validateImageUrl(value)) {
+          submission.cover_image = value.trim();
+          console.log(`✅ Cover image URL valido: ${value}`);
+        } else {
+          console.warn(`❌ Cover image URL non valido: ${value}`);
+        }
+      }
     } else if (lowerHeader.includes('images') || lowerHeader.includes('immagini')) {
       if (value) {
-        submission.images = value.split(',').map(img => img.trim()).filter(img => img);
+        console.log(`🖼️ Processando images: ${value}`);
+        // Correzione: usa | come separatore invece di ,
+        const imageUrls = value.split('|').map(img => img.trim()).filter(img => img);
+        const validUrls = imageUrls.filter(url => {
+          if (validateImageUrl(url)) {
+            console.log(`✅ Image URL valido: ${url}`);
+            return true;
+          } else {
+            console.warn(`❌ Image URL non valido: ${url}`);
+            return false;
+          }
+        });
+        if (validUrls.length > 0) {
+          submission.images = validUrls;
+          console.log(`📸 ${validUrls.length} immagini valide processate`);
+        }
       }
     } else if (lowerHeader.includes('video_url') || lowerHeader.includes('video')) {
       submission.video_url = value || null;

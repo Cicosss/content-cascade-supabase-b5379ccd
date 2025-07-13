@@ -14,14 +14,15 @@ const CsvFormatGuide: React.FC = () => {
           Il file CSV deve contenere le seguenti colonne (nomi alternativi in italiano supportati):
         </p>
         <code className="text-xs bg-white p-2 rounded block overflow-x-auto">
-          name (nome), description (descrizione), category (categoria), address (indirizzo), latitude (latitudine), longitude (longitudine), price_info (prezzo), duration_info (durata), target_audience (pubblico), website_url (sito_web), phone (telefono), email, start_datetime (data_inizio), end_datetime (data_fine), location_name (nome_location), organizer_info (organizzatore), images (immagini), video_url (video)
+          name (nome), description (descrizione), category (categoria), address (indirizzo), latitude (latitudine), longitude (longitudine), price_info (prezzo), duration_info (durata), target_audience (pubblico), website_url (sito_web), phone (telefono), email, start_datetime (data_inizio), end_datetime (data_fine), location_name (nome_location), organizer_info (organizzatore), cover_image (immagine_copertina), images (immagini), video_url (video)
         </code>
         <div className="mt-3 space-y-1 text-xs text-blue-600">
           <p><strong>• Campo obbligatorio:</strong> name/nome</p>
           <p><strong>• Encoding:</strong> UTF-8 (salva il CSV con encoding UTF-8)</p>
           <p><strong>• Separatore:</strong> virgola (,)</p>
           <p><strong>• Date:</strong> formato ISO 8601 (es: 2024-12-25T15:30:00) o formati standard</p>
-          <p><strong>• Immagini:</strong> fino a 4 URL separati da | (es: url1.jpg|url2.jpg)</p>
+          <p><strong>• Cover Image:</strong> singolo URL per immagine copertina (es: https://example.com/cover.jpg)</p>
+          <p><strong>• Immagini multiple:</strong> URL separati da | (es: https://example.com/img1.jpg|https://example.com/img2.jpg)</p>
           <p><strong>• Coordinate:</strong> numeri decimali (es: 44.0646, 12.5736)</p>
         </div>
       </div>
