@@ -39,11 +39,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-700 bg-slate-900 backdrop-blur-sm">
       <div className={cn(
-        "flex h-20 items-center px-8 lg:px-12 max-w-screen-2xl mx-auto transition-all duration-300 ease-in-out",
+        "flex h-24 items-center px-10 lg:px-16 max-w-screen-2xl mx-auto transition-all duration-300 ease-in-out",
         sidebarState?.open && sidebarState?.openMobile ? "lg:pl-72" : sidebarState?.open ? "lg:pl-20" : ""
       )}>
         {/* Logo */}
-        <div className="mr-8 flex">
+        <div className="mr-12 flex">
           <NavLogo 
             url={logo.url}
             src={logo.src}
