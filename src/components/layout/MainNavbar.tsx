@@ -50,42 +50,43 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center">
+    <header className="sticky top-0 z-50 w-full border-b border-[#1E293B] bg-[#020817]">
+      <div className="flex h-20 items-center px-8 lg:px-12 max-w-screen-2xl mx-auto">
         {/* Logo */}
-        <div className="mr-4 flex">
+        <div className="mr-8 flex">
           <Link 
             to={logo.url} 
-            className="mr-6 flex items-center space-x-2"
+            className="flex items-center"
             onClick={handleLogoClick}
           >
-            {logo.src && (
+            {logo.src ? (
               <img 
                 src={logo.src} 
                 alt={logo.alt} 
                 className="h-8 w-8"
               />
+            ) : (
+              <div className="h-8 w-8 rounded bg-white flex items-center justify-center">
+                <span className="text-[#020817] font-bold text-sm">M</span>
+              </div>
             )}
-            <span className="hidden font-bold sm:inline-block text-foreground">
-              {logo.title}
-            </span>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+        <div className="flex flex-1 items-center justify-between gap-8 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
             <NavigationMenu className="hidden md:flex">
-              <NavigationMenuList>
+              <NavigationMenuList className="gap-8">
                 {menu.map((item, index) => (
                   <NavigationMenuItem key={index}>
                     {item.items ? (
                       <>
-                        <NavigationMenuTrigger className="h-9 px-4 py-2">
+                        <NavigationMenuTrigger className="h-9 px-4 py-2 text-[#E2E8F0] hover:text-white bg-transparent border-none">
                           {item.title}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                          <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-[#020817] border border-[#1E293B]">
                             {item.items.map((subItem, subIndex) => (
                               <NavigationMenuLink
                                 key={subIndex}
@@ -94,7 +95,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                                 <button
                                   onClick={() => handleNavigation(subItem.url)}
                                   className={cn(
-                                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-left w-full"
+                                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-[#1E293B] text-[#E2E8F0] hover:text-white focus:bg-[#1E293B] focus:text-white text-left w-full"
                                   )}
                                 >
                                   <div className="flex items-center space-x-2">
@@ -103,11 +104,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                                       {subItem.title}
                                     </div>
                                   </div>
-                                  {subItem.description && (
-                                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                      {subItem.description}
-                                    </p>
-                                  )}
+                                   {subItem.description && (
+                                     <p className="line-clamp-2 text-sm leading-snug text-[#94A3B8]">
+                                       {subItem.description}
+                                     </p>
+                                   )}
                                 </button>
                               </NavigationMenuLink>
                             ))}
@@ -119,7 +120,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                         <button
                           onClick={() => handleNavigation(item.url)}
                           className={cn(
-                            "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                            "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors text-[#E2E8F0] hover:text-white focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                           )}
                         >
                           {item.title}
@@ -142,29 +143,33 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
-                className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+                className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden text-[#E2E8F0] hover:text-white"
               >
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="pr-0">
+            <SheetContent side="left" className="pr-0 bg-[#020817] border-[#1E293B]">
               <div className="flex items-center space-x-2 pb-4">
-                {logo.src && (
+                {logo.src ? (
                   <img 
                     src={logo.src} 
                     alt={logo.alt} 
                     className="h-6 w-6"
                   />
+                ) : (
+                  <div className="h-6 w-6 rounded bg-white flex items-center justify-center">
+                    <span className="text-[#020817] font-bold text-xs">M</span>
+                  </div>
                 )}
-                <span className="font-bold">{logo.title}</span>
+                <span className="font-bold text-white">{logo.title}</span>
               </div>
               <Accordion type="single" collapsible className="w-full">
                 {menu.map((item, index) => (
                   <div key={index}>
                     {item.items ? (
-                      <AccordionItem value={`item-${index}`} className="border-b">
-                        <AccordionTrigger className="text-sm font-medium">
+                      <AccordionItem value={`item-${index}`} className="border-b border-[#1E293B]">
+                        <AccordionTrigger className="text-sm font-medium text-[#E2E8F0] hover:text-white">
                           {item.title}
                         </AccordionTrigger>
                         <AccordionContent>
@@ -173,13 +178,13 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                               <button
                                 key={subIndex}
                                 onClick={() => handleNavigation(subItem.url)}
-                                className="flex items-start space-x-2 rounded-md p-2 text-sm hover:bg-accent hover:text-accent-foreground text-left"
+                                className="flex items-start space-x-2 rounded-md p-2 text-sm hover:bg-[#1E293B] text-[#E2E8F0] hover:text-white text-left"
                               >
                                 {subItem.icon}
                                 <div>
                                   <div className="font-medium">{subItem.title}</div>
                                   {subItem.description && (
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="text-xs text-[#94A3B8]">
                                       {subItem.description}
                                     </div>
                                   )}
@@ -190,10 +195,10 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                         </AccordionContent>
                       </AccordionItem>
                     ) : (
-                      <div className="border-b py-3">
+                      <div className="border-b border-[#1E293B] py-3">
                         <button
                           onClick={() => handleNavigation(item.url)}
-                          className="text-sm font-medium hover:text-foreground/80 text-left w-full"
+                          className="text-sm font-medium text-[#E2E8F0] hover:text-white text-left w-full"
                         >
                           {item.title}
                         </button>

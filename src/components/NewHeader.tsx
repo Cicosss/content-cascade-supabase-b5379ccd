@@ -78,10 +78,10 @@ const NewHeader = () => {
           <ProfileMenu />
         ) : (
           <div className="flex gap-2">
-            <Button asChild variant="outline" size="sm">
+            <Button asChild variant="outline" size="sm" className="border-[#334155] text-[#E2E8F0] hover:bg-[#1E293B] hover:text-white bg-transparent">
               <a href="/auth">Accedi</a>
             </Button>
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="bg-white text-[#020817] hover:bg-gray-100">
               <a href="/auth">Registrati</a>
             </Button>
           </div>
