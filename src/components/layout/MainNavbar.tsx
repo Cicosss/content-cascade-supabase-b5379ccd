@@ -75,11 +75,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
               <img 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="h-8 w-auto filter brightness-0 invert"
+                className="h-12 w-auto object-contain"
               />
             ) : (
-              <div className="h-8 w-8 rounded bg-white flex items-center justify-center">
-                <span className="text-[#020817] font-bold text-sm">M</span>
+              <div className="h-12 w-12 rounded bg-white flex items-center justify-center">
+                <span className="text-[#020817] font-bold text-lg">M</span>
               </div>
             )}
           </Link>
@@ -167,11 +167,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
                   <img 
                     src={logo.src} 
                     alt={logo.alt} 
-                    className="h-6 w-auto filter brightness-0 invert"
+                    className="h-8 w-auto object-contain"
                   />
                 ) : (
-                  <div className="h-6 w-6 rounded bg-white flex items-center justify-center">
-                    <span className="text-[#020817] font-bold text-xs">M</span>
+                  <div className="h-8 w-8 rounded bg-white flex items-center justify-center">
+                    <span className="text-[#020817] font-bold text-sm">M</span>
                   </div>
                 )}
                 <span className="font-bold text-white">{logo.title}</span>
