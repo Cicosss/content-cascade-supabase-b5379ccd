@@ -24,7 +24,9 @@ const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
         <SidebarProvider defaultOpen={false}>
           <div className="min-h-screen flex flex-col w-full">
             {/* Header sempre fisso sopra tutto */}
-            <Header />
+            <div className="sticky top-0 z-header-custom header-force-top">
+              <Header />
+            </div>
             
             {/* Layout principale con sidebar */}
             <div className="flex flex-1 w-full">
