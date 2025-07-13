@@ -18,6 +18,7 @@ interface Logo {
   src?: string;
   alt: string;
   title: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 interface MainNavbarProps {
@@ -48,7 +49,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ logo, menu, children }) => {
             src={logo.src}
             alt={logo.alt}
             title={logo.title}
-            size="md"
+            size={logo.size || "md"}
             onClick={handleLogoClick}
           />
         </div>

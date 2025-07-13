@@ -11,9 +11,9 @@ interface NavLogoProps {
 }
 
 const sizeClasses = {
-  sm: 'h-10',
-  md: 'h-14', 
-  lg: 'h-16'
+  sm: 'h-12',
+  md: 'h-18', 
+  lg: 'h-20'
 };
 
 export const NavLogo: React.FC<NavLogoProps> = ({ 
