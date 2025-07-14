@@ -17,6 +17,35 @@ const CompactMediaUploader: React.FC<CompactMediaUploaderProps> = ({
 }) => {
   const { uploadImage, isUploading } = useImageUpload();
   
+  // Funzione per aggiungere una nuova immagine
+  const addNewImage = async (file: File) => {
+    if (images.length >= 4) {
+      toast.error('Massimo 4 immagini consentite');
+      return;
+    }
+    
+    const uploadedUrl = await uploadImage(file);
+    if (uploadedUrl) {
+      const newImages = [...images, uploadedUrl];
+      onImagesChange(newImages);
+      toast.success('Immagine aggiunta');
+    }
+  };
+
+  // Triggerare il file picker per aggiungere una nuova immagine
+  const triggerFileAdd = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        addNewImage(file);
+      }
+    };
+    input.click();
+  };
+  
   // Funzione per eliminare un'immagine
   const removeImage = (indexToRemove: number) => {
     const newImages = images.filter((_, index) => index !== indexToRemove);
@@ -131,6 +160,56 @@ const CompactMediaUploader: React.FC<CompactMediaUploaderProps> = ({
           <div className="mt-2 text-xs text-green-700">
             ✅ {images.length} immagine{images.length > 1 ? 'i' : ''} caricata{images.length > 1 ? 'e' : ''}
           </div>
+        </div>
+      )}
+
+      {/* Add Image Button */}
+      {images.length < 4 && (
+        <Button
+          type="button"
+          variant="outline"
+          onClick={triggerFileAdd}
+          disabled={isUploading}
+          className="w-full border-dashed border-blue-300 hover:border-blue-500 text-blue-700 hover:text-blue-800"
+        >
+          {isUploading ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Caricamento...
+            </>
+          ) : (
+            <>
+              <Upload className="h-4 w-4 mr-2" />
+              Aggiungi Immagine ({images.length}/4)
+            </>
+          )}
+        </Button>
+      )}
+
+      {/* Empty state */}
+      {images.length === 0 && (
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50">
+          <Image className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+          <p className="text-sm text-gray-600 mb-3">Nessuna immagine caricata</p>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={triggerFileAdd}
+            disabled={isUploading}
+            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+          >
+            {isUploading ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Caricamento...
+              </>
+            ) : (
+              <>
+                <Upload className="h-4 w-4 mr-2" />
+                Carica Prima Immagine
+              </>
+            )}
+          </Button>
         </div>
       )}
     </div>
