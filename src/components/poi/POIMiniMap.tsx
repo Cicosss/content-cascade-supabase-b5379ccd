@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, Navigation } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface POIMiniMapProps {
   latitude: number;
@@ -79,6 +80,8 @@ const POIMiniMap: React.FC<POIMiniMapProps> = ({ latitude, longitude, name }) =>
     };
   }, [latitude, longitude, name]);
 
+  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+
   return (
     <div className="border-t pt-4">
       <h4 className="font-medium text-sm text-gray-900 mb-3 flex items-center gap-2">
@@ -87,9 +90,20 @@ const POIMiniMap: React.FC<POIMiniMapProps> = ({ latitude, longitude, name }) =>
       </h4>
       <div 
         ref={mapRef} 
-        className="w-full h-32 rounded-lg border border-gray-200"
+        className="w-full h-32 rounded-lg border border-gray-200 mb-3"
         style={{ minHeight: '128px' }}
       />
+      <a 
+        href={googleMapsUrl} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        title="Apri in Google Maps per le indicazioni"
+      >
+        <Button variant="outline" className="w-full">
+          <Navigation className="h-4 w-4 mr-2" />
+          Ottieni Indicazioni
+        </Button>
+      </a>
     </div>
   );
 };
