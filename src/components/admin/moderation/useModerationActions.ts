@@ -90,6 +90,18 @@ export const useModerationActions = () => {
     }
 
     console.log('✅ Successfully copied to points_of_interest:', submission.name);
+
+    // Rimuovi la submission dalla tabella poi_submissions per evitare duplicati
+    const { error: deleteError } = await supabase
+      .from('poi_submissions')
+      .delete()
+      .eq('id', submission.id);
+
+    if (deleteError) {
+      console.error('⚠️ [ModerationActions] Errore rimozione submission dopo approvazione:', deleteError);
+    } else {
+      console.log('✅ [ModerationActions] Submission rimossa da poi_submissions dopo approvazione');
+    }
   };
 
   const updateSubmissionStatus = async (

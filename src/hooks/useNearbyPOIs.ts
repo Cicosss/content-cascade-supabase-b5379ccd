@@ -60,11 +60,16 @@ export const useNearbyPOIs = () => {
         console.error('❌ [NearbyPOIs] Errore caricamento POI approvate:', approvedResult.error);
       }
 
-      // Combine all POIs
-      const allPois = [
-        ...(standardResult.data || []),
-        ...(approvedResult.data || [])
-      ];
+      // Combine all POIs and deduplicate by ID (prioritize points_of_interest)
+      const poisMap = new Map();
+      
+      // Add approved submissions first
+      (approvedResult.data || []).forEach(poi => poisMap.set(poi.id, poi));
+      
+      // Add standard POIs (will overwrite any duplicates from submissions)
+      (standardResult.data || []).forEach(poi => poisMap.set(poi.id, poi));
+      
+      const allPois = Array.from(poisMap.values());
 
       console.log(`📊 [NearbyPOIs] POI totali caricati: ${allPois.length}`, {
         standard: standardResult.data?.length || 0,
