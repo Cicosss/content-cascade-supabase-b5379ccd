@@ -2,7 +2,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { POI, POIFilters } from '@/types/poi';
 import { POIDataService } from '@/services/poiDataService';
-import { FALLBACK_POI_DATA } from '@/data/fallbackPOIData';
 
 export const usePOIData = () => {
   const [pois, setPois] = useState<POI[]>([]);
@@ -52,18 +51,12 @@ export const usePOIData = () => {
         hasBounds: !!filters.bounds
       });
       
-      // Usa i dati di fallback SOLO se non ci sono POI E non ci sono filtri attivi
-      if (allPOIs.length === 0 && !hasActiveFilters) {
-        console.log('📍 Nessun POI trovato e nessun filtro attivo - uso dati di fallback');
-        console.log('📍 Dati di fallback disponibili:', FALLBACK_POI_DATA.length);
-        setPois(FALLBACK_POI_DATA);
-      } else {
-        console.log('📍 Impostando POI dal database:', allPOIs.length);
-        if (allPOIs.length === 0) {
-          console.log('⚠️ Nessun POI trovato con i filtri attuali - verifica i criteri di ricerca');
-        }
-        setPois(allPOIs);
+      // Set POIs directly from database - no fallback data
+      console.log('📍 Impostando POI dal database:', allPOIs.length);
+      if (allPOIs.length === 0) {
+        console.log('⚠️ Nessun POI trovato con i filtri attuali - mostra stato vuoto');
       }
+      setPois(allPOIs);
       
       poiService.logResults(filters, allPOIs.length, 0, allPOIs.length);
       
@@ -71,8 +64,7 @@ export const usePOIData = () => {
       // Don't set error state if request was just aborted
       if (!abortControllerRef.current?.signal.aborted) {
         console.error('❌ Errore nel caricamento POI:', error);
-        console.log('📍 Tentativo di uso dati di fallback dopo errore...');
-        setPois(FALLBACK_POI_DATA);
+        setPois([]); // Set empty array on error
       }
     } finally {
       if (!abortControllerRef.current?.signal.aborted) {

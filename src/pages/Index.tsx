@@ -6,13 +6,11 @@ import Layout from '@/components/Layout';
 import InteractiveHeroSection from '@/components/InteractiveHeroSection';
 import ValuePropositionSection from '@/components/ValuePropositionSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
-import ServicesSection from '@/components/ServicesSection';
 
 // Import the new homepage components
-import { useHomepageData } from '@/components/homepage/MockDataProvider';
 import TopSection from '@/components/homepage/TopSection';
 import RestaurantsSection from '@/components/homepage/RestaurantsSection';
-import NearbyServicesSection from '@/components/homepage/ServicesSection';
+import ServicesSection from '@/components/homepage/ServicesSection';
 import ExperiencesSection from '@/components/homepage/ExperiencesSection';
 import SeaBulletinWidget from '@/components/homepage/SeaBulletinWidget';
 import EventsSection from '@/components/homepage/EventsSection';
@@ -22,9 +20,6 @@ import FamilySection from '@/components/homepage/FamilySection';
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  
-  // Get all homepage data from the centralized provider
-  const { events, restaurants, territoryExperiences, familyExperiences, services } = useHomepageData();
 
   useEffect(() => {
     if (!loading && user) {
@@ -58,31 +53,27 @@ const Index = () => {
         {/* Main Content Sections */}
         <div className="space-y-16">
           {/* Tradizione Culinaria */}
-          <RestaurantsSection restaurants={restaurants} />
+          <RestaurantsSection />
 
           {/* Servizi Vicini */}
-          <NearbyServicesSection services={services} />
+          <ServicesSection />
 
           {/* Esperienze del Territorio */}
-          <ExperiencesSection territoryExperiences={territoryExperiences} />
+          <ExperiencesSection />
 
           {/* Bollettino del Mare */}
           <SeaBulletinWidget />
 
           {/* Eventi Speciali */}
-          <EventsSection events={events} />
+          <EventsSection />
 
           {/* Hai bisogno di aiuto? */}
           <HelpBanner />
 
           {/* Sezione Family */}
-          <FamilySection familyExperiences={familyExperiences} />
+          <FamilySection />
         </div>
 
-        {/* Services Section mantiene solo le funzionalità base */}
-        <div className="mt-16">
-          <ServicesSection />
-        </div>
       </div>
     </Layout>
   );

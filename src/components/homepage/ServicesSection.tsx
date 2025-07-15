@@ -2,17 +2,26 @@
 import React from 'react';
 import ServiceCard from './ServiceCard';
 
-interface Service {
-  icon: string;
-  label: string;
-  desc: string;
-}
+// Static services section - these are app features, not database content
+const services = [
+  {
+    icon: "🏨",
+    label: "Alloggi e Hotel",
+    desc: "Trova la sistemazione perfetta per il tuo soggiorno"
+  },
+  {
+    icon: "🚗",
+    label: "Trasporti e Mobilità",
+    desc: "Muoviti facilmente con i nostri consigli di viaggio"
+  },
+  {
+    icon: "ℹ️",
+    label: "Informazioni Turistiche",
+    desc: "Tutto quello che devi sapere per visitare la Romagna"
+  }
+];
 
-interface ServicesSectionProps {
-  services: Service[];
-}
-
-const ServicesSection: React.FC<ServicesSectionProps> = ({ services }) => {
+const ServicesSection: React.FC = () => {
   return (
     <section className="mb-16" role="region" aria-labelledby="services-heading">
       <h2 
