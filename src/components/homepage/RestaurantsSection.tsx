@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import ContentCarousel from '@/components/ContentCarousel';
-import RestaurantCard from '@/components/RestaurantCard';
+import POICard from '@/components/POICard';
 import { ChefHat } from 'lucide-react';
 
 const RestaurantsSection: React.FC = () => {
@@ -33,15 +33,20 @@ const RestaurantsSection: React.FC = () => {
       icon={ChefHat}
     >
       {restaurants.map((restaurant, index) => (
-        <RestaurantCard 
-          key={restaurant.id || index} 
+        <POICard 
+          key={restaurant.id || index}
+          id={restaurant.id}
           name={restaurant.name}
-          cuisine={restaurant.description || ''}
-          rating={restaurant.avg_rating || 0}
-          priceRange={restaurant.price_info || '€€'}
-          location={restaurant.address || ''}
-          image={restaurant.images?.[0] || ''}
-          specialty={restaurant.description || ''}
+          category={restaurant.category}
+          description={restaurant.description}
+          images={restaurant.images}
+          avg_rating={restaurant.avg_rating}
+          price_info={restaurant.price_info}
+          duration_info={restaurant.duration_info}
+          target_audience={restaurant.target_audience}
+          address={restaurant.address}
+          poiType="place"
+          isLoading={false}
         />
       ))}
     </ContentCarousel>
