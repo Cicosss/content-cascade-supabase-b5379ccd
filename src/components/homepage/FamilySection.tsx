@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import ContentCarousel from '@/components/ContentCarousel';
-import ExperienceCard from '@/components/ExperienceCard';
+import POICard from '@/components/POICard';
 import { Users } from 'lucide-react';
 
 const FamilySection: React.FC = () => {
@@ -33,20 +33,22 @@ const FamilySection: React.FC = () => {
       icon={Users}
     >
       {familyExperiences.map((exp, index) => (
-        <ExperienceCard 
+        <POICard 
           key={exp.id || index}
           id={exp.id}
           name={exp.name}
+          category={exp.category}
           description={exp.description}
           images={exp.images}
-          rating={exp.avg_rating || 0}
-          duration_info={exp.duration_info || ''}
-          groupSize="Max 20"
-          price_info={exp.price_info || ''}
-          category={exp.category}
+          avg_rating={exp.avg_rating}
+          price_info={exp.price_info}
+          duration_info={exp.duration_info}
+          target_audience={exp.target_audience}
           address={exp.address}
-          location_name={exp.location_name}
-          poi_type={exp.poi_type as 'place' | 'event'}
+          startDatetime={exp.start_datetime}
+          endDatetime={exp.end_datetime}
+          poiType={exp.poi_type as 'place' | 'event' | 'experience'}
+          isLoading={false}
         />
       ))}
     </ContentCarousel>
