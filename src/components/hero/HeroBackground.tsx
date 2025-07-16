@@ -7,10 +7,9 @@ import { HERO_VIDEO_URL, HERO_MOBILE_IMAGE } from './heroCategories';
 
 interface HeroBackgroundProps {
   isHovered: boolean;
-  onVideoReady?: () => void;
 }
 
-const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered, onVideoReady }) => {
+const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered }) => {
   const isMobile = useIsMobile();
 
   return (
@@ -20,7 +19,6 @@ const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered, onVideoReady
         videoUrl={HERO_VIDEO_URL}
         mobileImageUrl={HERO_MOBILE_IMAGE}
         isMobile={isMobile}
-        onVideoReady={onVideoReady}
       />
       
       {/* Dynamic Overlay for Text Readability */}
