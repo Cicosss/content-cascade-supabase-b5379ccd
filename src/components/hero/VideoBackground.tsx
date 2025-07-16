@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
-import { HERO_POSTER_IMAGE } from './heroCategories';
+import React, { useState } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -15,7 +14,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 }) => {
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [posterLoaded, setPosterLoaded] = useState(false);
 
   // Estrae l'ID del video da YouTube URL
   const getYouTubeVideoId = (url: string) => {
@@ -25,36 +23,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const videoId = getYouTubeVideoId(videoUrl);
   
-  // Poster personalizzato con fallback al poster di YouTube
-  const youtubePosterUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
-  const posterUrl = HERO_POSTER_IMAGE;
-  
   // URL embed ottimizzato per effetto cinema - parametri aggiuntivi per rimuovere branding
   const embedUrl = videoId ? 
     `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&branding=0&cc_lang_pref=0&disablekb=1&start=1&origin=${encodeURIComponent(window.location.origin)}` 
     : null;
-
-  // Preload poster con fallback automatico
-  useEffect(() => {
-    if (!isMobile) {
-      const img = new Image();
-      img.onload = () => {
-        console.log('Custom poster loaded successfully:', posterUrl);
-        setPosterLoaded(true);
-      };
-      img.onerror = () => {
-        console.log('Custom poster failed, using YouTube fallback:', youtubePosterUrl);
-        // Fallback al poster YouTube se quello custom non si carica
-        if (youtubePosterUrl) {
-          const fallbackImg = new Image();
-          fallbackImg.onload = () => setPosterLoaded(true);
-          fallbackImg.onerror = () => console.log('YouTube poster also failed');
-          fallbackImg.src = youtubePosterUrl;
-        }
-      };
-      img.src = posterUrl;
-    }
-  }, [posterUrl, youtubePosterUrl, isMobile]);
 
   const handleIframeLoad = () => {
     setIsVideoReady(true);
@@ -73,29 +45,16 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           style={{ backgroundImage: `url(${mobileImageUrl})` }}
         />
       ) : (
-        // Desktop video background con effetto cinema e poster istantaneo
+        // Desktop video background con effetto cinema
         <div className="absolute inset-0 overflow-hidden">
-          {/* Poster Image con dimensioni identiche al video */}
-          <div
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
-              isVideoReady ? 'opacity-0' : 'opacity-100'
-            }`}
-            style={{ 
-              width: '120vw', 
-              height: '67.5vw',
-              transform: 'translate(-50%, -50%) scale(1.1)',
-              backgroundImage: `url(${posterUrl}), url(${youtubePosterUrl})`,
-              willChange: 'transform'
-            }}
-          />
-
           {/* Container video con espansione orizzontale forzata per effetto cinema */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             style={{
               width: '120vw', // Espansione orizzontale forzata
               height: '67.5vw', // Mantiene aspect ratio 16:9 
-              transform: 'translate(-50%, -50%) scale(1.1)',
+              minWidth: '120vw',
+              minHeight: '100vh',
               willChange: 'transform'
             }}
           >
@@ -115,9 +74,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 left: 0,
                 pointerEvents: 'none',
                 transform: 'scale(1.1)', // Scaling aggiuntivo per effetto cinematografico
-                transformOrigin: 'center center',
-                opacity: isVideoReady ? 1 : 0,
-                transition: 'opacity 1000ms ease-in-out'
+                transformOrigin: 'center center'
               }}
               title="Cinematic YouTube video background"
             />
@@ -130,6 +87,15 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-10" />
             <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-10" />
           </div>
+          
+          {/* Loading state overlay cinematografico */}
+          {!isVideoReady && !videoError && (
+            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
+              <div className="text-white text-lg font-light animate-pulse">
+                Caricamento esperienza cinematografica...
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

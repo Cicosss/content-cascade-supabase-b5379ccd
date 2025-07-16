@@ -11,7 +11,6 @@ export interface HeroCategory {
 // URL del video YouTube e immagine mobile per la nuova implementazione
 export const HERO_VIDEO_URL = 'https://www.youtube.com/watch?v=55S4I2gqIw0';
 export const HERO_MOBILE_IMAGE = 'https://i.ibb.co/1JRNxJpY/Progetto-senza-titolo-6.png';
-export const HERO_POSTER_IMAGE = '/lovable-uploads/db347919-ab50-44ae-8ccc-d4e5eb44eb89.png';
 
 export const heroCategories: HeroCategory[] = [
   {
