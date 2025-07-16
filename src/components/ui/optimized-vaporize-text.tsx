@@ -22,6 +22,7 @@ interface OptimizedVaporizeTextProps {
   };
   tag?: Tag;
   onReady?: () => void;
+  onError?: () => void;
   startAnimation?: boolean;
 }
 
@@ -39,8 +40,8 @@ interface Particle {
 const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
   texts,
   font = {
-    fontFamily: "'Playfair Display', serif",
-    fontSize: "8rem",
+    fontFamily: "'Playfair Display', serif, Georgia, serif",
+    fontSize: "4rem",
     fontWeight: 700
   },
   color = "rgba(255, 255, 255, 0.9)",
@@ -51,6 +52,7 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
   },
   tag = Tag.H2,
   onReady,
+  onError,
   startAnimation = false
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -58,116 +60,168 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
   const particlesRef = useRef<Particle[]>([]);
   const animationFrameRef = useRef<number>();
   const timeoutRef = useRef<NodeJS.Timeout>();
+  const initTimeoutRef = useRef<NodeJS.Timeout>();
   
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [animationState, setAnimationState] = useState<'idle' | 'vaporizing' | 'fading-in'>('idle');
   const [isReady, setIsReady] = useState(false);
   const [wrapperSize, setWrapperSize] = useState({ width: 0, height: 0 });
+  const [debugInfo, setDebugInfo] = useState<string>('Initializing...');
 
-  // Convert CSS font size to pixels for canvas
+  // Semplificato: converte fontSize in pixel
   const getFontSizeInPixels = useCallback((fontSize: string): number => {
+    console.log(`Converting font size: ${fontSize}`);
+    
     if (fontSize.includes('clamp')) {
-      // For clamp values, calculate based on viewport width
       const vw = window.innerWidth;
-      const minRem = parseFloat(fontSize.match(/clamp\(([^,]+)/)?.[1] || '2.5');
-      const maxRem = parseFloat(fontSize.match(/,\s*([^)]+)\)$/)?.[1] || '8');
-      const vwValue = parseFloat(fontSize.match(/,\s*(\d+)vw/)?.[1] || '8');
-      
-      // Calculate responsive value
-      const vwPixels = (vw * vwValue) / 100;
-      const minPixels = minRem * 16;
-      const maxPixels = maxRem * 16;
-      
-      return Math.max(minPixels, Math.min(maxPixels, vwPixels));
+      // Parsing migliorato per clamp
+      const clampMatch = fontSize.match(/clamp\(([^,]+),\s*([^,]+),\s*([^)]+)\)/);
+      if (clampMatch) {
+        const minStr = clampMatch[1].trim();
+        const vwStr = clampMatch[2].trim();
+        const maxStr = clampMatch[3].trim();
+        
+        const minRem = parseFloat(minStr.replace('rem', ''));
+        const maxRem = parseFloat(maxStr.replace('rem', ''));
+        const vwValue = parseFloat(vwStr.replace('vw', ''));
+        
+        const vwPixels = (vw * vwValue) / 100;
+        const minPixels = minRem * 16;
+        const maxPixels = maxRem * 16;
+        
+        const result = Math.max(minPixels, Math.min(maxPixels, vwPixels));
+        console.log(`Clamp result: ${result}px (vw: ${vw}, vwPixels: ${vwPixels}, min: ${minPixels}, max: ${maxPixels})`);
+        return result;
+      }
     }
     
     if (fontSize.includes('rem')) {
-      return parseFloat(fontSize) * 16;
-    }
-    if (fontSize.includes('px')) {
-      return parseFloat(fontSize);
+      const result = parseFloat(fontSize) * 16;
+      console.log(`Rem result: ${result}px`);
+      return result;
     }
     
-    return 64; // Default fallback
+    if (fontSize.includes('px')) {
+      const result = parseFloat(fontSize);
+      console.log(`Pixel result: ${result}px`);
+      return result;
+    }
+    
+    console.log('Using fallback: 64px');
+    return 64;
   }, []);
 
-  // Readiness gate - aspetta che tutto sia pronto
-  const checkReadiness = useCallback(() => {
-    if (canvasRef.current && wrapperRef.current && wrapperSize.width > 0 && wrapperSize.height > 0) {
-      if (!isReady) {
-        setIsReady(true);
-        onReady?.();
-      }
-      return true;
-    }
-    return false;
-  }, [wrapperSize, isReady, onReady]);
-
-  // Inizializza canvas e particelle
+  // Inizializzazione semplificata del canvas
   const initializeCanvas = useCallback(() => {
-    if (!checkReadiness()) return;
+    if (!canvasRef.current || !wrapperRef.current || wrapperSize.width === 0) {
+      console.log('Canvas initialization skipped - missing elements');
+      setDebugInfo('Waiting for elements...');
+      return false;
+    }
     
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext('2d')!;
+    console.log('Starting canvas initialization...');
+    setDebugInfo('Initializing canvas...');
     
-    // Setup canvas con device pixel ratio per qualità ottimale
-    const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    
-    // Calculate font size in pixels for proper canvas sizing
-    const fontSizePixels = getFontSizeInPixels(font.fontSize || '8rem');
-    
-    // Ensure canvas is large enough for the text
-    const minWidth = Math.max(rect.width, fontSizePixels * 6); // Approximate width needed
-    const minHeight = Math.max(rect.height, fontSizePixels * 1.5); // Approximate height needed
-    
-    canvas.width = minWidth * dpr;
-    canvas.height = minHeight * dpr;
-    canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${rect.height}px`;
-    
-    ctx.scale(dpr, dpr);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = `${font.fontWeight} ${fontSizePixels}px ${font.fontFamily}`;
-    ctx.fillStyle = color;
-    
-    // Crea particelle dal testo
-    createParticles(ctx, texts[currentTextIndex]);
-  }, [checkReadiness, font, color, texts, currentTextIndex, getFontSizeInPixels]);
+    try {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+      
+      if (!ctx) {
+        console.error('Could not get 2D context');
+        onError?.();
+        return false;
+      }
 
-  // Crea particelle dal testo
-  const createParticles = useCallback((ctx: CanvasRenderingContext2D, text: string) => {
-    const canvas = ctx.canvas;
-    const centerX = canvas.width / (window.devicePixelRatio || 1) / 2;
-    const centerY = canvas.height / (window.devicePixelRatio || 1) / 2;
+      // Dimensioni semplici basate sul wrapper
+      const rect = wrapperRef.current.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      console.log(`Wrapper size: ${rect.width}x${rect.height}`);
+      
+      // Canvas size = wrapper size
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      
+      ctx.scale(dpr, dpr);
+      
+      // Font setup con fallback
+      const fontSizePixels = getFontSizeInPixels(font.fontSize || '4rem');
+      console.log(`Using font size: ${fontSizePixels}px`);
+      
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `${font.fontWeight} ${fontSizePixels}px ${font.fontFamily}`;
+      ctx.fillStyle = color;
+      
+      // Test se il font è caricato disegnando il testo
+      const testText = texts[currentTextIndex] || 'Test';
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      console.log(`Drawing text "${testText}" at ${centerX}, ${centerY}`);
+      
+      // Clear e disegna per test
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillText(testText, centerX, centerY);
+      
+      // Verifica se il testo è stato disegnato
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const hasContent = imageData.data.some((value, index) => index % 4 === 3 && value > 0);
+      
+      if (!hasContent) {
+        console.error('No text was drawn to canvas');
+        onError?.();
+        return false;
+      }
+      
+      console.log('Text successfully drawn to canvas');
+      setDebugInfo('Canvas ready');
+      
+      // Crea particelle
+      createParticles(ctx, testText, centerX, centerY);
+      
+      return true;
+    } catch (error) {
+      console.error('Canvas initialization error:', error);
+      setDebugInfo('Canvas error');
+      onError?.();
+      return false;
+    }
+  }, [wrapperSize, font, color, texts, currentTextIndex, getFontSizeInPixels, onError]);
+
+  // Creazione particelle semplificata
+  const createParticles = useCallback((ctx: CanvasRenderingContext2D, text: string, centerX: number, centerY: number) => {
+    console.log('Creating particles...');
+    setDebugInfo('Creating particles...');
     
-    // Clear e disegna testo
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear canvas
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillText(text, centerX, centerY);
     
     // Estrai pixel data
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
     const pixels = imageData.data;
     const particles: Particle[] = [];
     
-    // Sampling ottimizzato per performance
-    const step = 4; // Riduce densità particelle per performance
+    // Sampling delle particelle con step più grande per performance
+    const step = 6;
+    const dpr = window.devicePixelRatio || 1;
     
-    for (let y = 0; y < canvas.height; y += step) {
-      for (let x = 0; x < canvas.width; x += step) {
-        const index = (y * canvas.width + x) * 4;
+    for (let y = 0; y < ctx.canvas.height; y += step) {
+      for (let x = 0; x < ctx.canvas.width; x += step) {
+        const index = (y * ctx.canvas.width + x) * 4;
         const alpha = pixels[index + 3];
         
-        if (alpha > 128) { // Soglia alpha per particelle visibili
-          const dpr = window.devicePixelRatio || 1;
+        if (alpha > 100) {
           particles.push({
             x: x / dpr,
             y: y / dpr,
             originalX: x / dpr,
             originalY: y / dpr,
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2 - 1,
+            vx: (Math.random() - 0.5) * 3,
+            vy: (Math.random() - 0.5) * 3 - 1,
             opacity: 1,
             originalOpacity: 1
           });
@@ -175,14 +229,21 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
       }
     }
     
+    console.log(`Created ${particles.length} particles`);
     particlesRef.current = particles;
     
-    // Clear canvas per rendering particelle
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Render iniziale
     renderParticles(ctx);
-  }, []);
+    setDebugInfo(`Ready - ${particles.length} particles`);
+    
+    // Segna come pronto
+    if (!isReady) {
+      setIsReady(true);
+      onReady?.();
+    }
+  }, [isReady, onReady]);
 
-  // Rendering particelle ottimizzato
+  // Rendering particelle
   const renderParticles = useCallback((ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     
@@ -191,7 +252,7 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
     
     particles.forEach(particle => {
       ctx.fillStyle = `rgba(${rgbaColor.r}, ${rgbaColor.g}, ${rgbaColor.b}, ${particle.opacity})`;
-      ctx.fillRect(particle.x, particle.y, 2, 2); // Pixel size ottimizzato
+      ctx.fillRect(particle.x, particle.y, 3, 3);
     });
   }, [color]);
 
@@ -267,28 +328,40 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Effect per inizializzazione
+  // Effect per inizializzazione con timeout di sicurezza
   useEffect(() => {
     if (wrapperSize.width > 0 && wrapperSize.height > 0) {
-      // Delay per assicurarsi che tutto sia renderizzato
-      setTimeout(initializeCanvas, 100);
+      console.log('Scheduling canvas initialization...');
+      
+      // Clear precedenti timeout
+      if (initTimeoutRef.current) {
+        clearTimeout(initTimeoutRef.current);
+      }
+      
+      // Prova inizializzazione immediata
+      const success = initializeCanvas();
+      
+      if (!success) {
+        // Retry dopo 500ms
+        initTimeoutRef.current = setTimeout(() => {
+          console.log('Retrying canvas initialization...');
+          const retrySuccess = initializeCanvas();
+          
+          if (!retrySuccess) {
+            console.log('Canvas initialization failed, triggering fallback');
+            onError?.();
+          }
+        }, 500);
+      }
     }
-  }, [wrapperSize, initializeCanvas]);
+  }, [wrapperSize, currentTextIndex, initializeCanvas, onError]);
 
   // Effect per avvio animazione
   useEffect(() => {
     if (isReady && startAnimation && animationState === 'idle') {
-      // Delay aggiuntivo per sincronizzazione perfetta
-      setTimeout(startVaporizeAnimation, 500);
+      setTimeout(startVaporizeAnimation, 200);
     }
   }, [isReady, startAnimation, animationState, startVaporizeAnimation]);
-
-  // Effect per cambio testo
-  useEffect(() => {
-    if (isReady && animationState === 'idle') {
-      initializeCanvas();
-    }
-  }, [currentTextIndex, isReady, animationState, initializeCanvas]);
 
   // Cleanup
   useEffect(() => {
@@ -298,6 +371,9 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
       }
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+      }
+      if (initTimeoutRef.current) {
+        clearTimeout(initTimeoutRef.current);
       }
     };
   }, []);
@@ -320,6 +396,12 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
         style={{ willChange: 'auto' }}
       />
       <SeoElement tag={tag} texts={texts} />
+      {/* Debug info in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="absolute top-2 left-2 text-xs text-white/50 bg-black/20 px-2 py-1 rounded">
+          {debugInfo}
+        </div>
+      )}
     </div>
   );
 };
