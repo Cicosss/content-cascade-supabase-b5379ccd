@@ -10,21 +10,8 @@ const HeroBrandSection: React.FC<HeroBrandSectionProps> = ({
   onTextReady, 
   startAnimation = false 
 }) => {
-  // Funzione per calcolare fontSize responsivo
-  const getResponsiveFontSize = () => {
-    if (typeof window === 'undefined') return "8rem";
-    
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    
-    // Base size responsivo basato su viewport
-    if (vw >= 1536) return "12rem";  // 2xl
-    if (vw >= 1280) return "10rem";  // xl  
-    if (vw >= 1024) return "8rem";   // lg
-    if (vw >= 768) return "6rem";    // md
-    if (vw >= 640) return "4rem";    // sm
-    return "3rem";                   // mobile
-  };
+  // Utilizzo CSS clamp per responsività fluida e sicura
+  const responsiveFontSize = "clamp(2.5rem, 8vw, 8rem)";
 
   return (
     <div className="flex items-center justify-center mb-8 px-4 w-full h-80 md:h-96">
@@ -37,7 +24,7 @@ const HeroBrandSection: React.FC<HeroBrandSectionProps> = ({
           ]}
           font={{
             fontFamily: "'Playfair Display', serif",
-            fontSize: getResponsiveFontSize(),
+            fontSize: responsiveFontSize,
             fontWeight: 700
           }}
           color="rgba(255, 255, 255, 0.9)"

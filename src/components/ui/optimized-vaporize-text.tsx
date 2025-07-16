@@ -64,6 +64,33 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
   const [isReady, setIsReady] = useState(false);
   const [wrapperSize, setWrapperSize] = useState({ width: 0, height: 0 });
 
+  // Convert CSS font size to pixels for canvas
+  const getFontSizeInPixels = useCallback((fontSize: string): number => {
+    if (fontSize.includes('clamp')) {
+      // For clamp values, calculate based on viewport width
+      const vw = window.innerWidth;
+      const minRem = parseFloat(fontSize.match(/clamp\(([^,]+)/)?.[1] || '2.5');
+      const maxRem = parseFloat(fontSize.match(/,\s*([^)]+)\)$/)?.[1] || '8');
+      const vwValue = parseFloat(fontSize.match(/,\s*(\d+)vw/)?.[1] || '8');
+      
+      // Calculate responsive value
+      const vwPixels = (vw * vwValue) / 100;
+      const minPixels = minRem * 16;
+      const maxPixels = maxRem * 16;
+      
+      return Math.max(minPixels, Math.min(maxPixels, vwPixels));
+    }
+    
+    if (fontSize.includes('rem')) {
+      return parseFloat(fontSize) * 16;
+    }
+    if (fontSize.includes('px')) {
+      return parseFloat(fontSize);
+    }
+    
+    return 64; // Default fallback
+  }, []);
+
   // Readiness gate - aspetta che tutto sia pronto
   const checkReadiness = useCallback(() => {
     if (canvasRef.current && wrapperRef.current && wrapperSize.width > 0 && wrapperSize.height > 0) {
@@ -87,20 +114,27 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
     
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    // Calculate font size in pixels for proper canvas sizing
+    const fontSizePixels = getFontSizeInPixels(font.fontSize || '8rem');
+    
+    // Ensure canvas is large enough for the text
+    const minWidth = Math.max(rect.width, fontSizePixels * 6); // Approximate width needed
+    const minHeight = Math.max(rect.height, fontSizePixels * 1.5); // Approximate height needed
+    
+    canvas.width = minWidth * dpr;
+    canvas.height = minHeight * dpr;
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
     
     ctx.scale(dpr, dpr);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = `${font.fontWeight} ${font.fontSize} ${font.fontFamily}`;
+    ctx.font = `${font.fontWeight} ${fontSizePixels}px ${font.fontFamily}`;
     ctx.fillStyle = color;
     
     // Crea particelle dal testo
     createParticles(ctx, texts[currentTextIndex]);
-  }, [checkReadiness, font, color, texts, currentTextIndex]);
+  }, [checkReadiness, font, color, texts, currentTextIndex, getFontSizeInPixels]);
 
   // Crea particelle dal testo
   const createParticles = useCallback((ctx: CanvasRenderingContext2D, text: string) => {
