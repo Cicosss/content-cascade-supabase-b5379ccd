@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -14,6 +14,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 }) => {
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [posterLoaded, setPosterLoaded] = useState(false);
 
   // Estrae l'ID del video da YouTube URL
   const getYouTubeVideoId = (url: string) => {
@@ -23,10 +24,22 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const videoId = getYouTubeVideoId(videoUrl);
   
+  // URL poster image da YouTube per caricamento istantaneo
+  const posterUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+  
   // URL embed ottimizzato per effetto cinema - parametri aggiuntivi per rimuovere branding
   const embedUrl = videoId ? 
     `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&branding=0&cc_lang_pref=0&disablekb=1&start=1&origin=${encodeURIComponent(window.location.origin)}` 
     : null;
+
+  // Preload poster image per caricamento istantaneo
+  useEffect(() => {
+    if (posterUrl && !isMobile) {
+      const img = new Image();
+      img.onload = () => setPosterLoaded(true);
+      img.src = posterUrl;
+    }
+  }, [posterUrl, isMobile]);
 
   const handleIframeLoad = () => {
     setIsVideoReady(true);
@@ -45,8 +58,18 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           style={{ backgroundImage: `url(${mobileImageUrl})` }}
         />
       ) : (
-        // Desktop video background con effetto cinema
+        // Desktop video background con effetto cinema e poster istantaneo
         <div className="absolute inset-0 overflow-hidden">
+          {/* Poster Image - Caricamento Istantaneo */}
+          {posterUrl && (
+            <div
+              className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+                isVideoReady ? 'opacity-0' : 'opacity-100'
+              }`}
+              style={{ backgroundImage: `url(${posterUrl})` }}
+            />
+          )}
+
           {/* Container video con espansione orizzontale forzata per effetto cinema */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -74,7 +97,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 left: 0,
                 pointerEvents: 'none',
                 transform: 'scale(1.1)', // Scaling aggiuntivo per effetto cinematografico
-                transformOrigin: 'center center'
+                transformOrigin: 'center center',
+                opacity: isVideoReady ? 1 : 0,
+                transition: 'opacity 1000ms ease-in-out'
               }}
               title="Cinematic YouTube video background"
             />
@@ -87,15 +112,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-10" />
             <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-10" />
           </div>
-          
-          {/* Loading state overlay cinematografico */}
-          {!isVideoReady && !videoError && (
-            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
-              <div className="text-white text-lg font-light animate-pulse">
-                Caricamento esperienza cinematografica...
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>
