@@ -75,13 +75,17 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Desktop video background con effetto cinema e poster istantaneo
         <div className="absolute inset-0 overflow-hidden">
-          {/* Poster Image con fallback automatico */}
+          {/* Poster Image con dimensioni identiche al video */}
           <div
-            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
               isVideoReady ? 'opacity-0' : 'opacity-100'
             }`}
             style={{ 
-              backgroundImage: `url(${posterUrl}), url(${youtubePosterUrl})` 
+              width: '120vw', 
+              height: '67.5vw',
+              transform: 'translate(-50%, -50%) scale(1.1)',
+              backgroundImage: `url(${posterUrl}), url(${youtubePosterUrl})`,
+              willChange: 'transform'
             }}
           />
 
@@ -91,8 +95,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             style={{
               width: '120vw', // Espansione orizzontale forzata
               height: '67.5vw', // Mantiene aspect ratio 16:9 
-              minWidth: '120vw',
-              minHeight: '100vh',
+              transform: 'translate(-50%, -50%) scale(1.1)',
               willChange: 'transform'
             }}
           >
