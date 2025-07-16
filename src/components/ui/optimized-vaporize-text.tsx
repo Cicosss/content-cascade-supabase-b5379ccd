@@ -40,7 +40,7 @@ const OptimizedVaporizeText: React.FC<OptimizedVaporizeTextProps> = ({
   texts,
   font = {
     fontFamily: "'Playfair Display', serif",
-    fontSize: "36rem",
+    fontSize: "8rem",
     fontWeight: 700
   },
   color = "rgba(255, 255, 255, 0.9)",

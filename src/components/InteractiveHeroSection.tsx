@@ -53,17 +53,18 @@ const InteractiveHeroSection = () => {
       {/* Content Overlay */}
       <div className="relative z-10 h-full flex flex-col">
         {/* Top Content */}
-        <div className="flex-1 flex items-center justify-center text-white text-center px-4">
-          <div className="max-w-5xl mx-auto">
+        <div className="flex-1 flex items-center justify-center text-white text-center">
+          <div className="w-full">
             {/* Brand Section */}
             <HeroBrandSection 
               onTextReady={handleTextReady}
               startAnimation={canStartAnimation}
             />
             
-
             {/* Key features */}
-            <HeroFeatures />
+            <div className="px-4">
+              <HeroFeatures />
+            </div>
           </div>
         </div>
 
