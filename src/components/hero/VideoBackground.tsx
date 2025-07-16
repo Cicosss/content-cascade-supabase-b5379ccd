@@ -25,7 +25,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const videoId = getYouTubeVideoId(videoUrl);
   
-  // Poster personalizzato che corrisponde al primo frame del video
+  // Poster personalizzato con fallback al poster di YouTube
+  const youtubePosterUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
   const posterUrl = HERO_POSTER_IMAGE;
   
   // URL embed ottimizzato per effetto cinema - parametri aggiuntivi per rimuovere branding
@@ -33,14 +34,27 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&branding=0&cc_lang_pref=0&disablekb=1&start=1&origin=${encodeURIComponent(window.location.origin)}` 
     : null;
 
-  // Preload poster image per caricamento istantaneo
+  // Preload poster con fallback automatico
   useEffect(() => {
-    if (posterUrl && !isMobile) {
+    if (!isMobile) {
       const img = new Image();
-      img.onload = () => setPosterLoaded(true);
+      img.onload = () => {
+        console.log('Custom poster loaded successfully:', posterUrl);
+        setPosterLoaded(true);
+      };
+      img.onerror = () => {
+        console.log('Custom poster failed, using YouTube fallback:', youtubePosterUrl);
+        // Fallback al poster YouTube se quello custom non si carica
+        if (youtubePosterUrl) {
+          const fallbackImg = new Image();
+          fallbackImg.onload = () => setPosterLoaded(true);
+          fallbackImg.onerror = () => console.log('YouTube poster also failed');
+          fallbackImg.src = youtubePosterUrl;
+        }
+      };
       img.src = posterUrl;
     }
-  }, [posterUrl, isMobile]);
+  }, [posterUrl, youtubePosterUrl, isMobile]);
 
   const handleIframeLoad = () => {
     setIsVideoReady(true);
@@ -61,15 +75,15 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Desktop video background con effetto cinema e poster istantaneo
         <div className="absolute inset-0 overflow-hidden">
-          {/* Poster Image - Caricamento Istantaneo */}
-          {posterUrl && (
-            <div
-              className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
-                isVideoReady ? 'opacity-0' : 'opacity-100'
-              }`}
-              style={{ backgroundImage: `url(${posterUrl})` }}
-            />
-          )}
+          {/* Poster Image con fallback automatico */}
+          <div
+            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+              isVideoReady ? 'opacity-0' : 'opacity-100'
+            }`}
+            style={{ 
+              backgroundImage: `url(${posterUrl}), url(${youtubePosterUrl})` 
+            }}
+          />
 
           {/* Container video con espansione orizzontale forzata per effetto cinema */}
           <div 
