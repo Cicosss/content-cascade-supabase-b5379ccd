@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import OptimizedVaporizeText, { Tag } from "@/components/ui/optimized-vaporize-text";
 
 interface HeroBrandSectionProps {
@@ -12,13 +12,24 @@ const HeroBrandSection: React.FC<HeroBrandSectionProps> = ({
 }) => {
   const [showFallback, setShowFallback] = useState(false);
 
+  // Timeout di sicurezza: se dopo 2 secondi non è pronto, mostra fallback
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      console.log("Timeout reached - showing fallback text");
+      setShowFallback(true);
+      onTextReady?.();
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [onTextReady]);
+
   // Fallback component per garantire sempre visibilità del testo
   const FallbackText = () => (
-    <div className="text-center">
+    <div className="text-center animate-fade-in">
       <h2 
         className="font-bold text-white/90 leading-tight"
         style={{ 
-          fontFamily: "'Playfair Display', serif",
+          fontFamily: "'Playfair Display', serif, Georgia, serif",
           fontSize: "clamp(2.5rem, 8vw, 8rem)"
         }}
       >
@@ -28,6 +39,11 @@ const HeroBrandSection: React.FC<HeroBrandSectionProps> = ({
       </h2>
     </div>
   );
+
+  const handleCanvasReady = () => {
+    console.log("Canvas animation ready, not showing fallback");
+    onTextReady?.();
+  };
 
   const handleCanvasError = () => {
     console.log("Canvas animation failed, showing fallback text");
@@ -59,7 +75,7 @@ const HeroBrandSection: React.FC<HeroBrandSectionProps> = ({
               waitDuration: 0.8
             }}
             tag={Tag.H2}
-            onReady={onTextReady}
+            onReady={handleCanvasReady}
             onError={handleCanvasError}
             startAnimation={startAnimation}
           />
