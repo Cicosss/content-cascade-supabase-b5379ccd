@@ -1,19 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
   mobileImageUrl: string;
   isMobile: boolean;
+  onVideoReady?: () => void;
 }
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ 
   videoUrl, 
   mobileImageUrl, 
-  isMobile 
+  isMobile,
+  onVideoReady 
 }) => {
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [showPoster, setShowPoster] = useState(true);
 
   // Estrae l'ID del video da YouTube URL
   const getYouTubeVideoId = (url: string) => {
@@ -29,33 +32,53 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     : null;
 
   const handleIframeLoad = () => {
-    setIsVideoReady(true);
+    setTimeout(() => {
+      setIsVideoReady(true);
+      setShowPoster(false);
+      onVideoReady?.();
+    }, 1500); // Delay per transizione fluida
   };
 
   const handleIframeError = () => {
     setVideoError(true);
+    onVideoReady?.(); // Chiamiamo callback anche in caso di errore
   };
+
+  // Preload poster image per LCP ottimizzato
+  useEffect(() => {
+    if (mobileImageUrl) {
+      const img = new Image();
+      img.src = mobileImageUrl;
+    }
+  }, [mobileImageUrl]);
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {isMobile || videoError || !embedUrl ? (
-        // Mobile background image or video fallback
-        <div
-          className="w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${mobileImageUrl})` }}
-        />
-      ) : (
-        // Desktop video background con effetto cinema
-        <div className="absolute inset-0 overflow-hidden">
+      {/* Poster image - sempre visibile per LCP ottimizzato */}
+      <div
+        className={`absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+          showPoster || isMobile || videoError || !embedUrl ? 'opacity-100' : 'opacity-0'
+        }`}
+        style={{ 
+          backgroundImage: `url(${mobileImageUrl})`,
+          willChange: 'opacity'
+        }}
+      />
+      
+      {!isMobile && !videoError && embedUrl && (
+        // Desktop video background con effetto cinema - carica dietro al poster
+        <div className={`absolute inset-0 overflow-hidden transition-opacity duration-1000 ${
+          isVideoReady && !showPoster ? 'opacity-100' : 'opacity-0'
+        }`}>
           {/* Container video con espansione orizzontale forzata per effetto cinema */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             style={{
-              width: '120vw', // Espansione orizzontale forzata
-              height: '67.5vw', // Mantiene aspect ratio 16:9 
+              width: '120vw', 
+              height: '67.5vw', 
               minWidth: '120vw',
               minHeight: '100vh',
-              willChange: 'transform'
+              willChange: 'transform, opacity'
             }}
           >
             <iframe
@@ -68,12 +91,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
               allowFullScreen
               onLoad={handleIframeLoad}
               onError={handleIframeError}
+              loading="lazy"
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 pointerEvents: 'none',
-                transform: 'scale(1.1)', // Scaling aggiuntivo per effetto cinematografico
+                transform: 'scale(1.1) translate3d(0,0,0)', 
                 transformOrigin: 'center center'
               }}
               title="Cinematic YouTube video background"
@@ -82,20 +106,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           
           {/* Overlay per nascondere eventuali elementi YouTube rimanenti */}
           <div className="absolute inset-0 pointer-events-none">
-            {/* Overlay corners per nascondere loghi o controlli YouTube */}
             <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-10" />
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-10" />
             <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-10" />
           </div>
-          
-          {/* Loading state overlay cinematografico */}
-          {!isVideoReady && !videoError && (
-            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
-              <div className="text-white text-lg font-light animate-pulse">
-                Caricamento esperienza cinematografica...
-              </div>
-            </div>
-          )}
         </div>
       )}
     </div>
