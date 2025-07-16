@@ -63,11 +63,8 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
       location_name: prev.location_name || addressData.city || '' // Usa location_name esistente o città
     }));
     
-    // Conferma l'indirizzo dopo aver aggiornato i dati
-    setTimeout(() => {
-      console.log('✅ Confermando indirizzo...');
-      setIsAddressConfirmed(true);
-    }, 100);
+    // L'indirizzo viene confermato tramite onConfirmationChange nel hook
+    console.log('✅ Indirizzo selezionato, in attesa della conferma dal hook');
   };
 
   const handleAddressConfirmationChange = (isConfirmed: boolean) => {

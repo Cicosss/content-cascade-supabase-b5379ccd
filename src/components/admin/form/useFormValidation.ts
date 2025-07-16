@@ -10,14 +10,9 @@ export const useFormValidation = () => {
     if (!formData.category) errors.push('La categoria è obbligatoria');
     if (!formData.address.trim()) errors.push('L\'indirizzo è obbligatorio');
     
-    // Controllo conferma indirizzo
-    if (!isAddressConfirmed) {
+    // Controllo conferma indirizzo e coordinate insieme
+    if (!isAddressConfirmed || !formData.latitude || !formData.longitude) {
       errors.push('Seleziona un indirizzo valido dalla lista di Google Places');
-    }
-
-    // Validazione coordinate
-    if (!formData.latitude || !formData.longitude) {
-      errors.push('Coordinate mancanti - seleziona un indirizzo dalla lista');
     }
 
     // Validazione eventi

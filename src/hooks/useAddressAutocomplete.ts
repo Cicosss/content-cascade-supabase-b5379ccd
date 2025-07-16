@@ -79,7 +79,7 @@ export const useAddressAutocomplete = ({
 
       console.log('✅ Address data processed:', addressData);
 
-      // Call callbacks immediatamente e atomicamente
+      // Call callbacks immediately and atomically  
       onAddressSelect(addressData);
       onConfirmationChange(true);
       
