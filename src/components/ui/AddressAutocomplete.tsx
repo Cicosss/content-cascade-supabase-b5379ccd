@@ -39,7 +39,9 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   className = "",
   required = false
 }) => {
-  const { isLoaded } = useGoogleMapsLoader();
+  const { isLoaded, error: apiError } = useGoogleMapsLoader();
+  
+  console.log('🔍 AddressAutocomplete render - API loaded:', isLoaded, 'Error:', apiError);
   
   const { inputRef, isLoading } = useAddressAutocomplete({ 
     isApiLoaded: isLoaded, 

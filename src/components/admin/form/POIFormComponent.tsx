@@ -51,25 +51,35 @@ const POIFormComponent: React.FC<POIFormComponentProps> = ({ onRefreshSubmission
   };
 
   const handleAddressSelect = (addressData: { address: string; latitude: number; longitude: number; city?: string; province?: string; postalCode?: string; country?: string; }) => {
-    console.log('🏠 Indirizzo selezionato:', addressData);
-    console.log('📍 Coordinate ricevute:', { lat: addressData.latitude, lng: addressData.longitude });
+    console.log('📍 Address selected in POIFormComponent:', addressData);
     
-    // Aggiorna i dati del form con le informazioni dell'indirizzo
+    // Validate coordinates before setting
+    if (!addressData.latitude || !addressData.longitude || 
+        addressData.latitude === 0 || addressData.longitude === 0) {
+      console.error('❌ Invalid coordinates received:', addressData);
+      setIsAddressConfirmed(false);
+      return;
+    }
+    
     setFormData(prev => ({
       ...prev,
       address: addressData.address,
       latitude: addressData.latitude.toString(),
       longitude: addressData.longitude.toString(),
-      location_name: prev.location_name || addressData.city || '' // Usa location_name esistente o città
+      location_name: prev.location_name || addressData.city || ''
     }));
     
-    // L'indirizzo viene confermato tramite onConfirmationChange nel hook
-    console.log('✅ Indirizzo selezionato, in attesa della conferma dal hook');
+    console.log('✅ Form data updated with address');
   };
 
   const handleAddressConfirmationChange = (isConfirmed: boolean) => {
-    console.log('🔄 Stato conferma indirizzo cambiato:', isConfirmed);
+    console.log('🔔 Address confirmation changed to:', isConfirmed);
     setIsAddressConfirmed(isConfirmed);
+    
+    // Reset confirmation if address becomes invalid
+    if (!isConfirmed) {
+      console.log('⚠️ Address confirmation reset');
+    }
   };
 
   const handleTagChange = (tag: string, checked: boolean) => {
