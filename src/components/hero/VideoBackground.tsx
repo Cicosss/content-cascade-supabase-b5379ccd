@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { HERO_POSTER_IMAGE } from './heroCategories';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -24,8 +25,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const videoId = getYouTubeVideoId(videoUrl);
   
-  // URL poster image da YouTube per caricamento istantaneo
-  const posterUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+  // Poster personalizzato che corrisponde al primo frame del video
+  const posterUrl = HERO_POSTER_IMAGE;
   
   // URL embed ottimizzato per effetto cinema - parametri aggiuntivi per rimuovere branding
   const embedUrl = videoId ? 
