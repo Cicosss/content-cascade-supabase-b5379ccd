@@ -7,7 +7,7 @@ import SortingDropdown, { SortOption } from './SortingDropdown';
 import ExperiencesCarousel from './content/ExperiencesCarousel';
 import RestaurantsCarousel from './content/RestaurantsCarousel';
 import EventsCarousel from './content/EventsCarousel';
-import { usePersonalizedContent } from '@/hooks/usePersonalizedContentFixed';
+import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
 
 const PersonalizedContent = () => {
   const [activeFilters, setActiveFilters] = useState({

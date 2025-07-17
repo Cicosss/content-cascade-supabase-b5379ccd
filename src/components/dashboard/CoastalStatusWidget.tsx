@@ -11,14 +11,6 @@ const CoastalStatusWidget: React.FC = () => {
   const { weather } = useWeatherAPI(userLocation);
   const { flagStatus, waterTemperature, waterQuality, isSwimmingSeason } = useCoastalStatus(weather);
 
-  console.log('🌊 CoastalStatusWidget render:', {
-    hasUserLocation: !!userLocation,
-    hasWeather: !!weather,
-    isSwimmingSeason,
-    flagStatus,
-    waterTemperature,
-    waterQuality
-  });
 
   const getFlagColor = () => {
     switch (flagStatus.level) {

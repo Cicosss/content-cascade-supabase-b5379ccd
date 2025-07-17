@@ -12,13 +12,6 @@ const PersonalizedWeather: React.FC = () => {
 
   const loading = isLoadingLocation || weatherLoading;
 
-  console.log('🌤️ Stati meteo:', {
-    userLocation: !!userLocation,
-    isLoadingLocation,
-    weatherLoading,
-    hasWeather: !!weather,
-    error
-  });
 
   // Standardized institutional blue gradient
   const getStandardGradient = () => {

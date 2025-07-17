@@ -5,7 +5,7 @@ import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import CoastalStatusWidget from '@/components/dashboard/CoastalStatusWidget';
 import GoogleMap from '@/components/dashboard/GoogleMap';
-import { Separator } from '@/components/ui/separator';
+
 import { useURLFilters } from '@/hooks/useURLFilters';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useAuth } from '@/contexts/AuthContext';
