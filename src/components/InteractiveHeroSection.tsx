@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { heroCategories } from './hero/heroCategories';
 import HeroBackground from './hero/HeroBackground';
 import HeroBrandSection from './hero/HeroBrandSection';
-import UserGreeting from './hero/UserGreeting';
 import HeroFeatures from './hero/HeroFeatures';
 import HeroNavigation from './hero/HeroNavigation';
 

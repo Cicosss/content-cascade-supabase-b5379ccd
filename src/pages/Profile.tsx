@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import Header from '@/components/Header';
+import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { ProfileHeader } from '@/components/profile/ProfileHeader';
@@ -59,45 +59,47 @@ const Profile = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <Card className="p-8 text-center rounded-3xl border-0 shadow-lg">
-            <p className="text-gray-600 text-lg">Devi effettuare l'accesso per vedere il tuo profilo.</p>
-          </Card>
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+          <div className="container mx-auto px-4 py-8">
+            <Card className="p-8 text-center rounded-3xl border-0 shadow-lg">
+              <p className="text-gray-600 text-lg">Devi effettuare l'accesso per vedere il tuo profilo.</p>
+            </Card>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
-      <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <ProfileHeader />
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+              <ProfileHeader />
 
-            <div className="space-y-8">
-              <ProfileAvatarSection 
-                avatarUrl={avatarUrl} 
-                onAvatarChange={onAvatarChange}
-              />
+              <div className="space-y-8">
+                <ProfileAvatarSection 
+                  avatarUrl={avatarUrl} 
+                  onAvatarChange={onAvatarChange}
+                />
 
-              <ProfileForm 
-                profile={profile}
-                onProfileChange={setProfile}
-              />
+                <ProfileForm 
+                  profile={profile}
+                  onProfileChange={setProfile}
+                />
 
-              <ProfileActions 
-                loading={loading}
-                onSave={updateProfile}
-              />
-            </div>
-          </Card>
+                <ProfileActions 
+                  loading={loading}
+                  onSave={updateProfile}
+                />
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
