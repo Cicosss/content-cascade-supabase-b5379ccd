@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { useDebounce } from './useDebounce';
+import { useDebounceCallback } from './useDebounceCallback';
 
 interface MapBounds {
   north: number;
@@ -55,7 +55,7 @@ export const useMapBoundsSearch = ({
     setTimeout(() => setIsSearching(false), 1000);
   }, [getCurrentBounds, onBoundsChange]);
 
-  const debouncedTriggerSearch = useDebounce(triggerBoundsSearch, debounceMs);
+  const debouncedTriggerSearch = useDebounceCallback(triggerBoundsSearch, debounceMs);
 
   const handleMapMovement = useCallback(() => {
     const currentBounds = getCurrentBounds();
