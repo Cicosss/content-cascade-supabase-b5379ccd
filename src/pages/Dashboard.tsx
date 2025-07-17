@@ -5,6 +5,8 @@ import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import CoastalStatusWidget from '@/components/dashboard/CoastalStatusWidget';
 import GoogleMap from '@/components/dashboard/GoogleMap';
+import { APIErrorBoundary } from '@/components/dashboard/APIErrorBoundary';
+import { APIHealthMonitor } from '@/components/dashboard/APIHealthMonitor';
 
 import { useURLFilters } from '@/hooks/useURLFilters';
 import { useProfileData } from '@/hooks/useProfileData';
@@ -58,7 +60,9 @@ const Dashboard = () => {
               {/* Colonna principale - Mappa Interattiva */}
               <div className="lg:col-span-3">
                 <div className="h-full rounded-3xl overflow-hidden shadow-xl">
-                  <GoogleMap filters={mapFilters} />
+                  <APIErrorBoundary>
+                    <GoogleMap filters={mapFilters} />
+                  </APIErrorBoundary>
                 </div>
               </div>
               
@@ -78,10 +82,13 @@ const Dashboard = () => {
         {/* Sezione Inferiore - Contenuti con Sfondo Chiaro */}
         <div className="bg-slate-50">
           <div className="container mx-auto px-4 py-8">
-            <PersonalizedContent />
+            <APIErrorBoundary>
+              <PersonalizedContent />
+            </APIErrorBoundary>
           </div>
         </div>
       </div>
+      <APIHealthMonitor />
     </Layout>
   );
 };

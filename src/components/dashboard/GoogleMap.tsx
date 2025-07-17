@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
-import { usePOIData } from '@/hooks/usePOIData';
+import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
 import { useMapBoundsSearch } from '@/hooks/useMapBoundsSearch';
 import { Loader2 } from 'lucide-react';
 import OptimizedPOIPreview from './OptimizedPOIPreview';
@@ -25,7 +25,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   const [selectedPOI, setSelectedPOI] = useState<any>(null);
   
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
-  const { pois, fetchPOIs, isLoading: isLoadingPOIs } = usePOIData();
+  const { pois, fetchPOIs, isLoading: isLoadingPOIs } = useOptimizedPOIData();
   const { isLoaded, error } = useGoogleMapsLoader();
   const mapInstance = useMapInitialization({ isLoaded, mapRef, userLocation });
 
