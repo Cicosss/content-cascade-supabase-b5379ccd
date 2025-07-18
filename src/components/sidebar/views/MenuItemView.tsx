@@ -3,14 +3,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { MenuItem as MenuItemType } from '@/config/menuConfig';
+import { BadgeView } from './BadgeView';
+import { useSidebarState } from '@/contexts/SidebarContext';
 
-interface MenuItemProps {
+interface MenuItemViewProps {
   item: MenuItemType;
   isActive: boolean;
 }
 
-const MenuItem = React.memo<MenuItemProps>(({ item, isActive }) => {
+const MenuItemView = React.memo<MenuItemViewProps>(({ item, isActive }) => {
   const { icon: Icon, title, url, badge } = item;
+  const { isCollapsed } = useSidebarState();
 
   return (
     <SidebarMenuItem>
@@ -28,21 +31,20 @@ const MenuItem = React.memo<MenuItemProps>(({ item, isActive }) => {
           <div className="relative">
             <Icon className="h-5 w-5" />
             {badge && (
-              <div 
-                className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold animate-pulse group-data-[collapsible=icon]:-top-1 group-data-[collapsible=icon]:-right-1 group-data-[collapsible=icon]:w-3.5 group-data-[collapsible=icon]:h-3.5 group-data-[collapsible=icon]:text-[9px]" 
-                aria-label={`${badge} notifiche`}
-              >
-                {badge}
-              </div>
+              <BadgeView 
+                count={badge}
+                isCollapsed={isCollapsed}
+                label={`${badge} notifiche`}
+              />
             )}
           </div>
-          <span className="group-data-[collapsible=icon]:hidden">{title}</span>
+          {!isCollapsed && <span>{title}</span>}
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
 });
 
-MenuItem.displayName = 'MenuItem';
+MenuItemView.displayName = 'MenuItemView';
 
-export { MenuItem };
+export { MenuItemView };

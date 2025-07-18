@@ -1,7 +1,7 @@
 
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MENU_CONFIG, MenuItem, MenuSection } from '@/config/menuConfig';
+import { MENU_CONFIG } from '@/config/menuConfig';
 
 export const useMenuItems = () => {
   const location = useLocation();

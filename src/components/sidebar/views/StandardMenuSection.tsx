@@ -5,27 +5,34 @@ import {
   SidebarGroupContent, 
   SidebarMenu
 } from '@/components/ui/sidebar';
-import { MenuItem } from './MenuItem';
-import { MenuSection as MenuSectionType } from '@/config/menuConfig';
+import { MenuSection } from '@/config/menuConfig';
+import { MenuItemView } from './MenuItemView';
+import { useSidebarState } from '@/contexts/SidebarContext';
 
-interface MenuSectionProps {
-  section: MenuSectionType;
+interface StandardMenuSectionProps {
+  section: MenuSection;
   isActive: (url: string) => boolean;
   showAtBottom?: boolean;
 }
 
-const MenuSection = React.memo<MenuSectionProps>(({ section, isActive, showAtBottom }) => {
+const StandardMenuSection = React.memo<StandardMenuSectionProps>(({ 
+  section, 
+  isActive, 
+  showAtBottom 
+}) => {
+  const { isCollapsed } = useSidebarState();
+
   return (
     <SidebarGroup className={showAtBottom ? "mt-auto" : ""}>
       {section.showHeader && (
-        <h2 className="mb-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wide group-data-[collapsible=icon]:hidden mt-8">
+        <h2 className={`mb-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wide mt-8 ${isCollapsed ? 'hidden' : ''}`}>
           {section.title}
         </h2>
       )}
       <SidebarGroupContent>
         <SidebarMenu>
           {section.items.map((item) => (
-            <MenuItem
+            <MenuItemView
               key={item.id}
               item={item}
               isActive={isActive(item.url)}
@@ -37,6 +44,6 @@ const MenuSection = React.memo<MenuSectionProps>(({ section, isActive, showAtBot
   );
 });
 
-MenuSection.displayName = 'MenuSection';
+StandardMenuSection.displayName = 'StandardMenuSection';
 
-export { MenuSection };
+export { StandardMenuSection };
