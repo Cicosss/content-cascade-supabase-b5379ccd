@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import CoastalStatusWidget from '@/components/dashboard/CoastalStatusWidget';
-import GoogleMap from '@/components/dashboard/GoogleMap';
+import InteractiveMap from '@/components/dashboard/map/InteractiveMap';
 import { APIErrorBoundary } from '@/components/dashboard/APIErrorBoundary';
 import { APIHealthMonitor } from '@/components/dashboard/APIHealthMonitor';
 import CarouselMetrics from '@/components/dashboard/CarouselMetrics';
@@ -66,7 +66,7 @@ const Dashboard = () => {
                 <div className="lg:col-span-3">
                   <div className="h-full rounded-3xl overflow-hidden shadow-xl">
                     <MapErrorBoundary filters={mapFilters}>
-                      <GoogleMap filters={mapFilters} />
+                      <InteractiveMap filters={mapFilters} />
                     </MapErrorBoundary>
                   </div>
                 </div>
