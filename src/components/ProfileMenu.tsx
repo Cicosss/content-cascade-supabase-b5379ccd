@@ -53,7 +53,7 @@ const ProfileMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-48 rounded-xl border border-slate-300 shadow-xl z-profile-dropdown-custom bg-[#2A3385]"
+        className="w-48 rounded-xl border border-slate-300 shadow-xl z-[5001] bg-[#2A3385]"
       >
         <DropdownMenuItem 
           onClick={() => navigate('/dashboard')}

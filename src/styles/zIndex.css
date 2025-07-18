@@ -1,96 +1,65 @@
 
-/* Sistema di z-index standardizzato - AGGIORNATO per risolvere bug navbar */
+/* Sistema di z-index centralizzato e robusto */
 :root {
-  --z-dropdown: 50;
-  --z-sticky: 100;
-  --z-sidebar: 2100;
-  --z-header: 2000;
-  --z-overlay: 1000;
-  --z-modal: 1001;
-  --z-popover: 1002;
-  --z-tooltip: 1003;
-  --z-profile-dropdown: 9999;
-  --z-map-container: 1;
+  --z-behind: -1;
+  --z-normal: 1;
+  --z-elevated: 10;
+  --z-overlay: 100;
+  --z-modal: 1000;
+  --z-header: 5000;        /* Header sempre sopra tutto */
+  --z-dropdown: 5001;      /* Dropdown sopra header */
+  --z-mobile-menu: 5001;   /* Mobile menu sopra header */
 }
 
-/* Classi Tailwind personalizzate per z-index - AGGIORNATE */
-.z-sidebar-custom { z-index: 2100; }
-.z-header-custom { 
-  z-index: 2000;
-  isolation: isolate;
-  transform: translateZ(0); 
-  will-change: transform;
-}
-.z-overlay-custom { z-index: 1000; }
-.z-modal-custom { z-index: 1001; }
-.z-popover-custom { z-index: 1002; }
-.z-profile-dropdown-custom { z-index: 9999; }
-.z-map-container-custom { 
-  z-index: 1;
-  position: relative;
-}
+/* Classi Tailwind personalizzate per z-index - NUOVE E ROBUSTE */
+.z-behind { z-index: -1; }
+.z-normal { z-index: 1; }
+.z-elevated { z-index: 10; }
+.z-overlay { z-index: 100; }
+.z-modal { z-index: 1000; }
+.z-header { z-index: 5000; }
+.z-dropdown { z-index: 5001; }
+.z-mobile-menu { z-index: 5001; }
 
-/* Utility classes per la navbar */
-.nav-link-base {
-  @apply px-4 py-2 text-slate-200 hover:text-white hover:bg-slate-800 rounded-lg transition-all duration-200 font-medium text-sm;
-}
-
-.navbar-bg {
-  @apply bg-slate-900 backdrop-blur-sm border-slate-700;
-}
-
-.navbar-text {
-  @apply text-slate-200;
-}
-
-.navbar-text-hover {
-  @apply hover:text-white;
-}
-
-/* Regole CSS specifiche per forzare l'header sopra Google Maps e altri contenuti */
-.header-force-top {
-  position: sticky !important;
+/* Regole specifiche per garantire header sempre visibile */
+.header-fixed {
+  position: fixed !important;
   top: 0 !important;
-  z-index: 2000 !important;
-  isolation: isolate !important;
-  transform: translateZ(0) !important;
-  background: #0F172A !important;
-  border-bottom: 1px solid rgb(51 65 85) !important;
-  /* Fallback per browser che non supportano sticky completamente */
-  position: -webkit-sticky !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 5000 !important;
+  width: 100% !important;
 }
 
-/* CORREZIONE: Assicura che la mappa di Google rimanga sotto l'header ma permette ai marker di essere visibili */
+/* Assicura che il contenuto principale non vada sotto l'header */
+.main-content-with-header {
+  padding-top: 6rem; /* h-24 = 6rem */
+}
+
+/* Reset per evitare conflitti con Google Maps e altri elementi */
 .google-maps-container {
   position: relative !important;
   z-index: 1 !important;
 }
 
-/* RIMOSSA la regola invasiva che nascondeva i marker:
-.google-maps-container > div {
-  z-index: 1 !important;
-}
-*/
-
-/* Nuove regole per garantire visibilità dei marker e controlli della mappa */
-.google-maps-container .gm-style {
-  z-index: auto !important;
+/* Dropdown e menu con z-index garantito */
+[data-radix-popper-content-wrapper] {
+  z-index: 5001 !important;
 }
 
-.google-maps-container .gm-style > div {
-  z-index: auto !important;
+.navigation-menu-content {
+  z-index: 5001 !important;
 }
 
-/* Assicura che i controlli della mappa siano visibili */
-.google-maps-container .gm-bundled-control {
-  z-index: 1000 !important;
+.sheet-content {
+  z-index: 5001 !important;
 }
 
-/* Stili per i controlli personalizzati della mappa */
-.map-controls-overlay {
-  z-index: 10 !important;
+/* Utility per forzare z-index */
+.force-above-header {
+  z-index: 5001 !important;
 }
 
-.map-poi-preview {
-  z-index: 20 !important;
+.force-header-level {
+  z-index: 5000 !important;
 }
