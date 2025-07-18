@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
@@ -11,6 +10,7 @@ import MapLoadingIndicator from './MapLoadingIndicator';
 import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
 import { useMapInitialization } from '@/hooks/useMapInitialization';
 import { useOptimizedMarkerPool } from '@/hooks/useOptimizedMarkerPool';
+import { useMapFilters } from '@/hooks/useStableFilters';
 
 interface GoogleMapProps {
   filters: {
@@ -54,11 +54,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     };
   }, [filters.activityTypes, filters.withChildren, mapBounds]);
 
-  // Import hook di stabilizzazione
-  const { useMapFilters } = React.useMemo(() => {
-    return require('@/hooks/useStableFilters');
-  }, []);
-
+  // Use the imported hook directly
   const poiFilters = useMapFilters(rawPoiFilters, mapBounds);
 
   // Memoized callbacks
