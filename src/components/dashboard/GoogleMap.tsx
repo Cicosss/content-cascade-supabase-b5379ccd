@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
-import { useMapBoundsSearch } from '@/hooks/useMapBoundsSearch';
+import { useBoundsStabilizer } from '@/hooks/useBoundsStabilizer';
+import { usePOIFetchManager } from '@/hooks/usePOIFetchManager';
 import { Loader2 } from 'lucide-react';
 import OptimizedPOIPreview from './OptimizedPOIPreview';
 import MapControls from './MapControls';
@@ -25,17 +26,8 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   const [selectedPOI, setSelectedPOI] = useState<any>(null);
   
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
-  const { pois, fetchPOIs, isLoading: isLoadingPOIs } = useOptimizedPOIData();
   const { isLoaded, error } = useGoogleMapsLoader();
   const mapInstance = useMapInitialization({ isLoaded, mapRef, userLocation });
-
-  const { clearAllMarkers, validPOICount } = useOptimizedMarkerPool({
-    map: mapInstance,
-    pois,
-    userLocation,
-    onPOISelect: setSelectedPOI,
-    isGoogleMapsLoaded: isLoaded
-  });
 
   // Map bounds e filtri stabilizzati
   const [mapBounds, setMapBounds] = useState<any>(null);
@@ -57,6 +49,26 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   // Use the imported hook directly
   const poiFilters = useMapFilters(rawPoiFilters, mapBounds);
 
+  // Use bounds stabilizer
+  const { isUserInteracting, initializeListeners } = useBoundsStabilizer({
+    map: mapInstance,
+    onStableBoundsChange: setMapBounds,
+    stabilizationDelay: 2000
+  });
+
+  // Use POI fetch manager with circuit breaker
+  const { pois, fetchPOIs: managedFetchPOIs, isLoading: isLoadingPOIs } = usePOIFetchManager({
+    initialFilters: poiFilters
+  });
+
+  const { clearAllMarkers, validPOICount } = useOptimizedMarkerPool({
+    map: mapInstance,
+    pois,
+    userLocation,
+    onPOISelect: setSelectedPOI,
+    isGoogleMapsLoaded: isLoaded
+  });
+
   // Memoized callbacks
   const handleCenterOnUser = useCallback(() => {
     if (userLocation && mapInstance) {
@@ -77,31 +89,19 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     setSelectedPOI(null);
   }, []);
 
-  // Map bounds search functionality
-  const {
-    isSearching,
-    showSearchButton,
-    triggerBoundsSearch,
-    initializeMapListeners
-  } = useMapBoundsSearch({
-    map: mapInstance,
-    onBoundsChange: setMapBounds,
-    debounceMs: 500
-  });
-
   // Initialize map listeners when map is ready
   useEffect(() => {
     if (mapInstance && isLoaded) {
-      const cleanup = initializeMapListeners();
+      const cleanup = initializeListeners();
       return cleanup;
     }
-  }, [mapInstance, isLoaded, initializeMapListeners]);
+  }, [mapInstance, isLoaded, initializeListeners]);
 
   // Load POIs when filters change
   useEffect(() => {
-    if (!mapInstance) return;
-    fetchPOIs(poiFilters);
-  }, [mapInstance, poiFilters, fetchPOIs]);
+    if (!mapInstance || !poiFilters) return;
+    managedFetchPOIs(poiFilters);
+  }, [mapInstance, poiFilters, managedFetchPOIs]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -140,9 +140,9 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
       
       {/* Map Search Controls */}
       <MapSearchControls
-        isSearching={isSearching}
-        showSearchButton={showSearchButton}
-        onSearch={triggerBoundsSearch}
+        isSearching={isUserInteracting}
+        showSearchButton={false}
+        onSearch={() => {}}
         poiCount={validPOICount}
       />
       
