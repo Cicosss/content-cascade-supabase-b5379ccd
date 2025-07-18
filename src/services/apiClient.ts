@@ -4,8 +4,9 @@ import { APIError, APIErrorType, APIResponse, RequestConfig, APIMetrics } from '
 class APIClient {
   private cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
   private requestQueue = new Map<string, Promise<any>>();
-  private metrics: APIMetrics[] = [];
+  private metricsData = new Map<string, APIMetrics>();
   private circuitBreaker = new Map<string, { failures: number; lastFailure: number; isOpen: boolean }>();
+  private activeRequests = new Set<string>();
 
   async request<T>(
     operation: () => Promise<T>,
@@ -180,22 +181,48 @@ class APIClient {
     this.circuitBreaker.delete(key);
   }
 
-  private recordMetrics(endpoint: string, startTime: number, success: boolean, cached: boolean, retryCount: number): void {
-    const metric: APIMetrics = {
-      endpoint,
-      responseTime: Date.now() - startTime,
-      success,
-      cached,
-      retryCount,
-      timestamp: Date.now()
-    };
-
-    this.metrics.push(metric);
-    
-    // Keep only last 1000 metrics
-    if (this.metrics.length > 1000) {
-      this.metrics = this.metrics.slice(-1000);
+  // Initialize metrics object for new endpoints
+  private initializeMetrics(endpoint: string): void {
+    if (!this.metricsData.has(endpoint)) {
+      this.metricsData.set(endpoint, {
+        endpoint,
+        totalRequests: 0,
+        successCount: 0,
+        failureCount: 0,
+        averageResponseTime: 0,
+        lastRequestTime: Date.now(),
+        cached: 0,
+        retries: 0,
+        totalPayloadSize: 0,
+        errorTypes: {} as Record<APIErrorType, number>
+      });
     }
+  }
+
+  private recordMetrics(endpoint: string, startTime: number, success: boolean, cached: boolean, retryCount: number, payloadSize = 0): void {
+    this.initializeMetrics(endpoint);
+    const metrics = this.metricsData.get(endpoint)!;
+    
+    const responseTime = Date.now() - startTime;
+    
+    metrics.totalRequests++;
+    metrics.lastRequestTime = Date.now();
+    metrics.totalPayloadSize += payloadSize;
+    metrics.retries += retryCount;
+    
+    if (success) {
+      metrics.successCount++;
+    } else {
+      metrics.failureCount++;
+    }
+    
+    if (cached) {
+      metrics.cached++;
+    }
+    
+    // Update average response time
+    metrics.averageResponseTime = 
+      (metrics.averageResponseTime * (metrics.totalRequests - 1) + responseTime) / metrics.totalRequests;
   }
 
   private isRetryableError(error: any): boolean {
@@ -242,27 +269,63 @@ class APIClient {
   }
 
   getMetrics(): APIMetrics[] {
-    return [...this.metrics];
+    return Array.from(this.metricsData.values());
   }
 
   clearCache(): void {
     this.cache.clear();
+    this.metricsData.clear();
   }
 
   getHealthStatus() {
-    const recentMetrics = this.metrics.filter(m => Date.now() - m.timestamp < 300000); // Last 5 minutes
-    const totalRequests = recentMetrics.length;
-    const successfulRequests = recentMetrics.filter(m => m.success).length;
-    const avgResponseTime = recentMetrics.reduce((sum, m) => sum + m.responseTime, 0) / totalRequests || 0;
-    const cacheHitRate = recentMetrics.filter(m => m.cached).length / totalRequests || 0;
+    const allMetrics = Array.from(this.metricsData.values());
+    const recentMetrics = allMetrics.filter(m => Date.now() - m.lastRequestTime < 300000); // Last 5 minutes
+    
+    if (recentMetrics.length === 0) {
+      return {
+        totalRequests: 0,
+        successRate: 0,
+        avgResponseTime: 0,
+        cacheHitRate: 0,
+        circuitBreakersOpen: 0,
+        endpoints: []
+      };
+    }
+
+    const totalRequests = recentMetrics.reduce((sum, m) => sum + m.totalRequests, 0);
+    const totalSuccess = recentMetrics.reduce((sum, m) => sum + m.successCount, 0);
+    const totalCached = recentMetrics.reduce((sum, m) => sum + m.cached, 0);
+    const avgResponseTime = recentMetrics.reduce((sum, m) => sum + m.averageResponseTime, 0) / recentMetrics.length;
 
     return {
       totalRequests,
-      successRate: successfulRequests / totalRequests || 0,
+      successRate: totalSuccess / totalRequests || 0,
       avgResponseTime,
-      cacheHitRate,
-      circuitBreakersOpen: Array.from(this.circuitBreaker.values()).filter(b => b.isOpen).length
+      cacheHitRate: totalCached / totalRequests || 0,
+      circuitBreakersOpen: Array.from(this.circuitBreaker.values()).filter(b => b.isOpen).length,
+      endpoints: recentMetrics.map(m => ({
+        endpoint: m.endpoint,
+        status: this.getEndpointHealth(m),
+        responseTime: m.averageResponseTime,
+        errorRate: m.failureCount / m.totalRequests || 0,
+        circuitBreakerOpen: this.isCircuitOpen(m.endpoint)
+      }))
     };
+  }
+
+  private getEndpointHealth(metrics: APIMetrics): 'healthy' | 'degraded' | 'unhealthy' {
+    const errorRate = metrics.failureCount / metrics.totalRequests || 0;
+    const isRecentlyActive = Date.now() - metrics.lastRequestTime < 60000; // Last minute
+    
+    if (!isRecentlyActive || this.isCircuitOpen(metrics.endpoint)) {
+      return 'unhealthy';
+    }
+    
+    if (errorRate > 0.1 || metrics.averageResponseTime > 5000) {
+      return 'degraded';
+    }
+    
+    return 'healthy';
   }
 }
 

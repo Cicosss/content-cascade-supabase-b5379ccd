@@ -3,6 +3,7 @@ import { Activity, Zap, Clock, Database } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { apiClient } from '@/services/apiClient';
+import { weatherApiService } from '@/services/weatherApiService';
 
 export const APIHealthMonitor: React.FC = () => {
   const [health, setHealth] = useState<any>(null);
