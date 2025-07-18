@@ -7,7 +7,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router-dom';
 
-const ProfileAvatar = React.memo<{ size: 'sm' | 'md' }>({ size }) => {
+const ProfileAvatar = React.memo<{ size: 'sm' | 'md' }>(({ size }) => {
   const { profile } = useUserProfile();
   const iconSize = size === 'sm' ? 'h-4 w-4' : 'h-5 w-5';
   const avatarSize = size === 'sm' ? 'w-8 h-8' : 'w-10 h-10';
