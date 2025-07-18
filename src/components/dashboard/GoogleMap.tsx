@@ -29,7 +29,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   const { isLoaded, error } = useGoogleMapsLoader();
   const mapInstance = useMapInitialization({ isLoaded, mapRef, userLocation });
 
-  const { clearAllMarkers, markerCount, validPOICount } = useOptimizedMarkerPool({
+  const { clearAllMarkers, validPOICount } = useOptimizedMarkerPool({
     map: mapInstance,
     pois,
     userLocation,
@@ -49,7 +49,6 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     return {
       activityTypes: shouldShowAll ? [] : filters.activityTypes,
       withChildren: filters.withChildren || 'no',
-      period: filters.period,
       bounds: mapBounds
     };
   }, [filters.activityTypes, filters.withChildren, filters.period, mapBounds]);

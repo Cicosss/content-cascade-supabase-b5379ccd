@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import { devLog } from '@/utils/devLogger';
 
 let googleMapsPromise: Promise<typeof google> | null = null;
 
@@ -11,16 +12,16 @@ export const useGoogleMapsLoader = () => {
   useEffect(() => {
     const loadGoogleMaps = async () => {
       try {
-        console.log('🚀 Starting Google Maps API load...');
+        devLog.info('🚀 Starting Google Maps API load...');
         
         if (window.google?.maps?.places) {
-          console.log('✅ Google Maps API already loaded');
+          devLog.info('✅ Google Maps API already loaded');
           setIsLoaded(true);
           return;
         }
 
         if (!googleMapsPromise) {
-          console.log('🔧 Initializing Google Maps Loader...');
+          devLog.info('🔧 Initializing Google Maps Loader...');
           const loader = new Loader({
             apiKey: 'AIzaSyBYu9y2Rig3ueioFfy-Ait65lRcOTIIR6A',
             version: 'weekly',
@@ -31,12 +32,12 @@ export const useGoogleMapsLoader = () => {
           googleMapsPromise = loader.load();
         }
 
-        console.log('⏳ Loading Google Maps API...');
+        devLog.info('⏳ Loading Google Maps API...');
         await googleMapsPromise;
         
         // Verify the API loaded correctly
         if (window.google?.maps?.places?.Autocomplete) {
-          console.log('✅ Google Maps API loaded successfully with Places library');
+          devLog.info('✅ Google Maps API loaded successfully with Places library');
           setIsLoaded(true);
           setError(null);
         } else {

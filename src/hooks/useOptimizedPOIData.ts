@@ -4,6 +4,7 @@ import { POIDataService } from '@/services/poiDataService';
 import { apiClient } from '@/services/apiClient';
 import { APIErrorType } from '@/types/api';
 import { useToast } from '@/hooks/use-toast';
+import { devLog } from '@/utils/devLogger';
 
 export const useOptimizedPOIData = () => {
   const [pois, setPois] = useState<POI[]>([]);
@@ -74,9 +75,9 @@ export const useOptimizedPOIData = () => {
         setPois(response.data);
         
         if (response.cached) {
-          console.log('📋 Using cached POI data');
+          devLog.info('📋 Using cached POI data');
         } else {
-          console.log('✅ Fresh POI data loaded:', response.data.length);
+          devLog.info('✅ Fresh POI data loaded:', response.data.length);
         }
         
         poiService.logResults(filters, response.data.length, 0, response.data.length);
@@ -90,23 +91,8 @@ export const useOptimizedPOIData = () => {
       console.error('❌ POI fetch error:', apiError);
       setError(apiError.message || 'Errore nel caricamento dei dati');
 
-      // Show appropriate error message based on error type
-      switch (apiError.type) {
-        case APIErrorType.NETWORK_ERROR:
-          showErrorToast('Errore di connessione', 'Verifica la tua connessione internet');
-          break;
-        case APIErrorType.API_TIMEOUT:
-          showErrorToast('Timeout', 'Il server sta impiegando troppo tempo a rispondere');
-          break;
-        case APIErrorType.RATE_LIMIT:
-          showErrorToast('Troppe richieste', 'Attendi qualche secondo prima di riprovare');
-          break;
-        case APIErrorType.SERVER_ERROR:
-          showErrorToast('Errore del server', 'Riprova più tardi');
-          break;
-        default:
-          showErrorToast('Errore sconosciuto', apiError.message || 'Si è verificato un errore');
-      }
+      // Simplified error handling - let APIErrorBoundary handle detailed error messages
+      showErrorToast('Errore caricamento', 'Riprova più tardi');
 
       // Set empty array as fallback
       setPois([]);
