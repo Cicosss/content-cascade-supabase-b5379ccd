@@ -2,10 +2,16 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import ContentCarousel from '@/components/ContentCarousel';
 import CarouselHeader from '@/components/ui/CarouselHeader';
 import POICard from '@/components/POICard';
 import { ChefHat } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const RestaurantsSection: React.FC = () => {
   const { data: restaurants = [], isLoading } = useQuery({
@@ -34,25 +40,36 @@ const RestaurantsSection: React.FC = () => {
         title="Tradizione Culinaria Autentica" 
         subtitle="I sapori genuini della Romagna tramandati di generazione in generazione"
       />
-      <ContentCarousel>
-      {restaurants.map((restaurant, index) => (
-        <POICard 
-          key={restaurant.id || index}
-          id={restaurant.id}
-          name={restaurant.name}
-          category={restaurant.category}
-          description={restaurant.description}
-          images={restaurant.images}
-          avg_rating={restaurant.avg_rating}
-          price_info={restaurant.price_info}
-          duration_info={restaurant.duration_info}
-          target_audience={restaurant.target_audience}
-          address={restaurant.address}
-          poiType="place"
-          isLoading={false}
-        />
-      ))}
-      </ContentCarousel>
+      <Carousel
+        opts={{
+          align: "start",
+          loop: false,
+        }}
+        className="w-full"
+      >
+        <CarouselContent className="-ml-2 md:-ml-4">
+          {restaurants.map((restaurant, index) => (
+            <CarouselItem key={restaurant.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
+              <POICard 
+                id={restaurant.id}
+                name={restaurant.name}
+                category={restaurant.category}
+                description={restaurant.description}
+                images={restaurant.images}
+                avg_rating={restaurant.avg_rating}
+                price_info={restaurant.price_info}
+                duration_info={restaurant.duration_info}
+                target_audience={restaurant.target_audience}
+                address={restaurant.address}
+                poiType="place"
+                isLoading={false}
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="hidden md:flex" />
+        <CarouselNext className="hidden md:flex" />
+      </Carousel>
     </div>
   );
 };
