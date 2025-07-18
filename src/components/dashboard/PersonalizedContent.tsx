@@ -162,20 +162,25 @@ const PersonalizedContent = () => {
 
       <div className="space-y-6">
         <ExperiencesCarousel 
-          experiences={experiences}
-          filters={activeFilters}
-          isLoading={isLoading}
+          filters={{
+            with_children: activeFilters.withChildren === 'sì',
+            experience_type: activeFilters.activityTypes?.[0] as any,
+            withChildren: activeFilters.withChildren
+          }}
         />
         
         <RestaurantsCarousel 
-          restaurants={restaurants}
-          filters={activeFilters}
-          isLoading={isLoading}
+          filters={{
+            opening_now: true,
+            isFirstVisit: activeFilters.isFirstVisit,
+            withChildren: activeFilters.withChildren
+          }}
         />
         
         <EventsCarousel 
-          events={events}
-          isLoading={isLoading}
+          filters={{
+            category: activeFilters.categories?.[0]
+          }}
         />
       </div>
     </div>

@@ -3,6 +3,14 @@ import { POI } from './poi';
 
 // Base interface for carousel POI data
 export interface CarouselPOI extends POI {
+  // Core POI fields (inherited from POI interface)
+  start_datetime?: string;
+  end_datetime?: string;
+  location_name?: string;
+  duration_info?: string;
+  poi_type?: string;
+  
+  // Carousel-specific enhancements
   priority_score?: number;
   distance_km?: number;
   availability_status?: 'available' | 'limited' | 'full';
