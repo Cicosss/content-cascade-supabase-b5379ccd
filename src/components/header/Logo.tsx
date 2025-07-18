@@ -16,7 +16,7 @@ export const Logo: React.FC = () => {
       <img 
         src="/lovable-uploads/673fa174-b69d-4246-a652-97158e041630.png" 
         alt="Logo Mia Romagna" 
-        className="h-24 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+        className="h-24 w-24 object-contain transition-transform duration-200 group-hover:scale-105"
       />
     </Link>
   );
