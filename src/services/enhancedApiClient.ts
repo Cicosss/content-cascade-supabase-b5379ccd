@@ -83,7 +83,7 @@ export class EnhancedAPIClient {
 
         if (recovered !== null) {
           return {
-            data: recovered,
+            data: recovered as T,
             success: true,
             cached: false,
             timestamp: Date.now(),

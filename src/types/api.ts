@@ -31,6 +31,8 @@ export interface APIResponse<T> {
   payloadSize?: number;
   responseTime?: number;
   retryCount?: number;
+  recovered?: boolean;
+  stale?: boolean;
 }
 
 export interface RequestConfig {
