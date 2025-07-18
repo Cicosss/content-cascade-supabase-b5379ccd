@@ -1,9 +1,10 @@
+
 import React, { useEffect, useCallback, useMemo, memo, Suspense } from 'react';
-import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
 import { useMapFilters as useStableMapFilters } from '@/hooks/useStableFilters';
 import { useMapContext } from '@/contexts/MapContext';
 import { useMapFilters as useMapFiltersContext } from '@/contexts/MapFiltersContext';
 import { useMapUI } from '@/contexts/MapUIContext';
+import { usePOIFetchManager } from '@/hooks/usePOIFetchManager';
 import { POI } from '@/types/poi';
 import MapCore from './MapCore';
 import OptimizedPOIPreview from '../OptimizedPOIPreview';
@@ -28,8 +29,6 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
   
   const { setActiveFilters } = useMapFiltersContext();
   const { setLoadingState, setError } = useMapUI();
-  
-  const { pois, fetchPOIs, isLoading, error } = useOptimizedPOIData();
 
   // Transform and stabilize filters
   const rawPoiFilters = useMemo(() => {
@@ -45,7 +44,12 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
     };
   }, [filters.activityTypes, filters.withChildren, mapBounds]);
 
-  const poiFilters = useStableMapFilters(rawPoiFilters, mapBounds);
+  const stableFilters = useStableMapFilters(rawPoiFilters, mapBounds);
+
+  // Use the new POI fetch manager
+  const { pois, fetchPOIs, isLoading, error, isCircuitBreakerOpen } = usePOIFetchManager({
+    initialFilters: stableFilters
+  });
 
   // Update loading state
   useEffect(() => {
@@ -59,14 +63,16 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
 
   // Update active filters in context
   useEffect(() => {
-    setActiveFilters(poiFilters);
-  }, [poiFilters, setActiveFilters]);
+    setActiveFilters(stableFilters);
+  }, [stableFilters, setActiveFilters]);
 
-  // Fetch POIs when filters change
+  // Fetch POIs only when map is ready and filters are stable
   useEffect(() => {
-    if (!mapInstance) return;
-    fetchPOIs(poiFilters);
-  }, [mapInstance, poiFilters, fetchPOIs]);
+    if (!mapInstance || isCircuitBreakerOpen) return;
+    
+    console.log('🗺️ MapContainer: Triggering managed POI fetch');
+    fetchPOIs(stableFilters);
+  }, [mapInstance, stableFilters, fetchPOIs, isCircuitBreakerOpen]);
 
   // Handlers
   const handlePOISelect = useCallback((poi: POI) => {
@@ -84,6 +90,7 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
   }, []);
 
   const handleBoundsChange = useCallback((bounds: any) => {
+    console.log('🗺️ MapContainer: Bounds change received:', bounds);
     setMapBounds(bounds);
   }, [setMapBounds]);
 
@@ -111,6 +118,17 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
           validPOICount={validPOICount}
         />
       </Suspense>
+
+      {/* Circuit breaker indicator */}
+      {isCircuitBreakerOpen && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="bg-orange-100 border border-orange-300 rounded-lg px-4 py-2 shadow-lg">
+            <span className="text-sm font-medium text-orange-800">
+              ⏸️ Sistema in pausa per ottimizzazione
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* POI Preview */}
       {selectedPOI && (

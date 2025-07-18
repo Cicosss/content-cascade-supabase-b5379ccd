@@ -1,8 +1,8 @@
+
 import React, { useEffect, memo } from 'react';
 import { useMapContext } from '@/contexts/MapContext';
-import { useMapUI } from '@/contexts/MapUIContext';
 import { useLocation } from '@/contexts/LocationContext';
-import { useMapBoundsSearch } from '@/hooks/useMapBoundsSearch';
+import { useBoundsStabilizer } from '@/hooks/useBoundsStabilizer';
 
 interface MapInteractionsProps {
   onBoundsChange: (bounds: any) => void;
@@ -10,51 +10,37 @@ interface MapInteractionsProps {
 
 const MapInteractions: React.FC<MapInteractionsProps> = memo(({ onBoundsChange }) => {
   const { mapInstance, isMapReady } = useMapContext();
-  const { setShowSearchButton, setIsSearching } = useMapUI();
   const { getCurrentLocation } = useLocation();
 
-  // Map bounds search functionality
-  const {
-    isSearching,
-    showSearchButton,
-    triggerBoundsSearch,
-    initializeMapListeners
-  } = useMapBoundsSearch({
+  // Use the new bounds stabilizer
+  const { isUserInteracting, initializeListeners } = useBoundsStabilizer({
     map: mapInstance,
-    onBoundsChange,
-    debounceMs: 500
+    onStableBoundsChange: onBoundsChange,
+    stabilizationDelay: 2000 // 2 seconds for stability
   });
 
-  // Sync UI state with bounds search state
-  useEffect(() => {
-    setShowSearchButton(showSearchButton);
-  }, [showSearchButton, setShowSearchButton]);
-
-  useEffect(() => {
-    setIsSearching(isSearching);
-  }, [isSearching, setIsSearching]);
-
-  // Initialize map listeners when map is ready
+  // Initialize listeners when map is ready
   useEffect(() => {
     if (mapInstance && isMapReady) {
-      const cleanup = initializeMapListeners();
+      console.log('🎯 Initializing stable map listeners');
+      const cleanup = initializeListeners();
       return cleanup;
     }
-  }, [mapInstance, isMapReady, initializeMapListeners]);
+  }, [mapInstance, isMapReady, initializeListeners]);
 
   // Center on user location
   const handleCenterOnUser = () => {
     if (mapInstance) {
       getCurrentLocation();
-      // Get current location from context instead
     }
   };
 
-  // Expose methods for parent components
-  React.useImperativeHandle(React.createRef(), () => ({
-    centerOnUser: handleCenterOnUser,
-    triggerSearch: triggerBoundsSearch,
-  }));
+  // Log interaction state for debugging
+  useEffect(() => {
+    if (isUserInteracting) {
+      console.log('👆 User is interacting with map');
+    }
+  }, [isUserInteracting]);
 
   // This component manages interactions but doesn't render anything
   return null;
