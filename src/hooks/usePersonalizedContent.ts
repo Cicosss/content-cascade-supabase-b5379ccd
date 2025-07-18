@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 export const usePersonalizedContent = (filters?: any) => {
@@ -7,10 +7,13 @@ export const usePersonalizedContent = (filters?: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   
-  // Prevent infinite loops with refs
-  const filtersRef = useRef<string>();
+  // Prevent infinite loops with refs and memoization
   const mountedRef = useRef(true);
   const lastCallRef = useRef(0);
+  
+  // Stabilize filters using JSON stringification
+  const filtersString = useMemo(() => JSON.stringify(filters), [filters]);
+  const stableFilters = useMemo(() => JSON.parse(filtersString), [filtersString]);
   
   const fetchData = useCallback(async () => {
     // Throttle API calls - max 1 call per 2 seconds
@@ -26,7 +29,7 @@ export const usePersonalizedContent = (filters?: any) => {
     setError(null);
     
     try {
-      console.log('DEBUG: usePersonalizedContent - Inizio fetch con filtri:', filters);
+      console.log('DEBUG: usePersonalizedContent - Inizio fetch con filtri:', stableFilters);
       
       let query = supabase
         .from('points_of_interest')
@@ -34,10 +37,10 @@ export const usePersonalizedContent = (filters?: any) => {
         .eq('status', 'approved')
         .limit(20);
 
-      // Only apply filters if they exist and are different from previous
-      if (filters && typeof filters === 'object') {
-        if (filters.category) {
-          query = query.eq('category', filters.category);
+      // Only apply filters if they exist
+      if (stableFilters && typeof stableFilters === 'object') {
+        if (stableFilters.category) {
+          query = query.eq('category', stableFilters.category);
         }
       }
 
@@ -60,16 +63,12 @@ export const usePersonalizedContent = (filters?: any) => {
         setIsLoading(false);
       }
     }
-  }, []); // Empty dependencies to prevent infinite loops
+  }, [stableFilters]);
 
+  // Use filtersString for stable dependency tracking
   useEffect(() => {
-    // Only fetch if filters actually changed
-    const filtersString = JSON.stringify(filters);
-    if (filtersRef.current !== filtersString) {
-      filtersRef.current = filtersString;
-      fetchData();
-    }
-  }, [filters, fetchData]);
+    fetchData();
+  }, [filtersString, fetchData]);
 
   useEffect(() => {
     return () => {

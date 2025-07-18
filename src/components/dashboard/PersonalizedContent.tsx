@@ -24,7 +24,7 @@ const PersonalizedContent = () => {
   
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
 
-  // Memoize filters to prevent unnecessary re-renders
+  // Memoize filters to prevent unnecessary re-renders and infinite loops
   const memoizedFilters = useMemo(() => ({
     zone: activeFilters.zone,
     category: activeFilters.activityTypes?.[0] || null,
@@ -99,27 +99,22 @@ const PersonalizedContent = () => {
     });
   }, [handleClearFilters]);
 
-  // Filter and sort data
-  const { experiences, restaurants, events } = useMemo(() => {
-    if (!allPOIs || allPOIs.length === 0) {
-      return { experiences: [], restaurants: [], events: [] };
-    }
+  // Stabilize carousel filter objects to prevent infinite re-renders
+  const experiencesFilters = useMemo(() => ({
+    with_children: activeFilters.withChildren === 'sì',
+    experience_type: activeFilters.activityTypes?.[0] as any,
+    withChildren: activeFilters.withChildren
+  }), [activeFilters.withChildren, activeFilters.activityTypes]);
 
-    const experiences = allPOIs.filter(poi => 
-      poi.poi_type === 'place' && 
-      poi.category !== 'Ristoranti'
-    );
-    
-    const restaurants = allPOIs.filter(poi => 
-      poi.category === 'Ristoranti'
-    );
-    
-    const events = allPOIs.filter(poi => 
-      poi.poi_type === 'event'
-    );
+  const restaurantsFilters = useMemo(() => ({
+    opening_now: true,
+    isFirstVisit: activeFilters.isFirstVisit,
+    withChildren: activeFilters.withChildren
+  }), [activeFilters.isFirstVisit, activeFilters.withChildren]);
 
-    return { experiences, restaurants, events };
-  }, [allPOIs]);
+  const eventsFilters = useMemo(() => ({
+    category: activeFilters.categories?.[0]
+  }), [activeFilters.categories]);
 
   if (error) {
     return (
@@ -162,25 +157,15 @@ const PersonalizedContent = () => {
 
       <div className="space-y-6">
         <ExperiencesCarousel 
-          filters={{
-            with_children: activeFilters.withChildren === 'sì',
-            experience_type: activeFilters.activityTypes?.[0] as any,
-            withChildren: activeFilters.withChildren
-          }}
+          filters={experiencesFilters}
         />
         
         <RestaurantsCarousel 
-          filters={{
-            opening_now: true,
-            isFirstVisit: activeFilters.isFirstVisit,
-            withChildren: activeFilters.withChildren
-          }}
+          filters={restaurantsFilters}
         />
         
         <EventsCarousel 
-          filters={{
-            category: activeFilters.categories?.[0]
-          }}
+          filters={eventsFilters}
         />
       </div>
     </div>
