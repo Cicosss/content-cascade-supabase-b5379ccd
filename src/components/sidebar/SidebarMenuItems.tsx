@@ -9,7 +9,7 @@ const SidebarMenuItems = React.memo(() => {
 
   return (
     <>
-      {menuSections.map((section, index) => {
+      {menuSections.map((section) => {
         // Render special card for "oggi" section
         if (section.id === 'special') {
           const oggiItem = section.items.find(item => item.id === 'oggi');

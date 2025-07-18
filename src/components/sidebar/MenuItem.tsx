@@ -7,10 +7,9 @@ import { MenuItem as MenuItemType } from '@/config/menuConfig';
 interface MenuItemProps {
   item: MenuItemType;
   isActive: boolean;
-  isCollapsed?: boolean;
 }
 
-const MenuItem = React.memo<MenuItemProps>(({ item, isActive, isCollapsed }) => {
+const MenuItem = React.memo<MenuItemProps>(({ item, isActive }) => {
   const { icon: Icon, title, url, badge } = item;
 
   return (
@@ -30,8 +29,7 @@ const MenuItem = React.memo<MenuItemProps>(({ item, isActive, isCollapsed }) => 
             <Icon className="h-5 w-5" />
             {badge && (
               <div 
-                className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-white text-xs font-bold animate-pulse group-data-[collapsible=icon]:-top-1 group-data-[collapsible=icon]:-right-1 group-data-[collapsible=icon]:w-3.5 group-data-[collapsible=icon]:h-3.5 group-data-[collapsible=icon]:text-[9px]" 
-                style={{ backgroundColor: '#FF0033' }}
+                className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold animate-pulse group-data-[collapsible=icon]:-top-1 group-data-[collapsible=icon]:-right-1 group-data-[collapsible=icon]:w-3.5 group-data-[collapsible=icon]:h-3.5 group-data-[collapsible=icon]:text-[9px]" 
                 aria-label={`${badge} notifiche`}
               >
                 {badge}
