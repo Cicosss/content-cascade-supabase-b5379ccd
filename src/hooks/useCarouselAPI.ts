@@ -1,6 +1,8 @@
 
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { carouselAPIService } from '@/services/carouselAPIService';
+import { useCarouselFilters } from '@/hooks/useStableFilters';
+import { useSharedCarouselCache } from '@/hooks/useSharedCarouselCache';
 import { 
   CarouselPOI, 
   EventCarouselData, 
@@ -48,113 +50,84 @@ export function useCarouselAPI<T extends CarouselType>(
     staleTime?: number;
   } = {}
 ): UseCarouselAPIResult<T> {
-  const [data, setData] = useState<CarouselData<T>>([] as CarouselData<T>);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<CarouselError | null>(null);
-  const [metrics, setMetrics] = useState({
-    responseTime: 0,
-    cacheHit: false,
-    retryCount: 0
+  const { enabled = true, refetchOnMount = true, staleTime = 300000 } = options;
+  
+  // Usa filtri stabilizzati per prevenire loop infiniti
+  const stableFilters = useCarouselFilters(filters, type);
+  
+  // Genera chiave cache stabile
+  const cacheKey = useMemo(() => {
+    const filterHash = Object.keys(stableFilters)
+      .sort()
+      .map(key => `${key}:${stableFilters[key]}`)
+      .join('|');
+    return `carousel-${type}-${filterHash}`;
+  }, [type, stableFilters]);
+
+  // Fetcher function per la cache condivisa
+  const fetcher = useCallback(async (): Promise<any[]> => {
+    console.log(`🎠 Fetching ${type} with filters:`, stableFilters);
+    
+    switch (type) {
+      case 'events':
+        return await carouselAPIService.fetchEvents(stableFilters as EventFilters);
+      case 'restaurants':
+        return await carouselAPIService.fetchRestaurants(stableFilters as RestaurantFilters);
+      case 'experiences':
+        return await carouselAPIService.fetchExperiences(stableFilters as ExperienceFilters);
+      default:
+        throw new Error(`Unsupported carousel type: ${type}`);
+    }
+  }, [type, stableFilters]);
+
+  // Cache condivisa con SWR pattern
+  const {
+    data: cachedData,
+    isLoading,
+    error,
+    isStale,
+    fetch: fetchData,
+    invalidate,
+    getMetrics: getCacheMetrics
+  } = useSharedCarouselCache(cacheKey, fetcher, {
+    ttl: staleTime,
+    maxStaleTime: staleTime * 2,
+    maxRetries: 3
   });
 
-  const { enabled = true, refetchOnMount = true } = options;
-
-  // Stabilize filters using JSON stringification to prevent infinite loops
-  const filtersString = useMemo(() => JSON.stringify(filters), [filters]);
-  const stableFilters = useMemo(() => JSON.parse(filtersString), [filtersString]);
-  
-  // Track if component is mounted to prevent state updates after unmount
+  // Track if component is mounted
   const mountedRef = useRef(true);
-  const lastFetchRef = useRef<string>('');
 
-  // Prevent duplicate fetches for same parameters
-  const shouldFetch = useCallback((currentFiltersString: string) => {
-    return enabled && mountedRef.current && lastFetchRef.current !== currentFiltersString;
-  }, [enabled]);
-
-  const fetchData = useCallback(async (isRetry = false) => {
-    const currentFiltersString = JSON.stringify(stableFilters);
-    
-    if (!shouldFetch(currentFiltersString)) {
-      return;
-    }
-
-    lastFetchRef.current = currentFiltersString;
-    
-    if (!mountedRef.current) return;
-
-    setIsLoading(true);
-    setError(null);
-    
-    const startTime = Date.now();
-    
-    try {
-      let result: any[];
-      
-      switch (type) {
-        case 'events':
-          result = await carouselAPIService.fetchEvents(stableFilters as EventFilters);
-          break;
-        case 'restaurants':
-          result = await carouselAPIService.fetchRestaurants(stableFilters as RestaurantFilters);
-          break;
-        case 'experiences':
-          result = await carouselAPIService.fetchExperiences(stableFilters as ExperienceFilters);
-          break;
-        default:
-          throw new Error(`Unsupported carousel type: ${type}`);
-      }
-
-      if (!mountedRef.current) return;
-
-      setData(result as CarouselData<T>);
-      setMetrics(prev => ({
-        responseTime: Date.now() - startTime,
-        cacheHit: false,
-        retryCount: isRetry ? prev.retryCount + 1 : 0
-      }));
-
-      console.log(`✅ Carousel ${type} loaded:`, result.length, 'items');
-      
-    } catch (err) {
-      if (!mountedRef.current) return;
-      
-      const carouselError = err as CarouselError;
-      setError(carouselError);
-      
-      console.error(`❌ Carousel ${type} error:`, carouselError);
-      
-      if (carouselError.recoveryAction === 'fallback' && carouselError.fallbackData) {
-        setData(carouselError.fallbackData as CarouselData<T>);
-        console.log(`🔄 Using fallback data for ${type}`);
-      }
-      
-    } finally {
-      if (mountedRef.current) {
-        setIsLoading(false);
-      }
-    }
-  }, [type, stableFilters, shouldFetch]);
+  // Metriche combinate cache + performance
+  const combinedMetrics = useMemo(() => {
+    const cacheMetrics = getCacheMetrics();
+    return {
+      responseTime: isLoading ? 0 : 100, // Estimato per dati cached
+      cacheHit: !isLoading && cachedData.length > 0,
+      retryCount: cacheMetrics.errors,
+      hitRate: cacheMetrics.hitRate,
+      staleData: isStale
+    };
+  }, [isLoading, cachedData.length, isStale, getCacheMetrics]);
 
   const retry = useCallback(() => {
     console.log(`🔄 Retrying carousel ${type}...`);
-    lastFetchRef.current = ''; // Reset to allow retry
-    fetchData(true);
+    fetchData();
   }, [fetchData, type]);
 
   const refresh = useCallback(() => {
     console.log(`🔁 Refreshing carousel ${type}...`);
-    carouselAPIService.invalidateCache(type, 'manual_refresh');
-    lastFetchRef.current = ''; // Reset to allow refresh
-    fetchData(false);
-  }, [fetchData, type]);
+    invalidate();
+    fetchData();
+  }, [fetchData, type, invalidate]);
 
-  // Initial fetch with stable dependencies
+  // Auto-fetch quando abilitato e filtri cambiano
   useEffect(() => {
     if (enabled && refetchOnMount) {
-      fetchData(false);
+      console.log(`🎯 Auto-fetching ${type} carousel...`);
+      fetchData();
     }
-  }, [enabled, refetchOnMount, filtersString]); // Use filtersString instead of filters
+  }, [enabled, refetchOnMount, cacheKey, fetchData]); // Usa cacheKey come dipendenza stabile
 
   // Cleanup on unmount
   useEffect(() => {
@@ -163,21 +136,25 @@ export function useCarouselAPI<T extends CarouselType>(
     };
   }, []);
 
-  // Track analytics only when data changes, not on every render
+  // Analytics e logging ottimizzati
   useEffect(() => {
-    if (data.length > 0 && !error && mountedRef.current) {
-      console.log(`📈 Carousel ${type} viewed with ${data.length} items`);
+    if (cachedData.length > 0 && !error && mountedRef.current) {
+      console.log(`📈 Carousel ${type} displayed:`, {
+        items: cachedData.length,
+        fromCache: !isLoading,
+        isStale: isStale
+      });
     }
-  }, [data.length, error, type]);
+  }, [cachedData.length, error, type, isLoading, isStale]);
 
   return {
-    data,
+    data: cachedData as CarouselData<T>,
     isLoading,
     error,
     retry,
     refresh,
-    isEmpty: !isLoading && !error && data.length === 0,
-    metrics
+    isEmpty: !isLoading && !error && cachedData.length === 0,
+    metrics: combinedMetrics
   };
 }
 

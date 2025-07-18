@@ -8,6 +8,7 @@ import ExperiencesCarousel from './content/ExperiencesCarousel';
 import RestaurantsCarousel from './content/RestaurantsCarousel';
 import EventsCarousel from './content/EventsCarousel';
 import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
+import { useStableFilters } from '@/hooks/useStableFilters';
 
 const PersonalizedContent = () => {
   const [activeFilters, setActiveFilters] = useState({
@@ -24,13 +25,13 @@ const PersonalizedContent = () => {
   
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
 
-  // Memoize filters to prevent unnecessary re-renders and infinite loops
-  const memoizedFilters = useMemo(() => ({
+  // Usa hook di stabilizzazione filtri per prevenire loop infiniti
+  const { stableFilters: memoizedFilters } = useStableFilters({
     zone: activeFilters.zone,
     category: activeFilters.activityTypes?.[0] || null,
     withChildren: activeFilters.withChildren,
     period: activeFilters.period
-  }), [activeFilters.zone, activeFilters.activityTypes, activeFilters.withChildren, activeFilters.period]);
+  }, 500);
 
   const { data: allPOIs, isLoading, error } = usePersonalizedContent(memoizedFilters);
 
@@ -99,22 +100,22 @@ const PersonalizedContent = () => {
     });
   }, [handleClearFilters]);
 
-  // Stabilize carousel filter objects to prevent infinite re-renders
-  const experiencesFilters = useMemo(() => ({
+  // Filtri stabilizzati per ogni carosello usando hook ottimizzato
+  const { stableFilters: experiencesFilters } = useStableFilters({
     with_children: activeFilters.withChildren === 'sì',
     experience_type: activeFilters.activityTypes?.[0] as any,
     withChildren: activeFilters.withChildren
-  }), [activeFilters.withChildren, activeFilters.activityTypes]);
+  }, 300);
 
-  const restaurantsFilters = useMemo(() => ({
+  const { stableFilters: restaurantsFilters } = useStableFilters({
     opening_now: true,
     isFirstVisit: activeFilters.isFirstVisit,
     withChildren: activeFilters.withChildren
-  }), [activeFilters.isFirstVisit, activeFilters.withChildren]);
+  }, 300);
 
-  const eventsFilters = useMemo(() => ({
+  const { stableFilters: eventsFilters } = useStableFilters({
     category: activeFilters.categories?.[0]
-  }), [activeFilters.categories]);
+  }, 300);
 
   if (error) {
     return (

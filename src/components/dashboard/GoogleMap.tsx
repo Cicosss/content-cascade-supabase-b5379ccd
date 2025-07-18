@@ -37,10 +37,11 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     isGoogleMapsLoaded: isLoaded
   });
 
-  // Transform filters for POI data service with map bounds
+  // Map bounds e filtri stabilizzati
   const [mapBounds, setMapBounds] = useState<any>(null);
   
-  const poiFilters = useMemo(() => {
+  // Stabilizza filtri POI con bounds
+  const rawPoiFilters = useMemo(() => {
     const shouldShowAll = !filters.activityTypes || 
                          filters.activityTypes.length === 0 || 
                          filters.activityTypes.includes('tutto') ||
@@ -51,7 +52,14 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
       withChildren: filters.withChildren || 'no',
       bounds: mapBounds
     };
-  }, [filters.activityTypes, filters.withChildren, filters.period, mapBounds]);
+  }, [filters.activityTypes, filters.withChildren, mapBounds]);
+
+  // Import hook di stabilizzazione
+  const { useMapFilters } = React.useMemo(() => {
+    return require('@/hooks/useStableFilters');
+  }, []);
+
+  const poiFilters = useMapFilters(rawPoiFilters, mapBounds);
 
   // Memoized callbacks
   const handleCenterOnUser = useCallback(() => {
