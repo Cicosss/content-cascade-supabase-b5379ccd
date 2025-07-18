@@ -1,9 +1,10 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import PersonalizedContent from '@/components/dashboard/PersonalizedContent';
 import PersonalizedWeather from '@/components/dashboard/PersonalizedWeather';
 import CoastalStatusWidget from '@/components/dashboard/CoastalStatusWidget';
-import InteractiveMap from '@/components/dashboard/map/InteractiveMap';
+import SimpleInteractiveMap from '@/components/dashboard/SimpleInteractiveMap';
 import { APIErrorBoundary } from '@/components/dashboard/APIErrorBoundary';
 import { APIHealthMonitor } from '@/components/dashboard/APIHealthMonitor';
 import CarouselMetrics from '@/components/dashboard/CarouselMetrics';
@@ -12,7 +13,6 @@ import { useURLFilters } from '@/hooks/useURLFilters';
 import { useProfileData } from '@/hooks/useProfileData';
 import { useAuth } from '@/contexts/AuthContext';
 import { DashboardErrorBoundary } from '@/components/dashboard/error-boundaries/DashboardErrorBoundary';
-import { MapErrorBoundary } from '@/components/dashboard/error-boundaries/MapErrorBoundary';
 import { WeatherErrorBoundary } from '@/components/dashboard/error-boundaries/WeatherErrorBoundary';
 import { ErrorRecoveryMonitor } from '@/components/dashboard/ErrorRecoveryMonitor';
 
@@ -62,12 +62,12 @@ const Dashboard = () => {
 
               {/* Sezione principale: Mappa + Meteo + Stato Costa */}
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[500px]">
-                {/* Colonna principale - Mappa Interattiva */}
+                {/* Colonna principale - Mappa Interattiva Ultra-Leggera */}
                 <div className="lg:col-span-3">
                   <div className="h-full rounded-3xl overflow-hidden shadow-xl">
-                    <MapErrorBoundary filters={mapFilters}>
-                      <InteractiveMap filters={mapFilters} />
-                    </MapErrorBoundary>
+                    <APIErrorBoundary>
+                      <SimpleInteractiveMap filters={mapFilters} />
+                    </APIErrorBoundary>
                   </div>
                 </div>
                 
