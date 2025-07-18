@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -16,24 +16,36 @@ export const useFavorites = () => {
   const { user } = useAuth();
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState(false);
+  
+  // Refs to prevent infinite loops and manage state
+  const isFetchingRef = useRef(false);
+  const lastUserIdRef = useRef<string | null>(null);
+  const retryCountRef = useRef(0);
+  const maxRetries = 3;
 
-  useEffect(() => {
-    if (user) {
-      fetchFavorites();
+  // Stable fetch function with error recovery
+  const fetchFavorites = useCallback(async (userId: string, isRetry = false) => {
+    // Prevent concurrent fetches
+    if (isFetchingRef.current && !isRetry) {
+      return;
     }
-  }, [user]);
 
-  const fetchFavorites = async () => {
-    if (!user) return;
+    // Circuit breaker - stop after too many failures
+    if (retryCountRef.current >= maxRetries) {
+      console.log('Max retries reached for favorites fetch');
+      return;
+    }
 
+    isFetchingRef.current = true;
     setLoading(true);
+
     try {
-      console.log('Fetching favorites for user:', user.id);
+      console.log('Fetching favorites for user:', userId);
       
       const { data, error } = await supabase
         .from('user_favorites')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -41,7 +53,7 @@ export const useFavorites = () => {
         throw error;
       }
       
-      console.log('Fetched favorites:', data);
+      console.log('Successfully fetched favorites:', data?.length || 0);
       
       // Cast the data to our expected type
       const typedFavorites = (data || []).map(item => ({
@@ -50,13 +62,47 @@ export const useFavorites = () => {
       }));
       
       setFavorites(typedFavorites);
+      retryCountRef.current = 0; // Reset retry count on success
+      
     } catch (error) {
       console.error('Error fetching favorites:', error);
-      toast.error('Errore nel caricamento dei preferiti');
+      retryCountRef.current += 1;
+      
+      // Only show toast error if it's not a network error and we've exhausted retries
+      if (retryCountRef.current >= maxRetries) {
+        toast.error('Errore nel caricamento dei preferiti');
+      }
+      
+      // Exponential backoff retry for network errors
+      if (retryCountRef.current < maxRetries && error instanceof Error && 
+          (error.message.includes('Failed to fetch') || error.message.includes('network'))) {
+        const delay = Math.pow(2, retryCountRef.current) * 1000; // 1s, 2s, 4s
+        setTimeout(() => {
+          fetchFavorites(userId, true);
+        }, delay);
+      }
     } finally {
+      isFetchingRef.current = false;
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Stable useEffect with user.id dependency instead of user object
+  useEffect(() => {
+    const userId = user?.id;
+    
+    // Only fetch if user exists and changed
+    if (userId && userId !== lastUserIdRef.current) {
+      lastUserIdRef.current = userId;
+      retryCountRef.current = 0; // Reset retry count for new user
+      fetchFavorites(userId);
+    } else if (!userId) {
+      // Clear favorites when user logs out
+      setFavorites([]);
+      lastUserIdRef.current = null;
+      retryCountRef.current = 0;
+    }
+  }, [user?.id, fetchFavorites]); // Stable dependency on user.id only
 
   const addToFavorites = async (
     itemType: 'restaurant' | 'experience' | 'event' | 'poi',
@@ -70,7 +116,6 @@ export const useFavorites = () => {
 
     try {
       console.log('Adding to favorites:', { itemType, itemId, user: user.id });
-      console.log('Item data:', itemData);
       
       const favoriteData = {
         user_id: user.id,
@@ -78,8 +123,6 @@ export const useFavorites = () => {
         item_id: itemId,
         item_data: itemData
       };
-      
-      console.log('Inserting favorite data:', favoriteData);
 
       const { data, error } = await supabase
         .from('user_favorites')
@@ -162,12 +205,20 @@ export const useFavorites = () => {
     return favorites.some(fav => fav.item_type === itemType && fav.item_id === itemId);
   };
 
+  // Manual refetch function
+  const refetch = useCallback(() => {
+    if (user?.id) {
+      retryCountRef.current = 0; // Reset retry count
+      fetchFavorites(user.id);
+    }
+  }, [user?.id, fetchFavorites]);
+
   return {
     favorites,
     loading,
     addToFavorites,
     removeFromFavorites,
     isFavorite,
-    refetch: fetchFavorites
+    refetch
   };
 };
