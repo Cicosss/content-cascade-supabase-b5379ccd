@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,50 +22,56 @@ export const ErrorRecoveryMonitor: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const [isVisible, setIsVisible] = useState(false);
   const { toast } = useToast();
+  const mountedRef = useRef(true);
+
+  const updateStatsAndCheckIssues = useCallback(() => {
+    if (!mountedRef.current) return;
+
+    const recoveryStats = errorRecoveryService.getRecoveryStats();
+    const apiHealth = enhancedApiClient.getHealthStatus();
+    
+    const newStats = {
+      ...recoveryStats,
+      ...apiHealth,
+      timestamp: Date.now()
+    };
+
+    setStats(newStats);
+
+    // Check for issues immediately after updating stats
+    const hasIssues = newStats.openCircuitBreakers?.length > 0 || 
+                     !newStats.networkHealth?.isOnline ||
+                     newStats.activeRetries > 0;
+
+    if (hasIssues && !isVisible) {
+      setIsVisible(true);
+    }
+  }, [isVisible]);
 
   useEffect(() => {
-    const updateStats = () => {
-      const recoveryStats = errorRecoveryService.getRecoveryStats();
-      const apiHealth = enhancedApiClient.getHealthStatus();
-      
-      setStats({
-        ...recoveryStats,
-        ...apiHealth,
-        timestamp: Date.now()
-      });
-    };
+    // Set mounted flag
+    mountedRef.current = true;
 
     // Initial load
-    updateStats();
+    updateStatsAndCheckIssues();
 
     // Update every 10 seconds
-    const interval = setInterval(updateStats, 10000);
-
-    // Show monitor se ci sono problemi
-    const checkForIssues = () => {
-      if (stats?.openCircuitBreakers?.length > 0 || 
-          !stats?.networkHealth?.isOnline ||
-          stats?.activeRetries > 0) {
-        setIsVisible(true);
-      }
-    };
-
-    const issueInterval = setInterval(checkForIssues, 5000);
+    const interval = setInterval(updateStatsAndCheckIssues, 10000);
 
     return () => {
+      mountedRef.current = false;
       clearInterval(interval);
-      clearInterval(issueInterval);
     };
-  }, [stats]);
+  }, []); // No dependencies to avoid circular updates
 
-  const handleForceRefresh = () => {
+  const handleForceRefresh = useCallback(() => {
     enhancedApiClient.clearCache();
     window.location.reload();
-  };
+  }, []);
 
-  const handleDismiss = () => {
+  const handleDismiss = useCallback(() => {
     setIsVisible(false);
-  };
+  }, []);
 
   if (!stats || !isVisible) {
     return null;
