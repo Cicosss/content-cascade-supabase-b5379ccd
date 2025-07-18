@@ -3,10 +3,41 @@ import { supabase } from '@/integrations/supabase/client';
 import { format, startOfDay, endOfDay } from 'date-fns';
 import { POI, POIFilters } from '@/types/poi';
 import { getCategoriesForFilters } from '@/utils/poiCategoryMapping';
+import { apiClient } from './apiClient';
+import { RequestConfig, APIErrorType } from '@/types/api';
 
 export class POIDataService {
+  /**
+   * Fetch POIs through APIClient with caching, retry logic, and circuit breaker
+   */
   async fetchStandardPOIs(filters: POIFilters): Promise<POI[]> {
-    console.log('🔍 POIDataService: Inizio fetchStandardPOIs con filtri:', filters);
+    const cacheKey = `poi-standard-${JSON.stringify(filters)}`;
+    
+    return apiClient.request(
+      async () => this.executeSupabaseQuery(filters),
+      {
+        retryCount: 3,
+        timeout: 10000,
+        cache: true,
+        cacheTTL: 300000, // 5 minutes
+        priority: 'high'
+      } as RequestConfig,
+      cacheKey
+    ).then(response => {
+      if (response.success) {
+        console.log('🔍 POIDataService: Loaded', response.data.length, 'POIs', response.cached ? '(from cache)' : '(fresh)');
+        return response.data;
+      } else {
+        throw response.error || new Error('Failed to fetch POIs');
+      }
+    });
+  }
+
+  /**
+   * Execute the actual Supabase query
+   */
+  private async executeSupabaseQuery(filters: POIFilters): Promise<POI[]> {
+    console.log('🔍 POIDataService: Executing Supabase query with filters:', filters);
     
     // Fetch from points_of_interest only (single source of truth)
     let query = supabase
@@ -57,12 +88,18 @@ export class POIDataService {
         .or(`end_datetime.gte.${startDate.toISOString()},end_datetime.is.null`);
     }
 
-    console.log('🔍 Eseguendo query al database...');
+    console.log('🔍 Executing database query...');
     const { data, error } = await query;
 
     if (error) {
-      console.error('❌ Errore database:', error);
-      throw error;
+      console.error('❌ Database error:', error);
+      throw {
+        type: APIErrorType.SERVER_ERROR,
+        message: `Database query failed: ${error.message}`,
+        details: error,
+        retryable: true,
+        endpoint: 'supabase-poi-query'
+      };
     }
 
     console.log('📊 Dati grezzi dal database:', data?.length || 0, 'POI');
