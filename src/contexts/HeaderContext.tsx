@@ -40,7 +40,17 @@ interface HeaderProviderProps {
 
 export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
   const navigate = useNavigate();
-  const { open: sidebarOpen } = useSidebar();
+  
+  // Try to get sidebar state, fallback to false if not available
+  let sidebarOpen = false;
+  try {
+    const sidebar = useSidebar();
+    sidebarOpen = sidebar.open || false;
+  } catch {
+    // Not within SidebarProvider, use default value
+    sidebarOpen = false;
+  }
+  
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavigation = useCallback((url: string) => {
@@ -57,7 +67,7 @@ export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
     setMobileMenuOpen,
     handleNavigation,
     handleLogoClick,
-    sidebarOpen: sidebarOpen || false,
+    sidebarOpen,
   };
 
   return (
