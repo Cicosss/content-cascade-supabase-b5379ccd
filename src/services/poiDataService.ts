@@ -5,6 +5,7 @@ import { POI, POIFilters } from '@/types/poi';
 import { getCategoriesForFilters } from '@/utils/poiCategoryMapping';
 import { apiClient } from './apiClient';
 import { RequestConfig, APIErrorType } from '@/types/api';
+import { FallbackManager } from './fallbackManager';
 
 export class POIDataService {
   /**
@@ -26,10 +27,28 @@ export class POIDataService {
     ).then(response => {
       if (response.success) {
         console.log('🔍 POIDataService: Loaded', response.data.length, 'POIs', response.cached ? '(from cache)' : '(fresh)');
+        
+        // Store successful POI data as fallback
+        if (response.data.length > 0) {
+          FallbackManager.storeFallbackData('pois', response.data);
+        }
+        
         return response.data;
       } else {
         throw response.error || new Error('Failed to fetch POIs');
       }
+    }).catch(error => {
+      console.error('POI fetch failed, trying fallback:', error);
+      
+      // Use fallback POI data
+      const fallbackPOIs = FallbackManager.getFallbackPOIs();
+      if (fallbackPOIs.length > 0) {
+        console.log('📋 Using fallback POI data:', fallbackPOIs.length, 'POIs');
+        return fallbackPOIs;
+      }
+      
+      // If no fallback, re-throw the error
+      throw error;
     });
   }
 

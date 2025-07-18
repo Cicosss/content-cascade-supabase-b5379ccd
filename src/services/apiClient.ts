@@ -1,5 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { APIError, APIErrorType, APIResponse, RequestConfig, APIMetrics } from '@/types/api';
+import { errorLogger } from './errorLogger';
+import { FallbackManager } from './fallbackManager';
 
 class APIClient {
   private cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
