@@ -37,7 +37,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Layout showSidebar={true}>
+    <Layout>
       <div className="min-h-screen bg-white">
         {/* Sezione Superiore - Area di Controllo Scura */}
         <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900">

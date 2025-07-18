@@ -9,14 +9,13 @@ import Footer from './Footer';
 
 interface LayoutProps {
   children: React.ReactNode;
-  showSidebar?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, showSidebar = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   
-  // Forza showSidebar solo se l'utente è autenticato
-  const shouldShowSidebar = showSidebar && !loading && user;
+  // Auto-show sidebar for authenticated users
+  const shouldShowSidebar = !loading && user;
   
   if (shouldShowSidebar) {
     return (

@@ -33,7 +33,7 @@ const MyPassport = () => {
 
   if (loading || achievementsLoading || visitsLoading) {
     return (
-      <Layout showSidebar={true}>
+      <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">Caricamento...</div>
         </div>
@@ -61,7 +61,7 @@ const MyPassport = () => {
   const totalVisits = getTotalVisits();
 
   return (
-    <Layout showSidebar={true}>
+    <Layout>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">

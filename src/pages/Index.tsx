@@ -41,7 +41,7 @@ const Index = () => {
   }
 
   return (
-    <Layout showSidebar={true}>
+    <Layout>
       <InteractiveHeroSection />
       <ValuePropositionSection />
       <AppFeaturesSection />

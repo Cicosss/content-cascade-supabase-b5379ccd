@@ -34,7 +34,7 @@ const TerritoryPromoter: React.FC = () => {
   const approvedCount = submissions.filter(sub => sub.status === 'approved').length;
 
   return (
-    <Layout showSidebar={true}>
+    <Layout>
       <div className="min-h-screen bg-slate-50 p-4">
         <div className="max-w-4xl mx-auto space-y-8">
           

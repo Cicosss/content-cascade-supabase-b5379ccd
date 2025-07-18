@@ -18,8 +18,6 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
   };
 
   // Debug log to check what data we're receiving
-  console.log('POI data in hero:', poi);
-  console.log('POI name:', poi.name);
 
   return (
     <div className="relative w-full h-[60vh] min-h-[400px] sm:min-h-[300px] overflow-hidden">

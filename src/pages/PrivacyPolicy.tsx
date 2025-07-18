@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 
 const PrivacyPolicy = () => {
   return (
-    <Layout showSidebar={true}>
+    <Layout>
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <div className="bg-white rounded-lg shadow-sm p-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-8">

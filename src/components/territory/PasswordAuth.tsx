@@ -17,16 +17,11 @@ const PasswordAuth: React.FC<PasswordAuthProps> = ({ onAuthenticated }) => {
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Password inserita:', password);
-    console.log('Lunghezza password:', password.length);
     
     // Trim della password per rimuovere spazi extra e controllo più robusto
     const trimmedPassword = password.trim();
     const correctPassword = 'Promotore101miaromagna';
     
-    console.log('Password dopo trim:', trimmedPassword);
-    console.log('Password corretta:', correctPassword);
-    console.log('Passwords match:', trimmedPassword === correctPassword);
     
     if (trimmedPassword === correctPassword) {
       onAuthenticated();
@@ -35,7 +30,7 @@ const PasswordAuth: React.FC<PasswordAuthProps> = ({ onAuthenticated }) => {
         description: "Benvenuto nella sezione Promotore del Territorio",
       });
     } else {
-      console.log('Password errata');
+      
       toast({
         title: "Password errata",
         description: "La password inserita non è corretta",
