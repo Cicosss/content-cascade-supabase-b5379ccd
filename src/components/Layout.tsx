@@ -3,6 +3,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarStateProvider } from '@/contexts/SidebarContext';
 import { HeaderProvider } from '@/contexts/HeaderContext';
 import { Header } from '@/components/header/Header';
 import AppSidebar from './AppSidebar';
@@ -21,23 +22,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
       <LocationProvider>
         <SidebarProvider defaultOpen={false}>
-          <HeaderProvider>
-            <div className="min-h-screen flex flex-col w-full">
-              {/* Header fisso con z-index garantito */}
-              <Header />
-              
-              {/* Layout principale con sidebar - con padding per header */}
-              <div className="flex flex-1 w-full pt-24">
-                <AppSidebar />
-                <SidebarInset className="flex-1 flex flex-col">
-                  <main className="flex-1 p-4 pl-6 relative">
-                    {children}
-                  </main>
-                  <Footer />
-                </SidebarInset>
+          <SidebarStateProvider>
+            <HeaderProvider>
+              <div className="min-h-screen flex flex-col w-full">
+                {/* Header fisso con z-index garantito */}
+                <Header />
+                
+                {/* Layout principale con sidebar - con padding per header */}
+                <div className="flex flex-1 w-full pt-24">
+                  <AppSidebar />
+                  <SidebarInset className="flex-1 flex flex-col">
+                    <main className="flex-1 p-4 pl-6 relative">
+                      {children}
+                    </main>
+                    <Footer />
+                  </SidebarInset>
+                </div>
               </div>
-            </div>
-          </HeaderProvider>
+            </HeaderProvider>
+          </SidebarStateProvider>
         </SidebarProvider>
       </LocationProvider>
     );
