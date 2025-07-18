@@ -3,9 +3,6 @@ import { useEffect, useState } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import { devLog } from '@/utils/devLogger';
 
-// Force module re-evaluation to clear cache
-console.log('useGoogleMapsLoader module loaded with devLog');
-
 let googleMapsPromise: Promise<typeof google> | null = null;
 
 export const useGoogleMapsLoader = () => {

@@ -6,9 +6,6 @@ import { APIErrorType } from '@/types/api';
 import { useToast } from '@/hooks/use-toast';
 import { devLog } from '@/utils/devLogger';
 
-// Force module re-evaluation to clear cache
-console.log('useOptimizedPOIData module loaded with devLog');
-
 export const useOptimizedPOIData = () => {
   const [pois, setPois] = useState<POI[]>([]);
   const [isLoading, setIsLoading] = useState(false);
