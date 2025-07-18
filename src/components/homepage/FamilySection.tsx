@@ -3,6 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import ContentCarousel from '@/components/ContentCarousel';
+import CarouselHeader from '@/components/ui/CarouselHeader';
 import POICard from '@/components/POICard';
 import { Users } from 'lucide-react';
 
@@ -27,11 +28,13 @@ const FamilySection: React.FC = () => {
   }
 
   return (
-    <ContentCarousel 
-      title="Sezione Family - Divertimento per Tutti" 
-      subtitle="Esperienze pensate per creare ricordi indimenticabili in famiglia"
-      icon={Users}
-    >
+    <div className="space-y-4">
+      <CarouselHeader 
+        icon={Users}
+        title="Sezione Family - Divertimento per Tutti" 
+        subtitle="Esperienze pensate per creare ricordi indimenticabili in famiglia"
+      />
+      <ContentCarousel>
       {familyExperiences.map((exp, index) => (
         <POICard 
           key={exp.id || index}
@@ -51,7 +54,8 @@ const FamilySection: React.FC = () => {
           isLoading={false}
         />
       ))}
-    </ContentCarousel>
+      </ContentCarousel>
+    </div>
   );
 };
 

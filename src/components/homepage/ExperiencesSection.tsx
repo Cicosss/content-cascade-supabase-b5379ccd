@@ -3,6 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import ContentCarousel from '@/components/ContentCarousel';
+import CarouselHeader from '@/components/ui/CarouselHeader';
 import POICard from '@/components/POICard';
 import { Compass } from 'lucide-react';
 
@@ -27,11 +28,13 @@ const ExperiencesSection: React.FC = () => {
   }
 
   return (
-    <ContentCarousel 
-      title="Esperienze del Territorio" 
-      subtitle="Scopri la cultura, la storia e le tradizioni marinare della Provincia di Rimini"
-      icon={Compass}
-    >
+    <div className="space-y-4">
+      <CarouselHeader 
+        icon={Compass}
+        title="Esperienze del Territorio" 
+        subtitle="Scopri la cultura, la storia e le tradizioni marinare della Provincia di Rimini"
+      />
+      <ContentCarousel>
       {experiences.map((exp, index) => (
         <POICard 
           key={exp.id || index}
@@ -51,7 +54,8 @@ const ExperiencesSection: React.FC = () => {
           isLoading={false}
         />
       ))}
-    </ContentCarousel>
+      </ContentCarousel>
+    </div>
   );
 };
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import ContentCarousel from '@/components/ContentCarousel';
+import CarouselHeader from '@/components/ui/CarouselHeader';
 import EventCard from '@/components/EventCard';
 import { Calendar } from 'lucide-react';
 
@@ -27,11 +28,13 @@ const EventsSection: React.FC = () => {
   }
 
   return (
-    <ContentCarousel 
-      title="Eventi Speciali e Manifestazioni" 
-      subtitle="Non perdere gli appuntamenti più esclusivi del territorio"
-      icon={Calendar}
-    >
+    <div className="space-y-4">
+      <CarouselHeader 
+        icon={Calendar}
+        title="Eventi Speciali e Manifestazioni" 
+        subtitle="Non perdere gli appuntamenti più esclusivi del territorio"
+      />
+      <ContentCarousel>
       {events.map((event, index) => (
         <EventCard 
           key={event.id || index}
@@ -43,7 +46,8 @@ const EventsSection: React.FC = () => {
           image={event.images?.[0] || ''}
         />
       ))}
-    </ContentCarousel>
+      </ContentCarousel>
+    </div>
   );
 };
 

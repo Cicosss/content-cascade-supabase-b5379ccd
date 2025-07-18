@@ -1,6 +1,7 @@
 
 import React from 'react';
 import ContentCarousel from '@/components/ContentCarousel';
+import CarouselHeader from '@/components/ui/CarouselHeader';
 import POICard from '@/components/POICard';
 import { Compass } from 'lucide-react';
 
@@ -22,19 +23,8 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Titolo Sezione Uniforme */}
-      <div className="flex items-center gap-3">
-        <Compass className="h-6 w-6 text-blue-800" strokeWidth={1.5} />
-        <div>
-          <h2 className="text-2xl font-bold text-blue-800">{titleText}</h2>
-          <p className="text-slate-600 text-sm">{subtitleText}</p>
-        </div>
-      </div>
-      
-      <ContentCarousel 
-        title=""
-        subtitle=""
-      >
+      <CarouselHeader icon={Compass} title={titleText} subtitle={subtitleText} />
+      <ContentCarousel>
         {isLoading ? (
           // Mostra 4 skeleton loaders durante il caricamento
           Array.from({ length: 4 }).map((_, index) => (

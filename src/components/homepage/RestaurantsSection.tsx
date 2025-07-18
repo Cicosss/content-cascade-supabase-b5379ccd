@@ -3,6 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import ContentCarousel from '@/components/ContentCarousel';
+import CarouselHeader from '@/components/ui/CarouselHeader';
 import POICard from '@/components/POICard';
 import { ChefHat } from 'lucide-react';
 
@@ -27,11 +28,13 @@ const RestaurantsSection: React.FC = () => {
   }
 
   return (
-    <ContentCarousel 
-      title="Tradizione Culinaria Autentica" 
-      subtitle="I sapori genuini della Romagna tramandati di generazione in generazione"
-      icon={ChefHat}
-    >
+    <div className="space-y-4">
+      <CarouselHeader 
+        icon={ChefHat}
+        title="Tradizione Culinaria Autentica" 
+        subtitle="I sapori genuini della Romagna tramandati di generazione in generazione"
+      />
+      <ContentCarousel>
       {restaurants.map((restaurant, index) => (
         <POICard 
           key={restaurant.id || index}
@@ -49,7 +52,8 @@ const RestaurantsSection: React.FC = () => {
           isLoading={false}
         />
       ))}
-    </ContentCarousel>
+      </ContentCarousel>
+    </div>
   );
 };
 
