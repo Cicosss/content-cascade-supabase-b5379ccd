@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import CarouselHeader from '@/components/ui/CarouselHeader';
-import EventCard from '@/components/EventCard';
+import UnifiedPOICard from '@/components/UnifiedPOICard';
 import { Calendar } from 'lucide-react';
 import {
   Carousel,
@@ -50,13 +50,22 @@ const EventsSection: React.FC = () => {
         <CarouselContent className="-ml-2 md:-ml-4">
           {events.map((event, index) => (
             <CarouselItem key={event.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
-              <EventCard 
-                title={event.name}
-                date={new Date(event.start_datetime).toLocaleDateString('it-IT')}
-                time={new Date(event.start_datetime).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
-                location={event.location_name || event.address || ''}
+              <UnifiedPOICard 
+                id={event.id}
+                name={event.name}
                 category={event.category}
-                image={event.images?.[0] || ''}
+                description={event.description}
+                images={event.images}
+                avg_rating={event.avg_rating}
+                price_info={event.price_info}
+                duration_info={event.duration_info}
+                target_audience={event.target_audience}
+                address={event.address || event.location_name}
+                location_name={event.location_name}
+                startDatetime={event.start_datetime}
+                endDatetime={event.end_datetime}
+                poiType="event"
+                isLoading={false}
               />
             </CarouselItem>
           ))}

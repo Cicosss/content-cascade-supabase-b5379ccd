@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import EmptyState from '@/components/EmptyState';
 import RestaurantsHero from '@/components/restaurants/RestaurantsHero';
 import RestaurantFilters from '@/components/restaurants/RestaurantFilters';
-import RestaurantGrid from '@/components/restaurants/RestaurantGrid';
+import UnifiedPOICard from '@/components/UnifiedPOICard';
 import { Search, ChefHat } from 'lucide-react';
 import { Restaurant } from '@/types/restaurant';
 
@@ -66,7 +66,17 @@ const Restaurants = () => {
         />
 
         {loading ? (
-          <RestaurantGrid restaurants={[]} loading={true} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <UnifiedPOICard 
+                key={i}
+                id=""
+                name=""
+                category=""
+                isLoading={true}
+              />
+            ))}
+          </div>
         ) : filteredRestaurants.length === 0 ? (
           restaurants.length === 0 ? (
             <EmptyState
@@ -89,7 +99,28 @@ const Restaurants = () => {
             />
           )
         ) : (
-          <RestaurantGrid restaurants={filteredRestaurants} loading={false} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredRestaurants.map((restaurant) => (
+              <UnifiedPOICard 
+                key={restaurant.id}
+                id={restaurant.id}
+                name={restaurant.name}
+                category={restaurant.category}
+                description={restaurant.description}
+                images={restaurant.images}
+                avg_rating={restaurant.avg_rating}
+                price_info={restaurant.price_info}
+                duration_info={restaurant.duration_info}
+                target_audience={restaurant.target_audience}
+                address={restaurant.address}
+                phone={restaurant.phone}
+                website_url={restaurant.website_url}
+                opening_hours={restaurant.opening_hours}
+                poiType="place"
+                isLoading={false}
+              />
+            ))}
+          </div>
         )}
         </div>
       </div>

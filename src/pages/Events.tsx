@@ -1,13 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import EmptyState from '@/components/EmptyState';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import UnifiedPOICard from '@/components/UnifiedPOICard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Calendar, Clock, MapPin, Search, Star, CalendarX, RotateCcw } from 'lucide-react';
-import { formatDate, formatTime } from '@/utils/dateUtils';
+import { Calendar, Search, CalendarX } from 'lucide-react';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -98,9 +97,15 @@ const Events = () => {
 
         {/* Events Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i} className="h-80 bg-gray-200 animate-pulse" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <UnifiedPOICard 
+                key={i}
+                id=""
+                name=""
+                category=""
+                isLoading={true}
+              />
             ))}
           </div>
         ) : filteredEvents.length === 0 ? (
@@ -125,49 +130,29 @@ const Events = () => {
             />
           )
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredEvents.map((event) => (
-              <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-[4/3] bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
-                  <span className="text-white text-sm">🎉 Evento</span>
-                </div>
-                <div className="p-4">
-                  {event.category && (
-                    <Badge className="mb-2">{event.category}</Badge>
-                  )}
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                    {event.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                    {event.description}
-                  </p>
-                  <div className="space-y-2 text-sm text-gray-600 mb-3">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      {formatDate(event.start_datetime)}
-                    </div>
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 mr-2" />
-                      {formatTime(event.start_datetime)}
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="h-4 w-4 mr-2" />
-                      {event.location_name || event.address}
-                    </div>
-                  </div>
-                  {event.avg_rating > 0 && (
-                    <div className="flex items-center text-sm mb-2">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span>{event.avg_rating}</span>
-                    </div>
-                  )}
-                  {event.price_info && (
-                    <div className="text-lg font-semibold text-green-600">
-                      {event.price_info}
-                    </div>
-                  )}
-                </div>
-              </Card>
+              <UnifiedPOICard 
+                key={event.id}
+                id={event.id}
+                name={event.name}
+                category={event.category}
+                description={event.description}
+                images={event.images}
+                avg_rating={event.avg_rating}
+                price_info={event.price_info}
+                duration_info={event.duration_info}
+                target_audience={event.target_audience}
+                address={event.address || event.location_name}
+                location_name={event.location_name}
+                startDatetime={event.start_datetime}
+                endDatetime={event.end_datetime}
+                poiType="event"
+                opening_hours={event.opening_hours}
+                phone={event.phone}
+                website_url={event.website_url}
+                isLoading={false}
+              />
             ))}
           </div>
         )}

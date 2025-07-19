@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import CarouselHeader from '@/components/ui/CarouselHeader';
-import POICard from '@/components/POICard';
+import UnifiedPOICard from '@/components/UnifiedPOICard';
 import { Compass } from 'lucide-react';
 import {
   Carousel,
@@ -50,7 +50,7 @@ const ExperiencesSection: React.FC = () => {
         <CarouselContent className="-ml-2 md:-ml-4">
           {experiences.map((exp, index) => (
             <CarouselItem key={exp.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
-              <POICard 
+              <UnifiedPOICard 
                 id={exp.id}
                 name={exp.name}
                 category={exp.category}
