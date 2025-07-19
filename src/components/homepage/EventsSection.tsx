@@ -22,11 +22,14 @@ const EventsSection: React.FC = () => {
         .select('*')
         .gte('start_datetime', new Date().toISOString())
         .order('start_datetime', { ascending: true })
-        .limit(6);
+        .order('avg_rating', { ascending: false })
+        .limit(8);
       
       if (error) throw error;
       return data || [];
-    }
+    },
+    staleTime: 3 * 60 * 1000, // 3 minuti
+    gcTime: 5 * 60 * 1000 // 5 minuti
   });
 
   if (isLoading || events.length === 0) {

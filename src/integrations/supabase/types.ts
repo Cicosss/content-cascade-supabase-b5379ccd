@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      ab_test_variants: {
+        Row: {
+          carousel_type: string
+          created_at: string | null
+          id: string
+          user_session_id: string
+          variant_name: string
+        }
+        Insert: {
+          carousel_type: string
+          created_at?: string | null
+          id?: string
+          user_session_id: string
+          variant_name: string
+        }
+        Update: {
+          carousel_type?: string
+          created_at?: string | null
+          id?: string
+          user_session_id?: string
+          variant_name?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           booking_date: string
@@ -80,6 +104,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      carousel_metrics: {
+        Row: {
+          action_type: string
+          carousel_type: string
+          created_at: string | null
+          id: string
+          poi_id: string | null
+          position: number | null
+          session_id: string
+          user_id: string | null
+          variant_name: string | null
+        }
+        Insert: {
+          action_type: string
+          carousel_type: string
+          created_at?: string | null
+          id?: string
+          poi_id?: string | null
+          position?: number | null
+          session_id: string
+          user_id?: string | null
+          variant_name?: string | null
+        }
+        Update: {
+          action_type?: string
+          carousel_type?: string
+          created_at?: string | null
+          id?: string
+          poi_id?: string | null
+          position?: number | null
+          session_id?: string
+          user_id?: string | null
+          variant_name?: string | null
+        }
+        Relationships: []
       }
       eventi_passati: {
         Row: {
@@ -484,6 +544,8 @@ export type Database = {
           phone: string | null
           poi_type: string | null
           price_info: string | null
+          priority_score: number | null
+          reviews_count: number | null
           start_datetime: string | null
           status: string | null
           tags: string[] | null
@@ -511,6 +573,8 @@ export type Database = {
           phone?: string | null
           poi_type?: string | null
           price_info?: string | null
+          priority_score?: number | null
+          reviews_count?: number | null
           start_datetime?: string | null
           status?: string | null
           tags?: string[] | null
@@ -538,6 +602,8 @@ export type Database = {
           phone?: string | null
           poi_type?: string | null
           price_info?: string | null
+          priority_score?: number | null
+          reviews_count?: number | null
           start_datetime?: string | null
           status?: string | null
           tags?: string[] | null
@@ -714,6 +780,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_priority_score: {
+        Args: { avg_rating: number; created_at: string; reviews_count?: number }
+        Returns: number
+      }
       move_expired_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
