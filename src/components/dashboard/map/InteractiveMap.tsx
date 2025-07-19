@@ -1,7 +1,9 @@
+
 import React, { memo } from 'react';
 import { MapProvider } from '@/contexts/MapContext';
 import { MapFiltersProvider } from '@/contexts/MapFiltersContext';
 import { MapUIProvider } from '@/contexts/MapUIContext';
+import { POIFilters } from '@/types/poi';
 import MapContainer from './MapContainer';
 
 interface InteractiveMapProps {
@@ -14,10 +16,10 @@ interface InteractiveMapProps {
 }
 
 const InteractiveMap: React.FC<InteractiveMapProps> = memo(({ filters }) => {
-  // Transform filters for initial state
-  const initialFilters = {
+  // Transform filters for initial state with proper type casting
+  const initialFilters: Partial<POIFilters> = {
     activityTypes: filters.activityTypes || [],
-    withChildren: filters.withChildren || 'no',
+    withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
     bounds: null
   };
 

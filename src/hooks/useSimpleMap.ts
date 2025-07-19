@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
@@ -27,6 +26,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const boundsTimeoutRef = useRef<NodeJS.Timeout>();
   const interactionTimeoutRef = useRef<NodeJS.Timeout>();
   const stabilizationTimeoutRef = useRef<NodeJS.Timeout>();
+  const lastBoundsRef = useRef<string>('');
 
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
   const { isLoaded, error } = useGoogleMapsLoader();
@@ -34,12 +34,12 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   // Initialize marker icons
   const { userIcon } = useMarkerIcons(isLoaded);
 
-  // Prepare POI filters
+  // Prepare POI filters with proper type casting
   const poiFilters: POIFilters = {
     activityTypes: filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto') 
       ? filters.activityTypes 
       : [],
-    withChildren: filters.withChildren || 'no',
+    withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
     bounds: mapBounds
   };
 
@@ -78,7 +78,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     }
   }, [isLoaded, userLocation, mapInstance]);
 
-  // Optimized bounds change handler with stabilization
+  // Optimized bounds change handler with enhanced stabilization
   const handleBoundsChange = useCallback(() => {
     if (!mapInstance) return;
 
@@ -95,21 +95,31 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       west: Math.round(sw.lng() * 1000) / 1000
     };
 
+    // Create a bounds signature to prevent duplicate calls
+    const boundsSignature = `${newBounds.north},${newBounds.south},${newBounds.east},${newBounds.west}`;
+    
+    // Skip if bounds haven't actually changed
+    if (boundsSignature === lastBoundsRef.current) {
+      return;
+    }
+    
+    lastBoundsRef.current = boundsSignature;
+
     // Clear existing timeouts
     if (boundsTimeoutRef.current) clearTimeout(boundsTimeoutRef.current);
     if (stabilizationTimeoutRef.current) clearTimeout(stabilizationTimeoutRef.current);
 
-    // Immediate cache check
+    // Immediate cache check with throttling
     boundsTimeoutRef.current = setTimeout(() => {
-      console.log('🗺️ Checking cached POIs for bounds:', newBounds);
+      console.log('🗺️ Cache check for bounds:', newBounds);
       setMapBounds(newBounds);
-    }, 300);
+    }, 500);
 
-    // Stabilized fetch (for fresh data if needed)
+    // Stabilized fetch (for fresh data if needed) with longer delay
     stabilizationTimeoutRef.current = setTimeout(() => {
       console.log('🔄 Stabilized bounds change:', newBounds);
       fetchPOIs(newBounds);
-    }, 2000);
+    }, 3000); // Increased from 2000ms to 3000ms
   }, [mapInstance, fetchPOIs]);
 
   // User interaction tracking

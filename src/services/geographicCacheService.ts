@@ -1,3 +1,4 @@
+import { POI } from '@/types/poi';
 
 interface GeographicTile {
   id: string;
@@ -36,6 +37,9 @@ class GeographicCacheService {
   private config: GeographicCacheConfig;
   private lastUserPosition: { lat: number; lng: number } | null = null;
   private movementVector: { dx: number; dy: number } = { dx: 0, dy: 0 };
+  private lastBoundsCheck: string | null = null;
+  private boundsCheckCount = 0;
+  private maxBoundsChecks = 5;
 
   constructor(config?: Partial<GeographicCacheConfig>) {
     this.config = {
@@ -135,8 +139,21 @@ class GeographicCacheService {
     return adjacentTiles;
   }
 
-  // Get cached POIs for current viewport
+  // Get cached POIs for current viewport with stability controls
   getCachedPOIs(userLocation: { lat: number; lng: number }, maxDistance: number = 15): POI[] {
+    // Prevent excessive calls
+    const locationKey = `${userLocation.lat.toFixed(3)},${userLocation.lng.toFixed(3)}`;
+    if (this.lastBoundsCheck === locationKey) {
+      this.boundsCheckCount++;
+      if (this.boundsCheckCount > this.maxBoundsChecks) {
+        console.warn('🚫 Cache check throttled - too many consecutive calls');
+        return Array.from(this.poiCache.values()).slice(0, this.config.maxPOIs);
+      }
+    } else {
+      this.boundsCheckCount = 0;
+      this.lastBoundsCheck = locationKey;
+    }
+
     this.updateMovementVector(userLocation);
     
     const cachedPOIs: CachedPOI[] = [];

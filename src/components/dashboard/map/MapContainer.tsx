@@ -5,7 +5,7 @@ import { useMapContext } from '@/contexts/MapContext';
 import { useMapFilters as useMapFiltersContext } from '@/contexts/MapFiltersContext';
 import { useMapUI } from '@/contexts/MapUIContext';
 import { usePOIFetchManager } from '@/hooks/usePOIFetchManager';
-import { POI } from '@/types/poi';
+import { POI, POIFilters } from '@/types/poi';
 import MapCore from './MapCore';
 import OptimizedPOIPreview from '../OptimizedPOIPreview';
 
@@ -30,7 +30,7 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
   const { setActiveFilters } = useMapFiltersContext();
   const { setLoadingState, setError } = useMapUI();
 
-  // Transform and stabilize filters
+  // Transform and stabilize filters with proper type casting
   const rawPoiFilters = useMemo(() => {
     const shouldShowAll = !filters.activityTypes || 
                          filters.activityTypes.length === 0 || 
@@ -39,9 +39,9 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
     
     return {
       activityTypes: shouldShowAll ? [] : filters.activityTypes,
-      withChildren: filters.withChildren || 'no',
+      withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
       bounds: mapBounds
-    };
+    } as POIFilters;
   }, [filters.activityTypes, filters.withChildren, mapBounds]);
 
   const stableFilters = useStableMapFilters(rawPoiFilters, mapBounds);

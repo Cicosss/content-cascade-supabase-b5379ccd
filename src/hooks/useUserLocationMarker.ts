@@ -11,26 +11,41 @@ export const useUserLocationMarker = ({ map, userLocation, userIcon }: UseUserLo
   const userMarkerRef = useRef<google.maps.Marker | null>(null);
   const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
   const [isMarkerVisible, setIsMarkerVisible] = useState(false);
+  const markerStateRef = useRef<'creating' | 'updating' | 'idle'>('idle');
+  const lastLocationRef = useRef<string>('');
 
-  // Manage user location marker
+  // Manage user location marker with stability controls
   useEffect(() => {
     if (!map || !window.google?.maps || !userIcon) return;
 
     if (userLocation) {
-      console.log('📍 Aggiornamento marker posizione utente:', userLocation);
+      const locationKey = `${userLocation.lat.toFixed(6)},${userLocation.lng.toFixed(6)}`;
       
+      // Skip if location hasn't changed and we're not idle
+      if (locationKey === lastLocationRef.current && markerStateRef.current !== 'idle') {
+        return;
+      }
+      
+      lastLocationRef.current = locationKey;
+
       if (!userMarkerRef.current) {
-        // Crea nuovo marker per l'utente
+        // Prevent multiple marker creation attempts
+        if (markerStateRef.current === 'creating') return;
+        markerStateRef.current = 'creating';
+        
+        console.log('📍 Creating user marker at:', userLocation);
+        
+        // Create new marker for user
         userMarkerRef.current = new google.maps.Marker({
           position: userLocation,
           title: 'La tua posizione GPS',
           icon: userIcon,
           map: map,
-          zIndex: 1000, // Assicura che sia sopra gli altri marker
-          animation: google.maps.Animation.DROP // Animazione di drop
+          zIndex: 1000,
+          animation: google.maps.Animation.DROP
         });
 
-        // Crea InfoWindow per mostrare dettagli
+        // Create InfoWindow
         infoWindowRef.current = new google.maps.InfoWindow({
           content: `
             <div style="padding: 8px; font-family: Arial, sans-serif;">
@@ -46,7 +61,7 @@ export const useUserLocationMarker = ({ map, userLocation, userIcon }: UseUserLo
           `
         });
 
-        // Aggiungi click listener per aprire InfoWindow
+        // Add click listener
         userMarkerRef.current.addListener('click', () => {
           if (infoWindowRef.current && userMarkerRef.current) {
             infoWindowRef.current.open(map, userMarkerRef.current);
@@ -54,13 +69,17 @@ export const useUserLocationMarker = ({ map, userLocation, userIcon }: UseUserLo
         });
 
         setIsMarkerVisible(true);
-        console.log('✅ Marker utente creato alla posizione:', userLocation);
+        markerStateRef.current = 'idle';
+        console.log('✅ User marker created successfully');
       } else {
-        // Aggiorna posizione del marker esistente
+        // Update existing marker position
+        if (markerStateRef.current === 'updating') return;
+        markerStateRef.current = 'updating';
+        
         userMarkerRef.current.setPosition(userLocation);
         userMarkerRef.current.setMap(map);
         
-        // Aggiorna contenuto InfoWindow
+        // Update InfoWindow content
         if (infoWindowRef.current) {
           infoWindowRef.current.setContent(`
             <div style="padding: 8px; font-family: Arial, sans-serif;">
@@ -76,16 +95,17 @@ export const useUserLocationMarker = ({ map, userLocation, userIcon }: UseUserLo
           `);
         }
         
-        console.log('🔄 Marker utente aggiornato alla posizione:', userLocation);
+        markerStateRef.current = 'idle';
+        console.log('🔄 User marker position updated');
       }
-    } else if (userMarkerRef.current) {
-      // Nasconde il marker se non c'è posizione
+    } else if (userMarkerRef.current && markerStateRef.current === 'idle') {
+      // Hide marker only when idle to prevent continuous removal
       userMarkerRef.current.setMap(null);
       if (infoWindowRef.current) {
         infoWindowRef.current.close();
       }
       setIsMarkerVisible(false);
-      console.log('🫥 Marker utente nascosto - nessuna posizione GPS');
+      console.log('🫥 User marker hidden - no GPS location');
     }
   }, [map, userLocation, userIcon]);
 
@@ -99,7 +119,9 @@ export const useUserLocationMarker = ({ map, userLocation, userIcon }: UseUserLo
       infoWindowRef.current = null;
     }
     setIsMarkerVisible(false);
-    console.log('🗑️ Marker utente rimosso');
+    markerStateRef.current = 'idle';
+    lastLocationRef.current = '';
+    console.log('🗑️ User marker completely removed');
   };
 
   return { 

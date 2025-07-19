@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect, memo, useCallback, useMemo } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
@@ -12,6 +13,7 @@ import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
 import { useMapInitialization } from '@/hooks/useMapInitialization';
 import { useOptimizedMarkerPool } from '@/hooks/useOptimizedMarkerPool';
 import { useMapFilters } from '@/hooks/useStableFilters';
+import { POIFilters } from '@/types/poi';
 
 interface GoogleMapProps {
   filters: {
@@ -32,7 +34,7 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
   // Map bounds e filtri stabilizzati
   const [mapBounds, setMapBounds] = useState<any>(null);
   
-  // Stabilizza filtri POI con bounds
+  // Stabilizza filtri POI con bounds e type casting
   const rawPoiFilters = useMemo(() => {
     const shouldShowAll = !filters.activityTypes || 
                          filters.activityTypes.length === 0 || 
@@ -41,9 +43,9 @@ const GoogleMap: React.FC<GoogleMapProps> = memo(({ filters }) => {
     
     return {
       activityTypes: shouldShowAll ? [] : filters.activityTypes,
-      withChildren: filters.withChildren || 'no',
+      withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
       bounds: mapBounds
-    };
+    } as POIFilters;
   }, [filters.activityTypes, filters.withChildren, mapBounds]);
 
   // Use the imported hook directly
