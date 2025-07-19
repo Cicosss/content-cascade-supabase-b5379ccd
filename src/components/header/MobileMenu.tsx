@@ -22,7 +22,7 @@ const menuItems = [
         title: "Gusto & Sapori",
         description: "Ristoranti, cantine e prodotti tipici.",
         icon: <UtensilsCrossed className="size-5 shrink-0" />,
-        url: "/dashboard?categories=Ristoranti,Agriturismi,Cantine e Vigne,Street Food,Mercati Locali"
+        url: "/dashboard?categories=Ristoranti,Agriturismi,Aziende Agricole,Street Food,Mercati Locali"
       },
       {
         title: "Cultura & Territorio",

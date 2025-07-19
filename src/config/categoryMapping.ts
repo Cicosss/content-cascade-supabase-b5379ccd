@@ -4,7 +4,7 @@ export const OFFICIAL_CATEGORIES = [
   // Gusto & Sapori (5)
   'Ristoranti',
   'Agriturismi', 
-  'Cantine e Vigne',
+  'Aziende Agricole',
   'Street Food',
   'Mercati Locali',
   
@@ -31,7 +31,7 @@ export const OFFICIAL_CATEGORIES = [
 
 // Mapping navbar → categorie per pre-filtri intelligenti
 export const NAVBAR_CATEGORY_MAPPING = {
-  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Cantine e Vigne', 'Street Food', 'Mercati Locali'],
+  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Street Food', 'Mercati Locali'],
   'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'],
   'Eventi & Spettacoli': ['Eventi'],
   'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Esperienze Educative', 'Vita Notturna'],
