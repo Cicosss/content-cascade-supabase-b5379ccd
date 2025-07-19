@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/carousel";
 import { useABTesting, useCarouselMetrics } from '@/hooks/useABTesting';
 import { useGeoFiltering } from '@/hooks/useGeoFiltering';
-import { useDynamicLimits, useCarouselPerformance } from '@/hooks/useDynamicLimits';
+import { useDynamicLimits } from '@/hooks/useDynamicLimits';
 import { useIntelligentCache } from '@/services/intelligentCacheService';
 
 const ExperiencesSection: React.FC = () => {
@@ -22,19 +22,16 @@ const ExperiencesSection: React.FC = () => {
   const { enrichWithGeoData, sortByGeoEnhancedPriority, sortByDistance } = useGeoFiltering();
   const { limit } = useDynamicLimits('homepage');
   const { trackMetric } = useCarouselMetrics();
-  const { startTimer } = useCarouselPerformance();
+  
   const cache = useIntelligentCache();
 
   const { data: experiences = [], isLoading } = useQuery({
     queryKey: ['territory-experiences', variant, limit],
     queryFn: async () => {
-      const timer = startTimer();
-      
       // Prova prima la cache
       const cacheKey = `homepage-experiences-${variant}`;
       const cachedData = cache.get(cacheKey, { limit, orderBy: variantConfig.orderBy });
       if (cachedData) {
-        timer.endLoad();
         return cachedData;
       }
 
@@ -58,7 +55,6 @@ const ExperiencesSection: React.FC = () => {
       query = query.limit(limit);
       
       const { data, error } = await query;
-      timer.endLoad();
       
       if (error) throw error;
       
