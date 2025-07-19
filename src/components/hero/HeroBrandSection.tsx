@@ -4,7 +4,7 @@ import VaporizeTextCycle, { Tag } from "@/components/ui/vaporize-text-effect";
 
 const HeroBrandSection = () => {
   return (
-    <div className="flex items-center justify-center mb-8 lg:mb-12">
+    <div className="flex items-center justify-center w-full text-center">
       <VaporizeTextCycle
         texts={[
           "Il territorio",

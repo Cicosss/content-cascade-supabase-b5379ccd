@@ -10,13 +10,15 @@ const InteractiveHeroSection = () => {
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
 
-      {/* Content Overlay - Centered and Optimized */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-center text-white px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          {/* Brand Section - Main Focus */}
+      {/* Content Overlay - Restructured */}
+      <div className="relative z-10 h-full flex flex-col text-white px-4">
+        {/* Brand Section - Center */}
+        <div className="flex-1 flex items-center justify-center">
           <HeroBrandSection />
-          
-          {/* Key Features - Secondary Focus */}
+        </div>
+        
+        {/* Key Features - Bottom */}
+        <div className="pb-8 lg:pb-12">
           <HeroFeatures />
         </div>
       </div>
