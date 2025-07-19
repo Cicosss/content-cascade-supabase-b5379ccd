@@ -194,7 +194,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   useEffect(() => {
     return () => {
       clearAllMarkers();
-      clearUserMarker();
+      // clearUserMarker(); // Rimosso: il marker utente ha il proprio lifecycle
     };
   }, [clearAllMarkers]);
 
