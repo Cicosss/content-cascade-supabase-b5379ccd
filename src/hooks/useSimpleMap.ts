@@ -4,6 +4,8 @@ import { useLocation } from '@/contexts/LocationContext';
 import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
 import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
 import { useOptimizedMarkerPool } from '@/hooks/useOptimizedMarkerPool';
+import { useUserLocationMarker } from '@/hooks/useUserLocationMarker';
+import { useMarkerIcons } from '@/hooks/useMarkerIcons';
 import { POI, POIFilters } from '@/types/poi';
 
 interface UseSimpleMapProps {
@@ -29,6 +31,9 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
   const { isLoaded, error } = useGoogleMapsLoader();
   const { pois, fetchPOIs, isLoading: isLoadingPOIs } = useOptimizedPOIData();
+  
+  // Initialize marker icons
+  const { userIcon } = useMarkerIcons(isLoaded);
 
   // Initialize map
   useEffect(() => {
@@ -156,6 +161,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     isGoogleMapsLoaded: isLoaded
   });
 
+  // User location marker
+  const { clearUserMarker, isMarkerVisible } = useUserLocationMarker({
+    map: mapInstance,
+    userLocation,
+    userIcon
+  });
+
   // Center on user location
   const handleCenterOnUser = useCallback(() => {
     if (userLocation && mapInstance) {
@@ -182,6 +194,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   useEffect(() => {
     return () => {
       clearAllMarkers();
+      clearUserMarker();
     };
   }, [clearAllMarkers]);
 
@@ -195,6 +208,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     isLoadingLocation,
     isUserInteracting,
     validPOICount,
+    isUserMarkerVisible: isMarkerVisible,
     handleCenterOnUser,
     handleClosePreview,
     handleGetDirections

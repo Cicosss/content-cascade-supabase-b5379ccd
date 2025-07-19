@@ -1,16 +1,21 @@
 
 import React from 'react';
-import { Loader2, Navigation, MapPin } from 'lucide-react';
+import { Loader2, Navigation, MapPin, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLocation } from '@/contexts/LocationContext';
 
 interface MapControlsProps {
   onCenterOnUser: () => void;
   isLoadingLocation: boolean;
+  isUserMarkerVisible?: boolean;
 }
 
-const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLocation }) => {
+const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLocation, isUserMarkerVisible }) => {
+  const { userLocation, locationError } = useLocation();
+  
   return (
     <div className="absolute bottom-4 left-4 flex flex-col space-y-2">
+      {/* Bottone principale per centrare sulla posizione utente */}
       <Button
         size="sm"
         variant="secondary"
@@ -26,6 +31,26 @@ const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLoca
         )}
         <span className="hidden sm:inline text-xs font-medium">La mia posizione</span>
       </Button>
+
+      {/* Indicatore stato GPS */}
+      {(userLocation || locationError) && (
+        <div className="bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 text-xs">
+          {userLocation ? (
+            <div className="flex items-center gap-2 text-green-600">
+              <CheckCircle2 className="h-3 w-3" />
+              <span className="font-medium">GPS attivo</span>
+              {isUserMarkerVisible && (
+                <MapPin className="h-3 w-3" />
+              )}
+            </div>
+          ) : locationError ? (
+            <div className="flex items-center gap-2 text-amber-600">
+              <Navigation className="h-3 w-3" />
+              <span className="font-medium">GPS non disponibile</span>
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 };

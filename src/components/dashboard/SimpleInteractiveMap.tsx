@@ -26,6 +26,7 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
     isLoadingLocation,
     isUserInteracting,
     validPOICount,
+    isUserMarkerVisible,
     handleCenterOnUser,
     handleClosePreview,
     handleGetDirections
@@ -76,6 +77,7 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
         <MapControls 
           onCenterOnUser={handleCenterOnUser}
           isLoadingLocation={isLoadingLocation}
+          isUserMarkerVisible={isUserMarkerVisible}
         />
       </div>
 
