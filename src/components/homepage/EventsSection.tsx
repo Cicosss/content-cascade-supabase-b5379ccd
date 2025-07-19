@@ -58,8 +58,8 @@ const EventsSection: React.FC = () => {
                 images={event.images}
                 avg_rating={event.avg_rating}
                 price_info={event.price_info}
-                duration_info={event.duration_info}
-                target_audience={event.target_audience}
+                duration_info={undefined}
+                target_audience={undefined}
                 address={event.address || event.location_name}
                 location_name={event.location_name}
                 startDatetime={event.start_datetime}

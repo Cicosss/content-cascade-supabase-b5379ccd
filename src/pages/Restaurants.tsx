@@ -115,7 +115,7 @@ const Restaurants = () => {
                 address={restaurant.address}
                 phone={restaurant.phone}
                 website_url={restaurant.website_url}
-                opening_hours={restaurant.opening_hours}
+                opening_hours={restaurant.opening_hours || undefined}
                 poiType="place"
                 isLoading={false}
               />

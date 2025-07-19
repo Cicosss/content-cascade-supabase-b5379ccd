@@ -20,7 +20,7 @@ import {
   Mountain,
   Waves,
   Dumbbell,
-  Ferris,
+  Palmtree,
   Baby,
   GraduationCap
 } from 'lucide-react';
@@ -47,7 +47,7 @@ export const CATEGORY_ICONS = {
   'Sport': Dumbbell,
   
   // Divertimento & Famiglia
-  'Parchi a Tema e Acquatici': Ferris,
+  'Parchi a Tema e Acquatici': Palmtree,
   'Attività per Bambini': Baby,
   'Fattorie Didattiche e Animali': Wheat,
   'Esperienze Educative': GraduationCap,

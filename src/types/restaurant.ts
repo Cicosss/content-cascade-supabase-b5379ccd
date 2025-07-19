@@ -19,4 +19,5 @@ export interface Restaurant {
   created_at: string;
   updated_at: string;
   tags: string[];
+  opening_hours?: string;
 }
