@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
-import { useOptimizedPOIData } from '@/hooks/useOptimizedPOIData';
+import { useSmartPOIFetching } from '@/hooks/useSmartPOIFetching';
 import { useOptimizedMarkerPool } from '@/hooks/useOptimizedMarkerPool';
 import { useUserLocationMarker } from '@/hooks/useUserLocationMarker';
 import { useMarkerIcons } from '@/hooks/useMarkerIcons';
@@ -24,16 +24,30 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
   
-  const lastFetchRef = useRef<string>('');
   const boundsTimeoutRef = useRef<NodeJS.Timeout>();
   const interactionTimeoutRef = useRef<NodeJS.Timeout>();
+  const stabilizationTimeoutRef = useRef<NodeJS.Timeout>();
 
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
   const { isLoaded, error } = useGoogleMapsLoader();
-  const { pois, fetchPOIs, isLoading: isLoadingPOIs } = useOptimizedPOIData();
-  
+
   // Initialize marker icons
   const { userIcon } = useMarkerIcons(isLoaded);
+
+  // Prepare POI filters
+  const poiFilters: POIFilters = {
+    activityTypes: filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto') 
+      ? filters.activityTypes 
+      : [],
+    withChildren: filters.withChildren || 'no',
+    bounds: mapBounds
+  };
+
+  // Use smart POI fetching with geographic cache
+  const { pois, fetchPOIs, isLoading: isLoadingPOIs, getCacheStats } = useSmartPOIFetching({
+    userLocation,
+    filters: poiFilters
+  });
 
   // Initialize map
   useEffect(() => {
@@ -64,7 +78,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     }
   }, [isLoaded, userLocation, mapInstance]);
 
-  // Simple bounds management with debounce
+  // Optimized bounds change handler with stabilization
   const handleBoundsChange = useCallback(() => {
     if (!mapInstance) return;
 
@@ -81,15 +95,22 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       west: Math.round(sw.lng() * 1000) / 1000
     };
 
-    if (boundsTimeoutRef.current) {
-      clearTimeout(boundsTimeoutRef.current);
-    }
+    // Clear existing timeouts
+    if (boundsTimeoutRef.current) clearTimeout(boundsTimeoutRef.current);
+    if (stabilizationTimeoutRef.current) clearTimeout(stabilizationTimeoutRef.current);
 
+    // Immediate cache check
     boundsTimeoutRef.current = setTimeout(() => {
-      console.log('🗺️ Simple map bounds changed:', newBounds);
+      console.log('🗺️ Checking cached POIs for bounds:', newBounds);
       setMapBounds(newBounds);
-    }, 1500);
-  }, [mapInstance]);
+    }, 300);
+
+    // Stabilized fetch (for fresh data if needed)
+    stabilizationTimeoutRef.current = setTimeout(() => {
+      console.log('🔄 Stabilized bounds change:', newBounds);
+      fetchPOIs(newBounds);
+    }, 2000);
+  }, [mapInstance, fetchPOIs]);
 
   // User interaction tracking
   const handleInteractionStart = useCallback(() => {
@@ -102,7 +123,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const handleInteractionEnd = useCallback(() => {
     interactionTimeoutRef.current = setTimeout(() => {
       setIsUserInteracting(false);
-    }, 300);
+    }, 500);
   }, []);
 
   // Setup map listeners
@@ -123,36 +144,18 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       listeners.forEach(listener => listener.remove());
       if (boundsTimeoutRef.current) clearTimeout(boundsTimeoutRef.current);
       if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
+      if (stabilizationTimeoutRef.current) clearTimeout(stabilizationTimeoutRef.current);
     };
   }, [mapInstance, handleBoundsChange, handleInteractionStart, handleInteractionEnd]);
 
-  // Prepare POI filters
-  const poiFilters: POIFilters = {
-    activityTypes: filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto') 
-      ? filters.activityTypes 
-      : [],
-    withChildren: filters.withChildren || 'no',
-    bounds: mapBounds
-  };
-
-  // Smart POI fetching with simple debounce
+  // Trigger initial load when bounds are set
   useEffect(() => {
-    if (!mapInstance || !mapBounds) return;
-
-    const filtersKey = JSON.stringify(poiFilters);
-    
-    // Skip if same filters
-    if (filtersKey === lastFetchRef.current) {
-      console.log('🔄 Same POI filters, skipping fetch');
-      return;
+    if (mapBounds && pois.length === 0) {
+      fetchPOIs(mapBounds);
     }
+  }, [mapBounds, fetchPOIs, pois.length]);
 
-    console.log('🔍 Simple map fetching POIs:', poiFilters);
-    lastFetchRef.current = filtersKey;
-    fetchPOIs(poiFilters);
-  }, [mapInstance, mapBounds, poiFilters, fetchPOIs]);
-
-  // Marker management
+  // Marker management with optimized pooling
   const { clearAllMarkers, validPOICount } = useOptimizedMarkerPool({
     map: mapInstance,
     pois,
@@ -162,7 +165,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   });
 
   // User location marker
-  const { clearUserMarker, isMarkerVisible } = useUserLocationMarker({
+  const { isMarkerVisible } = useUserLocationMarker({
     map: mapInstance,
     userLocation,
     userIcon
@@ -190,11 +193,20 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     window.open(mapsUrl, '_blank');
   }, []);
 
+  // Debug cache stats
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stats = getCacheStats();
+      console.log('📊 Cache Stats:', stats);
+    }, 30000); // Every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [getCacheStats]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       clearAllMarkers();
-      // clearUserMarker(); // Rimosso: il marker utente ha il proprio lifecycle
     };
   }, [clearAllMarkers]);
 
@@ -211,6 +223,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     isUserMarkerVisible: isMarkerVisible,
     handleCenterOnUser,
     handleClosePreview,
-    handleGetDirections
+    handleGetDirections,
+    cacheStats: getCacheStats()
   };
 };

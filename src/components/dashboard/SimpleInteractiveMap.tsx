@@ -6,6 +6,7 @@ import MapControls from './MapControls';
 import MapSearchControls from './MapSearchControls';
 import MapLoadingIndicator from './MapLoadingIndicator';
 import OptimizedPOIPreview from './OptimizedPOIPreview';
+import CacheStatsOverlay from './map/CacheStatsOverlay';
 
 interface SimpleInteractiveMapProps {
   filters: {
@@ -27,6 +28,7 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
     isUserInteracting,
     validPOICount,
     isUserMarkerVisible,
+    cacheStats,
     handleCenterOnUser,
     handleClosePreview,
     handleGetDirections
@@ -80,6 +82,9 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
           isUserMarkerVisible={isUserMarkerVisible}
         />
       </div>
+
+      {/* Cache Stats Overlay (development only) */}
+      <CacheStatsOverlay stats={cacheStats} />
 
       {/* POI Preview */}
       {selectedPOI && (

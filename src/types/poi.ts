@@ -1,4 +1,3 @@
-
 import { DateRange } from 'react-day-picker';
 
 export interface POI {
@@ -17,12 +16,15 @@ export interface POI {
 
 export interface POIFilters {
   activityTypes: string[];
-  withChildren: string;
-  period?: DateRange;
+  withChildren: 'si' | 'no';
   bounds?: {
     north: number;
     south: number;
     east: number;
     west: number;
+  } | null;
+  period?: {
+    from: Date;
+    to?: Date;
   };
 }
