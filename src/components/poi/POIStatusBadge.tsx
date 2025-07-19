@@ -16,7 +16,7 @@ const POIStatusBadge: React.FC<POIStatusBadgeProps> = ({
   endDatetime,
   category
 }) => {
-  const isEvent = poiType === 'experience' && (startDatetime || endDatetime);
+  const isEvent = poiType === 'event' && (startDatetime || endDatetime);
   
   if (!isEvent) {
     return (
