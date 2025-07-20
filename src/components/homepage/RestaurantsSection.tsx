@@ -30,21 +30,36 @@ const RestaurantsSection: React.FC = () => {
   const culinaryCategories = getCategoriesForNavbar('Gusto & Sapori');
   console.log('🍴 Culinary categories to query:', culinaryCategories);
 
+  // STEP 1: Invalidare la cache obsoleta al primo caricamento
+  useEffect(() => {
+    console.log('🧹 Invalidating old restaurant cache patterns...');
+    cache.invalidateByPattern(/homepage.*restaurant.*/);
+    cache.invalidateByPattern(/homepage.*culinary.*/);
+  }, [cache]);
+
   const { data: restaurants = [], isLoading } = useQuery({
-    queryKey: ['culinary-pois', variant, limit, culinaryCategories.join('-')],
+    queryKey: ['culinary-pois-v2', variant, limit, culinaryCategories.sort().join('-')],
     queryFn: async () => {
-      // Fix: Passare i filtri correttamente alla cache
-      const filters = { limit, orderBy: variantConfig.orderBy };
-      const cacheKey = `homepage-culinary-pois-${variant}-${culinaryCategories.join('-')}`;
+      // STEP 2: Creare una cache key più specifica e trasparente
+      const sortedCategories = culinaryCategories.sort().join('|');
+      const cacheKey = `homepage-culinary-v2-${variant}-cats:${sortedCategories}-limit:${limit}`;
       
-      // CORREZIONE: Passare i filtri come secondo parametro
-      const cachedData = cache.get(cacheKey, filters);
-      if (cachedData) {
-        console.log('🍴 Using cached culinary POIs:', cachedData.length);
+      console.log('🔍 Cache key being used:', cacheKey);
+      
+      // STEP 3: Controllare la cache con logging diagnostico
+      const cachedData = cache.get(cacheKey);
+      if (cachedData && cachedData.length > 0) {
+        console.log('✅ Cache HIT - Found cached culinary POIs:', cachedData.length);
+        console.log('📊 Cached categories breakdown:', cachedData.reduce((acc, poi) => {
+          acc[poi.category] = (acc[poi.category] || 0) + 1;
+          return acc;
+        }, {}));
         return cachedData;
       }
-      console.log('🍴 Fetching fresh culinary POIs for categories:', culinaryCategories);
+      
+      console.log('❌ Cache MISS - Fetching fresh data for categories:', culinaryCategories);
 
+      // STEP 4: Query con logging dettagliato
       let query = supabase
         .from('points_of_interest')
         .select('*')
@@ -66,17 +81,20 @@ const RestaurantsSection: React.FC = () => {
       
       const { data, error } = await query;
       
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Query error:', error);
+        throw error;
+      }
       
       let processedData = data || [];
       
-      console.log('🍴 Fetched culinary POIs:', processedData.length, 'items');
-      console.log('🍴 Categories breakdown:', processedData.reduce((acc, poi) => {
+      console.log('🎯 Fresh query results:', processedData.length, 'items');
+      console.log('📊 Fresh data categories breakdown:', processedData.reduce((acc, poi) => {
         acc[poi.category] = (acc[poi.category] || 0) + 1;
         return acc;
       }, {}));
       
-      // Arricchisci con dati geo se l'ordinamento non è per distanza
+      // STEP 5: Arricchisci con dati geo
       if (variantConfig.orderBy !== 'distance') {
         processedData = enrichWithGeoData(processedData);
       } else {
@@ -84,18 +102,24 @@ const RestaurantsSection: React.FC = () => {
         processedData = sortByGeoEnhancedPriority(processedData);
       }
       
-      // CORREZIONE: Passare i filtri come quarto parametro
-      cache.set(cacheKey, processedData, 'homepage-pois', filters);
+      // STEP 6: Salva in cache con la stessa chiave usata per il get
+      if (processedData.length > 0) {
+        cache.set(cacheKey, processedData, 'homepage-pois');
+        console.log('💾 Cached fresh data with key:', cacheKey);
+      }
       
       return processedData;
     },
-    enabled: !isABLoading
+    enabled: !isABLoading,
+    staleTime: 5 * 60 * 1000, // 5 minuti
+    gcTime: 10 * 60 * 1000, // 10 minuti (ex cacheTime)
   });
 
   // Traccia visualizzazione carosello
   useEffect(() => {
     if (restaurants.length > 0) {
       trackMetric('homepage-restaurants', 'view');
+      console.log('📈 Tracking view for', restaurants.length, 'restaurants');
     }
   }, [restaurants.length, trackMetric]);
 
