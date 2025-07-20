@@ -160,12 +160,6 @@ const RestaurantsSection: React.FC = () => {
                   poiType="place"
                   isLoading={false}
                 />
-                {/* Badge per mostrare distanza se disponibile */}
-                {restaurant.distance_km && restaurant.distance_km < 50 && (
-                  <div className="absolute top-2 right-2 bg-primary/90 text-primary-foreground text-xs px-2 py-1 rounded-full">
-                    {restaurant.distance_km}km
-                  </div>
-                )}
               </div>
             </CarouselItem>
           ))}
