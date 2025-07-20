@@ -30,8 +30,9 @@ const Events = () => {
   const fetchEvents = async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from('events')
+      .from('points_of_interest')
       .select('*')
+      .eq('poi_type', 'event')
       .gte('start_datetime', new Date().toISOString())
       .order('start_datetime', { ascending: true });
 

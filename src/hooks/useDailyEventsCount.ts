@@ -17,8 +17,9 @@ export const useDailyEventsCount = () => {
       const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
       const { count: eventsCount } = await supabase
-        .from('events')
+        .from('points_of_interest')
         .select('*', { count: 'exact', head: true })
+        .eq('poi_type', 'event')
         .gte('start_datetime', startOfDay.toISOString())
         .lt('start_datetime', endOfDay.toISOString());
 

@@ -18,8 +18,9 @@ const EventsSection: React.FC = () => {
     queryKey: ['homepage-events'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('events')
+        .from('points_of_interest')
         .select('*')
+        .eq('poi_type', 'event')
         .gte('start_datetime', new Date().toISOString())
         .order('start_datetime', { ascending: true })
         .order('avg_rating', { ascending: false })
@@ -61,8 +62,8 @@ const EventsSection: React.FC = () => {
                 images={event.images}
                 avg_rating={event.avg_rating}
                 price_info={event.price_info}
-                duration_info={undefined}
-                target_audience={undefined}
+                duration_info={event.duration_info}
+                target_audience={event.target_audience}
                 address={event.address || event.location_name}
                 location_name={event.location_name}
                 startDatetime={event.start_datetime}

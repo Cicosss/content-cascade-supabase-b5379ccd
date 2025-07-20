@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { apiClient } from './apiClient';
 import { 
@@ -117,8 +116,9 @@ export class CarouselAPIService {
    */
   private async executeEventsQuery(filters: EventFilters): Promise<any[]> {
     let query = supabase
-      .from('events')
+      .from('points_of_interest')
       .select('*')
+      .eq('poi_type', 'event')
       .gte('start_datetime', new Date().toISOString())
       .order('start_datetime', { ascending: true })
       .limit(8);

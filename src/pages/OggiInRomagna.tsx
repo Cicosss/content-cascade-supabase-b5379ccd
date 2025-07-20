@@ -34,8 +34,9 @@ const OggiInRomagna = () => {
     const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
     const { data: todayEvents } = await supabase
-      .from('events')
+      .from('points_of_interest')
       .select('*')
+      .eq('poi_type', 'event')
       .gte('start_datetime', startOfDay.toISOString())
       .lt('start_datetime', endOfDay.toISOString())
       .order('start_datetime', { ascending: true });
