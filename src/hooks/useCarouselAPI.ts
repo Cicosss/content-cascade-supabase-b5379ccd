@@ -55,13 +55,13 @@ export function useCarouselAPI<T extends CarouselType>(
   // Usa filtri stabilizzati per prevenire loop infiniti
   const stableFilters = useCarouselFilters(filters, type);
   
-  // Genera chiave cache stabile
+  // Genera chiave cache unificata
   const cacheKey = useMemo(() => {
     const filterHash = Object.keys(stableFilters)
       .sort()
       .map(key => `${key}:${stableFilters[key]}`)
       .join('|');
-    return `carousel-${type}-${filterHash}`;
+    return `carousel-poi-${type}-${filterHash}`;
   }, [type, stableFilters]);
 
   // Fetcher function per la cache condivisa
@@ -102,7 +102,7 @@ export function useCarouselAPI<T extends CarouselType>(
   const combinedMetrics = useMemo(() => {
     const cacheMetrics = getCacheMetrics();
     return {
-      responseTime: isLoading ? 0 : 100, // Estimato per dati cached
+      responseTime: isLoading ? 0 : 100,
       cacheHit: !isLoading && cachedData.length > 0,
       retryCount: cacheMetrics.errors,
       hitRate: cacheMetrics.hitRate,
@@ -127,7 +127,7 @@ export function useCarouselAPI<T extends CarouselType>(
       console.log(`🎯 Auto-fetching ${type} carousel...`);
       fetchData();
     }
-  }, [enabled, refetchOnMount, cacheKey, fetchData]); // Usa cacheKey come dipendenza stabile
+  }, [enabled, refetchOnMount, cacheKey, fetchData]);
 
   // Cleanup on unmount
   useEffect(() => {

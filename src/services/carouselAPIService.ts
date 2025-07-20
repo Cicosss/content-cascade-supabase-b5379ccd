@@ -33,12 +33,6 @@ const CACHE_STRATEGIES: Record<string, CacheStrategy> = {
     priority: 'low',
     invalidation_triggers: ['content_update', 'seasonal_change'],
     max_age_stale: 3600000 // 1 hour stale allowed
-  },
-  pois: { 
-    ttl: 3600000, // 1 hour
-    priority: 'low',
-    invalidation_triggers: ['major_update'],
-    max_age_stale: 7200000 // 2 hours stale allowed
   }
 };
 
@@ -46,131 +40,92 @@ export class CarouselAPIService {
   private metricsCollector = new Map<string, CarouselMetrics>();
 
   /**
-   * Fetch events with enhanced error handling and caching
+   * Unified method to fetch POIs by type with enhanced error handling and caching
+   */
+  private async fetchPOIsByType<T>(
+    poiType: 'event' | 'place', 
+    category?: string,
+    filters: any = {},
+    transformFn: (data: any[]) => T[]
+  ): Promise<T[]> {
+    const startTime = Date.now();
+    const cacheKey = `carousel-poi-${poiType}-${category || 'all'}-${JSON.stringify(filters)}`;
+    
+    try {
+      const response = await apiClient.request(
+        async () => this.executePOIQuery(poiType, category, filters),
+        this.getRequestConfig(poiType === 'event' ? 'events' : 'experiences'),
+        cacheKey
+      );
+
+      this.recordMetrics(poiType, startTime, true, response.cached || false);
+      return transformFn(response.data);
+    } catch (error) {
+      this.recordMetrics(poiType, startTime, false, false);
+      throw this.normalizeCarouselError(error, poiType);
+    }
+  }
+
+  /**
+   * Fetch events using unified POI method
    */
   async fetchEvents(filters: EventFilters = {}): Promise<EventCarouselData[]> {
-    const startTime = Date.now();
-    const cacheKey = `carousel-events-${JSON.stringify(filters)}`;
-    
-    try {
-      const response = await apiClient.request(
-        async () => this.executeEventsQuery(filters),
-        this.getRequestConfig('events'),
-        cacheKey
-      );
-
-      this.recordMetrics('events', startTime, true, response.cached || false);
-      return this.transformEventData(response.data);
-    } catch (error) {
-      this.recordMetrics('events', startTime, false, false);
-      throw this.normalizeCarouselError(error, 'events');
-    }
+    return this.fetchPOIsByType('event', filters.category, filters, this.transformEventData.bind(this));
   }
 
   /**
-   * Fetch restaurants with specialized caching and retry logic
+   * Fetch restaurants using unified POI method
    */
   async fetchRestaurants(filters: RestaurantFilters = {}): Promise<RestaurantCarouselData[]> {
-    const startTime = Date.now();
-    const cacheKey = `carousel-restaurants-${JSON.stringify(filters)}`;
-    
-    try {
-      const response = await apiClient.request(
-        async () => this.executeRestaurantsQuery(filters),
-        this.getRequestConfig('restaurants'),
-        cacheKey
-      );
-
-      this.recordMetrics('restaurants', startTime, true, response.cached || false);
-      return this.transformRestaurantData(response.data);
-    } catch (error) {
-      this.recordMetrics('restaurants', startTime, false, false);
-      throw this.normalizeCarouselError(error, 'restaurants');
-    }
+    return this.fetchPOIsByType('place', 'Ristoranti', filters, this.transformRestaurantData.bind(this));
   }
 
   /**
-   * Fetch experiences with performance optimization
+   * Fetch experiences using unified POI method
    */
   async fetchExperiences(filters: ExperienceFilters = {}): Promise<ExperienceCarouselData[]> {
-    const startTime = Date.now();
-    const cacheKey = `carousel-experiences-${JSON.stringify(filters)}`;
-    
-    try {
-      const response = await apiClient.request(
-        async () => this.executeExperiencesQuery(filters),
-        this.getRequestConfig('experiences'),
-        cacheKey
-      );
-
-      this.recordMetrics('experiences', startTime, true, response.cached || false);
-      return this.transformExperienceData(response.data);
-    } catch (error) {
-      this.recordMetrics('experiences', startTime, false, false);
-      throw this.normalizeCarouselError(error, 'experiences');
-    }
+    return this.fetchPOIsByType('place', null, filters, this.transformExperienceData.bind(this));
   }
 
   /**
-   * Execute events query with specific optimizations
+   * Unified POI query execution
    */
-  private async executeEventsQuery(filters: EventFilters): Promise<any[]> {
+  private async executePOIQuery(
+    poiType: 'event' | 'place', 
+    category?: string | null, 
+    filters: any = {}
+  ): Promise<any[]> {
     let query = supabase
       .from('points_of_interest')
       .select('*')
-      .eq('poi_type', 'event')
-      .gte('start_datetime', new Date().toISOString())
-      .order('start_datetime', { ascending: true })
-      .limit(8);
-
-    if (filters.category) {
-      query = query.eq('category', filters.category);
-    }
-
-    if (filters.date_range) {
-      query = query
-        .gte('start_datetime', filters.date_range.start.toISOString())
-        .lte('start_datetime', filters.date_range.end.toISOString());
-    }
-
-    const { data, error } = await query;
-    if (error) throw error;
-    return data || [];
-  }
-
-  /**
-   * Execute restaurants query with opening hours logic
-   */
-  private async executeRestaurantsQuery(filters: RestaurantFilters): Promise<any[]> {
-    let query = supabase
-      .from('points_of_interest')
-      .select('*')
-      .eq('category', 'Ristoranti')
+      .eq('poi_type', poiType)
       .eq('status', 'approved')
       .limit(8);
 
-    if (filters.distance_km && filters.distance_km > 0) {
-      // Add distance-based filtering logic if location is available
+    // Apply category filter
+    if (category) {
+      query = query.eq('category', category);
+    } else if (poiType === 'place' && !category) {
+      // For experiences, exclude restaurants
+      query = query.neq('category', 'Ristoranti');
     }
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data || [];
-  }
-
-  /**
-   * Execute experiences query with enhanced filtering
-   */
-  private async executeExperiencesQuery(filters: ExperienceFilters): Promise<any[]> {
-    let query = supabase
-      .from('points_of_interest')
-      .select('*')
-      .neq('category', 'Ristoranti')
-      .eq('status', 'approved')
-      .limit(8);
-
-    if (filters.with_children) {
-      query = query.or('target_audience.eq.families,target_audience.eq.everyone');
+    // Apply type-specific filters
+    if (poiType === 'event') {
+      query = query.gte('start_datetime', new Date().toISOString())
+                  .order('start_datetime', { ascending: true });
+      
+      if (filters.date_range) {
+        query = query
+          .gte('start_datetime', filters.date_range.start.toISOString())
+          .lte('start_datetime', filters.date_range.end.toISOString());
+      }
+    } else {
+      query = query.order('priority_score', { ascending: false });
+      
+      if (filters.with_children) {
+        query = query.or('target_audience.eq.families,target_audience.eq.everyone');
+      }
     }
 
     const { data, error } = await query;
@@ -185,8 +140,8 @@ export class CarouselAPIService {
     return data.map(event => ({
       ...event,
       event_status: this.getEventStatus(event),
-      tickets_available: true, // Default - could be enhanced with real data
-      is_featured: false, // Default - could be enhanced with featuring logic
+      tickets_available: true,
+      is_featured: false,
       event_type: this.categorizeEventType(event.category),
       availability_status: 'available',
       priority_score: this.calculatePriority(event, 'event')
@@ -201,7 +156,7 @@ export class CarouselAPIService {
       ...restaurant,
       cuisine_type: this.extractCuisineTypes(restaurant),
       opening_status: this.getOpeningStatus(restaurant),
-      reservation_required: false, // Default - could be enhanced
+      reservation_required: false,
       availability_status: 'available',
       priority_score: this.calculatePriority(restaurant, 'restaurant')
     }));
@@ -214,7 +169,7 @@ export class CarouselAPIService {
     return data.map(experience => ({
       ...experience,
       experience_type: this.categorizeExperienceType(experience.category),
-      difficulty_level: 'medium', // Default - could be enhanced
+      difficulty_level: 'medium',
       availability_status: 'available',
       priority_score: this.calculatePriority(experience, 'experience')
     }));
@@ -227,7 +182,7 @@ export class CarouselAPIService {
     const strategy = CACHE_STRATEGIES[type];
     
     return {
-      retryCount: type === 'events' ? 2 : 3, // Events need faster response
+      retryCount: type === 'events' ? 2 : 3,
       timeout: type === 'events' ? 8000 : 12000,
       cache: true,
       cacheTTL: strategy.ttl,
@@ -272,16 +227,13 @@ export class CarouselAPIService {
     };
   }
 
-  /**
-   * Utility methods for data transformation
-   */
   private getEventStatus(event: any): EventCarouselData['event_status'] {
     const now = new Date();
     const start = new Date(event.start_datetime);
     const end = event.end_datetime ? new Date(event.end_datetime) : null;
     
     if (start > now) return 'upcoming';
-    if (end && end < now) return 'cancelled'; // Simplified logic
+    if (end && end < now) return 'cancelled';
     return 'ongoing';
   }
 
@@ -308,17 +260,14 @@ export class CarouselAPIService {
   }
 
   private extractCuisineTypes(restaurant: any): string[] {
-    // Extract cuisine types from tags or description
     return restaurant.tags || ['Italiana'];
   }
 
   private getOpeningStatus(restaurant: any): RestaurantCarouselData['opening_status'] {
-    // Simplified logic - could be enhanced with real opening hours
     return 'open';
   }
 
   private calculatePriority(item: any, type: string): number {
-    // Priority calculation based on rating, recency, and engagement
     let score = 0;
     
     if (item.avg_rating) score += item.avg_rating * 2;
