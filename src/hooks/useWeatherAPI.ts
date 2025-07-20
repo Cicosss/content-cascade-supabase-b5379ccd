@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { weatherApiService } from '@/services/weatherApiService';
 import { WeatherData } from '@/types/api';
@@ -15,8 +16,14 @@ export const useWeatherAPI = (location: {lat: number; lng: number} | null) => {
 
     try {
       const weatherData = await weatherApiService.getWeather(coords);
-      setWeather(weatherData);
-      setError(null);
+      // FIX: Aggiungere null check per evitare TypeError
+      if (weatherData) {
+        setWeather(weatherData);
+        setError(null);
+      } else {
+        setWeather(null);
+        setError('Dati meteo non disponibili');
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Errore sconosciuto';
       devLog.error('❌ Weather API hook error:', errorMessage);
@@ -30,7 +37,7 @@ export const useWeatherAPI = (location: {lat: number; lng: number} | null) => {
   }, []);
 
   useEffect(() => {
-    if (location) {
+    if (location && location.lat && location.lng) {
       fetchWeather(location);
     }
   }, [location, fetchWeather]);

@@ -30,36 +30,31 @@ const RestaurantsSection: React.FC = () => {
   const culinaryCategories = getCategoriesForNavbar('Gusto & Sapori');
   console.log('🍴 Culinary categories to query:', culinaryCategories);
 
-  // STEP 1: Invalidare la cache obsoleta al primo caricamento
+  // STEP 1: Invalidare TUTTE le cache obsolete con pattern corretti
   useEffect(() => {
-    console.log('🧹 Invalidating old restaurant cache patterns...');
+    console.log('🧹 FORCE CACHE INVALIDATION - Starting...');
+    
+    // Invalidare tutte le possibili varianti di cache carousel
+    cache.invalidateByPattern(/carousel-poi-restaurants.*/);
+    cache.invalidateByPattern(/carousel-poi-.*/);
     cache.invalidateByPattern(/homepage.*restaurant.*/);
     cache.invalidateByPattern(/homepage.*culinary.*/);
+    cache.invalidateByPattern(/culinary-pois.*/);
+    
+    console.log('🧹 Cache patterns invalidated');
+    console.log('📊 Cache stats after invalidation:', cache.getStats());
   }, [cache]);
 
+  // STEP 2: Aggiungere timestamp per forzare refresh assoluto
+  const forceRefreshKey = `force-refresh-${Date.now()}`;
+  
   const { data: restaurants = [], isLoading } = useQuery({
-    queryKey: ['culinary-pois-v2', variant, limit, culinaryCategories.sort().join('-')],
+    queryKey: ['culinary-pois-FORCE-v3', variant, limit, culinaryCategories.sort().join('-'), forceRefreshKey],
     queryFn: async () => {
-      // STEP 2: Creare una cache key più specifica e trasparente
-      const sortedCategories = culinaryCategories.sort().join('|');
-      const cacheKey = `homepage-culinary-v2-${variant}-cats:${sortedCategories}-limit:${limit}`;
-      
-      console.log('🔍 Cache key being used:', cacheKey);
-      
-      // STEP 3: Controllare la cache con logging diagnostico
-      const cachedData = cache.get(cacheKey);
-      if (cachedData && cachedData.length > 0) {
-        console.log('✅ Cache HIT - Found cached culinary POIs:', cachedData.length);
-        console.log('📊 Cached categories breakdown:', cachedData.reduce((acc, poi) => {
-          acc[poi.category] = (acc[poi.category] || 0) + 1;
-          return acc;
-        }, {}));
-        return cachedData;
-      }
-      
-      console.log('❌ Cache MISS - Fetching fresh data for categories:', culinaryCategories);
+      console.log('🚀 FORCED FRESH QUERY - No cache used');
+      console.log('🔍 Querying categories:', culinaryCategories);
 
-      // STEP 4: Query con logging dettagliato
+      // STEP 3: Query diretta senza cache check iniziale
       let query = supabase
         .from('points_of_interest')
         .select('*')
@@ -88,13 +83,18 @@ const RestaurantsSection: React.FC = () => {
       
       let processedData = data || [];
       
-      console.log('🎯 Fresh query results:', processedData.length, 'items');
-      console.log('📊 Fresh data categories breakdown:', processedData.reduce((acc, poi) => {
+      console.log('🎯 FRESH FORCED QUERY RESULTS:', processedData.length, 'items');
+      console.log('📊 Categories breakdown:', processedData.reduce((acc, poi) => {
         acc[poi.category] = (acc[poi.category] || 0) + 1;
         return acc;
       }, {}));
       
-      // STEP 5: Arricchisci con dati geo
+      if (processedData.length === 0) {
+        console.warn('⚠️ No data returned from query!');
+        return [];
+      }
+      
+      // STEP 4: Arricchisci con dati geo
       if (variantConfig.orderBy !== 'distance') {
         processedData = enrichWithGeoData(processedData);
       } else {
@@ -102,17 +102,13 @@ const RestaurantsSection: React.FC = () => {
         processedData = sortByGeoEnhancedPriority(processedData);
       }
       
-      // STEP 6: Salva in cache con la stessa chiave usata per il get
-      if (processedData.length > 0) {
-        cache.set(cacheKey, processedData, 'homepage-pois');
-        console.log('💾 Cached fresh data with key:', cacheKey);
-      }
+      console.log('✅ Final processed data:', processedData.length, 'items ready for display');
       
       return processedData;
     },
     enabled: !isABLoading,
-    staleTime: 5 * 60 * 1000, // 5 minuti
-    gcTime: 10 * 60 * 1000, // 10 minuti (ex cacheTime)
+    staleTime: 0, // No cache - sempre fresh
+    gcTime: 0, // No cache retention
   });
 
   // Traccia visualizzazione carosello
@@ -181,7 +177,7 @@ const RestaurantsSection: React.FC = () => {
       {/* Debug info in dev mode */}
       {process.env.NODE_ENV === 'development' && (
         <div className="text-xs text-muted-foreground p-2 bg-muted rounded">
-          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit} | Categorie: {culinaryCategories.join(', ')} | Cache Stats: {JSON.stringify(cache.getStats())}
+          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit} | Categorie: {culinaryCategories.join(', ')} | FORCED REFRESH: {forceRefreshKey}
         </div>
       )}
     </div>

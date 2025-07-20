@@ -34,12 +34,17 @@ export class WeatherErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
-    errorLogger.logError({
-      type: APIErrorType.API_TIMEOUT,
-      message: `Weather Error: ${error.message}`,
-      retryable: true,
-      endpoint: 'weather-api'
-    });
+    // FIX: Aggiungere controllo null per evitare crash
+    try {
+      errorLogger.logError({
+        type: APIErrorType.API_TIMEOUT,
+        message: `Weather Error: ${error?.message || 'Unknown error'}`,
+        retryable: true,
+        endpoint: 'weather-api'
+      });
+    } catch (logError) {
+      console.warn('Failed to log weather error:', logError);
+    }
   }
 
   handleRetry = () => {
