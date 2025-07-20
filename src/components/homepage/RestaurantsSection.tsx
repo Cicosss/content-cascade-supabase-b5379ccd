@@ -33,14 +33,19 @@ const RestaurantsSection: React.FC = () => {
   const { data: restaurants = [], isLoading } = useQuery({
     queryKey: ['culinary-pois', variant, limit, culinaryCategories.join('-')],
     queryFn: async () => {
-      // Chiave cache aggiornata per riflettere le categorie culinarie
+      // Fix: Passare i filtri correttamente alla cache
+      const filters = { limit, orderBy: variantConfig.orderBy };
       const cacheKey = `homepage-culinary-pois-${variant}-${culinaryCategories.join('-')}`;
-      const cachedData = cache.get(cacheKey, { limit, orderBy: variantConfig.orderBy });
+      
+      // CORREZIONE: Passare i filtri come secondo parametro
+      const cachedData = cache.get(cacheKey, filters);
       if (cachedData) {
         console.log('🍴 Using cached culinary POIs:', cachedData.length);
+        cache.trackHit();
         return cachedData;
       }
 
+      cache.trackMiss();
       console.log('🍴 Fetching fresh culinary POIs for categories:', culinaryCategories);
 
       let query = supabase
@@ -82,8 +87,8 @@ const RestaurantsSection: React.FC = () => {
         processedData = sortByGeoEnhancedPriority(processedData);
       }
       
-      // Salva in cache con chiave aggiornata
-      cache.set(cacheKey, processedData, 'homepage-pois', { limit, orderBy: variantConfig.orderBy });
+      // CORREZIONE: Passare i filtri come quarto parametro
+      cache.set(cacheKey, processedData, 'homepage-pois', filters);
       
       return processedData;
     },
@@ -155,7 +160,7 @@ const RestaurantsSection: React.FC = () => {
       {/* Debug info in dev mode */}
       {process.env.NODE_ENV === 'development' && (
         <div className="text-xs text-muted-foreground p-2 bg-muted rounded">
-          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit} | Categorie: {culinaryCategories.join(', ')}
+          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit} | Categorie: {culinaryCategories.join(', ')} | Cache Stats: {JSON.stringify(cache.getStats())}
         </div>
       )}
     </div>
