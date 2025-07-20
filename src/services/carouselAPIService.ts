@@ -44,9 +44,9 @@ export class CarouselAPIService {
    */
   private async fetchPOIsByType<T>(
     poiType: 'event' | 'place', 
+    transformFn: (data: any[]) => T[],
     category?: string,
-    filters: any = {},
-    transformFn: (data: any[]) => T[]
+    filters: any = {}
   ): Promise<T[]> {
     const startTime = Date.now();
     const cacheKey = `carousel-poi-${poiType}-${category || 'all'}-${JSON.stringify(filters)}`;
@@ -70,21 +70,21 @@ export class CarouselAPIService {
    * Fetch events using unified POI method
    */
   async fetchEvents(filters: EventFilters = {}): Promise<EventCarouselData[]> {
-    return this.fetchPOIsByType('event', filters.category, filters, this.transformEventData.bind(this));
+    return this.fetchPOIsByType('event', this.transformEventData.bind(this), filters.category, filters);
   }
 
   /**
    * Fetch restaurants using unified POI method
    */
   async fetchRestaurants(filters: RestaurantFilters = {}): Promise<RestaurantCarouselData[]> {
-    return this.fetchPOIsByType('place', 'Ristoranti', filters, this.transformRestaurantData.bind(this));
+    return this.fetchPOIsByType('place', this.transformRestaurantData.bind(this), 'Ristoranti', filters);
   }
 
   /**
    * Fetch experiences using unified POI method
    */
   async fetchExperiences(filters: ExperienceFilters = {}): Promise<ExperienceCarouselData[]> {
-    return this.fetchPOIsByType('place', null, filters, this.transformExperienceData.bind(this));
+    return this.fetchPOIsByType('place', this.transformExperienceData.bind(this), undefined, filters);
   }
 
   /**
