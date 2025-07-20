@@ -16,6 +16,7 @@ import { useABTesting, useCarouselMetrics } from '@/hooks/useABTesting';
 import { useGeoFiltering } from '@/hooks/useGeoFiltering';
 import { useDynamicLimits } from '@/hooks/useDynamicLimits';
 import { useIntelligentCache } from '@/services/intelligentCacheService';
+import { getCategoriesForNavbar } from '@/config/categoryMapping';
 
 const RestaurantsSection: React.FC = () => {
   const { variant, variantConfig, isLoading: isABLoading } = useABTesting('homepage-restaurants');
@@ -35,10 +36,14 @@ const RestaurantsSection: React.FC = () => {
         return cachedData;
       }
 
+      // Ottieni tutte le categorie culinarie dal mapping
+      const culinaryCategories = getCategoriesForNavbar('Gusto & Sapori');
+      console.log('🍴 Fetching culinary categories:', culinaryCategories);
+
       let query = supabase
         .from('points_of_interest')
         .select('*')
-        .eq('category', 'Ristoranti')
+        .in('category', culinaryCategories)
         .eq('status', 'approved');
 
       // Applica ordinamento basato sulla variante A/B
@@ -59,6 +64,12 @@ const RestaurantsSection: React.FC = () => {
       if (error) throw error;
       
       let processedData = data || [];
+      
+      console.log('🍴 Fetched culinary POIs:', processedData.length, 'items');
+      console.log('🍴 Categories breakdown:', processedData.reduce((acc, poi) => {
+        acc[poi.category] = (acc[poi.category] || 0) + 1;
+        return acc;
+      }, {}));
       
       // Arricchisci con dati geo se l'ordinamento non è per distanza
       if (variantConfig.orderBy !== 'distance') {
