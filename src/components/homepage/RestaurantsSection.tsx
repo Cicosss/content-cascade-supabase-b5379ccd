@@ -41,11 +41,8 @@ const RestaurantsSection: React.FC = () => {
       const cachedData = cache.get(cacheKey, filters);
       if (cachedData) {
         console.log('🍴 Using cached culinary POIs:', cachedData.length);
-        cache.trackHit();
         return cachedData;
       }
-
-      cache.trackMiss();
       console.log('🍴 Fetching fresh culinary POIs for categories:', culinaryCategories);
 
       let query = supabase
