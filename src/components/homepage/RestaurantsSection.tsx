@@ -26,19 +26,22 @@ const RestaurantsSection: React.FC = () => {
   
   const cache = useIntelligentCache();
 
+  // Ottieni tutte le categorie culinarie dal mapping
+  const culinaryCategories = getCategoriesForNavbar('Gusto & Sapori');
+  console.log('🍴 Culinary categories to query:', culinaryCategories);
+
   const { data: restaurants = [], isLoading } = useQuery({
-    queryKey: ['restaurants', variant, limit],
+    queryKey: ['culinary-pois', variant, limit, culinaryCategories.join('-')],
     queryFn: async () => {
-      // Prova prima la cache
-      const cacheKey = `homepage-restaurants-${variant}`;
+      // Chiave cache aggiornata per riflettere le categorie culinarie
+      const cacheKey = `homepage-culinary-pois-${variant}-${culinaryCategories.join('-')}`;
       const cachedData = cache.get(cacheKey, { limit, orderBy: variantConfig.orderBy });
       if (cachedData) {
+        console.log('🍴 Using cached culinary POIs:', cachedData.length);
         return cachedData;
       }
 
-      // Ottieni tutte le categorie culinarie dal mapping
-      const culinaryCategories = getCategoriesForNavbar('Gusto & Sapori');
-      console.log('🍴 Fetching culinary categories:', culinaryCategories);
+      console.log('🍴 Fetching fresh culinary POIs for categories:', culinaryCategories);
 
       let query = supabase
         .from('points_of_interest')
@@ -79,7 +82,7 @@ const RestaurantsSection: React.FC = () => {
         processedData = sortByGeoEnhancedPriority(processedData);
       }
       
-      // Salva in cache
+      // Salva in cache con chiave aggiornata
       cache.set(cacheKey, processedData, 'homepage-pois', { limit, orderBy: variantConfig.orderBy });
       
       return processedData;
@@ -149,10 +152,10 @@ const RestaurantsSection: React.FC = () => {
         <CarouselNext className="hidden md:flex" />
       </Carousel>
       
-      {/* Mostra info variante in dev mode */}
+      {/* Debug info in dev mode */}
       {process.env.NODE_ENV === 'development' && (
         <div className="text-xs text-muted-foreground p-2 bg-muted rounded">
-          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit}
+          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit} | Categorie: {culinaryCategories.join(', ')}
         </div>
       )}
     </div>
