@@ -5,7 +5,7 @@ import ExperienceFilters from './ExperienceFilters';
 import AppliedFilters from './AppliedFilters';
 import SortingDropdown, { SortOption } from './SortingDropdown';
 import ExperiencesCarousel from './content/ExperiencesCarousel';
-import RestaurantsCarousel from './content/RestaurantsCarousel';
+import RestaurantsSection from '@/components/homepage/RestaurantsSection';
 import EventsCarousel from './content/EventsCarousel';
 import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
 import { useStableFilters } from '@/hooks/useStableFilters';
@@ -107,11 +107,6 @@ const PersonalizedContent = () => {
     withChildren: activeFilters.withChildren
   }, 300);
 
-  const { stableFilters: restaurantsFilters } = useStableFilters({
-    opening_now: true,
-    isFirstVisit: activeFilters.isFirstVisit,
-    withChildren: activeFilters.withChildren
-  }, 300);
 
   const { stableFilters: eventsFilters } = useStableFilters({
     category: activeFilters.categories?.[0]
@@ -161,9 +156,7 @@ const PersonalizedContent = () => {
           filters={experiencesFilters}
         />
         
-        <RestaurantsCarousel 
-          filters={restaurantsFilters}
-        />
+        <RestaurantsSection />
         
         <EventsCarousel 
           filters={eventsFilters}

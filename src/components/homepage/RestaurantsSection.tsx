@@ -26,96 +26,55 @@ const RestaurantsSection: React.FC = () => {
   
   const cache = useIntelligentCache();
 
-  // Ottieni tutte le categorie culinarie dal mapping
+  // Ottieni categorie culinarie
   const culinaryCategories = getCategoriesForNavbar('Gusto & Sapori');
-  console.log('🍴 Culinary categories to query:', culinaryCategories);
 
-  // STEP 1: Invalidare TUTTE le cache obsolete con pattern corretti
+  // Cache invalidation pulita
   useEffect(() => {
-    console.log('🧹 FORCE CACHE INVALIDATION - Starting...');
-    
-    // Invalidare tutte le possibili varianti di cache carousel
-    cache.invalidateByPattern(/carousel-poi-restaurants.*/);
-    cache.invalidateByPattern(/carousel-poi-.*/);
-    cache.invalidateByPattern(/homepage.*restaurant.*/);
     cache.invalidateByPattern(/homepage.*culinary.*/);
-    cache.invalidateByPattern(/culinary-pois.*/);
-    
-    console.log('🧹 Cache patterns invalidated');
-    console.log('📊 Cache stats after invalidation:', cache.getStats());
   }, [cache]);
-
-  // STEP 2: Aggiungere timestamp per forzare refresh assoluto
-  const forceRefreshKey = `force-refresh-${Date.now()}`;
   
   const { data: restaurants = [], isLoading } = useQuery({
-    queryKey: ['culinary-pois-FORCE-v3', variant, limit, culinaryCategories.sort().join('-'), forceRefreshKey],
+    queryKey: ['homepage-culinary-pois', variant, limit],
     queryFn: async () => {
-      console.log('🚀 FORCED FRESH QUERY - No cache used');
-      console.log('🔍 Querying categories:', culinaryCategories);
-
-      // STEP 3: Query diretta senza cache check iniziale
       let query = supabase
         .from('points_of_interest')
         .select('*')
         .in('category', culinaryCategories)
         .eq('status', 'approved');
 
-      // Applica ordinamento basato sulla variante A/B
-      switch (variantConfig.orderBy) {
-        case 'avg_rating':
-          query = query.order('avg_rating', { ascending: false, nullsFirst: false });
-          break;
-        case 'priority_score':
-        default:
-          query = query.order('priority_score', { ascending: false, nullsFirst: false });
-          break;
+      // Applica ordinamento A/B
+      if (variantConfig.orderBy === 'avg_rating') {
+        query = query.order('avg_rating', { ascending: false, nullsFirst: false });
+      } else {
+        query = query.order('priority_score', { ascending: false, nullsFirst: false });
       }
 
       query = query.limit(limit);
       
       const { data, error } = await query;
       
-      if (error) {
-        console.error('❌ Query error:', error);
-        throw error;
-      }
+      if (error) throw error;
       
       let processedData = data || [];
       
-      console.log('🎯 FRESH FORCED QUERY RESULTS:', processedData.length, 'items');
-      console.log('📊 Categories breakdown:', processedData.reduce((acc, poi) => {
-        acc[poi.category] = (acc[poi.category] || 0) + 1;
-        return acc;
-      }, {}));
-      
-      if (processedData.length === 0) {
-        console.warn('⚠️ No data returned from query!');
-        return [];
-      }
-      
-      // STEP 4: Arricchisci con dati geo
-      if (variantConfig.orderBy !== 'distance') {
-        processedData = enrichWithGeoData(processedData);
-      } else {
-        processedData = enrichWithGeoData(processedData);
+      // Arricchisci con dati geo
+      processedData = enrichWithGeoData(processedData);
+      if (variantConfig.orderBy === 'distance') {
         processedData = sortByGeoEnhancedPriority(processedData);
       }
-      
-      console.log('✅ Final processed data:', processedData.length, 'items ready for display');
       
       return processedData;
     },
     enabled: !isABLoading,
-    staleTime: 0, // No cache - sempre fresh
-    gcTime: 0, // No cache retention
+    staleTime: 1000 * 60 * 5, // 5 minuti di cache
+    gcTime: 1000 * 60 * 10,   // 10 minuti di garbage collection
   });
 
   // Traccia visualizzazione carosello
   useEffect(() => {
     if (restaurants.length > 0) {
       trackMetric('homepage-restaurants', 'view');
-      console.log('📈 Tracking view for', restaurants.length, 'restaurants');
     }
   }, [restaurants.length, trackMetric]);
 
@@ -168,12 +127,6 @@ const RestaurantsSection: React.FC = () => {
         <CarouselNext className="hidden md:flex" />
       </Carousel>
       
-      {/* Debug info in dev mode */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="text-xs text-muted-foreground p-2 bg-muted rounded">
-          A/B Variant: {variant} | Ordinamento: {variantConfig.orderBy} | Risultati: {restaurants.length}/{limit} | Categorie: {culinaryCategories.join(', ')} | FORCED REFRESH: {forceRefreshKey}
-        </div>
-      )}
     </div>
   );
 };
