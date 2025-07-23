@@ -81,6 +81,7 @@ export interface ExperienceFilters {
   duration_hours?: { min: number; max: number };
   group_size?: number;
   with_children?: boolean;
+  section_categories?: string[];
 }
 
 // Cache configuration

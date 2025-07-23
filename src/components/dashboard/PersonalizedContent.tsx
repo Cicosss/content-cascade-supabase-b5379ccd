@@ -4,11 +4,16 @@ import { Card } from '@/components/ui/card';
 import ExperienceFilters from './ExperienceFilters';
 import AppliedFilters from './AppliedFilters';
 import SortingDropdown, { SortOption } from './SortingDropdown';
-import ExperiencesCarousel from './content/ExperiencesCarousel';
-import RestaurantsSection from '@/components/homepage/RestaurantsSection';
-import EventsCarousel from './content/EventsCarousel';
+import SectionCarousel from './content/SectionCarousel';
 import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
 import { useStableFilters } from '@/hooks/useStableFilters';
+import { 
+  UtensilsCrossed, 
+  Calendar, 
+  Mountain, 
+  PartyPopper, 
+  MapPin 
+} from 'lucide-react';
 
 const PersonalizedContent = () => {
   const [activeFilters, setActiveFilters] = useState({
@@ -152,14 +157,44 @@ const PersonalizedContent = () => {
       </Card>
 
       <div className="space-y-6">
-        <ExperiencesCarousel 
-          filters={experiencesFilters}
+        <SectionCarousel 
+          section="Gusto & Sapori"
+          icon={UtensilsCrossed}
+          title="Gusto & Sapori"
+          subtitle="Scopri i sapori autentici della Romagna"
+          withChildren={activeFilters.withChildren === 'sì'}
         />
-        
-        <RestaurantsSection />
-        
-        <EventsCarousel 
-          filters={eventsFilters}
+
+        <SectionCarousel 
+          section="Eventi"
+          icon={Calendar}
+          title="Eventi & Spettacoli"
+          subtitle="Non perdere gli appuntamenti più interessanti del territorio"
+          withChildren={activeFilters.withChildren === 'sì'}
+        />
+
+        <SectionCarousel 
+          section="Natura & Avventura"
+          icon={Mountain}
+          title="Natura & Avventura"
+          subtitle="Esplora la natura e vivi l'avventura in Romagna"
+          withChildren={activeFilters.withChildren === 'sì'}
+        />
+
+        <SectionCarousel 
+          section="Divertimento & Famiglia"
+          icon={PartyPopper}
+          title="Divertimento & Famiglia"
+          subtitle="Attività perfette per tutta la famiglia"
+          withChildren={activeFilters.withChildren === 'sì'}
+        />
+
+        <SectionCarousel 
+          section="Cultura & Territorio"
+          icon={MapPin}
+          title="Cultura & Territorio"
+          subtitle="Immergiti nella cultura e storia del territorio"
+          withChildren={activeFilters.withChildren === 'sì'}
         />
       </div>
     </div>

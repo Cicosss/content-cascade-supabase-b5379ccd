@@ -84,6 +84,10 @@ export class CarouselAPIService {
    * Fetch experiences using unified POI method
    */
   async fetchExperiences(filters: ExperienceFilters = {}): Promise<ExperienceCarouselData[]> {
+    // If section_categories is provided, fetch all places and filter by categories
+    if (filters.section_categories && filters.section_categories.length > 0) {
+      return this.fetchPOIsByType('place', this.transformExperienceData.bind(this), null, filters);
+    }
     return this.fetchPOIsByType('place', this.transformExperienceData.bind(this), undefined, filters);
   }
 
@@ -106,8 +110,13 @@ export class CarouselAPIService {
     if (category) {
       query = query.eq('category', category);
     } else if (poiType === 'place' && !category) {
-      // For experiences, exclude restaurants
-      query = query.neq('category', 'Ristoranti');
+      // Check if we have section_categories filter
+      if (filters.section_categories && filters.section_categories.length > 0) {
+        query = query.in('category', filters.section_categories);
+      } else {
+        // For general experiences, exclude restaurants
+        query = query.neq('category', 'Ristoranti');
+      }
     }
 
     // Apply type-specific filters
