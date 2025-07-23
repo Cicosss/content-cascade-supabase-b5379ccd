@@ -9,11 +9,8 @@ import AppFeaturesSection from '@/components/AppFeaturesSection';
 
 // Import the new homepage components
 import TopSection from '@/components/homepage/TopSection';
-import RestaurantsSection from '@/components/homepage/RestaurantsSection';
-import ServicesSection from '@/components/homepage/ServicesSection';
-import ExperiencesSection from '@/components/homepage/ExperiencesSection';
+import HomepageCarousels from '@/components/homepage/HomepageCarousels';
 import SeaBulletinWidget from '@/components/homepage/SeaBulletinWidget';
-import EventsSection from '@/components/homepage/EventsSection';
 import HelpBanner from '@/components/homepage/HelpBanner';
 import FamilySection from '@/components/homepage/FamilySection';
 
@@ -52,20 +49,11 @@ const Index = () => {
 
         {/* Main Content Sections */}
         <div className="space-y-16">
-          {/* Tradizione Culinaria */}
-          <RestaurantsSection />
-
-          {/* Servizi Vicini */}
-          <ServicesSection />
-
-          {/* Esperienze del Territorio */}
-          <ExperiencesSection />
+          {/* Thematic Carousels */}
+          <HomepageCarousels />
 
           {/* Bollettino del Mare */}
           <SeaBulletinWidget />
-
-          {/* Eventi Speciali */}
-          <EventsSection />
 
           {/* Hai bisogno di aiuto? */}
           <HelpBanner />
