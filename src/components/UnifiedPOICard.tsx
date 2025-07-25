@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import FavoriteButton from './FavoriteButton';
 import HtmlContent from '@/components/ui/html-content';
 import { getCategoryIcon } from '@/utils/categoryIcons';
+import { formatLocationWithEmoji } from '@/utils/locationUtils';
 
 interface UnifiedPOICardProps {
   id: string;
@@ -204,76 +205,11 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
           />
         )}
 
-        <div className="space-y-2 mb-3">
-          {displayLocation && (
-            <div className="flex items-center text-sm text-gray-600">
-              <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span className="truncate">{displayLocation}</span>
-            </div>
-          )}
-
-          {isEvent && displayStartDate && (
-            <>
-              <div className="flex items-center text-sm text-gray-600">
-                <Calendar className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-                <span>{formatDate(displayStartDate)}</span>
-              </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-                <span>
-                  {formatTime(displayStartDate)}
-                  {displayEndDate && ` - ${formatTime(displayEndDate)}`}
-                </span>
-              </div>
-            </>
-          )}
-
-          {!isEvent && opening_hours && (
-            <div className="flex items-center text-sm text-gray-600">
-              <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span className="truncate">{opening_hours}</span>
-            </div>
-          )}
-
-          {displayDuration && (
-            <div className="flex items-center text-sm text-gray-600">
-              <Clock className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span>{displayDuration}</span>
-            </div>
-          )}
-
-          {groupSize && (
-            <div className="flex items-center text-sm text-gray-600">
-              <Users className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span>{groupSize}</span>
-            </div>
-          )}
-
-          {target_audience && target_audience !== 'everyone' && (
-            <div className="flex items-center text-sm text-gray-600">
-              <Users className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
-              <span>{target_audience}</span>
-            </div>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between">
-          {displayPrice && (
-            <div className="flex items-center text-green-600 font-medium">
-              <Euro className="h-4 w-4 mr-1" />
-              <span className="text-sm">{displayPrice}</span>
-            </div>
-          )}
-
-          <div className="flex items-center gap-2">
-            {website_url && (
-              <Globe className="h-4 w-4 text-gray-400" />
-            )}
-            {phone && (
-              <Phone className="h-4 w-4 text-gray-400" />
-            )}
+        {displayLocation && (
+          <div className="flex items-center text-sm text-gray-600">
+            <span className="truncate">{formatLocationWithEmoji(displayLocation)}</span>
           </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );
