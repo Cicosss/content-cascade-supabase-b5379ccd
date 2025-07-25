@@ -58,8 +58,7 @@ const LOCATION_EMOJIS: Record<string, string> = {
   'mercato saraceno': '🌿',
   'sarsina': '🏛️',
   'verghereto': '🏔️',
-  'bagno di romagna': '🏔️',
-  'sogliano al rubicone': '🌿',
+  // Default per località non specificate
   // Default per località non specificate
   'default': '📍'
 };
