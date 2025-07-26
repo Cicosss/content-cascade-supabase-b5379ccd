@@ -18,6 +18,7 @@ interface POICardProps {
   duration_info?: string;
   target_audience?: string;
   address?: string;
+  location_name?: string;
   isLoading?: boolean;
   startDatetime?: string;
   endDatetime?: string;
@@ -35,6 +36,7 @@ const POICard: React.FC<POICardProps> = ({
   duration_info,
   target_audience,
   address,
+  location_name,
   isLoading = false,
   startDatetime,
   endDatetime,
@@ -143,10 +145,10 @@ const POICard: React.FC<POICardProps> = ({
         )}
 
         <div className="flex flex-wrap gap-2 text-sm">
-          {address && (
+          {(location_name || address) && (
             <div className="flex items-center gap-1">
               <MapPin className="h-4 w-4 text-gray-500" />
-              <span>{address}</span>
+              <span>{location_name || address}</span>
             </div>
           )}
           {price_info && (
