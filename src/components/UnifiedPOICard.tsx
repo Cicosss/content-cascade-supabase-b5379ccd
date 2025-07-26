@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import FavoriteButton from './FavoriteButton';
 import HtmlContent from '@/components/ui/html-content';
 import { getCategoryIcon } from '@/utils/categoryIcons';
-import { formatLocationWithEmoji } from '@/utils/locationUtils';
+
 
 interface UnifiedPOICardProps {
   id: string;
@@ -207,7 +207,7 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
 
         {displayLocation && (
           <div className="flex items-center text-sm text-gray-600">
-            <span className="truncate">{formatLocationWithEmoji(displayLocation)}</span>
+            <span className="truncate">{displayLocation}</span>
           </div>
         )}
       </CardContent>

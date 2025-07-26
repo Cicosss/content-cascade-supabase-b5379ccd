@@ -63,36 +63,6 @@ const LOCATION_EMOJIS: Record<string, string> = {
   'default': '📍'
 };
 
-/**
- * Estrae il nome della località da un indirizzo completo
- * @param address - L'indirizzo completo
- * @returns Il nome della località estratto
- */
-export const extractLocationName = (address: string): string => {
-  if (!address) return '';
-  
-  // Rimuove il numero civico e prende la parte principale
-  const cleanAddress = address.replace(/^\d+\s*,?\s*/, '');
-  
-  // Divide per virgole e prende il primo elemento significativo
-  const parts = cleanAddress.split(',').map(part => part.trim());
-  
-  // Se il primo elemento è una via/strada, prende il secondo
-  const streetKeywords = ['via', 'strada', 'piazza', 'corso', 'viale', 'largo', 'vicolo'];
-  let locationPart = parts[0];
-  
-  if (streetKeywords.some(keyword => 
-    locationPart.toLowerCase().startsWith(keyword)
-  )) {
-    locationPart = parts[1] || parts[0];
-  }
-  
-  // Rimuove eventuali codici postali e province
-  locationPart = locationPart.replace(/\d{5}/, '').trim();
-  locationPart = locationPart.replace(/\([A-Z]{2}\)/, '').trim();
-  
-  return locationPart || parts[0] || address;
-};
 
 /**
  * Ottiene l'emoticon appropriata per una località
@@ -117,18 +87,4 @@ export const getLocationEmoji = (locationName: string): string => {
   }
   
   return LOCATION_EMOJIS.default;
-};
-
-/**
- * Formatta una località con nome ed emoticon
- * @param address - L'indirizzo completo
- * @returns La località formattata con emoticon
- */
-export const formatLocationWithEmoji = (address: string): string => {
-  if (!address) return '';
-  
-  const locationName = extractLocationName(address);
-  const emoji = getLocationEmoji(locationName);
-  
-  return `${locationName} ${emoji}`;
 };
