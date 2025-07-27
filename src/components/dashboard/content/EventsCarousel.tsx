@@ -88,7 +88,7 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({
                 title={event.name}
                 date={new Date(event.start_datetime || '').toLocaleDateString('it-IT')}
                 time={new Date(event.start_datetime || '').toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
-                location={event.location_name || event.address || ''}
+                location_name={event.location_name || event.address || ''}
                 category={event.category}
                 image={event.images?.[0] || ''}
               />

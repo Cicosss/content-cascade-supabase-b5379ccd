@@ -98,7 +98,7 @@ const NearbyPOIsSection: React.FC<NearbyPOIsSectionProps> = ({
 
       {!isLoading && !error && nearbyPOIs.length > 0 && <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {nearbyPOIs.map(poi => <NearbyPOICard key={poi.id} id={poi.id} name={poi.name} category={poi.category} distance={poi.distance} images={poi.images} address={poi.address} onClick={() => handlePOIClick(poi.id)} />)}
+            {nearbyPOIs.map(poi => <NearbyPOICard key={poi.id} id={poi.id} name={poi.name} category={poi.category} distance={poi.distance} images={poi.images} address={poi.address} location_name={poi.location_name} onClick={() => handlePOIClick(poi.id)} />)}
           </div>
 
           <div className="text-center">

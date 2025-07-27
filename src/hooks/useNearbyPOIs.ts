@@ -11,6 +11,7 @@ interface POI {
   latitude: number;
   longitude: number;
   address: string;
+  location_name?: string;
   images: string[];
   target_audience: string;
 }
@@ -41,13 +42,13 @@ export const useNearbyPOIs = () => {
       const [standardResult, approvedResult] = await Promise.all([
         supabase
           .from('points_of_interest')
-          .select('id, name, description, category, latitude, longitude, address, images, target_audience')
+          .select('id, name, description, category, latitude, longitude, address, location_name, images, target_audience')
           .neq('id', currentPOI.id)
           .eq('status', 'approved'),
         
         supabase
           .from('poi_submissions')
-          .select('id, name, description, category, latitude, longitude, address, images, target_audience')
+          .select('id, name, description, category, latitude, longitude, address, location_name, images, target_audience')
           .neq('id', currentPOI.id)
           .eq('status', 'approved')
       ]);

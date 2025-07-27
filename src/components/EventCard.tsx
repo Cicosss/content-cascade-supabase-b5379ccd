@@ -10,7 +10,7 @@ interface EventCardProps {
   title: string;
   date: string;
   time: string;
-  location: string;
+  location_name: string;
   category: string;
   image: string;
 }
@@ -20,7 +20,7 @@ const EventCard: React.FC<EventCardProps> = ({
   title,
   date,
   time,
-  location,
+  location_name,
   category,
   image
 }) => {
@@ -30,7 +30,7 @@ const EventCard: React.FC<EventCardProps> = ({
     title,
     date,
     time,
-    location,
+    location_name,
     category,
     image
   };
@@ -95,7 +95,7 @@ const EventCard: React.FC<EventCardProps> = ({
           </div>
           <div className="flex items-center">
             <MapPin className="h-4 w-4 mr-2 text-gray-400" />
-            {location}
+            {location_name}
           </div>
         </div>
       </div>

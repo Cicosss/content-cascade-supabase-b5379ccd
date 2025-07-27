@@ -13,6 +13,7 @@ interface NearbyPOICardProps {
   distance: number;
   images?: string[];
   address?: string;
+  location_name?: string;
   onClick?: () => void;
 }
 
@@ -23,6 +24,7 @@ const NearbyPOICard: React.FC<NearbyPOICardProps> = ({
   distance,
   images,
   address,
+  location_name,
   onClick
 }) => {
   const navigate = useNavigate();
@@ -66,7 +68,7 @@ const NearbyPOICard: React.FC<NearbyPOICardProps> = ({
         
         <div className="flex items-center text-xs text-gray-600 mb-1">
           <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
-          <span className="truncate">{address}</span>
+          <span className="truncate">{location_name || address}</span>
         </div>
 
         <div className="text-xs text-blue-600 font-medium">

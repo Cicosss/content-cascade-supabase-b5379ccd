@@ -11,7 +11,7 @@ interface RestaurantCardProps {
   cuisine: string;
   rating: number;
   priceRange: string;
-  location: string;
+  location_name: string;
   image: string;
   specialty: string;
 }
@@ -22,18 +22,18 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   cuisine,
   rating,
   priceRange,
-  location,
+  location_name,
   image,
   specialty
 }) => {
   const navigate = useNavigate();
-  const itemId = `${name}-${location}`.toLowerCase().replace(/\s+/g, '-');
+  const itemId = `${name}-${location_name}`.toLowerCase().replace(/\s+/g, '-');
   const itemData = {
     name,
     cuisine,
     rating,
     priceRange,
-    location,
+    location_name,
     image,
     specialty
   };
@@ -93,7 +93,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
         
         <div className="flex items-center text-sm text-gray-600 mb-3">
           <MapPin className="h-4 w-4 mr-2 text-gray-400" />
-          {location}
+          {location_name}
         </div>
 
         <div className="flex items-center justify-between">

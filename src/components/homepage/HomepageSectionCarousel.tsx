@@ -104,7 +104,7 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
                     title={item.name}
                     date={new Date(item.start_datetime || '').toLocaleDateString('it-IT')}
                     time={new Date(item.start_datetime || '').toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
-                    location={item.location_name || item.address || ''}
+                    location_name={item.location_name || item.address || ''}
                     category={item.category}
                     image={item.images?.[0] || ''}
                   />
