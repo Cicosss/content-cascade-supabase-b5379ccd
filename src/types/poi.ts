@@ -8,6 +8,7 @@ export interface POI {
   latitude: number;
   longitude: number;
   address: string;
+  location_name?: string;
   target_audience: string;
   images?: string[];
   price_info?: string;

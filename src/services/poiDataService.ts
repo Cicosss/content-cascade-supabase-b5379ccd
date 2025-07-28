@@ -61,7 +61,7 @@ export class POIDataService {
     // Fetch from points_of_interest only (single source of truth)
     let query = supabase
       .from('points_of_interest')
-      .select('id, name, description, category, latitude, longitude, address, target_audience, images, price_info, avg_rating')
+      .select('id, name, description, category, latitude, longitude, address, location_name, target_audience, images, price_info, avg_rating')
       .eq('status', 'approved');
 
     // Apply category filters SOLO se sono specificati filtri specifici
@@ -168,6 +168,7 @@ export class POIDataService {
         latitude: !isNaN(latitude) ? latitude : 44.0646, // Fallback to Rimini center
         longitude: !isNaN(longitude) ? longitude : 12.5736, // Fallback to Rimini center
         address: poi.address || '',
+        location_name: poi.location_name || '',
         target_audience: poi.target_audience || 'everyone',
         images: poi.images || [],
         price_info: poi.price_info,

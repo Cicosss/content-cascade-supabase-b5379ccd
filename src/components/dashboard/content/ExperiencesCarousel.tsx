@@ -107,6 +107,7 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
                 duration_info={exp.duration_info}
                 target_audience={exp.target_audience}
                 address={exp.address}
+                location_name={exp.location_name}
                 startDatetime={exp.start_datetime}
                 endDatetime={exp.end_datetime}
                 poiType={exp.poi_type as 'place' | 'event' | 'experience'}
