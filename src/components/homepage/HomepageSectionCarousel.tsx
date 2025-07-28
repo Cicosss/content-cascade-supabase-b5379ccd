@@ -121,6 +121,7 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
                   duration_info={item.duration_info}
                   target_audience={item.target_audience}
                   address={item.address}
+                  location_name={item.location_name}
                   startDatetime={item.start_datetime}
                   endDatetime={item.end_datetime}
                   poiType={item.poi_type as 'place' | 'event' | 'experience'}

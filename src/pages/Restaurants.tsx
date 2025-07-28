@@ -113,6 +113,7 @@ const Restaurants = () => {
                 duration_info={restaurant.duration_info}
                 target_audience={restaurant.target_audience}
                 address={restaurant.address}
+                location_name={restaurant.location_name}
                 phone={restaurant.phone}
                 website_url={restaurant.website_url}
                 opening_hours={restaurant.opening_hours || undefined}

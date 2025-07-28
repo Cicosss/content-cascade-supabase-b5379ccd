@@ -144,7 +144,7 @@ const Events = () => {
                 price_info={event.price_info}
                 duration_info={event.duration_info}
                 target_audience={event.target_audience}
-                address={event.address || event.location_name}
+                address={event.location_name || event.address}
                 location_name={event.location_name}
                 startDatetime={event.start_datetime}
                 endDatetime={event.end_datetime}
