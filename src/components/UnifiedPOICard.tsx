@@ -206,7 +206,8 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
         )}
 
         {displayLocation && (
-          <div className="flex items-center text-sm text-gray-600">
+          <div className="flex items-center gap-1 text-sm text-gray-600">
+            <MapPin className="h-4 w-4 text-[#0377F9] stroke-2" strokeWidth={2} fill="none" />
             <span className="truncate">{displayLocation}</span>
           </div>
         )}
