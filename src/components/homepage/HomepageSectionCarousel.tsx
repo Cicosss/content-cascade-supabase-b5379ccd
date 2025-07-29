@@ -95,20 +95,7 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
         className="w-full"
       >
         <CarouselContent className="-ml-2 md:-ml-4">
-          {data.map((item: any, index: number) => {
-            // DEBUG: Log dei dati del carousel per investigare il problema location_name
-            if (item.name && (item.name.includes('Fattoria') || item.name.includes('Fiera'))) {
-              console.log('🔍 DEBUG HomepageSectionCarousel mapping:', {
-                name: item.name,
-                location_name: item.location_name,
-                address: item.address,
-                'location_name presente': !!item.location_name,
-                'address presente': !!item.address,
-                section
-              });
-            }
-            
-            return (
+          {data.map((item: any, index: number) => (
             <CarouselItem key={item.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
               {section === 'Eventi' ? (
                 <div onClick={handleItemClick}>
@@ -143,8 +130,7 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
                 />
               )}
             </CarouselItem>
-            );
-          })}
+          ))}
         </CarouselContent>
         <CarouselPrevious className="hidden md:flex" />
         <CarouselNext className="hidden md:flex" />

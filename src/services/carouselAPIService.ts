@@ -175,29 +175,13 @@ export class CarouselAPIService {
    * Transform experience data with activity metadata
    */
   private transformExperienceData(data: any[]): ExperienceCarouselData[] {
-    return data.map(experience => {
-      const result = {
-        ...experience,
-        experience_type: this.categorizeExperienceType(experience.category),
-        difficulty_level: 'medium',
-        availability_status: 'available',
-        priority_score: this.calculatePriority(experience, 'experience')
-      };
-      
-      // DEBUG: Log dei dati trasformati per investigare il problema location_name
-      if (experience.name && (experience.name.includes('Fattoria') || experience.name.includes('Fiera'))) {
-        console.log('🔍 DEBUG transformExperienceData:', {
-          original_name: experience.name,
-          original_location_name: experience.location_name,
-          original_address: experience.address,
-          result_location_name: result.location_name,
-          result_address: result.address,
-          'location_name preserved': experience.location_name === result.location_name
-        });
-      }
-      
-      return result;
-    });
+    return data.map(experience => ({
+      ...experience,
+      experience_type: this.categorizeExperienceType(experience.category),
+      difficulty_level: 'medium',
+      availability_status: 'available',
+      priority_score: this.calculatePriority(experience, 'experience')
+    }));
   }
 
   /**
