@@ -80,6 +80,18 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
   const displayRating = avg_rating || rating || 0;
   const displayLocation = location_name || address || '';
   const displayPoiType = poiType || poi_type || 'place';
+  
+  // DEBUG: Log dei dati ricevuti per investigare il problema location_name
+  if (name && (name.includes('Fattoria') || name.includes('Fiera'))) {
+    console.log('🔍 DEBUG UnifiedPOICard:', {
+      name,
+      location_name,
+      address,
+      displayLocation,
+      'location_name presente': !!location_name,
+      'address presente': !!address
+    });
+  }
   const displayStartDate = startDatetime || start_datetime;
   const displayEndDate = endDatetime || end_datetime;
   
