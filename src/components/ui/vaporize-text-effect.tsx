@@ -433,6 +433,11 @@ const createParticles = (
   ctx.textBaseline = "middle";
   ctx.imageSmoothingQuality = "high";
   ctx.imageSmoothingEnabled = true;
+  // Explicitly disable all shadow effects
+  ctx.shadowColor = "transparent";
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
   if ('fontKerning' in ctx) { (ctx as any).fontKerning = "normal"; }
   if ('textRendering' in ctx) { (ctx as any).textRendering = "geometricPrecision"; }
   const metrics = ctx.measureText(text);
