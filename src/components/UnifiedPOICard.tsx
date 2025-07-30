@@ -148,7 +148,7 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
 
   return (
     <Card 
-      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer group overflow-hidden ${className}`}
+      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden min-h-[200px] md:min-h-[220px] ${className}`}
       onClick={handleCardClick}
     >
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
@@ -188,13 +188,13 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
         </div>
       </div>
 
-      <CardContent className="p-4">
+      <CardContent className="p-3 md:p-4">
         <div className="flex items-center gap-2 mb-2">
           <CategoryIcon className="h-4 w-4 text-gray-500" />
           <span className="text-sm text-gray-600">{category}</span>
         </div>
 
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+        <h3 className="font-semibold text-base md:text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
           {displayName}
         </h3>
 

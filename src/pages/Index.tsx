@@ -43,12 +43,12 @@ const Index = () => {
       <ValuePropositionSection />
       <AppFeaturesSection />
       
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-12">
         {/* Top Section: Weather and Guest Card */}
         <TopSection />
 
         {/* Main Content Sections */}
-        <div className="space-y-16">
+        <div className="space-y-8 md:space-y-12 lg:space-y-16">
           {/* Thematic Carousels */}
           <HomepageCarousels />
 

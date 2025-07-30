@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
       className
     )}>
       <div className={cn(
-        "flex h-24 items-center px-10 lg:px-16 max-w-screen-2xl mx-auto",
+        "flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-screen-2xl mx-auto",
         "transition-all duration-300 ease-in-out",
         sidebarOpen ? "lg:pl-72" : ""
       )}>

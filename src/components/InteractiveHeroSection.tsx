@@ -6,19 +6,19 @@ import HeroFeatures from './hero/HeroFeatures';
 
 const InteractiveHeroSection = () => {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-[100svh] md:h-screen overflow-hidden">
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
 
       {/* Content Overlay - Restructured */}
-      <div className="relative z-10 h-full flex flex-col text-white px-4">
+      <div className="relative z-10 h-full flex flex-col text-white px-3 md:px-4 lg:px-6">
         {/* Brand Section - Center */}
         <div className="flex-1 flex items-center justify-center">
           <HeroBrandSection />
         </div>
         
         {/* Key Features - Bottom */}
-        <div className="pb-8 lg:pb-12">
+        <div className="pb-6 md:pb-8 lg:pb-12">
           <HeroFeatures />
         </div>
       </div>

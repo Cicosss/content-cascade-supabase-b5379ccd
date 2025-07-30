@@ -69,7 +69,7 @@ export const MobileMenu: React.FC = () => {
           <Menu className="h-6 w-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 bg-slate-900 border-slate-700 w-80 z-[5001]">
+      <SheetContent side="left" className="pr-0 bg-slate-900 border-slate-700 w-[85vw] max-w-80 z-[5001] overflow-y-auto">
         <div className="flex items-center space-x-2 pb-4 border-b border-slate-700">
           <img 
             src="/lovable-uploads/673fa174-b69d-4246-a652-97158e041630.png" 
@@ -85,7 +85,7 @@ export const MobileMenu: React.FC = () => {
               <div key={index}>
                 {item.items ? (
                   <AccordionItem value={`item-${index}`} className="border-b border-slate-700">
-                    <AccordionTrigger className="text-sm font-medium text-slate-200 hover:text-white py-3 hover:no-underline">
+                    <AccordionTrigger className="text-base font-medium text-slate-200 hover:text-white py-4 hover:no-underline min-h-[44px] flex items-center">
                       {item.title}
                     </AccordionTrigger>
                     <AccordionContent className="pb-2">
@@ -94,7 +94,7 @@ export const MobileMenu: React.FC = () => {
                           <button
                             key={subIndex}
                             onClick={() => handleNavigation(subItem.url)}
-                            className="flex items-start space-x-3 rounded-md p-3 text-sm hover:bg-slate-800 text-slate-200 hover:text-white text-left transition-colors duration-200 group"
+                            className="flex items-start space-x-3 rounded-md p-4 min-h-[44px] text-sm hover:bg-slate-800 text-slate-200 hover:text-white text-left transition-colors duration-200 group active:bg-slate-700"
                           >
                             <div className="text-slate-400 group-hover:text-slate-300 mt-0.5 flex-shrink-0">
                               {subItem.icon}
@@ -116,7 +116,7 @@ export const MobileMenu: React.FC = () => {
                   <div className="border-b border-slate-700 py-3">
                     <button
                       onClick={() => handleNavigation(item.url)}
-                      className="text-sm font-medium text-slate-200 hover:text-white text-left w-full transition-colors duration-200 hover:bg-slate-800/50 p-2 rounded-md"
+                      className="text-base font-medium text-slate-200 hover:text-white text-left w-full transition-colors duration-200 hover:bg-slate-800/50 p-4 min-h-[44px] rounded-md active:bg-slate-700"
                     >
                       {item.title}
                     </button>

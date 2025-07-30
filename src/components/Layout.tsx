@@ -28,11 +28,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {/* Header fisso con z-index garantito */}
                 <Header />
                 
-                {/* Layout principale con sidebar - con padding per header */}
-                <div className="flex flex-1 w-full pt-24">
+                {/* Layout principale con sidebar - con padding per header responsive */}
+                <div className="flex flex-1 w-full pt-16 md:pt-20 lg:pt-24">
                   <AppSidebar />
                   <SidebarInset className="flex-1 flex flex-col">
-                    <main className="flex-1 p-4 pl-6 relative">
+                    <main className="flex-1 p-3 md:p-4 lg:p-6 relative">
                       {children}
                     </main>
                     <Footer />
@@ -53,8 +53,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* Header fisso con z-index garantito */}
           <Header />
           
-          {/* Main content con padding per header fisso */}
-          <main className="flex-1 pt-24 relative">
+          {/* Main content con padding per header fisso responsive */}
+          <main className="flex-1 pt-16 md:pt-20 lg:pt-24 relative">
             {children}
           </main>
           <Footer />

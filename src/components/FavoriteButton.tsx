@@ -49,9 +49,9 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   };
 
   const sizeClasses = {
-    sm: "w-8 h-8",
-    md: "w-10 h-10", 
-    lg: "w-14 h-14" // Increased size for better prominence
+    sm: "w-10 h-10 md:w-8 md:h-8", // Mobile-first approach: larger on mobile
+    md: "w-12 h-12 md:w-10 md:h-10", 
+    lg: "w-14 h-14" // Already good for touch
   };
 
   const iconSizes = {
