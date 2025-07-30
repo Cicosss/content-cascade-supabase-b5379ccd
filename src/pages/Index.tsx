@@ -6,6 +6,8 @@ import Layout from '@/components/Layout';
 import InteractiveHeroSection from '@/components/InteractiveHeroSection';
 import ValuePropositionSection from '@/components/ValuePropositionSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
+import ScrollToTop from '@/components/ui/ScrollToTop';
+import PullToRefresh from '@/components/ui/PullToRefresh';
 
 // Import the new homepage components
 import TopSection from '@/components/homepage/TopSection';
@@ -17,6 +19,11 @@ import FamilySection from '@/components/homepage/FamilySection';
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+
+  const handleRefresh = async () => {
+    // Simula refresh della pagina
+    window.location.reload();
+  };
 
   useEffect(() => {
     if (!loading && user) {
@@ -39,30 +46,32 @@ const Index = () => {
 
   return (
     <Layout>
-      <InteractiveHeroSection />
-      <ValuePropositionSection />
-      <AppFeaturesSection />
-      
-      <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-12">
-        {/* Top Section: Weather and Guest Card */}
-        <TopSection />
+      <PullToRefresh onRefresh={handleRefresh}>
+        <InteractiveHeroSection />
+        <ValuePropositionSection />
+        <AppFeaturesSection />
+        
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-12">
+          {/* Top Section: Weather and Guest Card */}
+          <TopSection />
 
-        {/* Main Content Sections */}
-        <div className="space-y-8 md:space-y-12 lg:space-y-16">
-          {/* Thematic Carousels */}
-          <HomepageCarousels />
+          {/* Main Content Sections */}
+          <div className="space-y-8 md:space-y-12 lg:space-y-16">
+            {/* Thematic Carousels */}
+            <HomepageCarousels />
 
-          {/* Bollettino del Mare */}
-          <SeaBulletinWidget />
+            {/* Bollettino del Mare */}
+            <SeaBulletinWidget />
 
-          {/* Hai bisogno di aiuto? */}
-          <HelpBanner />
+            {/* Hai bisogno di aiuto? */}
+            <HelpBanner />
 
-          {/* Sezione Family */}
-          <FamilySection />
+            {/* Sezione Family */}
+            <FamilySection />
+          </div>
         </div>
-
-      </div>
+      </PullToRefresh>
+      <ScrollToTop />
     </Layout>
   );
 };
