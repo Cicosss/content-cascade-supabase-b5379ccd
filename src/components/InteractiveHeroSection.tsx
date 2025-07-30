@@ -3,12 +3,16 @@ import React from 'react';
 import HeroBackground from './hero/HeroBackground';
 import HeroBrandSection from './hero/HeroBrandSection';
 import HeroFeatures from './hero/HeroFeatures';
+import HeroOverlayNavigation from './hero/HeroOverlayNavigation';
 
 const InteractiveHeroSection = () => {
   return (
     <div className="relative w-full h-[100svh] md:h-screen overflow-hidden">
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
+
+      {/* Overlay Navigation - Floating over video */}
+      <HeroOverlayNavigation />
 
       {/* Content Overlay - Restructured */}
       <div className="relative z-10 h-full flex flex-col text-white">
