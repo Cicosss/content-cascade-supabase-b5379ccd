@@ -4,15 +4,10 @@ import UnifiedPOICard from '@/components/UnifiedPOICard';
 import EventCard from '@/components/EventCard';
 import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
+import MobileCarousel from '@/components/ui/MobileCarousel';
 import { LucideIcon } from 'lucide-react';
 import { useSectionCarousel, SectionType } from '@/hooks/useSectionCarousel';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 interface SectionCarouselProps {
   section: SectionType;
@@ -29,9 +24,10 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   subtitle,
   withChildren = false
 }) => {
+  const { isMobile } = useMobileOptimization();
   const { data, isLoading, error, retry, isEmpty, metrics, categories } = useSectionCarousel(section, {
     withChildren,
-    limit: 8
+    limit: isMobile ? 6 : 8
   });
 
   // Show loading state
@@ -81,51 +77,46 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
         </div>
       )}
 
-      <Carousel
-        opts={{
-          align: "start",
-          loop: false,
-        }}
+      <MobileCarousel
+        showIndicators={isMobile}
+        enableSwipe={true}
+        itemsPerView={isMobile ? 1.2 : undefined}
         className="w-full"
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {data.map((item: any, index: number) => (
-            <CarouselItem key={item.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
-              {section === 'Eventi' ? (
-                <EventCard 
-                  id={item.id}
-                  title={item.name}
-                  date={new Date(item.start_datetime || '').toLocaleDateString('it-IT')}
-                  time={new Date(item.start_datetime || '').toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
-                  location_name={item.location_name || item.address || ''}
-                  category={item.category}
-                  image={item.images?.[0] || ''}
-                />
-              ) : (
-                <UnifiedPOICard 
-                  id={item.id}
-                  name={item.name}
-                  category={item.category}
-                  description={item.description}
-                  images={item.images}
-                  avg_rating={item.avg_rating}
-                  price_info={item.price_info}
-                  duration_info={item.duration_info}
-                  target_audience={item.target_audience}
-                  address={item.address}
-                  location_name={item.location_name}
-                  startDatetime={item.start_datetime}
-                  endDatetime={item.end_datetime}
-                  poiType={item.poi_type as 'place' | 'event' | 'experience'}
-                  isLoading={false}
-                />
-              )}
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden md:flex" />
-        <CarouselNext className="hidden md:flex" />
-      </Carousel>
+        {data.map((item: any, index: number) => (
+          <div key={item.id || index}>
+            {section === 'Eventi' ? (
+              <EventCard 
+                id={item.id}
+                title={item.name}
+                date={new Date(item.start_datetime || '').toLocaleDateString('it-IT')}
+                time={new Date(item.start_datetime || '').toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
+                location_name={item.location_name || item.address || ''}
+                category={item.category}
+                image={item.images?.[0] || ''}
+              />
+            ) : (
+              <UnifiedPOICard 
+                id={item.id}
+                name={item.name}
+                category={item.category}
+                description={item.description}
+                images={item.images}
+                avg_rating={item.avg_rating}
+                price_info={item.price_info}
+                duration_info={item.duration_info}
+                target_audience={item.target_audience}
+                address={item.address}
+                location_name={item.location_name}
+                startDatetime={item.start_datetime}
+                endDatetime={item.end_datetime}
+                poiType={item.poi_type as 'place' | 'event' | 'experience'}
+                isLoading={false}
+              />
+            )}
+          </div>
+        ))}
+      </MobileCarousel>
       
       <div className="text-xs text-gray-400 text-right">
         {data.length} elementi • Aggiornato {new Date().toLocaleTimeString()}

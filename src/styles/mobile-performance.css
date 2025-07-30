@@ -1,0 +1,157 @@
+@layer utilities {
+  /* Performance optimizations for mobile devices */
+  
+  /* GPU acceleration for animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Smooth scrolling optimizations */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Touch action optimizations */
+  .touch-pan-x {
+    touch-action: pan-x;
+  }
+  
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
+  
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .respect-motion-preference * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  /* Mobile-optimized transforms */
+  .mobile-scale-95 {
+    transform: scale(0.95);
+  }
+  
+  .mobile-scale-98 {
+    transform: scale(0.98);
+  }
+  
+  .mobile-scale-102 {
+    transform: scale(1.02);
+  }
+  
+  /* High performance mobile shadows */
+  .mobile-shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .mobile-shadow {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  .mobile-shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Optimize for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects that don't work on touch */
+    .touch-device .hover\:scale-105:hover {
+      transform: none;
+    }
+    
+    /* Replace with active states */
+    .touch-device .active\:scale-95:active {
+      transform: scale(0.95);
+    }
+    
+    /* Larger touch targets */
+    .touch-device .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+  /* Prevent zoom on double tap */
+  .prevent-zoom {
+    touch-action: manipulation;
+    user-select: none;
+  }
+  
+  /* Optimized carousel for mobile */
+  .mobile-carousel {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .mobile-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .mobile-carousel-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  /* Mobile-friendly focus styles */
+  .mobile-focus:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  
+  /* Optimize images for mobile */
+  .mobile-image-optimized {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  
+  /* Performance monitoring utilities */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  .will-change-scroll {
+    will-change: scroll-position;
+  }
+  
+  /* Auto-cleanup will-change after animation */
+  .animation-complete {
+    will-change: auto;
+  }
+}
+
+/* Mobile-specific media queries */
+@media screen and (max-width: 767px) {
+  /* Force hardware acceleration on mobile */
+  .mobile-hw-accel {
+    transform: translate3d(0, 0, 0);
+  }
+  
+  /* Reduce animations on low-end devices */
+  @media (max-device-width: 767px) and (max-resolution: 1dppx) {
+    .low-end-device .animate-spin {
+      animation-duration: 2s;
+    }
+    
+    .low-end-device .transition-all {
+      transition-duration: 0.15s;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
+import { useMobileOptimization } from '@/hooks/useMobileOptimization';
 
 interface EventCardProps {
   id?: string;
@@ -25,6 +26,8 @@ const EventCard: React.FC<EventCardProps> = ({
   image
 }) => {
   const navigate = useNavigate();
+  const { isMobile, getTouchTargetClasses, getMobileTypography } = useMobileOptimization();
+  
   const itemId = `${title}-${date}`.toLowerCase().replace(/\s+/g, '-');
   const itemData = {
     title,
@@ -47,10 +50,10 @@ const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <Card 
-      className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer group overflow-hidden"
+      className={`bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group overflow-hidden ${getTouchTargetClasses()}`}
       onClick={id ? handleCardClick : undefined}
     >
-      <div className="aspect-[4/3] relative overflow-hidden bg-gray-50">
+      <div className={`${isMobile ? 'aspect-[3/2]' : 'aspect-[4/3]'} relative overflow-hidden bg-muted`}>
         {image ? (
           <img
             src={image}
@@ -59,8 +62,8 @@ const EventCard: React.FC<EventCardProps> = ({
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-300">
-            <Calendar className="h-8 w-8" />
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+            <Calendar className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'}`} />
           </div>
         )}
         
@@ -69,33 +72,33 @@ const EventCard: React.FC<EventCardProps> = ({
             itemType="event"
             itemId={itemId}
             itemData={itemData}
-            className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
+            className={`absolute ${isMobile ? 'top-2 right-2' : 'top-3 right-3'} z-10 opacity-70 group-hover:opacity-100 transition-opacity`}
           />
         </div>
       </div>
       
-      <div className="p-4">
+      <div className={`${isMobile ? 'p-3' : 'p-4'}`}>
         <div className="flex items-center gap-2 mb-2">
-          <Calendar className="h-4 w-4 text-gray-500" />
-          <span className="text-sm text-gray-600">{category}</span>
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <span className={`${getMobileTypography('text-sm')} text-muted-foreground`}>{category}</span>
         </div>
 
-        <h3 className="font-semibold text-lg mb-3 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+        <h3 className={`font-semibold ${getMobileTypography('text-lg')} ${isMobile ? 'mb-2' : 'mb-3'} line-clamp-2 text-foreground group-hover:text-primary transition-colors`}>
           {title}
         </h3>
         
-        <div className="space-y-2 text-sm text-gray-600">
+        <div className={`space-y-${isMobile ? '1' : '2'} ${getMobileTypography('text-sm')} text-muted-foreground`}>
           <div className="flex items-center">
-            <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-            {date}
+            <Calendar className="h-4 w-4 mr-2 text-muted-foreground/70" />
+            <span className="truncate">{date}</span>
           </div>
           <div className="flex items-center">
-            <Clock className="h-4 w-4 mr-2 text-gray-400" />
-            {time}
+            <Clock className="h-4 w-4 mr-2 text-muted-foreground/70" />
+            <span className="truncate">{time}</span>
           </div>
           <div className="flex items-center">
-            <MapPin className="h-4 w-4 mr-2 text-gray-400" />
-            {location_name}
+            <MapPin className="h-4 w-4 mr-2 text-muted-foreground/70" />
+            <span className="truncate">{location_name}</span>
           </div>
         </div>
       </div>

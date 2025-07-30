@@ -1,10 +1,11 @@
 import React from 'react';
 import HomepageSectionCarousel from './HomepageSectionCarousel';
+import MobileContainer from '@/components/ui/MobileContainer';
 import { UtensilsCrossed, Calendar, Mountain, PartyPopper, MapPin } from 'lucide-react';
 
 const HomepageCarousels: React.FC = () => {
   return (
-    <div className="space-y-16">
+    <MobileContainer variant="default" className="space-y-8 md:space-y-16">
       {/* Gusto & Sapori */}
       <HomepageSectionCarousel
         section="Gusto & Sapori"
@@ -49,7 +50,7 @@ const HomepageCarousels: React.FC = () => {
         subtitle="Immergiti nella storia e nelle tradizioni locali"
         withChildren={false}
       />
-    </div>
+    </MobileContainer>
   );
 };
 
