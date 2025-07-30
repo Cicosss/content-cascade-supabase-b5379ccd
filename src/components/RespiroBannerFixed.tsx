@@ -16,7 +16,7 @@ const RespiroBannerFixed = () => {
       >
         <Waves className="h-5 w-5 text-blue-100/90" />
         <div className="flex-1 min-w-0">
-          <div className="text-blue-100/90 text-xs drop-shadow-sm">
+          <div className="text-blue-100/90 text-xs">
             Scopri Respiro del Mare
           </div>
         </div>

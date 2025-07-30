@@ -155,7 +155,7 @@ const SeaBulletinWidget = () => {
             {/* Bandiera */}
             <div className="relative mb-4">
               <Flag 
-                className={`h-20 w-20 ${flagStyles.color} animate-flag-waving drop-shadow-lg`}
+                className={`h-20 w-20 ${flagStyles.color} animate-flag-waving`}
                 fill="currentColor"
               />
               {/* Overlay colorato sulla bandiera */}

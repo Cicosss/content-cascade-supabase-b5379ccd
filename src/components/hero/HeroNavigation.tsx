@@ -22,10 +22,10 @@ const HeroNavigation = ({ categories, onCategoryHover, onCategoryClick }: HeroNa
             >
               <div className="text-center">
                 <div className="mb-2 px-2 py-2 lg:px-3 lg:py-2 rounded-lg transition-all duration-300 bg-white/10 border-2 border-white/20 group-hover:bg-white/20 group-hover:border-white/40">
-                  <h2 className="text-sm lg:text-base xl:text-lg text-white font-bold mb-1 drop-shadow-lg leading-tight">
+                  <h2 className="text-sm lg:text-base xl:text-lg text-white font-bold mb-1 leading-tight">
                     {category.title}
                   </h2>
-                  <p className="text-xs lg:text-sm text-slate-200 font-medium drop-shadow-lg leading-tight">
+                  <p className="text-xs lg:text-sm text-slate-200 font-medium leading-tight">
                     {category.subtitle}
                   </p>
                 </div>
