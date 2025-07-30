@@ -1,29 +1,22 @@
 
 import React from 'react';
-import VaporizeTextCycle, { Tag } from "@/components/ui/vaporize-text-effect";
 
 const HeroBrandSection = () => {
   return (
     <div className="flex items-center justify-center w-full text-center">
-      <VaporizeTextCycle
-        texts={[
-          "Il territorio",
-          "è tra le Tue",
-          "mani."
-        ]}
-        font={{
+      <h1 
+        className="text-white/95 animate-fade-in"
+        style={{
           fontFamily: "'Playfair Display', serif",
-          fontSize: "28rem",
-          fontWeight: 700
+          fontSize: "clamp(8rem, 28vw, 28rem)",
+          fontWeight: 700,
+          lineHeight: 0.9
         }}
-        color="rgba(255, 255, 255, 0.95)"
-        animation={{
-          vaporizeDuration: 1.5,
-          fadeInDuration: 1.0,
-          waitDuration: 0.8
-        }}
-        tag={Tag.H1}
-      />
+      >
+        Il territorio<br />
+        è tra le Tue<br />
+        mani.
+      </h1>
     </div>
   );
 };
