@@ -11,14 +11,14 @@ const InteractiveHeroSection = () => {
       <HeroBackground isHovered={false} />
 
       {/* Content Overlay - Restructured */}
-      <div className="relative z-10 h-full flex flex-col text-white px-3 md:px-4 lg:px-6">
-        {/* Brand Section - Center */}
-        <div className="flex-1 flex items-center justify-center">
+      <div className="relative z-10 h-full flex flex-col text-white">
+        {/* Brand Section - Left aligned and vertically centered */}
+        <div className="flex-1 flex items-center justify-start">
           <HeroBrandSection />
         </div>
         
         {/* Key Features - Bottom */}
-        <div className="pb-6 md:pb-8 lg:pb-12">
+        <div className="pb-6 md:pb-8 lg:pb-12 px-3 md:px-4 lg:px-6">
           <HeroFeatures />
         </div>
       </div>
