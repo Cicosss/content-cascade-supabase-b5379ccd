@@ -63,10 +63,11 @@ export const MobileMenu: React.FC = () => {
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden text-slate-200 hover:text-white transition-colors duration-200"
+          size="touch"
+          className="mr-2 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden text-slate-200 hover:text-white transition-all duration-200 active:scale-95"
           aria-label="Apri menu di navigazione"
         >
-          <Menu className="h-6 w-6" />
+          <Menu className="h-7 w-7" />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="pr-0 bg-slate-900 border-slate-700 w-[85vw] max-w-80 z-[5001] overflow-y-auto">
@@ -85,7 +86,7 @@ export const MobileMenu: React.FC = () => {
               <div key={index}>
                 {item.items ? (
                   <AccordionItem value={`item-${index}`} className="border-b border-slate-700">
-                    <AccordionTrigger className="text-base font-medium text-slate-200 hover:text-white py-4 hover:no-underline min-h-[44px] flex items-center">
+                    <AccordionTrigger className="text-base font-medium text-slate-200 hover:text-white py-4 hover:no-underline min-h-[48px] flex items-center transition-all duration-200 hover:bg-slate-800/30 rounded-md px-2 active:bg-slate-700">
                       {item.title}
                     </AccordionTrigger>
                     <AccordionContent className="pb-2">
@@ -94,7 +95,7 @@ export const MobileMenu: React.FC = () => {
                           <button
                             key={subIndex}
                             onClick={() => handleNavigation(subItem.url)}
-                            className="flex items-start space-x-3 rounded-md p-4 min-h-[44px] text-sm hover:bg-slate-800 text-slate-200 hover:text-white text-left transition-colors duration-200 group active:bg-slate-700"
+                            className="flex items-start space-x-3 rounded-md p-4 min-h-[48px] text-sm hover:bg-slate-800 text-slate-200 hover:text-white text-left transition-all duration-200 group active:bg-slate-700 active:scale-98 touch-manipulation"
                           >
                             <div className="text-slate-400 group-hover:text-slate-300 mt-0.5 flex-shrink-0">
                               {subItem.icon}
@@ -116,7 +117,7 @@ export const MobileMenu: React.FC = () => {
                   <div className="border-b border-slate-700 py-3">
                     <button
                       onClick={() => handleNavigation(item.url)}
-                      className="text-base font-medium text-slate-200 hover:text-white text-left w-full transition-colors duration-200 hover:bg-slate-800/50 p-4 min-h-[44px] rounded-md active:bg-slate-700"
+                      className="text-base font-medium text-slate-200 hover:text-white text-left w-full transition-all duration-200 hover:bg-slate-800/50 p-4 min-h-[48px] rounded-md active:bg-slate-700 active:scale-98 touch-manipulation"
                     >
                       {item.title}
                     </button>

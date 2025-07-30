@@ -19,7 +19,7 @@ interface MobileOptimizationConfig {
 const defaultConfig: MobileOptimizationConfig = {
   mobileHeaderHeight: '4rem', // 64px
   mobileContainerPadding: '0.75rem', // 12px
-  mobileTouchTargetSize: '44px',
+  mobileTouchTargetSize: '48px', // Increased for better accessibility
   mobileCarouselItemsPerView: 1.2,
   mobileCarouselSpacing: '0.75rem',
   mobileFontScale: 0.9,
@@ -38,9 +38,11 @@ export const useMobileOptimization = (customConfig?: Partial<MobileOptimizationC
     return `${mobileClass} md:${desktopClass}`;
   };
 
-  // Touch-friendly sizing
+  // Touch-friendly sizing with proper accessibility standards
   const getTouchTargetClasses = () => {
-    return isMobile ? 'min-h-[44px] min-w-[44px] p-3' : 'min-h-[40px] min-w-[40px] p-2';
+    return isMobile 
+      ? 'min-h-[48px] min-w-[48px] p-3 touch-manipulation active:scale-95 transition-transform duration-150' 
+      : 'min-h-[40px] min-w-[40px] p-2 hover:scale-105 transition-transform duration-150';
   };
 
   // Container padding based on screen size
@@ -76,6 +78,23 @@ export const useMobileOptimization = (customConfig?: Partial<MobileOptimizationC
     };
   };
 
+  // Gesture-friendly button configuration
+  const getButtonConfig = () => {
+    return {
+      size: isMobile ? 'touch' : 'default',
+      className: isMobile 
+        ? 'touch-manipulation active:scale-95 transition-all duration-200' 
+        : 'hover:scale-105 transition-all duration-200'
+    };
+  };
+
+  // Safe area padding for devices with notches
+  const getSafeAreaPadding = () => {
+    return isMobile 
+      ? 'safe-area-inset-top safe-area-inset-bottom safe-area-inset-left safe-area-inset-right'
+      : '';
+  };
+
   return {
     isMobile,
     config,
@@ -84,5 +103,7 @@ export const useMobileOptimization = (customConfig?: Partial<MobileOptimizationC
     getContainerPadding,
     getMobileTypography,
     getCarouselConfig,
+    getButtonConfig,
+    getSafeAreaPadding,
   };
 };

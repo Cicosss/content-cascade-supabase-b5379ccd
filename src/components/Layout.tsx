@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { SidebarStateProvider } from '@/contexts/SidebarContext';
 import { HeaderProvider } from '@/contexts/HeaderContext';
 import { Header } from '@/components/header/Header';
+import { MobileTouchNav } from './navigation/MobileTouchNav';
 import AppSidebar from './AppSidebar';
 import Footer from './Footer';
 
@@ -32,12 +33,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="flex flex-1 w-full pt-16 md:pt-20 lg:pt-24">
                   <AppSidebar />
                   <SidebarInset className="flex-1 flex flex-col">
-                    <main className="flex-1 p-3 md:p-4 lg:p-6 relative">
+                    <main className="flex-1 p-3 md:p-4 lg:p-6 relative pb-20 md:pb-0">
                       {children}
                     </main>
                     <Footer />
                   </SidebarInset>
                 </div>
+                <MobileTouchNav />
               </div>
             </HeaderProvider>
           </SidebarStateProvider>
@@ -54,10 +56,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Header />
           
           {/* Main content con padding per header fisso responsive */}
-          <main className="flex-1 pt-16 md:pt-20 lg:pt-24 relative">
+          <main className="flex-1 pt-16 md:pt-20 lg:pt-24 relative pb-20 md:pb-0">
             {children}
           </main>
           <Footer />
+          <MobileTouchNav />
         </div>
       </HeaderProvider>
     </LocationProvider>
