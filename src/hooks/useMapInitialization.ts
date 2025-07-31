@@ -34,7 +34,8 @@ export const useMapInitialization = ({ isLoaded, mapRef, userLocation }: UseMapI
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: true,
-        zoomControl: true,
+        zoomControl: false, // Disabled on mobile for touch gestures
+        gestureHandling: 'greedy', // Enable all touch gestures
       });
     } catch (error) {
       console.error('Error initializing Google Maps:', error);
