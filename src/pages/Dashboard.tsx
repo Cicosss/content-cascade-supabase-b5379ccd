@@ -61,7 +61,7 @@ const Dashboard = () => {
               </div>
 
               {/* Sezione principale: Mappa + Meteo + Stato Costa - Mobile First */}
-              <div className="space-y-6 lg:space-y-0">
+              <div className="space-y-8 lg:space-y-0">
                 {/* Mobile: Mappa a tutto schermo, Desktop: Grid layout */}
                 <div className="lg:grid lg:grid-cols-4 lg:gap-6 lg:h-[500px]">
                   {/* Mappa - Mobile: altezza grande, Desktop: 3/4 della griglia */}
