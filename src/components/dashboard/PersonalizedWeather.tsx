@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Wind, Droplets, MapPin, Crosshair, Info } from 'lucide-react';
+import { Wind, Droplets, MapPin, Crosshair, Info, Clock } from 'lucide-react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useWeatherAPI } from '@/hooks/useWeatherAPI';
 import AnimatedWeatherIcon from './AnimatedWeatherIcon';
@@ -9,8 +9,28 @@ import AnimatedWeatherIcon from './AnimatedWeatherIcon';
 const PersonalizedWeather: React.FC = () => {
   const { userLocation, isLoadingLocation } = useLocation();
   const { weather, loading: weatherLoading, error } = useWeatherAPI(userLocation);
+  const [currentTime, setCurrentTime] = useState('');
 
   const loading = isLoadingLocation || weatherLoading;
+
+  // Update local time based on user location or timezone
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      // If we have user location, we could determine timezone, but for simplicity using local time
+      const timeString = now.toLocaleTimeString('it-IT', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+      setCurrentTime(timeString);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 30000); // Update every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [userLocation]);
 
 
   // Standardized institutional blue gradient
@@ -96,6 +116,15 @@ const PersonalizedWeather: React.FC = () => {
               <div className="text-xs text-blue-200 font-medium">Vento</div>
               <div className="font-bold text-white text-xs">{weather.wind} km/h</div>
             </div>
+          </div>
+        </div>
+
+        {/* Local Time Display */}
+        <div className="flex items-center justify-center gap-2 py-2 border-t border-white/20 mt-2">
+          <Clock className="h-3 w-3 text-blue-200" />
+          <div className="text-center">
+            <div className="text-xs text-blue-200 font-medium">Ora locale</div>
+            <div className="font-bold text-white text-sm">{currentTime}</div>
           </div>
         </div>
       </div>
