@@ -68,9 +68,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
         ],
         mapTypeControl: false,
         streetViewControl: false,
-        fullscreenControl: true,
+        fullscreenControl: false, // Disabled on mobile 
         zoomControl: false, // Disabled on mobile for touch gestures
+        panControl: false, // Disabled pan control
+        rotateControl: false, // Disabled rotate control 
+        scaleControl: false, // Disabled scale control
         gestureHandling: 'greedy', // Enable all touch gestures
+        disableDefaultUI: true, // Disable all default UI controls
       });
 
       setMapInstance(map);
