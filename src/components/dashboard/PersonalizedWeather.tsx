@@ -13,6 +13,13 @@ const PersonalizedWeather: React.FC = () => {
 
   const loading = isLoadingLocation || weatherLoading;
 
+  // Determine if it's night based on time (simple 6PM-6AM rule)
+  const isNight = () => {
+    const now = new Date();
+    const hour = now.getHours();
+    return hour >= 18 || hour < 6;
+  };
+
   // Update local time based on user location or timezone
   useEffect(() => {
     const updateTime = () => {
@@ -92,6 +99,7 @@ const PersonalizedWeather: React.FC = () => {
             condition={weather.condition} 
             iconCode={weather.icon}
             className="h-8 w-8 flex-shrink-0"
+            isNight={isNight()}
           />
         </div>
         

@@ -1,23 +1,38 @@
 
 import React from 'react';
-import { Sun, Cloud, CloudRain, CloudSnow, Zap, Moon, Star } from 'lucide-react';
+import { Sun, Cloud, CloudRain, CloudSnow, Zap, Moon, Star, Stars } from 'lucide-react';
 
 interface AnimatedWeatherIconProps {
   condition: string;
   iconCode?: string;
   className?: string;
+  isNight?: boolean;
 }
 
 const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({ 
   condition, 
   iconCode, 
-  className = "h-8 w-8" 
+  className = "h-8 w-8",
+  isNight = false
 }) => {
   // Determina l'icona e l'animazione basandosi sulla condizione
   const getAnimatedIcon = () => {
     // Controlla prima l'iconCode per maggiore precisione
     if (iconCode) {
       if (iconCode.includes('01')) {
+        if (isNight) {
+          return (
+            <div className="relative">
+              <Moon className={`${className} text-blue-200 animate-float`} />
+              <div className="absolute -top-1 -right-2 animate-twinkle">
+                <Star className="h-2 w-2 text-yellow-200" />
+              </div>
+              <div className="absolute top-2 -left-1 animate-twinkle animation-delay-1000">
+                <Star className="h-1.5 w-1.5 text-blue-100" />
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="relative">
             <Sun className={`${className} text-yellow-400 animate-spin-slow`} />
@@ -28,6 +43,19 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
         );
       }
       if (iconCode.includes('02') || iconCode.includes('03') || iconCode.includes('04')) {
+        if (isNight) {
+          return (
+            <div className="relative">
+              <Cloud className={`${className} text-gray-400 animate-float`} />
+              <div className="absolute -top-1 -left-2 animate-twinkle">
+                <Moon className="h-3 w-3 text-blue-200" />
+              </div>
+              <div className="absolute top-1 -right-1 animate-drift">
+                <div className="w-1.5 h-1.5 bg-blue-100 rounded-full opacity-60"></div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="relative">
             <Cloud className={`${className} text-gray-300 animate-float`} />
@@ -38,6 +66,21 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
         );
       }
       if (iconCode.includes('09') || iconCode.includes('10')) {
+        if (isNight) {
+          return (
+            <div className="relative">
+              <CloudRain className={`${className} text-blue-500 animate-bounce-gentle`} />
+              <div className="absolute -top-1 -left-1 animate-float">
+                <Moon className="h-2.5 w-2.5 text-blue-200 opacity-70" />
+              </div>
+              <div className="absolute top-6 left-2 space-y-1">
+                <div className="w-0.5 h-2 bg-blue-400 animate-rain-drop animation-delay-0"></div>
+                <div className="w-0.5 h-2 bg-blue-400 animate-rain-drop animation-delay-300"></div>
+                <div className="w-0.5 h-2 bg-blue-400 animate-rain-drop animation-delay-600"></div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="relative">
             <CloudRain className={`${className} text-blue-400 animate-bounce-gentle`} />
@@ -76,6 +119,19 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
     // Fallback alla condizione testuale
     switch (condition) {
       case 'Clear':
+        if (isNight) {
+          return (
+            <div className="relative">
+              <Moon className={`${className} text-blue-200 animate-float`} />
+              <div className="absolute -top-1 -right-2 animate-twinkle">
+                <Star className="h-2 w-2 text-yellow-200" />
+              </div>
+              <div className="absolute top-2 -left-1 animate-twinkle animation-delay-1000">
+                <Star className="h-1.5 w-1.5 text-blue-100" />
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="relative">
             <Sun className={`${className} text-yellow-400 animate-spin-slow`} />
@@ -86,6 +142,19 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
         );
       
       case 'Clouds':
+        if (isNight) {
+          return (
+            <div className="relative">
+              <Cloud className={`${className} text-gray-400 animate-float`} />
+              <div className="absolute -top-1 -left-2 animate-twinkle">
+                <Moon className="h-3 w-3 text-blue-200" />
+              </div>
+              <div className="absolute top-1 -right-1 animate-drift">
+                <div className="w-1.5 h-1.5 bg-blue-100 rounded-full opacity-60"></div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="relative">
             <Cloud className={`${className} text-gray-300 animate-float`} />
@@ -97,6 +166,21 @@ const AnimatedWeatherIcon: React.FC<AnimatedWeatherIconProps> = ({
       
       case 'Rain':
       case 'Drizzle':
+        if (isNight) {
+          return (
+            <div className="relative">
+              <CloudRain className={`${className} text-blue-500 animate-bounce-gentle`} />
+              <div className="absolute -top-1 -left-1 animate-float">
+                <Moon className="h-2.5 w-2.5 text-blue-200 opacity-70" />
+              </div>
+              <div className="absolute top-6 left-2 space-y-1">
+                <div className="w-0.5 h-2 bg-blue-400 animate-rain-drop animation-delay-0"></div>
+                <div className="w-0.5 h-2 bg-blue-400 animate-rain-drop animation-delay-300"></div>
+                <div className="w-0.5 h-2 bg-blue-400 animate-rain-drop animation-delay-600"></div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="relative">
             <CloudRain className={`${className} text-blue-400 animate-bounce-gentle`} />
