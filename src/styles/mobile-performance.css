@@ -144,6 +144,42 @@
     transform: translate3d(0, 0, 0);
   }
   
+  /* Mobile map optimizations */
+  .google-maps-container {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Mobile map controls */
+  .map-controls-overlay.mobile-controls {
+    z-index: 1000;
+  }
+
+  .map-controls-overlay.mobile-controls button {
+    min-height: 48px;
+    min-width: 48px;
+    touch-action: manipulation;
+  }
+
+  /* Map POI preview mobile positioning */
+  .map-poi-preview {
+    z-index: 1001;
+    max-height: 35vh;
+    overflow-y: auto;
+  }
+
+  /* Hide debug overlays on mobile */
+  .cache-stats-overlay,
+  .api-health-monitor,
+  [data-testid="cache-stats"],
+  [data-testid="api-monitor"] {
+    display: none !important;
+  }
+  
   /* Reduce animations on low-end devices */
   @media (max-device-width: 767px) and (max-resolution: 1dppx) {
     .low-end-device .animate-spin {

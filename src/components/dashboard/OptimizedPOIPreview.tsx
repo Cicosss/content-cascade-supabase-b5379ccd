@@ -21,6 +21,7 @@ interface OptimizedPOIPreviewProps {
   poi: POI;
   onClose: () => void;
   onGetDirections: (poi: POI) => void;
+  isMobile?: boolean;
 }
 
 // Utility functions for data processing
@@ -107,7 +108,8 @@ const formatRating = (rating: number): string => {
 const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({ 
   poi, 
   onClose, 
-  onGetDirections 
+  onGetDirections,
+  isMobile = false
 }) => {
   const navigate = useNavigate();
 
@@ -131,50 +133,52 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
   const primaryImage = poi.images?.[0] || placeholderImage;
 
   return (
-    <Card className="max-w-[300px] overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm relative p-4">
+    <Card className={`${isMobile ? 'w-full max-w-none' : 'max-w-[300px]'} overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm relative ${isMobile ? 'p-3' : 'p-4'}`}>
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 z-10 w-6 h-6 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors"
+        className={`absolute top-2 right-2 z-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-colors ${isMobile ? 'w-8 h-8' : 'w-6 h-6'}`}
         aria-label="Chiudi anteprima"
       >
-        <X className="h-3 w-3 text-white" />
+        <X className={`${isMobile ? 'h-4 w-4' : 'h-3 w-3'} text-white`} />
       </button>
 
-      {/* Image section */}
-      <div className="aspect-[4/3] relative overflow-hidden bg-gray-50 rounded-lg">
-        <img
-          src={primaryImage}
-          alt={poi.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            if (target.src !== placeholderImage) {
-              target.src = placeholderImage;
-            }
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-      </div>
+      {/* Image section - Smaller on mobile */}
+      {!isMobile && (
+        <div className="aspect-[4/3] relative overflow-hidden bg-gray-50 rounded-lg">
+          <img
+            src={primaryImage}
+            alt={poi.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.src !== placeholderImage) {
+                target.src = placeholderImage;
+              }
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+      )}
 
       {/* Content section */}
-      <CardContent className="space-y-3 mt-4 p-0">
+      <CardContent className={`space-y-3 p-0 ${isMobile ? 'mt-2' : 'mt-4'}`}>
         {/* Title and category */}
         <div>
-          <h4 className="font-semibold text-lg mb-2 line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
+          <h4 className={`font-semibold line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight ${isMobile ? 'text-base mb-1' : 'text-lg mb-2'}`}>
             {poi.name}
           </h4>
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <span className="text-base" role="img" aria-label={poi.category}>
+          <div className={`flex items-center gap-1 text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            <span className={`${isMobile ? 'text-sm' : 'text-base'}`} role="img" aria-label={poi.category}>
               {categoryIcon}
             </span>
             <span>{poi.category}</span>
           </div>
         </div>
 
-        {/* Description */}
-        {truncatedDescription && (
+        {/* Description - Hidden on mobile for space */}
+        {!isMobile && truncatedDescription && (
           <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
             {truncatedDescription}
           </p>
@@ -186,8 +190,8 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
           <div className="flex items-center">
             {hasValidRating && (
               <>
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 mr-1" />
-                <span className="text-sm font-medium text-gray-900">
+                <Star className={`fill-yellow-400 text-yellow-400 mr-1 ${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+                <span className={`font-medium text-gray-900 ${isMobile ? 'text-xs' : 'text-sm'}`}>
                   {formatRating(poi.avg_rating!)}
                 </span>
               </>
@@ -197,26 +201,26 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
           {/* Price section */}
           {hasValidPrice && (
             <div className="flex items-center text-green-600 font-medium">
-              <Euro className="h-4 w-4 mr-1" />
-              <span className="text-sm">{poi.price_info}</span>
+              <Euro className={`mr-1 ${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+              <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>{poi.price_info}</span>
             </div>
           )}
         </div>
 
         {/* Action buttons */}
-        <div className="flex gap-2 pt-2">
+        <div className={`flex gap-2 ${isMobile ? 'pt-1' : 'pt-2'}`}>
           <Button
             onClick={handleDiscoverMore}
-            className="flex-1 bg-blue-900 hover:bg-blue-800 text-white text-sm h-9"
+            className={`flex-1 bg-blue-900 hover:bg-blue-800 text-white ${isMobile ? 'text-xs h-8' : 'text-sm h-9'}`}
           >
             Scopri di più
           </Button>
           <Button
             onClick={handleGetDirections}
             variant="outline"
-            className="flex-1 border-blue-900 text-blue-900 hover:bg-blue-50 text-sm h-9"
+            className={`flex-1 border-blue-900 text-blue-900 hover:bg-blue-50 ${isMobile ? 'text-xs h-8' : 'text-sm h-9'}`}
           >
-            <ExternalLink className="h-3 w-3 mr-1" />
+            <ExternalLink className={`mr-1 ${isMobile ? 'h-2 w-2' : 'h-3 w-3'}`} />
             Raggiungi
           </Button>
         </div>

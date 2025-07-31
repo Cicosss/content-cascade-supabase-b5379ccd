@@ -7,13 +7,15 @@ interface MapSearchControlsProps {
   showSearchButton: boolean;
   onSearch: () => void;
   poiCount: number;
+  isMobile?: boolean;
 }
 
 const MapSearchControls: React.FC<MapSearchControlsProps> = ({
   isSearching,
   showSearchButton,
   onSearch,
-  poiCount
+  poiCount,
+  isMobile = false
 }) => {
   return (
     <>
@@ -43,11 +45,11 @@ const MapSearchControls: React.FC<MapSearchControlsProps> = ({
         </div>
       )}
 
-      {/* POI Counter - Top Left */}
-      <div className="absolute top-4 left-4 z-10">
-        <div className="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border border-gray-200">
-          <span className="text-sm font-medium text-blue-900">
-            🟢 {poiCount} POI attivi
+      {/* POI Counter - Mobile optimized positioning */}
+      <div className={`absolute z-10 ${isMobile ? 'top-2 left-2' : 'top-4 left-4'}`}>
+        <div className={`bg-white/90 backdrop-blur-sm rounded-lg shadow-lg border border-gray-200 ${isMobile ? 'px-2 py-1' : 'px-3 py-2'}`}>
+          <span className={`font-medium text-blue-900 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+            🟢 {poiCount} POI
           </span>
         </div>
       </div>
