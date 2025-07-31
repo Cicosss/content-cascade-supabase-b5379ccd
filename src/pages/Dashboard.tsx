@@ -60,28 +60,34 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Sezione principale: Mappa + Meteo + Stato Costa */}
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[500px]">
-                {/* Colonna principale - Mappa Interattiva Ultra-Leggera */}
-                <div className="lg:col-span-3">
-                  <div className="h-full rounded-3xl overflow-hidden shadow-xl">
-                    <APIErrorBoundary>
-                      <SimpleInteractiveMap filters={mapFilters} />
-                    </APIErrorBoundary>
+              {/* Sezione principale: Mappa + Meteo + Stato Costa - Mobile First */}
+              <div className="space-y-6 lg:space-y-0">
+                {/* Mobile: Mappa a tutto schermo, Desktop: Grid layout */}
+                <div className="lg:grid lg:grid-cols-4 lg:gap-6 lg:h-[500px]">
+                  {/* Mappa - Mobile: altezza grande, Desktop: 3/4 della griglia */}
+                  <div className="h-[60vh] min-h-[400px] lg:h-full lg:col-span-3">
+                    <div className="h-full rounded-3xl overflow-hidden shadow-xl">
+                      <APIErrorBoundary>
+                        <SimpleInteractiveMap filters={mapFilters} />
+                      </APIErrorBoundary>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Colonna laterale - Meteo e Stato Costa con flexbox */}
-                <div className="lg:col-span-1 flex flex-col gap-3 h-full">
-                  <div className="flex-1">
-                    <WeatherErrorBoundary>
-                      <PersonalizedWeather />
-                    </WeatherErrorBoundary>
-                  </div>
-                  <div className="flex-1">
-                    <APIErrorBoundary>
-                      <CoastalStatusWidget />
-                    </APIErrorBoundary>
+                  
+                  {/* Meteo e Stato Costa - Mobile: sotto mappa, Desktop: sidebar */}
+                  <div className="lg:col-span-1 lg:flex lg:flex-col lg:gap-3 lg:h-full">
+                    {/* Mobile: grid orizzontale, Desktop: stack verticale */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 lg:gap-3 lg:h-full">
+                      <div className="lg:flex-1">
+                        <WeatherErrorBoundary>
+                          <PersonalizedWeather />
+                        </WeatherErrorBoundary>
+                      </div>
+                      <div className="lg:flex-1">
+                        <APIErrorBoundary>
+                          <CoastalStatusWidget />
+                        </APIErrorBoundary>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -98,20 +104,23 @@ const Dashboard = () => {
           </div>
         </div>
         
-        <APIHealthMonitor />
-        <ErrorRecoveryMonitor />
-        
-        {/* Sistema di monitoraggio performance ottimizzato */}
-        <CarouselMetrics 
-          metrics={{
-            responseTime: 120,
-            cacheHit: true,
-            retryCount: 0,
-            hitRate: 92,
-            staleData: false
-          }}
-          carouselType="dashboard"
-        />
+        {/* Debug components - Hidden on mobile */}
+        <div className="hidden lg:block">
+          <APIHealthMonitor />
+          <ErrorRecoveryMonitor />
+          
+          {/* Sistema di monitoraggio performance ottimizzato */}
+          <CarouselMetrics 
+            metrics={{
+              responseTime: 120,
+              cacheHit: true,
+              retryCount: 0,
+              hitRate: 92,
+              staleData: false
+            }}
+            carouselType="dashboard"
+          />
+        </div>
       </Layout>
     </DashboardErrorBoundary>
   );

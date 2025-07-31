@@ -176,8 +176,20 @@
   .cache-stats-overlay,
   .api-health-monitor,
   [data-testid="cache-stats"],
-  [data-testid="api-monitor"] {
+  [data-testid="api-monitor"],
+  [data-testid],
+  [class*="debug"],
+  [class*="stats"],
+  [class*="monitor"],
+  [class*="health"],
+  [class*="recovery"],
+  [class*="metrics"] {
     display: none !important;
+  }
+  
+  /* Optimize map container for mobile touch */
+  .google-maps-container {
+    min-height: 400px !important;
   }
   
   /* Reduce animations on low-end devices */
