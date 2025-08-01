@@ -29,14 +29,14 @@ export const OFFICIAL_CATEGORIES = [
   'Vita Notturna'
 ] as const;
 
-// Mapping navbar → categorie per pre-filtri intelligenti
+// Mapping navbar → categorie per pre-filtri intelligenti (basato sui dati reali del DB)
 export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
-  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Street Food', 'Mercati Locali'],
-  'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'],
+  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Mercati Locali'],
+  'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'], // Categorie future
   'Eventi': ['Eventi'],
   'Eventi & Spettacoli': ['Eventi'], // Alias per compatibilità
-  'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Esperienze Educative', 'Vita Notturna'],
-  'Natura & Avventura': ['Spiagge', 'Parchi Naturali e Riserve', 'Sport']
+  'Divertimento & Famiglia': ['Sport'], // Per ora solo Sport disponibile
+  'Natura & Avventura': ['Parchi Naturali e Riserve', 'Sport']
 };
 
 export const AVAILABLE_TAGS = [
