@@ -1,5 +1,5 @@
 import React from 'react';
-import MobileCarouselContainer from '@/components/dashboard/mobile/carousel/MobileCarouselContainer';
+import HomepageSectionCarousel from '@/components/homepage/HomepageSectionCarousel';
 import MobileContainer from '@/components/ui/MobileContainer';
 import { UtensilsCrossed, Calendar, Mountain, PartyPopper, MapPin } from 'lucide-react';
 
@@ -25,7 +25,7 @@ const HomepageCarousels: React.FC = () => {
   return (
     <MobileContainer variant="default" className="space-y-8 md:space-y-16">
       {/* Gusto & Sapori */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Gusto & Sapori"
         icon={UtensilsCrossed}
         title="Gusto & Sapori"
@@ -34,8 +34,8 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Eventi & Spettacoli */}
-      <MobileCarouselContainer
-        section="Eventi"
+      <HomepageSectionCarousel
+        section="Eventi & Spettacoli"
         icon={Calendar}
         title="Eventi & Spettacoli"
         subtitle="Gli eventi imperdibili del territorio"
@@ -43,7 +43,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Natura & Avventura */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Natura & Avventura"
         icon={Mountain}
         title="Natura & Avventura"
@@ -52,7 +52,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Divertimento & Famiglia */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Divertimento & Famiglia"
         icon={PartyPopper}
         title="Divertimento & Famiglia"
@@ -61,7 +61,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Cultura & Territorio */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Cultura & Territorio"
         icon={MapPin}
         title="Cultura & Territorio"

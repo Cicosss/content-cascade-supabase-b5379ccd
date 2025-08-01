@@ -32,11 +32,11 @@ export const OFFICIAL_CATEGORIES = [
 // Mapping navbar → categorie per pre-filtri intelligenti (basato sui dati reali del DB)
 export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
   'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Mercati Locali'],
-  'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'], // Categorie future
   'Eventi': ['Eventi'],
-  'Eventi & Spettacoli': ['Eventi'], // Alias per compatibilità
+  'Eventi & Spettacoli': ['Eventi', 'Sport', 'Mercati Locali'], // Include eventi misti da events table
+  'Natura & Avventura': ['Parchi Naturali e Riserve', 'Sport'],
   'Divertimento & Famiglia': ['Sport'], // Per ora solo Sport disponibile
-  'Natura & Avventura': ['Parchi Naturali e Riserve', 'Sport']
+  'Cultura & Territorio': [] // Nessuna categoria disponibile attualmente
 };
 
 export const AVAILABLE_TAGS = [

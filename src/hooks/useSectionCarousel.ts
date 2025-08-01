@@ -3,7 +3,7 @@ import { useCarouselAPI } from './useCarouselAPI';
 import { NAVBAR_CATEGORY_MAPPING } from '@/config/categoryMapping';
 import { ExperienceFilters } from '@/types/carousel';
 
-export type SectionType = 'Gusto & Sapori' | 'Eventi' | 'Natura & Avventura' | 'Divertimento & Famiglia' | 'Cultura & Territorio';
+export type SectionType = 'Gusto & Sapori' | 'Eventi' | 'Eventi & Spettacoli' | 'Natura & Avventura' | 'Divertimento & Famiglia' | 'Cultura & Territorio';
 
 interface SectionCarouselOptions {
   withChildren?: boolean;
@@ -21,7 +21,7 @@ export const useSectionCarousel = (
 
   // Create filters based on section
   const filters = useMemo(() => {
-    if (section === 'Eventi') {
+    if (section === 'Eventi' || section === 'Eventi & Spettacoli') {
       // For events, use the events API with category filter
       return { category: 'Eventi' };
     } else {
@@ -35,7 +35,7 @@ export const useSectionCarousel = (
   }, [section, withChildren, categories]);
 
   // Use appropriate carousel API based on section
-  const carouselType = section === 'Eventi' ? 'events' : 'experiences';
+  const carouselType = (section === 'Eventi' || section === 'Eventi & Spettacoli') ? 'events' : 'experiences';
   
   const result = useCarouselAPI(carouselType, filters, {
     enabled: true // Always enabled, handle empty state in UI
