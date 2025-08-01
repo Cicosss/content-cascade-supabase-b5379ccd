@@ -49,10 +49,12 @@ export function useSimpleCarousel(
 
   const fetchData = async () => {
     try {
+      console.log(`🎯 fetchData START for ${section}:`, { categories, withChildren, limit, isEventSection });
       setIsLoading(true);
       setError(null);
 
       if (isEventSection) {
+        console.log(`📅 Fetching events for ${section}...`);
         // Fetch from events table
         const { data: events, error: eventsError } = await supabase
           .from('events')
@@ -61,9 +63,12 @@ export function useSimpleCarousel(
           .order('start_datetime', { ascending: true })
           .limit(limit);
 
+        console.log(`📅 Events result:`, { events, eventsError, count: events?.length });
         if (eventsError) throw eventsError;
         setData(events || []);
+        console.log(`✅ ${section} events loaded:`, events?.length || 0, 'items');
       } else {
+        console.log(`🏛️ Fetching POIs for ${section}...`);
         // Fetch from points_of_interest table
         let query = supabase
           .from('points_of_interest')
@@ -73,22 +78,24 @@ export function useSimpleCarousel(
         // Filter by categories if available
         if (categories.length > 0) {
           query = query.in('category', categories);
+          console.log(`🔍 Filtering by categories:`, categories);
         }
 
         // Filter by target audience if withChildren is specified
         if (withChildren) {
           query = query.or('target_audience.eq.families,target_audience.eq.everyone');
+          console.log(`👶 Filtering for families/everyone`);
         }
 
         const { data: pois, error: poisError } = await query
           .order('priority_score', { ascending: false })
           .limit(limit);
 
+        console.log(`🏛️ POIs result:`, { pois, poisError, count: pois?.length });
         if (poisError) throw poisError;
         setData(pois || []);
+        console.log(`✅ ${section} POIs loaded:`, pois?.length || 0, 'items');
       }
-
-      console.log(`✅ ${section} carousel loaded:`, data?.length || 0, 'items');
     } catch (err) {
       console.error(`❌ Error loading ${section} carousel:`, err);
       setError({ 
@@ -100,6 +107,7 @@ export function useSimpleCarousel(
       });
     } finally {
       setIsLoading(false);
+      console.log(`🎯 fetchData END for ${section}:`, { finalDataLength: data.length });
     }
   };
 

@@ -37,6 +37,15 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
 
   const { isGuest, handleGuestClick } = useGuestRedirect();
 
+  // Debug log current state
+  console.log(`🔍 ${section} carousel state:`, { 
+    dataLength: data.length, 
+    isLoading, 
+    error: error?.message, 
+    isEmpty, 
+    categories 
+  });
+
   // Show loading state
   if (isLoading) {
     return <CarouselLoadingState carouselType={section.toLowerCase()} />;
