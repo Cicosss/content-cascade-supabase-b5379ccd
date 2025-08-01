@@ -110,11 +110,13 @@ export class CarouselAPIService {
     if (category) {
       query = query.eq('category', category);
     } else if (poiType === 'place' && !category) {
-      // Check if we have section_categories filter
+    // Check if we have section_categories filter
       if (filters.section_categories && filters.section_categories.length > 0) {
+        console.log(`🎯 Filtering by section_categories:`, filters.section_categories);
         query = query.in('category', filters.section_categories);
       } else {
-        // For general experiences, exclude restaurants
+        // For general experiences, exclude restaurants to avoid duplicates
+        console.log(`🚫 Excluding restaurants for general experiences`);
         query = query.neq('category', 'Ristoranti');
       }
     }
@@ -138,7 +140,12 @@ export class CarouselAPIService {
     }
 
     const { data, error } = await query;
-    if (error) throw error;
+    if (error) {
+      console.error(`🚨 Database query error for ${poiType}:`, error);
+      throw error;
+    }
+    
+    console.log(`✅ Query successful for ${poiType}, found ${data?.length || 0} items`);
     return data || [];
   }
 

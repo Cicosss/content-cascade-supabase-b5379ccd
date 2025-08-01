@@ -38,20 +38,18 @@ export const useSectionCarousel = (
   const carouselType = section === 'Eventi' ? 'events' : 'experiences';
   
   const result = useCarouselAPI(carouselType, filters, {
-    enabled: categories.length > 0 || section === 'Eventi'
+    enabled: true // Always enabled, handle empty state in UI
   });
 
-  // Filter data by categories for non-event sections
+  // Apply limit to data (filtering is handled in carouselAPIService)
   const filteredData = useMemo(() => {
-    if (section === 'Eventi' || !result.data) {
+    if (!result.data) {
       return result.data;
     }
 
-    // Filter experiences by section categories
-    return result.data.filter((item: any) => 
-      categories.length === 0 || categories.includes(item.category)
-    ).slice(0, limit);
-  }, [result.data, section, categories, limit]);
+    // Simply apply limit, section_categories filtering is handled in API service
+    return result.data.slice(0, limit);
+  }, [result.data, limit]);
 
   return {
     ...result,
