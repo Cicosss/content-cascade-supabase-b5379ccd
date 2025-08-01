@@ -69,7 +69,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   }
 
   return (
-    <div className="space-y-4">
+    <section className="space-y-4">
       <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
       
       {/* Performance metrics (dev mode only) */}
@@ -93,7 +93,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
       >
         <CarouselContent className="-ml-3 md:-ml-4">
           {data.map((item: any, index: number) => (
-            <CarouselItem key={item.id || index} className="pl-3 md:pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+            <CarouselItem key={item.id || index} className="pl-3 md:pl-4 basis-4/5 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
               {section === 'Eventi' ? (
                 <EventCard 
                   id={item.id}
@@ -133,7 +133,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
       <div className="text-xs text-gray-400 text-right">
         {data.length} elementi • Aggiornato {new Date().toLocaleTimeString()}
       </div>
-    </div>
+    </section>
   );
 };
 

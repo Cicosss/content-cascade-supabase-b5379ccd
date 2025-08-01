@@ -98,9 +98,9 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
       >
         <CarouselContent className="-ml-3 md:-ml-4">
           {data.map((item: any, index: number) => (
-            <CarouselItem key={item.id || index} className="pl-3 md:pl-4 basis-[85%] sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+            <CarouselItem key={item.id || index} className="pl-3 md:pl-4 basis-4/5 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
               {section === 'Eventi' ? (
-                <div onClick={handleItemClick}>
+                <div onClick={isGuest ? handleItemClick : undefined}>
                   <EventCard 
                     id={item.id}
                     title={item.name}
