@@ -36,14 +36,6 @@ const FilterToggle = React.memo<FilterToggleProps>(({
         <Switch
           checked={showAdvanced}
           onCheckedChange={onToggle}
-          className={cn(
-            // Base styles
-            "h-7 w-12 border-2 transition-all duration-200",
-            // When checked (ON)
-            "data-[state=checked]:bg-blue-900 data-[state=checked]:border-black data-[state=checked]:shadow-xl data-[state=checked]:shadow-black/50",
-            // When unchecked (OFF) 
-            "data-[state=unchecked]:bg-gray-200 data-[state=unchecked]:border-gray-600 data-[state=unchecked]:shadow-md data-[state=unchecked]:shadow-gray-400/30"
-          )}
         />
       </div>
     </div>

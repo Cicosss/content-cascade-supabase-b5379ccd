@@ -1,27 +1,78 @@
-import * as React from "react"
-import * as SwitchPrimitives from "@radix-ui/react-switch"
+"use client";
 
-import { cn } from "@/lib/utils"
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
-const Switch = React.forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
->(({ className, ...props }, ref) => (
-  <SwitchPrimitives.Root
-    className={cn(
-      "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
-      className
-    )}
-    {...props}
-    ref={ref}
-  >
-    <SwitchPrimitives.Thumb
+interface SwitchProps {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  className?: string;
+}
+
+const Switch = ({ checked = false, onCheckedChange, className }: SwitchProps) => {
+  const [isChecked, setIsChecked] = useState(checked);
+
+  // Sync with external checked prop
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
+
+  const handleToggle = () => {
+    const newValue = !isChecked;
+    setIsChecked(newValue);
+    onCheckedChange?.(newValue);
+  };
+
+  return (
+    <motion.button
+      role="switch"
+      aria-checked={isChecked}
+      onClick={handleToggle}
       className={cn(
-        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        "relative inline-flex h-6 w-11 items-center rounded-full",
+        isChecked ? "bg-gray-800" : "bg-gray-200",
+        className
       )}
-    />
-  </SwitchPrimitives.Root>
-))
-Switch.displayName = SwitchPrimitives.Root.displayName
+      transition={{
+        type: "spring",
+        stiffness: 700,
+        damping: 30,
+      }}
+    >
+      <motion.span
+        className={cn(
+          "inline-block h-5 w-5 rounded-full",
+          isChecked ? "bg-yellow-300" : "bg-gray-900"
+        )}
+        animate={{
+          x: isChecked ? 20 : 4,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 700,
+          damping: 30,
+          bounce: 0,
+        }}
+      >
+        {isChecked && (
+          <motion.div
+            className="absolute h-full w-full z-0 rounded-full bg-yellow-500 blur-lg"
+            initial={{
+              scale: 0,
+            }}
+            animate={{
+              scale: 1,
+            }}
+            transition={{
+              type: "spring",
+              duration: 0.02,
+            }}
+          />
+        )}
+      </motion.span>
+    </motion.button>
+  );
+};
 
-export { Switch }
+export { Switch };
