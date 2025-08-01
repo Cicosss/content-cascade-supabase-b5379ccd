@@ -75,8 +75,6 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
 }) => {
   // Normalizzazione dei dati per compatibilità
   const displayName = name || title || '';
-  const displayPrice = price_info || price || '';
-  const displayDuration = duration_info || duration || '';
   const displayRating = avg_rating || rating || 0;
   const displayLocation = location_name || address || '';
   const displayPoiType = poiType || poi_type || 'place';
