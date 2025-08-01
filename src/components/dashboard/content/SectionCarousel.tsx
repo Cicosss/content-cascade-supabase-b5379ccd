@@ -80,7 +80,8 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
       <MobileCarousel
         showIndicators={isMobile}
         enableSwipe={true}
-        itemsPerView={isMobile ? 1.2 : undefined}
+        itemsPerView={isMobile ? 1.3 : 4}
+        spacing={isMobile ? "0.5rem" : "1rem"}
         className="w-full"
       >
         {data.map((item: any, index: number) => (

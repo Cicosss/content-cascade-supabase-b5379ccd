@@ -76,9 +76,11 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
               className={cn(
                 isMobile ? "pl-2" : "pl-4",
                 typeof finalItemsPerView === 'number' 
-                  ? `basis-[${100 / finalItemsPerView}%]`
+                  ? isMobile 
+                    ? `basis-[${Math.floor(100 / finalItemsPerView)}%]`
+                    : `basis-[${100 / finalItemsPerView}%]`
                   : isMobile 
-                    ? "basis-[85%]" 
+                    ? "basis-[75%]" 
                     : "basis-1/4"
               )}
             >
