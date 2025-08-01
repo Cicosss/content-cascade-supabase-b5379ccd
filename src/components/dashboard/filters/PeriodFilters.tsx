@@ -41,14 +41,14 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left font-normal border-2 hover:border-red-300 bg-white h-12"
+              className="w-full justify-start text-left font-normal border-2 hover:border-red-300 bg-white h-auto min-h-[3rem] py-3 px-4"
             >
-              <span className="flex-1 text-gray-700">
+              <span className="flex-1 text-gray-700 text-sm md:text-base leading-tight break-words">
                 {displayText}
               </span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className="w-auto p-0 max-w-[calc(100vw-1rem)]" align="start">
             <CustomCalendar
               leftMonth={selectedDateRange?.from?.getMonth() || new Date().getMonth()}
               leftYear={selectedDateRange?.from?.getFullYear() || new Date().getFullYear()}

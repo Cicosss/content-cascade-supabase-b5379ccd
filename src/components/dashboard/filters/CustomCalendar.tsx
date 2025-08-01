@@ -105,7 +105,7 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
     const shortWeekdays = ["L", "M", "M", "G", "V", "S", "D"];
 
     return (
-      <div className="flex-1 min-w-[310px] px-5 py-3 flex flex-col">
+      <div className="flex-1 min-w-[280px] md:min-w-[310px] px-3 md:px-5 py-3 flex flex-col">
         <div className="flex items-center justify-between mb-2">
           {isLeft ? (
             <button
@@ -187,17 +187,21 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
 
   return (
     <div
-      className="w-[650px] h-[400px] flex bg-white rounded-xl shadow-xl border-[.5px] border-gray-200 overflow-hidden"
+      className="w-full max-w-[650px] min-h-[350px] flex flex-col md:flex-row bg-white rounded-xl shadow-xl border-[.5px] border-gray-200 overflow-hidden"
       style={{
-        minWidth: 650,
-        minHeight: 400,
-        maxWidth: 650,
-        maxHeight: 400,
+        maxWidth: "min(650px, 100vw - 2rem)",
       }}
     >
-      {renderMonth(leftMonth, leftYear, true)}
-      <div className="w-[2px] bg-gray-100 h-full"></div>
-      {renderMonth(rightMonth, rightYear, false)}
+      <div className="md:hidden">
+        {/* Mobile: Only show one month at a time */}
+        {renderMonth(leftMonth, leftYear, true)}
+      </div>
+      <div className="hidden md:flex w-full">
+        {/* Desktop: Show two months side by side */}
+        {renderMonth(leftMonth, leftYear, true)}
+        <div className="w-[2px] bg-gray-100 h-full"></div>
+        {renderMonth(rightMonth, rightYear, false)}
+      </div>
     </div>
   );
 };
