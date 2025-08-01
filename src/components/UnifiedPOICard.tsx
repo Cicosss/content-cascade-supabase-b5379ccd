@@ -146,7 +146,7 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
 
   return (
     <Card 
-      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden flex flex-col ${className}`}
+      className={`w-full max-w-[280px] bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden flex flex-col ${className}`}
       onClick={handleCardClick}
     >
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-50 flex-shrink-0">
