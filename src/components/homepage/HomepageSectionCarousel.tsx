@@ -5,7 +5,7 @@ import EventCard from '@/components/EventCard';
 import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { LucideIcon } from 'lucide-react';
-import { useSectionCarousel, SectionType } from '@/hooks/useSectionCarousel';
+import { useSimpleCarousel, SectionType } from '@/hooks/useSimpleCarousel';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import {
   Carousel,
@@ -30,7 +30,7 @@ const HomepageSectionCarousel: React.FC<HomepageSectionCarouselProps> = ({
   subtitle,
   withChildren = false
 }) => {
-  const { data, isLoading, error, retry, isEmpty, metrics, categories } = useSectionCarousel(section, {
+  const { data, isLoading, error, retry, isEmpty, categories } = useSimpleCarousel(section, {
     withChildren,
     limit: 8
   });
