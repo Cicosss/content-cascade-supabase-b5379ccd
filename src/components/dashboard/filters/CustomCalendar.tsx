@@ -100,14 +100,15 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
     onNextMonth();
   };
 
-  function renderMonth(month: number, year: number, isLeft: boolean) {
+  function renderMonth(month: number, year: number, isLeft: boolean, isMobileView = false) {
     const daysMatrix = getDaysMatrix(month, year);
     const shortWeekdays = ["L", "M", "M", "G", "V", "S", "D"];
 
     return (
       <div className="flex-1 min-w-[280px] md:min-w-[310px] px-3 md:px-5 py-3 flex flex-col">
         <div className="flex items-center justify-between mb-2">
-          {isLeft ? (
+          {/* Mobile: show both arrows, Desktop: show left arrow only on left month */}
+          {(isMobileView || isLeft) ? (
             <button
               onClick={handlePrevMonth}
               className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
@@ -117,10 +118,13 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
               <ArrowLeft size={20} />
             </button>
           ) : <span className="w-7" />}
+          
           <span className="text-base font-semibold text-gray-800 select-none">
             {format(new Date(year, month), "LLLL yyyy", { locale: it })}
           </span>
-          {!isLeft ? (
+          
+          {/* Mobile: show both arrows, Desktop: show right arrow only on right month */}
+          {(isMobileView || !isLeft) ? (
             <button
               onClick={handleNextMonth}
               className="p-1 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center"
@@ -193,14 +197,14 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
       }}
     >
       <div className="md:hidden">
-        {/* Mobile: Only show one month at a time */}
-        {renderMonth(leftMonth, leftYear, true)}
+        {/* Mobile: Only show one month at a time with both navigation arrows */}
+        {renderMonth(leftMonth, leftYear, true, true)}
       </div>
       <div className="hidden md:flex w-full">
         {/* Desktop: Show two months side by side */}
-        {renderMonth(leftMonth, leftYear, true)}
+        {renderMonth(leftMonth, leftYear, true, false)}
         <div className="w-[2px] bg-gray-100 h-full"></div>
-        {renderMonth(rightMonth, rightYear, false)}
+        {renderMonth(rightMonth, rightYear, false, false)}
       </div>
     </div>
   );
