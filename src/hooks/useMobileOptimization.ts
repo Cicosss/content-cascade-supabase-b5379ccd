@@ -7,9 +7,6 @@ interface MobileOptimizationConfig {
   mobileContainerPadding: string;
   mobileTouchTargetSize: string;
   
-  // Carousel settings
-  mobileCarouselItemsPerView: number;
-  mobileCarouselSpacing: string;
   
   // Typography settings
   mobileFontScale: number;
@@ -20,8 +17,6 @@ const defaultConfig: MobileOptimizationConfig = {
   mobileHeaderHeight: '4rem', // 64px
   mobileContainerPadding: '0.75rem', // 12px
   mobileTouchTargetSize: '48px', // Increased for better accessibility
-  mobileCarouselItemsPerView: 1.2,
-  mobileCarouselSpacing: '0.75rem',
   mobileFontScale: 0.9,
   mobileLineHeight: 1.4,
 };
@@ -68,15 +63,6 @@ export const useMobileOptimization = (customConfig?: Partial<MobileOptimizationC
     return sizeMap[baseSize] || baseSize;
   };
 
-  // Carousel configuration for mobile
-  const getCarouselConfig = () => {
-    return {
-      itemsPerView: isMobile ? config.mobileCarouselItemsPerView : 'auto',
-      spacing: isMobile ? config.mobileCarouselSpacing : '1rem',
-      showArrows: !isMobile,
-      enableTouch: true,
-    };
-  };
 
   // Gesture-friendly button configuration
   const getButtonConfig = () => {
@@ -102,7 +88,7 @@ export const useMobileOptimization = (customConfig?: Partial<MobileOptimizationC
     getTouchTargetClasses,
     getContainerPadding,
     getMobileTypography,
-    getCarouselConfig,
+    
     getButtonConfig,
     getSafeAreaPadding,
   };

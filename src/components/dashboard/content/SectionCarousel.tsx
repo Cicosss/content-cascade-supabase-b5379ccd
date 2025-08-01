@@ -6,7 +6,7 @@ import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { LucideIcon } from 'lucide-react';
 import { useSectionCarousel, SectionType } from '@/hooks/useSectionCarousel';
-import { useMobileOptimization } from '@/hooks/useMobileOptimization';
+
 import {
   Carousel,
   CarouselContent,

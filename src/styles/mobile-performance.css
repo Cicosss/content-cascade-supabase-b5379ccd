@@ -88,22 +88,6 @@
     user-select: none;
   }
   
-  /* Optimized carousel for mobile */
-  .mobile-carousel {
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  .mobile-carousel::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .mobile-carousel-item {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
   
   /* Mobile-friendly focus styles */
   .mobile-focus:focus-visible {
