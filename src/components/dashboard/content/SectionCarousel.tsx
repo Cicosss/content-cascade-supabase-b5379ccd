@@ -30,10 +30,9 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   subtitle,
   withChildren = false
 }) => {
-  const { isMobile } = useMobileOptimization();
   const { data, isLoading, error, retry, isEmpty, metrics, categories } = useSectionCarousel(section, {
     withChildren,
-    limit: isMobile ? 6 : 8
+    limit: 8
   });
 
   // Show loading state
