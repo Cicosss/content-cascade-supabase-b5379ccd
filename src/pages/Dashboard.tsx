@@ -96,7 +96,7 @@ const Dashboard = () => {
 
           {/* Sezione Inferiore - Contenuti con Sfondo Chiaro */}
           <div className="bg-slate-50">
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto py-8">
               <APIErrorBoundary>
                 <PersonalizedContent />
               </APIErrorBoundary>
