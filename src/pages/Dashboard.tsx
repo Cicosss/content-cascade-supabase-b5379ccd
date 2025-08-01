@@ -46,7 +46,7 @@ const Dashboard = () => {
         <div className="min-h-screen bg-white">
           {/* Sezione Superiore - Area di Controllo Scura */}
           <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900">
-            <div className="container mx-auto py-8 space-y-8">
+            <div className="container mx-auto px-4 py-8 space-y-8">
               {/* Intestazione Fluttuante Elegante Premium */}
               <div className="text-center space-y-6 py-4">
                 <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-b from-white to-blue-100 bg-clip-text text-transparent">
