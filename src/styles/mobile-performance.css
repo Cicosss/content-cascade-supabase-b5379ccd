@@ -136,6 +136,32 @@
     user-select: none;
     will-change: transform;
     transform: translateZ(0);
+    min-height: 450px !important;
+    max-height: 65vh !important;
+    height: auto !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  
+  /* Ottimizzazione container mappa per mobile */
+  .map-container-mobile {
+    min-height: 450px;
+    max-height: 65vh;
+    height: auto;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: hsl(var(--muted));
+  }
+  
+  /* Container interno della mappa - senza border radius */
+  .map-inner-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0;
   }
 
   /* Mobile map controls */

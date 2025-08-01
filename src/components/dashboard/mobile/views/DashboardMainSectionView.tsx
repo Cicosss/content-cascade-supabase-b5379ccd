@@ -25,9 +25,9 @@ export const DashboardMainSectionView: React.FC<DashboardMainSectionViewProps> =
         <div className="space-y-8 lg:space-y-0">
           {/* Mobile: Mappa a tutto schermo, Desktop: Grid layout */}
           <div className="lg:grid lg:grid-cols-4 lg:gap-6 lg:h-[500px]">
-            {/* Mappa - Mobile: altezza grande, Desktop: 3/4 della griglia */}
-            <div className="h-[60vh] min-h-[400px] lg:h-full lg:col-span-3">
-              <div className="h-full rounded-3xl overflow-hidden shadow-xl">
+            {/* Mappa - Mobile: altezza ottimizzata, Desktop: 3/4 della griglia */}
+            <div className="min-h-[450px] max-h-[65vh] lg:h-full lg:col-span-3">
+              <div className="h-full rounded-3xl overflow-hidden shadow-xl map-container-mobile">
                 <APIErrorBoundary>
                   <SimpleInteractiveMap filters={mapFilters} />
                 </APIErrorBoundary>

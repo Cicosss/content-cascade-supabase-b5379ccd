@@ -61,9 +61,9 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
   }
 
   return (
-    <div className="relative h-full z-map-container-custom google-maps-container">
+    <div className="relative h-full google-maps-container">
       {/* Google Maps Container */}
-      <div ref={mapRef} className="w-full h-full rounded-xl" />
+      <div ref={mapRef} className="w-full h-full map-inner-container" />
       
       {/* Loading Indicator */}
       <MapLoadingIndicator isLoadingPOIs={isLoadingPOIs} />
