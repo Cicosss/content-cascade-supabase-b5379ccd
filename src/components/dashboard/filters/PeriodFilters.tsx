@@ -23,8 +23,8 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
   });
 
   const displayText = selectedDateRange?.from 
-    ? formatDisplayDateRange(selectedDateRange) || (selectedDateRange.to ? '' : 'Seleziona data di fine')
-    : 'Seleziona data di arrivo e partenza';
+    ? formatDisplayDateRange(selectedDateRange) || (selectedDateRange.to ? '' : 'Seleziona data fine')
+    : 'Seleziona date soggiorno';
 
   const hasSelection = !!selectedDateRange?.from;
 
@@ -41,9 +41,9 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left font-normal border-2 hover:border-red-300 bg-white h-auto min-h-[3rem] py-3 px-4"
+              className="w-full justify-start text-left font-normal border-2 hover:border-red-300 bg-white h-auto min-h-[2.5rem] py-2 px-3"
             >
-              <span className="flex-1 text-gray-700 text-sm md:text-base leading-tight break-words">
+              <span className="flex-1 text-gray-700 text-xs sm:text-sm leading-tight break-words">
                 {displayText}
               </span>
             </Button>
