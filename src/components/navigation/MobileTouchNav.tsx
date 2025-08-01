@@ -13,7 +13,7 @@ interface NavItem {
 const navigationItems: NavItem[] = [
   { id: 'home', label: 'Home', icon: Home, path: '/' },
   { id: 'scopri', label: 'Scopri', icon: Map, path: '/dashboard' },
-  { id: 'oggi', label: 'Oggi', icon: Calendar, path: '/oggi-in-romagna' },
+  { id: 'oggi', label: 'Oggi', icon: Calendar, path: '/oggi' },
   { id: 'preferiti', label: 'Preferiti', icon: Heart, path: '/favorites' },
   { id: 'passaporto', label: 'Passaporto', icon: Award, path: '/my-passport' }
 ];
