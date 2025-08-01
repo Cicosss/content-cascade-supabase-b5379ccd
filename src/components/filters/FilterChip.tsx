@@ -70,15 +70,17 @@ const FilterChip = React.memo<FilterChipProps>(({
       className={cn(
         getVariantClasses(),
         getSizeClasses(),
-        'flex items-center gap-2 whitespace-nowrap',
+        'flex items-center justify-center gap-2 text-center min-h-[2.5rem]',
+        // Allow text wrapping on small sizes (mobile)
+        size === 'sm' ? 'whitespace-normal break-words' : 'whitespace-nowrap',
         disabled && 'opacity-50 cursor-not-allowed',
         className
       )}
       aria-pressed={isSelected}
       role="button"
     >
-      {icon && <span className="text-sm">{icon}</span>}
-      <span>{label}</span>
+      {icon && <span className="text-sm flex-shrink-0">{icon}</span>}
+      <span className="leading-tight">{label}</span>
     </Button>
   );
 });
