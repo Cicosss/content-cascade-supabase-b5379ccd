@@ -129,7 +129,7 @@ const GoogleMapInstance: React.FC<GoogleMapInstanceProps> = memo(({ className = 
     );
   }
 
-  return <div ref={mapRef} className={className} />;
+  return <div ref={mapRef} className={`${className} map-instance-isolated`} />;
 });
 
 GoogleMapInstance.displayName = 'GoogleMapInstance';

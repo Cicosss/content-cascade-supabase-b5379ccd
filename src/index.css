@@ -16,26 +16,47 @@
 @import './styles/zIndex.css';
 @import './styles/sidebar.css';
 
-/* Google Maps CSS Isolation */
+/* Google Maps CSS Isolation - Complete Protection */
 .map-isolation-container {
-  contain: layout style paint;
+  contain: strict;
   isolation: isolate;
+  transform: none !important;
+  will-change: auto !important;
 }
 
 .map-instance-isolated {
   contain: strict;
-  will-change: auto;
-}
-
-/* Protect POI cards from Google Maps interference */
-.poi-card-protected {
-  contain: layout style;
   will-change: auto !important;
   transform: none !important;
   transition: none !important;
 }
 
+/* Robust POI Card Protection */
+.poi-card-protected {
+  contain: strict !important;
+  will-change: auto !important;
+  transform: none !important;
+  transition: box-shadow 300ms ease !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
 .poi-card-protected * {
   will-change: auto !important;
   transform: none !important;
+}
+
+/* Carousel Protection from Google Maps interference */
+.carousel-container-protected {
+  contain: layout style !important;
+  isolation: isolate !important;
+}
+
+.carousel-container-protected .poi-card-protected {
+  flex-shrink: 0 !important;
+  width: 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
 }

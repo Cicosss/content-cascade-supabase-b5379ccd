@@ -69,7 +69,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   }
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-4 carousel-container-protected">
       <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
       
       {/* Performance metrics (dev mode only) */}
@@ -89,7 +89,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
           dragFree: true,
           containScroll: "trimSnaps",
         }}
-        className="w-full touch-pan-x"
+        className="w-full touch-pan-x carousel-container-protected"
       >
         <CarouselContent className="-ml-3 md:-ml-4">
           {data.map((item: any, index: number) => (

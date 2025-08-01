@@ -24,13 +24,15 @@ const InteractiveMap: React.FC<InteractiveMapProps> = memo(({ filters }) => {
   };
 
   return (
-    <MapProvider>
-      <MapFiltersProvider initialFilters={initialFilters}>
-        <MapUIProvider>
-          <MapContainer filters={filters} />
-        </MapUIProvider>
-      </MapFiltersProvider>
-    </MapProvider>
+    <div className="map-isolation-container">
+      <MapProvider>
+        <MapFiltersProvider initialFilters={initialFilters}>
+          <MapUIProvider>
+            <MapContainer filters={filters} />
+          </MapUIProvider>
+        </MapFiltersProvider>
+      </MapProvider>
+    </div>
   );
 });
 
