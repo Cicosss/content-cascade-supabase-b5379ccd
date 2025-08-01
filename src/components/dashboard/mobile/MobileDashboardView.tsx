@@ -20,14 +20,14 @@ const MobileDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
   return (
     <DashboardErrorBoundary>
       <Layout>
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white overflow-x-hidden">
           {/* Header Section - Ottimizzato per mobile */}
           <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900">
-            <div className="container mx-auto py-6 px-4">
+            <div className="w-full max-w-full py-4 px-3 sm:py-6 sm:px-4">
               <MobileHeader userName={data.userName} />
               
               {/* Map Section - Full height su mobile */}
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-6">
                 <MobileMapSection mapFilters={data.mapFilters} />
               </div>
             </div>
@@ -35,14 +35,14 @@ const MobileDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
 
           {/* Widgets Section - Stack orizzontale compatto su mobile */}
           <div className="bg-slate-800 border-t border-slate-700">
-            <div className="container mx-auto py-4 px-4">
+            <div className="w-full max-w-full py-3 px-3 sm:py-4 sm:px-4">
               <MobileWidgetsSection />
             </div>
           </div>
 
           {/* Content Section - Contenuti principali */}
           <div className="bg-slate-50">
-            <div className="container mx-auto py-6 px-4">
+            <div className="w-full max-w-full py-4 px-3 sm:py-6 sm:px-4">
               <MobileContentSection />
             </div>
           </div>

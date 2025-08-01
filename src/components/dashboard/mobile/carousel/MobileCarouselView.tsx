@@ -96,9 +96,9 @@ const MobileCarouselView: React.FC<MobileCarouselViewProps> = memo(({
         }}
         className="w-full touch-pan-x carousel-container-protected"
       >
-        <CarouselContent className="-ml-2">
+        <CarouselContent className="-ml-1 sm:-ml-2">
           {data.map((item: any, index: number) => (
-            <CarouselItem key={item.id || index} className="pl-2 basis-[280px] min-w-[280px]">
+            <CarouselItem key={item.id || index} className="pl-1 sm:pl-2 basis-[260px] min-w-[260px] sm:basis-[280px] sm:min-w-[280px] max-w-[90vw]">
               <TouchTarget>
                 {section === 'Eventi' ? (
                   <EventCard 
