@@ -148,10 +148,10 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
 
   return (
     <Card 
-      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden h-[260px] md:h-[320px] flex flex-col ${className}`}
+      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden flex flex-col ${className}`}
       onClick={handleCardClick}
     >
-      <div className="aspect-[3/2] md:aspect-[4/3] relative overflow-hidden bg-gray-50 flex-shrink-0">
+      <div className="aspect-[4/3] relative overflow-hidden bg-gray-50 flex-shrink-0">
         {coverImage ? (
           <img
             src={coverImage}
@@ -161,54 +161,104 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gradient-to-br from-blue-100 to-purple-100">
-            <CategoryIcon className="h-6 w-6 md:h-8 md:w-8" />
+            <CategoryIcon className="h-8 w-8" />
           </div>
         )}
         
-        {/* Badge categoria */}
-        <Badge className="absolute top-2 left-2 bg-white/90 text-gray-900 text-xs">
-          {category}
-        </Badge>
-
-        {/* Rating badge */}
-        {displayRating > 0 && (
-          <Badge className="absolute top-2 right-12 bg-white/90 text-gray-900 flex items-center gap-1">
-            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-            {displayRating.toFixed(1)}
+        {/* Category Badge */}
+        <div className="absolute top-2 left-2">
+          <Badge variant="secondary" className="text-xs font-medium bg-white/90 text-gray-700 backdrop-blur-sm">
+            {category}
           </Badge>
+        </div>
+
+        {/* Rating Badge */}
+        {displayRating > 0 && (
+          <div className="absolute top-2 right-12">
+            <Badge className="text-xs font-medium bg-primary text-white">
+              <Star className="mr-1 h-3 w-3 fill-current" />
+              {displayRating.toFixed(1)}
+            </Badge>
+          </div>
         )}
 
         {/* Favorite button */}
-        <div onClick={handleFavoriteClick}>
+        <div onClick={handleFavoriteClick} className="absolute top-2 right-2">
           <FavoriteButton 
             itemType="poi"
             itemId={id}
-            className="absolute top-3 right-3 z-10 opacity-70 group-hover:opacity-100 transition-opacity"
+            className="opacity-80 group-hover:opacity-100 transition-opacity"
           />
         </div>
       </div>
 
-      <CardContent className="p-3 md:p-4 flex-1 flex flex-col justify-between">
-        <div className="flex items-center gap-2 mb-2">
-          <CategoryIcon className="h-4 w-4 text-gray-500" />
-          <span className="text-sm text-gray-600">{category}</span>
+      <CardContent className="p-4 flex-1 flex flex-col min-h-0">
+        <div className="flex-1">
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
+              <CategoryIcon className="h-4 w-4 text-gray-500 flex-shrink-0" />
+              <h3 className="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+                {displayName}
+              </h3>
+            </div>
+          </div>
+
+          {description && (
+            <HtmlContent 
+              content={description} 
+              className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3"
+            />
+          )}
+
+          <div className="space-y-2">
+            {displayLocation && (
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <MapPin className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">{displayLocation}</span>
+              </div>
+            )}
+
+            {displayPrice && (
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Euro className="h-3 w-3" />
+                <span>{displayPrice}</span>
+              </div>
+            )}
+
+            {displayDuration && (
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Clock className="h-3 w-3" />
+                <span>{displayDuration}</span>
+              </div>
+            )}
+
+            {target_audience && target_audience !== 'everyone' && (
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Users className="h-3 w-3" />
+                <span>{target_audience}</span>
+              </div>
+            )}
+          </div>
         </div>
 
-        <h3 className="font-semibold text-base md:text-lg mb-2 line-clamp-2 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
-          {displayName}
-        </h3>
-
-        {description && (
-          <HtmlContent 
-            content={description} 
-            className="text-sm text-gray-600 line-clamp-2 mb-3"
-          />
+        {/* Event specific details */}
+        {isEvent && displayStartDate && displayEndDate && (
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <div className="flex items-center gap-2 text-xs text-gray-600">
+              <Calendar className="h-3 w-3" />
+              <span>{formatDate(displayStartDate)}</span>
+              <Clock className="h-3 w-3 ml-1" />
+              <span>{formatTime(displayStartDate)} - {formatTime(displayEndDate)}</span>
+            </div>
+          </div>
         )}
 
-        {displayLocation && (
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <MapPin className="h-4 w-4 text-[#0377F9] stroke-2" strokeWidth={2} fill="none" />
-            <span className="truncate">{displayLocation}</span>
+        {opening_hours && !isEvent && (
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <div className="flex items-center gap-2 text-xs text-gray-600">
+              <Clock className="h-3 w-3" />
+              <span>{opening_hours}</span>
+            </div>
           </div>
         )}
       </CardContent>
