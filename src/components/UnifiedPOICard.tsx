@@ -218,49 +218,8 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
               </div>
             )}
 
-            {displayPrice && (
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                <Euro className="h-3 w-3" />
-                <span>{displayPrice}</span>
-              </div>
-            )}
-
-            {displayDuration && (
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                <Clock className="h-3 w-3" />
-                <span>{displayDuration}</span>
-              </div>
-            )}
-
-            {target_audience && target_audience !== 'everyone' && (
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                <Users className="h-3 w-3" />
-                <span>{target_audience}</span>
-              </div>
-            )}
           </div>
         </div>
-
-        {/* Event specific details */}
-        {isEvent && displayStartDate && displayEndDate && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <Calendar className="h-3 w-3" />
-              <span>{formatDate(displayStartDate)}</span>
-              <Clock className="h-3 w-3 ml-1" />
-              <span>{formatTime(displayStartDate)} - {formatTime(displayEndDate)}</span>
-            </div>
-          </div>
-        )}
-
-        {opening_hours && !isEvent && (
-          <div className="mt-3 pt-3 border-t border-gray-100">
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <Clock className="h-3 w-3" />
-              <span>{opening_hours}</span>
-            </div>
-          </div>
-        )}
       </CardContent>
     </Card>
   );
