@@ -73,7 +73,7 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
   }
 
   return (
-    <div className="space-y-4">
+    <section className="space-y-4">
       <CarouselHeader icon={Compass} title={dynamicTitle} subtitle={dynamicSubtitle} />
       
       {/* Performance metrics (dev mode only) */}
@@ -93,9 +93,9 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
         }}
         className="w-full"
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="-ml-3 md:-ml-4">
           {experiences.map((exp, index) => (
-            <CarouselItem key={exp.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
+            <CarouselItem key={exp.id || index} className="pl-3 md:pl-4 basis-4/5 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
               <UnifiedPOICard 
                 id={exp.id}
                 name={exp.name}
@@ -123,7 +123,7 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
       <div className="text-xs text-gray-400 text-right">
         {experiences.length} esperienze • Aggiornato {new Date().toLocaleTimeString()}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -61,7 +61,7 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({
   }
 
   return (
-    <div className="space-y-4">
+    <section className="space-y-4">
       <CarouselHeader icon={Calendar} title={title} subtitle={subtitle} />
       
       {/* Performance metrics (dev mode only) */}
@@ -80,9 +80,9 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({
         }}
         className="w-full"
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="-ml-3 md:-ml-4">
           {events.map((event, index) => (
-            <CarouselItem key={event.id || index} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/4">
+            <CarouselItem key={event.id || index} className="pl-3 md:pl-4 basis-4/5 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
               <EventCard 
                 id={event.id}
                 title={event.name}
@@ -102,7 +102,7 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({
       <div className="text-xs text-gray-400 text-right">
         {events.length} eventi • Aggiornato {new Date().toLocaleTimeString()}
       </div>
-    </div>
+    </section>
   );
 };
 
