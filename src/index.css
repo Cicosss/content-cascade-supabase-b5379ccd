@@ -15,3 +15,27 @@
 @import './styles/services-optimized.css';
 @import './styles/zIndex.css';
 @import './styles/sidebar.css';
+
+/* Google Maps CSS Isolation */
+.map-isolation-container {
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+.map-instance-isolated {
+  contain: strict;
+  will-change: auto;
+}
+
+/* Protect POI cards from Google Maps interference */
+.poi-card-protected {
+  contain: layout style;
+  will-change: auto !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.poi-card-protected * {
+  will-change: auto !important;
+  transform: none !important;
+}
