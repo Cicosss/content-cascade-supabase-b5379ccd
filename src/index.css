@@ -33,14 +33,10 @@
 
 /* Robust POI Card Protection */
 .poi-card-protected {
-  contain: strict !important;
+  contain: layout style !important;
   will-change: auto !important;
   transform: none !important;
   transition: box-shadow 300ms ease !important;
-  width: auto !important;
-  height: auto !important;
-  max-width: none !important;
-  max-height: none !important;
 }
 
 .poi-card-protected * {
