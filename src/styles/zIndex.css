@@ -63,8 +63,3 @@
 .force-header-level {
   z-index: 5000 !important;
 }
-
-/* Mappa container z-index custom */
-.z-map-container-custom {
-  z-index: 10 !important;
-}

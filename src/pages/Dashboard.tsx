@@ -1,47 +1,38 @@
 
 import React from 'react';
-import Layout from '@/components/Layout';
-import { DashboardProvider } from '@/contexts/DashboardContext';
-import { DashboardErrorBoundary } from '@/components/dashboard/error-boundaries/DashboardErrorBoundary';
-import { DashboardLayout } from '@/components/dashboard/mobile/DashboardLayout';
-import { DashboardHeaderContainer } from '@/components/dashboard/mobile/containers/DashboardHeaderContainer';
-import { DashboardMainSectionContainer } from '@/components/dashboard/mobile/containers/DashboardMainSectionContainer';
-import { DashboardContentContainer } from '@/components/dashboard/mobile/containers/DashboardContentContainer';
-import { DashboardDebugContainer } from '@/components/dashboard/mobile/containers/DashboardDebugContainer';
+import MobileDashboardContainer from '@/components/dashboard/mobile/MobileDashboardContainer';
 
 /**
- * Dashboard - Component principale della dashboard
+ * Main Dashboard Page - Refactored for Mobile-First Architecture
  * 
- * Architettura:
- * ├── DashboardProvider (Context per state management)
- * ├── DashboardLayout (Wrapper presentational)
- * ├── DashboardHeaderContainer (Smart component per header)
- * ├── DashboardMainSectionContainer (Smart component per mappa e widget)
- * ├── DashboardContentContainer (Smart component per contenuti)
- * └── DashboardDebugContainer (Smart component per debug tools)
+ * Architettura dei Componenti:
  * 
- * Principi applicati:
- * - Separazione netta tra container (smart) e presentational (dumb) components
- * - State management centralizzato tramite Context API
- * - Riduzione prop drilling attraverso hook personalizzati
- * - Responsabilità singola per ogni componente
- * - Interfacce chiare e ben documentate
+ * Dashboard (Page)
+ * └── MobileDashboardContainer (Smart Container)
+ *     ├── MobileDashboardView (Mobile Presentation)
+ *     │   ├── MobileHeader (Mobile Header)
+ *     │   ├── MobileMapSection (Mobile Map)
+ *     │   ├── MobileWidgetsSection (Mobile Widgets)
+ *     │   └── MobileContentSection (Mobile Content)
+ *     └── DesktopDashboardView (Desktop Presentation)
+ *         ├── DesktopHeader (Desktop Header)
+ *         ├── DesktopMainSection (Desktop Main)
+ *         ├── DesktopContentSection (Desktop Content)
+ *         └── DesktopDebugSection (Desktop Debug)
+ * 
+ * Principi Applicati:
+ * ✅ Gerarchia componenti chiara (albero genealogico)
+ * ✅ Container (Smart) vs Presentational (Dumb) separation
+ * ✅ Context usage per ridurre prop drilling
+ * ✅ Single responsibility per ogni componente
+ * ✅ Mobile-first responsive design
+ * ✅ Performance optimizations (memo, lazy loading)
+ * ✅ Clear component interfaces e TypeScript types
+ * ✅ Error boundaries strategicamente posizionati
  */
-const Dashboard = () => {
-  return (
-    <DashboardErrorBoundary>
-      <DashboardProvider>
-        <Layout>
-          <DashboardLayout>
-            <DashboardHeaderContainer />
-            <DashboardMainSectionContainer />
-            <DashboardContentContainer />
-            <DashboardDebugContainer />
-          </DashboardLayout>
-        </Layout>
-      </DashboardProvider>
-    </DashboardErrorBoundary>
-  );
+
+const Dashboard: React.FC = () => {
+  return <MobileDashboardContainer />;
 };
 
 export default Dashboard;

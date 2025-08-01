@@ -114,17 +114,17 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     if (boundsTimeoutRef.current) clearTimeout(boundsTimeoutRef.current);
     if (stabilizationTimeoutRef.current) clearTimeout(stabilizationTimeoutRef.current);
 
-    // Immediate cache check with throttling
+    // Immediate cache check with reduced timing
     boundsTimeoutRef.current = setTimeout(() => {
       console.log('🗺️ Cache check for bounds:', newBounds);
       setMapBounds(newBounds);
-    }, 500);
+    }, 100);
 
-    // Stabilized fetch (for fresh data if needed) with longer delay
+    // Stabilized fetch (for fresh data if needed) with reduced delay
     stabilizationTimeoutRef.current = setTimeout(() => {
       console.log('🔄 Stabilized bounds change:', newBounds);
       fetchPOIs(newBounds);
-    }, 3000); // Increased from 2000ms to 3000ms
+    }, 300); // Reduced from 3000ms to 300ms
   }, [mapInstance, fetchPOIs]);
 
   // User interaction tracking

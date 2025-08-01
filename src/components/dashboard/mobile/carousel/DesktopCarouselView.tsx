@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import CarouselHeader from '@/components/ui/CarouselHeader';
 import UnifiedPOICard from '@/components/UnifiedPOICard';
 import EventCard from '@/components/EventCard';
 import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { LucideIcon } from 'lucide-react';
-import { useSectionCarousel, SectionType } from '@/hooks/useSectionCarousel';
+import { SectionType } from '@/hooks/useSectionCarousel';
 
 import {
   Carousel,
@@ -15,26 +15,43 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-interface SectionCarouselProps {
+/**
+ * Presentational Component (Dumb) - Desktop Carousel View
+ * 
+ * Responsabilità:
+ * - Rendering carousel ottimizzato per desktop
+ * - Controlli navigazione visibili
+ * - Layout cards responsive per schermi grandi
+ * - Metriche performance dettagliate
+ */
+
+interface DesktopCarouselViewProps {
+  data: any[];
+  isLoading: boolean;
+  error: any;
+  retry: () => void;
+  isEmpty: boolean;
+  metrics: any;
+  categories: string[];
   section: SectionType;
   icon: LucideIcon;
   title: string;
   subtitle: string;
-  withChildren?: boolean;
 }
 
-const SectionCarousel: React.FC<SectionCarouselProps> = ({ 
+const DesktopCarouselView: React.FC<DesktopCarouselViewProps> = memo(({ 
+  data,
+  isLoading,
+  error,
+  retry,
+  isEmpty,
+  metrics,
+  categories,
   section,
   icon,
   title,
-  subtitle,
-  withChildren = false
+  subtitle
 }) => {
-  const { data, isLoading, error, retry, isEmpty, metrics, categories } = useSectionCarousel(section, {
-    withChildren,
-    limit: 8
-  });
-
   // Show loading state
   if (isLoading) {
     return <CarouselLoadingState carouselType={section.toLowerCase()} />;
@@ -43,12 +60,12 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   // Show error state with recovery options
   if (error) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 carousel-container-protected">
         <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
         <CarouselErrorBoundary 
           error={error} 
           onRetry={retry}
-          showDetails={true}
+          showDetails={true} // Dettagli completi su desktop
         />
       </div>
     );
@@ -57,7 +74,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   // Show empty state
   if (isEmpty) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 carousel-container-protected">
         <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
         <div className="text-center py-8 text-gray-500">
           {React.createElement(icon, { className: "h-12 w-12 mx-auto mb-4 opacity-50" })}
@@ -135,6 +152,8 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
       </div>
     </section>
   );
-};
+});
 
-export default SectionCarousel;
+DesktopCarouselView.displayName = 'DesktopCarouselView';
+
+export default DesktopCarouselView;
