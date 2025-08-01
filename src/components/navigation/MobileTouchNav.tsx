@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Map, Calendar, Heart, Award, LucideIcon } from 'lucide-react';
+import { Map, Calendar, Heart, Award, LucideIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface NavItem {
@@ -11,7 +11,6 @@ interface NavItem {
 }
 
 const navigationItems: NavItem[] = [
-  { id: 'home', label: 'Home', icon: Home, path: '/' },
   { id: 'scopri', label: 'Scopri', icon: Map, path: '/dashboard' },
   { id: 'oggi', label: 'Oggi', icon: Calendar, path: '/oggi' },
   { id: 'preferiti', label: 'Preferiti', icon: Heart, path: '/favorites' },
@@ -29,7 +28,7 @@ export const MobileTouchNav: React.FC<MobileTouchNavProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedItem, setSelectedItem] = useState('home');
+  const [selectedItem, setSelectedItem] = useState('scopri');
   const [pressedItem, setPressedItem] = useState<string | null>(null);
 
   // Update selected item based on current path
