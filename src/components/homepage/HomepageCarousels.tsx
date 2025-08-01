@@ -1,31 +1,13 @@
 import React from 'react';
-import MobileCarouselContainer from '@/components/dashboard/mobile/carousel/MobileCarouselContainer';
+import HomepageSectionCarousel from './HomepageSectionCarousel';
 import MobileContainer from '@/components/ui/MobileContainer';
 import { UtensilsCrossed, Calendar, Mountain, PartyPopper, MapPin } from 'lucide-react';
-
-/**
- * Homepage Carousels - Refactored for Mobile-First Architecture
- * 
- * Architettura dei Componenti:
- * 
- * HomepageCarousels (Presentation)
- * └── MobileCarouselContainer (Smart Container) x5
- *     ├── MobileCarouselView (Mobile Presentation)
- *     └── DesktopCarouselView (Desktop Presentation)
- * 
- * Principi Applicati:
- * ✅ Container pattern per gestione logica carousel
- * ✅ Componenti specializzati per mobile/desktop
- * ✅ Consistent component interfaces
- * ✅ Performance optimization con lazy loading
- * ✅ Single responsibility per ogni carousel
- */
 
 const HomepageCarousels: React.FC = () => {
   return (
     <MobileContainer variant="default" className="space-y-8 md:space-y-16">
       {/* Gusto & Sapori */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Gusto & Sapori"
         icon={UtensilsCrossed}
         title="Gusto & Sapori"
@@ -34,7 +16,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Eventi & Spettacoli */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Eventi"
         icon={Calendar}
         title="Eventi & Spettacoli"
@@ -43,7 +25,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Natura & Avventura */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Natura & Avventura"
         icon={Mountain}
         title="Natura & Avventura"
@@ -52,7 +34,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Divertimento & Famiglia */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Divertimento & Famiglia"
         icon={PartyPopper}
         title="Divertimento & Famiglia"
@@ -61,7 +43,7 @@ const HomepageCarousels: React.FC = () => {
       />
 
       {/* Cultura & Territorio */}
-      <MobileCarouselContainer
+      <HomepageSectionCarousel
         section="Cultura & Territorio"
         icon={MapPin}
         title="Cultura & Territorio"

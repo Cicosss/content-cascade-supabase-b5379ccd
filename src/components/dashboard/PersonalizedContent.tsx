@@ -129,32 +129,34 @@ const PersonalizedContent = () => {
   return (
     <MobileContainer variant="default" paddingTop="md" paddingBottom="lg">
       <div className="space-y-6 md:space-y-8">
-        <div className="space-y-4">
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-800">
-                I Tuoi Contenuti Personalizzati
-              </h2>
-              <p className="text-slate-600 mt-1">
-                Scopri esperienze su misura per te in Romagna
-              </p>
+        <Card className="p-4 md:p-6">
+          <div className="space-y-4">
+            <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-800">
+                  I Tuoi Contenuti Personalizzati
+                </h2>
+                <p className="text-slate-600 mt-1">
+                  Scopri esperienze su misura per te in Romagna
+                </p>
+              </div>
+              <SortingDropdown 
+                sortBy={sortBy} 
+                onSortChange={setSortBy} 
+              />
             </div>
-            <SortingDropdown 
-              sortBy={sortBy} 
-              onSortChange={setSortBy} 
+            
+            <ExperienceFilters 
+              filters={activeFilters}
+              setFilters={handleFilterChange}
+            />
+            
+            <AppliedFilters 
+              filters={activeFilters}
+              onRemoveFilter={handleRemoveFilter}
             />
           </div>
-          
-          <ExperienceFilters 
-            filters={activeFilters}
-            setFilters={handleFilterChange}
-          />
-          
-          <AppliedFilters 
-            filters={activeFilters}
-            onRemoveFilter={handleRemoveFilter}
-          />
-        </div>
+        </Card>
 
         <div className="space-y-6 md:space-y-8">
           <SectionCarousel 
