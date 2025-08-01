@@ -37,7 +37,7 @@ export const useSectionCarousel = (
   // Use appropriate carousel API based on section
   const carouselType = section === 'Eventi' ? 'events' : 'experiences';
   
-  const result = useCarouselAPI(carouselType as any, filters, {
+  const result = useCarouselAPI(carouselType, filters, {
     enabled: categories.length > 0 || section === 'Eventi'
   });
 
@@ -49,7 +49,7 @@ export const useSectionCarousel = (
 
     // Filter experiences by section categories
     return result.data.filter((item: any) => 
-      categories.includes(item.category)
+      categories.length === 0 || categories.includes(item.category)
     ).slice(0, limit);
   }, [result.data, section, categories, limit]);
 
