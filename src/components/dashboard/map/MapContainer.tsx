@@ -4,7 +4,7 @@ import { useMapFilters as useStableMapFilters } from '@/hooks/useStableFilters';
 import { useMapContext } from '@/contexts/MapContext';
 import { useMapFilters as useMapFiltersContext } from '@/contexts/MapFiltersContext';
 import { useMapUI } from '@/contexts/MapUIContext';
-import { usePOIFetchManager } from '@/hooks/usePOIFetchManager';
+import { useSimplifiedPOIData } from '@/hooks/useSimplifiedPOIData';
 import { POI, POIFilters } from '@/types/poi';
 import MapCore from './MapCore';
 import OptimizedPOIPreview from '../OptimizedPOIPreview';
@@ -47,8 +47,8 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
 
   const stableFilters = useStableMapFilters(rawPoiFilters, mapBounds);
 
-  // Use the new POI fetch manager
-  const { pois, fetchPOIs, isLoading, error, isCircuitBreakerOpen } = usePOIFetchManager({
+  // Use the simplified POI data service
+  const { pois, fetchPOIs, isLoading, error, getCacheStats } = useSimplifiedPOIData({
     initialFilters: stableFilters
   });
 
@@ -79,13 +79,13 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
     setActiveFilters(stableFilters);
   }, [stableFilters, setActiveFilters]);
 
-  // Fetch POIs only when map is ready and filters are stable
+  // Fetch POIs when map is ready and filters are stable
   useEffect(() => {
-    if (!mapInstance || isCircuitBreakerOpen) return;
+    if (!mapInstance) return;
     
-    console.log('🗺️ MapContainer: Triggering managed POI fetch');
+    console.log('🗺️ MapContainer: Triggering simplified POI fetch');
     fetchPOIs(stableFilters);
-  }, [mapInstance, stableFilters, fetchPOIs, isCircuitBreakerOpen]);
+  }, [mapInstance, stableFilters, fetchPOIs]);
 
   // Handlers
   const handlePOISelect = useCallback((poi: POI) => {
@@ -132,17 +132,6 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
         />
       </Suspense>
 
-      {/* Circuit breaker indicator */}
-      {isCircuitBreakerOpen && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
-          <div className="bg-orange-100 border border-orange-300 rounded-lg px-4 py-2 shadow-lg">
-            <span className="text-sm font-medium text-orange-800">
-              ⏸️ Sistema in pausa per ottimizzazione
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* POI Preview */}
       {selectedPOI && (
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 map-poi-preview">
@@ -165,7 +154,8 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
         isVisible={process.env.NODE_ENV === 'development'}
         filters={stableFilters}
         poiCount={validPOICount}
-        isCircuitBreakerOpen={isCircuitBreakerOpen}
+        isCircuitBreakerOpen={false}
+        cacheStats={getCacheStats()}
       />
     </>
   );

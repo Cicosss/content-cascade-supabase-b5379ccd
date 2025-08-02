@@ -10,8 +10,13 @@ interface MapDebugPanelProps {
   poiCount: number;
   isCircuitBreakerOpen: boolean;
   cacheStats?: {
-    hitRate: number;
-    totalRequests: number;
+    hitRate?: number;
+    totalRequests?: number;
+    totalEntries?: number;
+    freshEntries?: number;
+    staleEntries?: number;
+    totalPOIs?: number;
+    memoryUsage?: string;
   };
   networkHealth?: {
     latency: number;
@@ -110,12 +115,38 @@ export const MapDebugPanel: React.FC<MapDebugPanelProps> = ({
           <div className="space-y-1">
             <span className="font-medium">Cache:</span>
             <div className="grid grid-cols-2 gap-1">
-              <span>Hit Rate:</span>
-              <span className="text-right">
-                {(cacheStats.hitRate * 100).toFixed(1)}%
-              </span>
-              <span>Requests:</span>
-              <span className="text-right">{cacheStats.totalRequests}</span>
+              {cacheStats.hitRate !== undefined && (
+                <>
+                  <span>Hit Rate:</span>
+                  <span className="text-right">
+                    {(cacheStats.hitRate * 100).toFixed(1)}%
+                  </span>
+                </>
+              )}
+              {cacheStats.totalRequests !== undefined && (
+                <>
+                  <span>Requests:</span>
+                  <span className="text-right">{cacheStats.totalRequests}</span>
+                </>
+              )}
+              {cacheStats.totalPOIs !== undefined && (
+                <>
+                  <span>POIs:</span>
+                  <span className="text-right">{cacheStats.totalPOIs}</span>
+                </>
+              )}
+              {cacheStats.freshEntries !== undefined && (
+                <>
+                  <span>Fresh:</span>
+                  <span className="text-right">{cacheStats.freshEntries}</span>
+                </>
+              )}
+              {cacheStats.memoryUsage && (
+                <>
+                  <span>Memory:</span>
+                  <span className="text-right">{cacheStats.memoryUsage}</span>
+                </>
+              )}
             </div>
           </div>
         )}
