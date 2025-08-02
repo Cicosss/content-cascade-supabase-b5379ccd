@@ -45,18 +45,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           style={{ backgroundImage: `url(${mobileImageUrl})` }}
         />
       ) : (
-        // Desktop/Mobile video background con copertura completa
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Container video che copre tutta la superficie */}
-          <div 
-            className="absolute inset-0 w-full h-full"
-            style={{
-              willChange: 'transform'
-            }}
-          >
+        // Video background che copre completamente la superficie
+        <>
+          <div className="absolute inset-0 w-full h-full overflow-hidden">
             <iframe
               src={embedUrl}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -65,14 +59,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
               onError={handleIframeError}
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
+                top: '50%',
+                left: '50%',
                 width: '100vw',
-                height: '100vh',
-                minWidth: '100%',
-                minHeight: '100%',
-                transform: 'scale(1.02)',
-                transformOrigin: 'center center',
+                height: '56.25vw', // 16:9 aspect ratio
+                minWidth: '177.78vh', // 16:9 aspect ratio
+                minHeight: '100vh',
+                transform: 'translate(-50%, -50%)',
                 pointerEvents: 'none'
               }}
               title="YouTube video background"
@@ -95,7 +88,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
               </div>
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
