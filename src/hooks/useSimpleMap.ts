@@ -34,13 +34,15 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   // Initialize marker icons
   const { userIcon } = useMarkerIcons(isLoaded);
 
-  // Prepare POI filters with proper type casting
+  // Prepare POI filters with proper type casting and bounds logic
   const poiFilters: POIFilters = {
     activityTypes: filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto') 
       ? filters.activityTypes 
       : [],
     withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
-    bounds: mapBounds
+    bounds: (filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto')) 
+      ? null // Don't apply bounds when specific categories are selected
+      : mapBounds // Apply bounds only when showing all categories
   };
 
   // Use smart POI fetching with geographic cache

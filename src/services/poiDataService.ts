@@ -86,7 +86,7 @@ export class POIDataService {
       console.log('🌍 [POI SERVICE] No specific categories - showing ALL approved POIs');
     }
 
-    // Apply bounds filter with buffer if provided (for map-based search)
+    // Apply bounds filter only when provided (not when showing specific categories)
     if (filters.bounds) {
       console.log('🗺️ Applicando filtro geografico:', filters.bounds);
       
@@ -106,7 +106,7 @@ export class POIDataService {
         .gte('longitude', bufferedBounds.west)
         .lte('longitude', bufferedBounds.east);
     } else {
-      console.log('🌍 No bounds filter - showing all geographic POIs');
+      console.log('🌍 No bounds filter - showing POIs from entire region');
     }
 
     // Apply children filter
