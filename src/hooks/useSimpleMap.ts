@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useLocation } from '@/contexts/LocationContext';
 import { useGoogleMapsLoader } from '@/hooks/useGoogleMapsLoader';
-import { useSmartPOIFetching } from '@/hooks/useSmartPOIFetching';
+import { useSimplifiedPOIData } from '@/hooks/useSimplifiedPOIData';
 import { useOptimizedMarkerPool } from '@/hooks/useOptimizedMarkerPool';
 import { useUserLocationMarker } from '@/hooks/useUserLocationMarker';
 import { useMarkerIcons } from '@/hooks/useMarkerIcons';
@@ -45,10 +45,9 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       : mapBounds // Apply bounds only when showing all categories
   };
 
-  // Use smart POI fetching with geographic cache
-  const { pois, fetchPOIs, isLoading: isLoadingPOIs, getCacheStats } = useSmartPOIFetching({
-    userLocation,
-    filters: poiFilters
+  // Use simplified POI fetching without geographic cache
+  const { pois, fetchPOIs, isLoading: isLoadingPOIs, getCacheStats } = useSimplifiedPOIData({
+    initialFilters: poiFilters
   });
 
   // Initialize map
@@ -125,7 +124,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     // Stabilized fetch (for fresh data if needed) with reduced delay
     stabilizationTimeoutRef.current = setTimeout(() => {
       console.log('🔄 Stabilized bounds change:', newBounds);
-      fetchPOIs(newBounds);
+      const updatedFilters: POIFilters = {
+        ...poiFilters,
+        bounds: (filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto')) 
+          ? null // Don't apply bounds when specific categories are selected
+          : newBounds // Apply bounds only when showing all categories
+      };
+      fetchPOIs(updatedFilters);
     }, 300); // Reduced from 3000ms to 300ms
   }, [mapInstance, fetchPOIs]);
 
@@ -168,7 +173,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   // Trigger initial load when bounds are set
   useEffect(() => {
     if (mapBounds && pois.length === 0) {
-      fetchPOIs(mapBounds);
+      const initialFilters: POIFilters = {
+        ...poiFilters,
+        bounds: (filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto')) 
+          ? null // Don't apply bounds when specific categories are selected
+          : mapBounds // Apply bounds only when showing all categories
+      };
+      fetchPOIs(initialFilters);
     }
   }, [mapBounds, fetchPOIs, pois.length]);
 
@@ -241,6 +252,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     handleCenterOnUser,
     handleClosePreview,
     handleGetDirections,
-    cacheStats: getCacheStats()
+    cacheStats: {
+      ...getCacheStats(),
+      totalTiles: 0,
+      freshTiles: 0,
+      staleTiles: 0,
+      maxPOIs: 1000,
+      maxTiles: 0
+    }
   };
 };
