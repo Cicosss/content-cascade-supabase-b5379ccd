@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { 
   UtensilsCrossed, 
   Landmark, 
@@ -12,6 +13,9 @@ import {
   MountainSnow 
 } from 'lucide-react';
 import { useHeader } from '@/contexts/HeaderContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useNavigate } from 'react-router-dom';
 
 const menuItems = [
   {
@@ -57,6 +61,22 @@ const menuItems = [
 
 export const MobileMenu: React.FC = () => {
   const { isMobileMenuOpen, setMobileMenuOpen, handleNavigation } = useHeader();
+  const { user, signOut } = useAuth();
+  const { profile } = useUserProfile();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+    setMobileMenuOpen(false);
+  };
+
+  const handleAuthNavigation = (path: string) => {
+    navigate(path);
+    setMobileMenuOpen(false);
+  };
+
+  const displayName = profile?.first_name || user?.user_metadata?.first_name || user?.email?.split('@')[0];
 
   return (
     <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -126,6 +146,63 @@ export const MobileMenu: React.FC = () => {
               </div>
             ))}
           </Accordion>
+        </div>
+
+        {/* Auth Section */}
+        <div className="mt-6 pt-4 border-t border-slate-700">
+          {user ? (
+            <div className="space-y-3">
+              {/* User Profile Section */}
+              <div className="flex items-center space-x-3 p-3 bg-slate-800/30 rounded-lg border border-slate-600/20">
+                <Avatar className="w-10 h-10">
+                  <AvatarImage src={profile?.avatar_url || undefined} alt="Avatar" />
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                    <User className="h-5 w-5" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-white truncate">
+                    {displayName}
+                  </div>
+                  <div className="text-xs text-slate-400 truncate">
+                    {user.email}
+                  </div>
+                </div>
+              </div>
+
+              {/* Logout Button */}
+              <Button
+                onClick={handleSignOut}
+                variant="outline"
+                className="w-full min-h-[48px] border-red-500/20 text-red-300 hover:bg-red-500/10 hover:text-red-200 hover:border-red-500/30 bg-transparent transition-all duration-200 active:scale-98 touch-manipulation"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Esci
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {/* Login Button */}
+              <Button
+                onClick={() => handleAuthNavigation('/auth')}
+                variant="outline"
+                className="w-full min-h-[48px] border-blue-500/30 text-blue-300 hover:bg-blue-500/10 hover:text-blue-200 hover:border-blue-500/50 bg-transparent transition-all duration-200 active:scale-98 touch-manipulation"
+              >
+                <User className="h-4 w-4 mr-2" />
+                Accedi
+              </Button>
+              
+              {/* Register Button */}
+              <Button
+                onClick={() => handleAuthNavigation('/auth')}
+                variant="outline"
+                className="w-full min-h-[48px] border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/10 hover:text-emerald-200 hover:border-emerald-500/50 bg-transparent transition-all duration-200 active:scale-98 touch-manipulation"
+              >
+                <User className="h-4 w-4 mr-2" />
+                Registrati
+              </Button>
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>
