@@ -38,7 +38,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {isMobile || videoError || !embedUrl ? (
+      {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
           className="w-full h-full bg-cover bg-center bg-no-repeat"
