@@ -4,13 +4,10 @@ import { Navigation } from '@/components/header/Navigation';
 import { UserActions } from '@/components/header/UserActions';
 import { MobileMenu } from '@/components/header/MobileMenu';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const HeroOverlayNavigation = () => {
   const isMobile = useIsMobile();
-
   if (isMobile) {
-    return (
-      <div className="absolute top-0 left-0 right-0 z-20 w-full">
+    return <div className="absolute top-0 left-0 right-0 z-20 w-full">
         <div className="flex items-center justify-between pt-4 px-4">
           {/* Mobile: Logo piccolo in alto a sinistra */}
           <div className="scale-75">
@@ -23,19 +20,14 @@ const HeroOverlayNavigation = () => {
         
         {/* Titolo e sottotitolo centrati verticalmente */}
         <div className="absolute inset-0 flex flex-col items-start justify-center px-6">
-          <h1 className="text-4xl font-playfair font-bold text-white mb-3 leading-tight">
-            Nel cuore della Romagna
-          </h1>
+          
           <p className="text-lg font-playfair font-light text-white/90 leading-relaxed">
             Il territorio è tra le Tue mani
           </p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="absolute top-0 left-0 right-0 z-20 w-full">
+  return <div className="absolute top-0 left-0 right-0 z-20 w-full">
       <div className="flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-screen-2xl mx-auto">
         {/* Logo */}
         <div className="mr-12 flex">
@@ -55,8 +47,6 @@ const HeroOverlayNavigation = () => {
           <MobileMenu />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default HeroOverlayNavigation;
