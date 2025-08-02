@@ -65,6 +65,7 @@ export const MapUIProvider: React.FC<MapUIProviderProps> = ({ children }) => {
   }, []);
 
   const setLoadingState = useCallback((key: keyof MapUIState['loadingStates'], loading: boolean) => {
+    console.log(`🔄 MapUI: Setting ${key} loading to ${loading}`);
     setUIState(prev => ({
       ...prev,
       loadingStates: { ...prev.loadingStates, [key]: loading }

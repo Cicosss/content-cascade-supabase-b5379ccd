@@ -10,6 +10,9 @@ interface UsePOIFetchManagerProps {
 
 export const usePOIFetchManager = ({ initialFilters }: UsePOIFetchManagerProps) => {
   const [isCircuitBreakerOpen, setIsCircuitBreakerOpen] = useState(false);
+  
+  // Safety timeout to prevent stuck loading states
+  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const fetchCountRef = useRef(0);
   const lastFetchTimeRef = useRef(0);
   const circuitBreakerTimeoutRef = useRef<NodeJS.Timeout>();
@@ -86,8 +89,20 @@ export const usePOIFetchManager = ({ initialFilters }: UsePOIFetchManagerProps) 
 
   const managedFetchPOIs = useCallback(async (filters: POIFilters) => {
     if (shouldPreventFetch(filters)) {
+      console.log('🚫 Fetch prevented by circuit breaker or rate limiting');
       return;
     }
+
+    // Clear any existing loading timeout
+    if (loadingTimeoutRef.current) {
+      clearTimeout(loadingTimeoutRef.current);
+    }
+
+    // Set safety timeout to reset loading state after 10 seconds
+    loadingTimeoutRef.current = setTimeout(() => {
+      console.warn('⏰ Loading timeout triggered - forcing circuit breaker');
+      setIsCircuitBreakerOpen(true);
+    }, 10000);
 
     const now = Date.now();
     const filtersHash = generateFiltersHash(filters);
@@ -114,6 +129,12 @@ export const usePOIFetchManager = ({ initialFilters }: UsePOIFetchManagerProps) 
       await fetchPOIs(filters);
     } catch (error) {
       console.error('❌ Managed fetch error:', error);
+    } finally {
+      // Clear the safety timeout on completion
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+        loadingTimeoutRef.current = null;
+      }
     }
   }, [shouldPreventFetch, generateFiltersHash, fetchPOIs]);
 
@@ -122,6 +143,9 @@ export const usePOIFetchManager = ({ initialFilters }: UsePOIFetchManagerProps) 
     return () => {
       if (circuitBreakerTimeoutRef.current) {
         clearTimeout(circuitBreakerTimeoutRef.current);
+      }
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
       }
     };
   }, []);

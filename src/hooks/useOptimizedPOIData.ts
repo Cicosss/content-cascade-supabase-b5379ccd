@@ -97,9 +97,9 @@ export const useOptimizedPOIData = () => {
       // Set empty array as fallback
       setPois([]);
     } finally {
-      if (!abortControllerRef.current?.signal.aborted) {
-        setIsLoading(false);
-      }
+      // Always reset loading state, regardless of abort status
+      setIsLoading(false);
+      devLog.debug('🔄 POI fetch completed, loading state reset');
     }
   }, [generateCacheKey, poiService, showErrorToast, error]);
 
