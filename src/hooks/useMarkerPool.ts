@@ -14,7 +14,21 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
 
   // Manage POI markers with efficient pooling
   useEffect(() => {
-    if (!map || !window.google?.maps || !poiIcon) return;
+    if (!map || !window.google?.maps || !poiIcon) {
+      console.log('⚠️ Marker pool skipped - missing requirements:', { 
+        hasMap: !!map, 
+        hasGoogleMaps: !!window.google?.maps, 
+        hasIcon: !!poiIcon,
+        mapType: map ? map.constructor.name : 'null'
+      });
+      return;
+    }
+
+    // Validate that map is actually a Google Maps instance
+    if (!(map instanceof google.maps.Map)) {
+      console.error('❌ Invalid map instance provided to marker pool:', map);
+      return;
+    }
 
     const currentPOIIds = new Set(validPOIs.map(poi => poi.id));
     
@@ -46,9 +60,14 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
         markerPoolRef.current.set(poi.id, marker);
       }
 
-      // Show marker on map
-      marker.setMap(map);
-      marker.setVisible(true);
+      // Show marker on map with error handling
+      try {
+        marker.setMap(map);
+        marker.setVisible(true);
+        console.log('✅ Marker created successfully for POI:', poi.name);
+      } catch (error) {
+        console.error('❌ Failed to set marker on map for POI:', poi.name, error);
+      }
     });
 
   }, [map, validPOIs, poiIcon, onPOISelect]);
