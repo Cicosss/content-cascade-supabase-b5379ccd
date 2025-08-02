@@ -22,8 +22,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const [mapBounds, setMapBounds] = useState<any>(null);
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
-  
-  const isMapInstanceReady = useRef(false);
+  const [isMapInstanceReady, setIsMapInstanceReady] = useState(false);
   
   const boundsTimeoutRef = useRef<NodeJS.Timeout>();
   const interactionTimeoutRef = useRef<NodeJS.Timeout>();
@@ -85,7 +84,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       // Wait for map to be fully ready before enabling markers
       setTimeout(() => {
         console.log('🗺️ Map instance is now ready for markers');
-        isMapInstanceReady.current = true;
+        setIsMapInstanceReady(true);
       }, 100);
     } catch (error) {
       console.error('Error initializing map:', error);
@@ -193,11 +192,11 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
 
   // Marker management with optimized pooling - only when map is ready
   const { clearAllMarkers, validPOICount } = useOptimizedMarkerPool({
-    map: isMapInstanceReady.current ? mapInstance : null,
-    pois: isMapInstanceReady.current ? pois : [],
+    map: isMapInstanceReady ? mapInstance : null,
+    pois: isMapInstanceReady ? pois : [],
     userLocation,
     onPOISelect: setSelectedPOI,
-    isGoogleMapsLoaded: isLoaded && isMapInstanceReady.current
+    isGoogleMapsLoaded: isLoaded && isMapInstanceReady
   });
 
   // User location marker
