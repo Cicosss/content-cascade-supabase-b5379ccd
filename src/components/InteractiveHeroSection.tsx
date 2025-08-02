@@ -4,8 +4,11 @@ import HeroBackground from './hero/HeroBackground';
 import HeroBrandSection from './hero/HeroBrandSection';
 import HeroFeatures from './hero/HeroFeatures';
 import HeroOverlayNavigation from './hero/HeroOverlayNavigation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const InteractiveHeroSection = () => {
+  const isMobile = useIsMobile();
+
   return (
     <div className="relative w-full h-[100svh] md:h-screen overflow-hidden">
       {/* Dynamic Background with Video/Image */}
@@ -16,15 +19,17 @@ const InteractiveHeroSection = () => {
 
       {/* Content Overlay - Restructured */}
       <div className="relative z-10 h-full flex flex-col text-white">
-        {/* Brand Section - Left aligned and vertically centered */}
+        {/* Brand Section - Left aligned and vertically centered (solo desktop) */}
         <div className="flex-1 flex items-center justify-start">
           <HeroBrandSection />
         </div>
         
-        {/* Key Features - Bottom */}
-        <div className="pb-6 md:pb-8 lg:pb-12 px-3 md:px-4 lg:px-6">
-          <HeroFeatures />
-        </div>
+        {/* Key Features - Bottom (solo desktop) */}
+        {!isMobile && (
+          <div className="pb-6 md:pb-8 lg:pb-12 px-3 md:px-4 lg:px-6">
+            <HeroFeatures />
+          </div>
+        )}
       </div>
     </div>
   );

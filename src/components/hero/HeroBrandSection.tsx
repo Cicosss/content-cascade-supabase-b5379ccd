@@ -1,7 +1,15 @@
 
 import React from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const HeroBrandSection = () => {
+  const isMobile = useIsMobile();
+
+  // Su mobile nascondiamo completamente questa sezione
+  if (isMobile) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col items-start justify-center w-full text-left md:text-left px-4 md:px-8 lg:px-16">
       <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 leading-tight">
