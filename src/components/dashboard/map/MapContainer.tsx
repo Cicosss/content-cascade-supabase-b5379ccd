@@ -38,10 +38,14 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
                          filters.activityTypes.includes('tutto') ||
                          filters.activityTypes.includes('tutte');
     
+    // Only apply bounds filter when showing "all" categories
+    // When specific categories are selected, ignore bounds to show ALL POIs of that category
+    const shouldApplyBounds = shouldShowAll;
+    
     return {
       activityTypes: shouldShowAll ? [] : filters.activityTypes,
       withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
-      bounds: mapBounds
+      bounds: shouldApplyBounds ? mapBounds : null
     } as POIFilters;
   }, [filters.activityTypes, filters.withChildren, mapBounds]);
 

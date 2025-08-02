@@ -71,7 +71,7 @@ export class SimplifiedPOIService {
       console.log('👨‍👩‍👧‍👦 [SIMPLIFIED] Applying family filter');
     }
 
-    // Apply bounds filter (with small buffer to ensure POIs near edges are included)
+    // Apply bounds filter only when provided (not when showing specific categories)
     if (filters.bounds) {
       const buffer = 0.01; // ~1km buffer
       query = query
@@ -88,6 +88,8 @@ export class SimplifiedPOIService {
           east: filters.bounds.east + buffer
         }
       });
+    } else {
+      console.log('🌍 [SIMPLIFIED] No bounds filter - showing POIs from entire region');
     }
 
     const { data, error } = await query;
