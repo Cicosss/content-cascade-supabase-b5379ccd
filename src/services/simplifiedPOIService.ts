@@ -32,6 +32,15 @@ export class SimplifiedPOIService {
     }
 
     console.log('🔍 [SIMPLIFIED] Fetching fresh data from database');
+    
+    // Get total approved POIs count for debugging
+    const { count: totalApprovedCount } = await supabase
+      .from('points_of_interest')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'approved');
+    
+    console.log('📊 [SIMPLIFIED] Total approved POIs in database:', totalApprovedCount);
+    
     const categories = getCategoriesForFilters(filters.activityTypes);
     
     console.log('🔍 [SIMPLIFIED] Query parameters:', {
@@ -52,11 +61,8 @@ export class SimplifiedPOIService {
     if (categories.length > 0) {
       query = query.in('category', categories);
       console.log('🎯 [SIMPLIFIED] Applying category filter:', categories);
-    } else if (filters.activityTypes.length > 0) {
-      // If activityTypes are specified but no categories mapped, something is wrong
-      console.warn('⚠️ [SIMPLIFIED] Activity types specified but no categories mapped:', filters.activityTypes);
     } else {
-      console.log('🌍 [SIMPLIFIED] No category filter - showing all approved POIs');
+      console.log('🌍 [SIMPLIFIED] No category filter or empty categories - showing all approved POIs');
     }
 
     // Apply children filter

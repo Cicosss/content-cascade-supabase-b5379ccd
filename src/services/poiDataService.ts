@@ -80,7 +80,7 @@ export class POIDataService {
         query = query.in('category', categories);
         console.log('🎯 [POI SERVICE] Applying category filter:', categories);
       } else {
-        console.warn('⚠️ [POI SERVICE] Activity types specified but no categories mapped!');
+        console.log('🌍 [POI SERVICE] Empty categories means show all approved POIs');
       }
     } else {
       console.log('🌍 [POI SERVICE] No specific categories - showing ALL approved POIs');

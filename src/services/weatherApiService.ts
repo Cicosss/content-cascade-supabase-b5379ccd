@@ -176,14 +176,20 @@ class WeatherAPIService {
   }
 
   private transformWeatherData(data: OpenMeteoResponse, location: string): WeatherData {
+    // Add null safety for data.current
+    if (!data?.current) {
+      console.warn('⚠️ Weather data.current is null/undefined, using fallback');
+      return this.getFallbackWeatherData();
+    }
+
     const weatherInfo = this.getWeatherDescription(data.current.weather_code);
     
     return {
       location,
-      temperature: Math.round(data.current.temperature_2m),
+      temperature: Math.round(data.current.temperature_2m || 0),
       condition: weatherInfo.condition,
-      humidity: data.current.relative_humidity_2m,
-      wind: Math.round(data.current.wind_speed_10m),
+      humidity: data.current.relative_humidity_2m || 0,
+      wind: Math.round(data.current.wind_speed_10m || 0),
       description: weatherInfo.description,
       icon: weatherInfo.icon
     };
