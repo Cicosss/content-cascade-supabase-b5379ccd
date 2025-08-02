@@ -58,10 +58,10 @@ export const useOptimizedPOIData = () => {
           return await poiService.fetchStandardPOIs(filters);
         },
         {
-          retryCount: 2,
-          timeout: 8000,
+          retryCount: 3, // Increased retry count
+          timeout: 10000, // Increased timeout
           cache: true,
-          cacheTTL: 300000, // 5 minutes
+          cacheTTL: 120000, // Reduced to 2 minutes for fresher data
           priority: 'high'
         },
         cacheKey

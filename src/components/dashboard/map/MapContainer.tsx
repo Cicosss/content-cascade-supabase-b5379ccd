@@ -8,6 +8,7 @@ import { usePOIFetchManager } from '@/hooks/usePOIFetchManager';
 import { POI, POIFilters } from '@/types/poi';
 import MapCore from './MapCore';
 import OptimizedPOIPreview from '../OptimizedPOIPreview';
+import { MapDebugPanel } from '../MapDebugPanel';
 
 interface MapContainerProps {
   filters: {
@@ -50,6 +51,18 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
   const { pois, fetchPOIs, isLoading, error, isCircuitBreakerOpen } = usePOIFetchManager({
     initialFilters: stableFilters
   });
+
+  // Debug logging for filter changes
+  useEffect(() => {
+    console.log('🔍 MapContainer: Filters changed', {
+      original: filters,
+      stable: stableFilters,
+      hasBounds: !!stableFilters.bounds,
+      boundsArea: stableFilters.bounds ? 
+        `${(stableFilters.bounds.north - stableFilters.bounds.south).toFixed(4)} x ${(stableFilters.bounds.east - stableFilters.bounds.west).toFixed(4)}` : 'N/A',
+      poiCount: pois.length
+    });
+  }, [filters, stableFilters, pois.length]);
 
   // Update loading state
   useEffect(() => {
@@ -146,6 +159,14 @@ const MapContainer: React.FC<MapContainerProps> = memo(({ filters }) => {
           </Suspense>
         </div>
       )}
+
+      {/* Debug Panel - Development only */}
+      <MapDebugPanel
+        isVisible={process.env.NODE_ENV === 'development'}
+        filters={stableFilters}
+        poiCount={validPOICount}
+        isCircuitBreakerOpen={isCircuitBreakerOpen}
+      />
     </>
   );
 });

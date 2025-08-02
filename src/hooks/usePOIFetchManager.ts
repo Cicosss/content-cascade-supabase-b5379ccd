@@ -18,9 +18,10 @@ export const usePOIFetchManager = ({ initialFilters }: UsePOIFetchManagerProps) 
   const { pois, fetchPOIs, isLoading, error } = useOptimizedPOIData();
   const { toast } = useToast();
 
-  // Circuit breaker parameters
-  const MAX_FETCHES_PER_MINUTE = 10;
-  const CIRCUIT_BREAKER_TIMEOUT = 30000; // 30 seconds
+  // Optimized circuit breaker parameters for interactive maps
+  const MAX_FETCHES_PER_MINUTE = 30; // Increased from 10 to 30
+  const CIRCUIT_BREAKER_TIMEOUT = 15000; // Reduced from 30 to 15 seconds
+  const MIN_FETCH_INTERVAL = 1000; // Reduced from 2000 to 1000ms
 
   const generateFiltersHash = useCallback((filters: POIFilters): string => {
     // Create stable hash ignoring micro-changes in bounds
@@ -53,8 +54,8 @@ export const usePOIFetchManager = ({ initialFilters }: UsePOIFetchManagerProps) 
       return true;
     }
 
-    // Rate limiting check
-    if (now - lastFetchTimeRef.current < 2000) { // Minimum 2 seconds between fetches
+    // Rate limiting check with optimized interval
+    if (now - lastFetchTimeRef.current < MIN_FETCH_INTERVAL) {
       console.log('⏱️ Rate limit: too soon since last fetch');
       return true;
     }

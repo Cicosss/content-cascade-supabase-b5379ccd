@@ -18,9 +18,9 @@ export class POIDataService {
       async () => this.executeSupabaseQuery(filters),
       {
         retryCount: 3,
-        timeout: 10000,
+        timeout: 12000, // Increased timeout for complex queries
         cache: true,
-        cacheTTL: 300000, // 5 minutes
+        cacheTTL: 120000, // Reduced to 2 minutes for fresher data
         priority: 'high'
       } as RequestConfig,
       cacheKey
@@ -77,14 +77,27 @@ export class POIDataService {
       console.log('🌍 Nessun filtro categorie - mostrando TUTTI i POI approvati');
     }
 
-    // Apply bounds filter if provided (for map-based search)
+    // Apply bounds filter with buffer if provided (for map-based search)
     if (filters.bounds) {
       console.log('🗺️ Applicando filtro geografico:', filters.bounds);
+      
+      // Add a small buffer (0.001 degrees ≈ 100m) to include POIs slightly outside the visible area
+      const buffer = 0.001;
+      const bufferedBounds = {
+        north: filters.bounds.north + buffer,
+        south: filters.bounds.south - buffer,
+        east: filters.bounds.east + buffer,
+        west: filters.bounds.west - buffer
+      };
+      
+      console.log('🗺️ Bounds with buffer:', bufferedBounds);
       query = query
-        .gte('latitude', filters.bounds.south)
-        .lte('latitude', filters.bounds.north)
-        .gte('longitude', filters.bounds.west)
-        .lte('longitude', filters.bounds.east);
+        .gte('latitude', bufferedBounds.south)
+        .lte('latitude', bufferedBounds.north)
+        .gte('longitude', bufferedBounds.west)
+        .lte('longitude', bufferedBounds.east);
+    } else {
+      console.log('🌍 No bounds filter - showing all geographic POIs');
     }
 
     // Apply children filter
