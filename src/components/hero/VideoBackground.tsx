@@ -62,7 +62,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 top: '50%',
                 left: '50%',
                 width: isMobile ? '200vw' : '300vw',
-                height: isMobile ? '200vh' : '300vh',
+                height: isMobile ? '300vh' : '300vh',
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'none'
               }}
