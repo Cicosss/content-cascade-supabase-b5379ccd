@@ -50,7 +50,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           <div className="absolute inset-0 w-full h-full overflow-hidden">
             <iframe
               src={embedUrl}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -61,13 +61,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '177.78vh',
-                height: '100vh',
-                minWidth: '100vw',
-                minHeight: '56.25vw',
+                width: '100vw',
+                height: '56.25vw',
+                minWidth: '177.78vh',
+                minHeight: '100vh',
                 transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none',
-                objectFit: 'cover'
+                pointerEvents: 'none'
               }}
               title="YouTube video background"
             />
