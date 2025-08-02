@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="flex flex-1 w-full pt-16 md:pt-20 lg:pt-24">
                   <AppSidebar />
                   <SidebarInset className="flex-1 flex flex-col">
-                    <main className="flex-1 p-3 md:p-4 lg:p-6 relative pb-20 md:pb-0">
+                    <main className="flex-1 py-3 md:py-4 lg:py-6 relative pb-20 md:pb-0">
                       {children}
                     </main>
                     <Footer />
