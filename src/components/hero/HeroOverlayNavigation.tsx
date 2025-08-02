@@ -8,22 +8,19 @@ const HeroOverlayNavigation = () => {
   const isMobile = useIsMobile();
   if (isMobile) {
     return <div className="absolute top-0 left-0 right-0 z-20 w-full">
-        <div className="flex items-center justify-between pt-4 px-4">
-          {/* Mobile: Logo piccolo in alto a sinistra */}
-          <div className="scale-75">
-            <Logo />
+        <div className="flex items-start justify-between pt-4 px-4">
+          {/* Mobile: Logo con slogan sotto */}
+          <div className="flex flex-col items-start">
+            <div className="scale-75">
+              <Logo />
+            </div>
+            <p className="text-base font-playfair font-light text-white/90 leading-relaxed mt-1 ml-2">
+              Il territorio è tra le Tue mani
+            </p>
           </div>
           
           {/* Mobile Menu - In alto a destra */}
           <MobileMenu />
-        </div>
-        
-        {/* Titolo e sottotitolo centrati verticalmente */}
-        <div className="absolute inset-0 flex flex-col items-start justify-center px-6">
-          
-          <p className="text-lg font-playfair font-light text-white/90 leading-relaxed">
-            Il territorio è tra le Tue mani
-          </p>
         </div>
       </div>;
   }
