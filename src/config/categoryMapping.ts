@@ -39,6 +39,17 @@ export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
   'Cultura & Territorio': [] // Nessuna categoria disponibile attualmente
 };
 
+// UNIFIED FILTER MAPPING - Replaces poiCategoryMapping.ts logic
+export const FILTER_TO_CATEGORY_MAPPING: Record<string, string[]> = {
+  'cibo': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Street Food', 'Mercati Locali'],
+  'arte e cultura': ['Musei', 'Storia e Borghi', 'Artigianato Locale'],
+  'parchi e natura': ['Parchi Naturali e Riserve', 'Spiagge', 'Sport'],
+  'divertimento': ['Eventi', 'Vita Notturna', 'Parchi a Tema e Acquatici', 'Attività per Bambini'],
+  'sport': ['Sport'],
+  'shopping': ['Mercati Locali'],
+  'vita notturna': ['Vita Notturna']
+};
+
 export const AVAILABLE_TAGS = [
   // Tag universali
   'Pet-Friendly',
@@ -77,6 +88,41 @@ export const getAllCategories = (): string[] => {
 
 export const getCategoriesForNavbar = (navbarItem: string): string[] => {
   return [...(NAVBAR_CATEGORY_MAPPING[navbarItem as keyof typeof NAVBAR_CATEGORY_MAPPING] || [])];
+};
+
+// UNIFIED FILTER PROCESSING - Replaces poiCategoryMapping.ts getCategoriesForFilters
+export const getCategoriesForFilters = (activityTypes: string[]): string[] => {
+  console.log('🏷️ [UNIFIED] getCategoriesForFilters called with:', activityTypes);
+  
+  // If "tutto" or "tutte" is selected, return empty array to show all categories
+  if (activityTypes.includes('tutto') || activityTypes.includes('tutte') || activityTypes.length === 0) {
+    console.log('🌍 [UNIFIED] Returning empty array for all categories');
+    return [];
+  }
+
+  const categories: string[] = [];
+  const unmappedTypes: string[] = [];
+  
+  activityTypes.forEach(filterType => {
+    const mappedCategories = FILTER_TO_CATEGORY_MAPPING[filterType.toLowerCase()];
+    if (mappedCategories) {
+      categories.push(...mappedCategories);
+      console.log(`🎯 [UNIFIED] Added categories for ${filterType}:`, mappedCategories);
+    } else {
+      unmappedTypes.push(filterType);
+      // Fallback: use the filter type as category name (capitalized)
+      const fallbackCategory = filterType.charAt(0).toUpperCase() + filterType.slice(1);
+      categories.push(fallbackCategory);
+      console.log(`⚠️ [UNIFIED] No mapping found for filter type: ${filterType}, using fallback: ${fallbackCategory}`);
+    }
+  });
+
+  if (unmappedTypes.length > 0) {
+    console.warn('🔧 [UNIFIED] Consider updating FILTER_TO_CATEGORY_MAPPING for:', unmappedTypes);
+  }
+
+  console.log('🏷️ [UNIFIED] Final categories array:', categories);
+  return [...new Set(categories)]; // Remove duplicates
 };
 
 export const getTagsForCategory = (category: string): string[] => {

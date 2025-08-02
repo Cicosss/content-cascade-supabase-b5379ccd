@@ -2,6 +2,7 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { POIFilters } from '@/types/poi';
+import { getCategoriesForFilters } from '@/config/categoryMapping';
 
 interface MapDebugPanelProps {
   isVisible: boolean;
@@ -30,6 +31,10 @@ export const MapDebugPanel: React.FC<MapDebugPanelProps> = ({
     return null;
   }
 
+  // Debug filter mapping
+  const mappedCategories = getCategoriesForFilters(filters.activityTypes);
+  const hasFilterMismatch = filters.activityTypes.length > 0 && mappedCategories.length === 0;
+
   return (
     <Card className="fixed top-4 right-4 z-50 max-w-sm bg-background/95 backdrop-blur">
       <CardHeader className="pb-2">
@@ -52,14 +57,45 @@ export const MapDebugPanel: React.FC<MapDebugPanelProps> = ({
           </Badge>
         </div>
 
-        {/* Active Filters */}
+        {/* Filter Mapping Debug */}
         <div className="space-y-1">
-          <span className="font-medium">Active Filters:</span>
-          <div className="grid grid-cols-2 gap-1">
-            <span>Categories:</span>
-            <span className="text-right">
-              {filters.activityTypes.length || "All"}
-            </span>
+          <span className="font-medium">Filter Mapping:</span>
+          {hasFilterMismatch && (
+            <Badge variant="destructive" className="text-xs">
+              MAPPING ERROR
+            </Badge>
+          )}
+          <div className="text-xs space-y-1">
+            <div>
+              <span className="text-muted-foreground">UI Filters:</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {filters.activityTypes.length > 0 ? (
+                  filters.activityTypes.map((type) => (
+                    <Badge key={type} variant="outline" className="text-xs">
+                      {type}
+                    </Badge>
+                  ))
+                ) : (
+                  <Badge variant="outline" className="text-xs">All</Badge>
+                )}
+              </div>
+            </div>
+            <div>
+              <span className="text-muted-foreground">DB Categories:</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {mappedCategories.length > 0 ? (
+                  mappedCategories.map((cat) => (
+                    <Badge key={cat} variant="secondary" className="text-xs">
+                      {cat}
+                    </Badge>
+                  ))
+                ) : (
+                  <Badge variant="secondary" className="text-xs">All</Badge>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-1 text-xs">
             <span>Children:</span>
             <span className="text-right">{filters.withChildren}</span>
             <span>Bounds:</span>

@@ -2,7 +2,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { format, startOfDay, endOfDay } from 'date-fns';
 import { POI, POIFilters } from '@/types/poi';
-import { getCategoriesForFilters } from '@/utils/poiCategoryMapping';
+import { getCategoriesForFilters } from '@/config/categoryMapping';
 import { apiClient } from './apiClient';
 import { RequestConfig, APIErrorType } from '@/types/api';
 import { FallbackManager } from './fallbackManager';
@@ -69,12 +69,21 @@ export class POIDataService {
     
     if (hasSpecificCategories) {
       const categories = getCategoriesForFilters(filters.activityTypes);
-      console.log('🎯 Applicando filtro categorie:', categories);
+      
+      console.log('🔍 [POI SERVICE] Filter mapping:', {
+        activityTypes: filters.activityTypes,
+        mappedCategories: categories,
+        willFilter: categories.length > 0
+      });
+      
       if (categories.length > 0) {
         query = query.in('category', categories);
+        console.log('🎯 [POI SERVICE] Applying category filter:', categories);
+      } else {
+        console.warn('⚠️ [POI SERVICE] Activity types specified but no categories mapped!');
       }
     } else {
-      console.log('🌍 Nessun filtro categorie - mostrando TUTTI i POI approvati');
+      console.log('🌍 [POI SERVICE] No specific categories - showing ALL approved POIs');
     }
 
     // Apply bounds filter with buffer if provided (for map-based search)
@@ -134,17 +143,39 @@ export class POIDataService {
       };
     }
 
-    console.log('📊 Dati grezzi dal database:', data?.length || 0, 'POI');
-    console.log('📊 Primi 3 POI grezzi:', data?.slice(0, 3) || []);
-    
     const transformedData = this.transformPOIs(data || []);
     
-    console.log('✅ POI trasformati:', transformedData.length);
-    transformedData.forEach((poi, index) => {
-      if (index < 5) { // Log solo i primi 5 per non intasare
-        console.log(`📍 POI ${index + 1}: ${poi.name} - Cat: ${poi.category} - Coords: ${poi.latitude}, ${poi.longitude}`);
+    // Enhanced logging for debugging filter issues
+    if (hasSpecificCategories) {
+      const categories = getCategoriesForFilters(filters.activityTypes);
+      const categoryBreakdown = categories.reduce((acc, cat) => {
+        acc[cat] = transformedData.filter(p => p.category === cat).length;
+        return acc;
+      }, {} as Record<string, number>);
+      
+      console.log('📊 [POI SERVICE] Query results:', {
+        totalPOIs: transformedData.length,
+        requestedFilters: filters.activityTypes,
+        mappedCategories: categories,
+        categoryBreakdown,
+        categoriesFound: [...new Set(transformedData.map(p => p.category))]
+      });
+      
+      // Warning if expected categories not found
+      if (categories.includes('Ristoranti') || categories.includes('Agriturismi')) {
+        const ristorantiCount = transformedData.filter(p => p.category === 'Ristoranti').length;
+        const agriturismo = transformedData.filter(p => p.category === 'Agriturismi').length;
+        console.log('🍽️ [POI SERVICE] Food POIs found:', { 
+          Ristoranti: ristorantiCount, 
+          Agriturismi: agriturismo 
+        });
       }
-    });
+    } else {
+      console.log('📊 [POI SERVICE] All POIs loaded:', {
+        total: transformedData.length,
+        categoriesFound: [...new Set(transformedData.map(p => p.category))]
+      });
+    }
     
     return transformedData;
   }
