@@ -45,23 +45,18 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           style={{ backgroundImage: `url(${mobileImageUrl})` }}
         />
       ) : (
-        // Desktop video background con effetto cinema
+        // Desktop/Mobile video background con copertura completa
         <div className="absolute inset-0 overflow-hidden">
-          {/* Container video con espansione orizzontale forzata per effetto cinema */}
+          {/* Container video che copre tutta la superficie */}
           <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            className="absolute inset-0 w-full h-full"
             style={{
-              width: '120vw', // Espansione orizzontale forzata
-              height: '67.5vw', // Mantiene aspect ratio 16:9 
-              minWidth: '120vw',
-              minHeight: '100vh',
               willChange: 'transform'
             }}
           >
             <iframe
               src={embedUrl}
-              width="100%"
-              height="100%"
+              className="absolute inset-0 w-full h-full object-cover"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -72,11 +67,15 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                pointerEvents: 'none',
-                transform: 'scale(1.1)', // Scaling aggiuntivo per effetto cinematografico
-                transformOrigin: 'center center'
+                width: '100vw',
+                height: '100vh',
+                minWidth: '100%',
+                minHeight: '100%',
+                transform: 'scale(1.02)',
+                transformOrigin: 'center center',
+                pointerEvents: 'none'
               }}
-              title="Cinematic YouTube video background"
+              title="YouTube video background"
             />
           </div>
           

@@ -12,10 +12,12 @@ const HeroOverlayNavigation = () => {
     return (
       <div className="absolute top-0 left-0 right-0 z-20 w-full">
         <div className="flex flex-col items-start pt-8 px-4">
-          {/* Mobile: Logo allineato a sinistra con sottotitolo */}
+          {/* Mobile: Logo allineato a sinistra, più grande */}
           <div className="flex flex-col items-start">
-            <Logo />
-            <p className="text-white/90 text-sm font-light mt-2 tracking-wide">
+            <div className="scale-125">
+              <Logo />
+            </div>
+            <p className="text-white/90 text-base font-playfair font-medium mt-3 tracking-wide leading-relaxed">
               Il territorio è tra le Tue mani
             </p>
           </div>
