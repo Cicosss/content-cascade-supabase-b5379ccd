@@ -2,16 +2,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Zap } from 'lucide-react';
-import { SidebarGroup, SidebarGroupContent } from '@/components/ui/sidebar';
+import { SidebarGroup, SidebarGroupContent, useSidebar } from '@/components/ui/sidebar';
 import { BadgeView } from './BadgeView';
-import { useSidebarState } from '@/contexts/SidebarContext';
 
 interface SpecialMenuCardProps {
   badge: number;
 }
 
 const SpecialMenuCard = React.memo<SpecialMenuCardProps>(({ badge }) => {
-  const { isCollapsed } = useSidebarState();
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
 
   return (
     <SidebarGroup>

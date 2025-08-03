@@ -1,10 +1,9 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { MenuItem as MenuItemType } from '@/config/menuConfig';
 import { BadgeView } from './BadgeView';
-import { useSidebarState } from '@/contexts/SidebarContext';
 
 interface MenuItemViewProps {
   item: MenuItemType;
@@ -13,7 +12,8 @@ interface MenuItemViewProps {
 
 const MenuItemView = React.memo<MenuItemViewProps>(({ item, isActive }) => {
   const { icon: Icon, title, url, badge } = item;
-  const { isCollapsed } = useSidebarState();
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
 
   return (
     <SidebarMenuItem>

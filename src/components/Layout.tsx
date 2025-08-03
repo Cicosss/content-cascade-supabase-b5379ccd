@@ -3,7 +3,6 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { SidebarStateProvider } from '@/contexts/SidebarContext';
 import { HeaderProvider } from '@/contexts/HeaderContext';
 import { Header } from '@/components/header/Header';
 import { MobileTouchNav } from './navigation/MobileTouchNav';
@@ -23,8 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
       <LocationProvider>
         <SidebarProvider defaultOpen={false}>
-          <SidebarStateProvider>
-            <HeaderProvider>
+          <HeaderProvider>
               <div className="min-h-screen flex flex-col w-full">
                 {/* Header fisso con z-index garantito */}
                 <Header />
@@ -42,7 +40,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <MobileTouchNav />
               </div>
             </HeaderProvider>
-          </SidebarStateProvider>
         </SidebarProvider>
       </LocationProvider>
     );

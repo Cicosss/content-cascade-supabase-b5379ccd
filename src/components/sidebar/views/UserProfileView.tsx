@@ -2,7 +2,7 @@
 import React from 'react';
 import { ProfileAvatarView } from './ProfileAvatarView';
 import { useNavigationHandler } from '../logic/NavigationHandler';
-import { useSidebarState } from '@/contexts/SidebarContext';
+import { useSidebar } from '@/components/ui/sidebar';
 
 interface UserProfileViewProps {
   profile: any;
@@ -11,7 +11,8 @@ interface UserProfileViewProps {
 
 const UserProfileView = React.memo<UserProfileViewProps>(({ profile, onSignOut }) => {
   const { handleProfileNavigation } = useNavigationHandler();
-  const { isCollapsed } = useSidebarState();
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
 
   const buttonProps = {
     onClick: handleProfileNavigation,

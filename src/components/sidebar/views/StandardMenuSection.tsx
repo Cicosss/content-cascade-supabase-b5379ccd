@@ -3,11 +3,11 @@ import React from 'react';
 import { 
   SidebarGroup, 
   SidebarGroupContent, 
-  SidebarMenu
+  SidebarMenu,
+  useSidebar
 } from '@/components/ui/sidebar';
 import { MenuSection } from '@/config/menuConfig';
 import { MenuItemView } from './MenuItemView';
-import { useSidebarState } from '@/contexts/SidebarContext';
 
 interface StandardMenuSectionProps {
   section: MenuSection;
@@ -20,7 +20,8 @@ const StandardMenuSection = React.memo<StandardMenuSectionProps>(({
   isActive, 
   showAtBottom 
 }) => {
-  const { isCollapsed } = useSidebarState();
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
 
   return (
     <SidebarGroup className={showAtBottom ? "mt-auto" : ""}>
