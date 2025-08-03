@@ -28,5 +28,5 @@ export const logEnvironmentDifference = (context: string, data: any) => {
 };
 
 export const isDevelopment = () => {
-  return process.env.NODE_ENV === 'development' || window.location.hostname === 'localhost';
+  return import.meta.env.DEV || window.location.hostname === 'localhost';
 };
