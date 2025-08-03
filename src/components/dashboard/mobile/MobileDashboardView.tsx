@@ -34,7 +34,7 @@ const MobileDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
           </div>
 
           {/* Widgets Section - Stack orizzontale compatto su mobile */}
-          <div className="bg-slate-800 border-t border-slate-700">
+          <div className="bg-slate-800">
             <div className="container mx-auto py-3 px-3 md:px-4 lg:px-6 sm:py-4">
               <MobileWidgetsSection />
             </div>
