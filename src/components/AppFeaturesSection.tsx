@@ -1,119 +1,77 @@
 
 import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { MapPin, Users, Calendar, MessageCircle, Globe, Smartphone, Star, Shield, Heart, Zap } from 'lucide-react';
+import { Smartphone } from 'lucide-react';
 
 const AppFeaturesSection = () => {
   const features = [
     {
-      icon: MapPin,
-      title: "Mappa Interattiva con GPS",
-      description: "Sistema GPS avanzato che ti segnala attrazioni nascoste, percorsi ottimali e luoghi di interesse nelle immediate vicinanze con precisione centimetrica",
-      color: "from-brand-blue-600 to-brand-blue-800",
-      accent: "bg-brand-blue-50"
+      id: 1,
+      title: "Esplora il Territorio come un Locale",
+      description: "La nostra mappa interattiva ti svela non solo i luoghi famosi, ma anche le gemme nascoste. Filtra, cerca e scopri i consigli dei nostri esperti direttamente sulla mappa.",
+      imagePosition: "left",
+      imagePlaceholder: "photo-1461749280684-dccba630e2f6"
     },
     {
-      icon: Users,
-      title: "Guide Locali Certificate",
-      description: "Accesso esclusivo a oltre 50 guide locali certificate che condividono segreti del territorio tramandati di generazione in generazione",
-      color: "from-brand-yellow-400 to-brand-yellow-600",
-      accent: "bg-brand-yellow-50"
+      id: 2,
+      title: "Itinerari Creati su Misura per Te",
+      description: "Dicci cosa ami e per quanto tempo resti. La nostra tecnologia AI creerà per te un itinerario unico, combinando i tuoi interessi in un'avventura indimenticabile.",
+      imagePosition: "right",
+      imagePlaceholder: "photo-1461749280684-dccba630e2f6"
     },
     {
-      icon: Calendar,
-      title: "Eventi in Tempo Reale",
-      description: "Aggiornamenti istantanei su eventi culturali, sportivi, gastronomici e spettacoli con notifiche personalizzate e calendario integrato",
-      color: "from-brand-blue-500 to-brand-blue-700",  
-      accent: "bg-brand-blue-50"
-    },
-    {
-      icon: MessageCircle,
-      title: "Itinerari Personalizzati",
-      description: "Algoritmo intelligente che crea percorsi su misura basati sui tuoi interessi, tempo disponibile e preferenze di viaggio",
-      color: "from-brand-yellow-500 to-brand-yellow-700",
-      accent: "bg-brand-yellow-50"
-    },
-    {
-      icon: Globe,
-      title: "Supporto Multilingua Completo",
-      description: "Disponibile in 6 lingue complete: Italiano, Inglese, Tedesco, Francese, Spagnolo e Russo con traduzione automatica dei contenuti",
-      color: "from-brand-blue-700 to-brand-blue-900",
-      accent: "bg-brand-blue-50"
-    },
-    {
-      icon: Smartphone,
-      title: "Esperienza Interattiva",
-      description: "Sistema di feedback e recensioni della community, condivisione social integrata e possibilità di contribuire con le tue scoperte",
-      color: "from-brand-yellow-600 to-brand-yellow-800",
-      accent: "bg-brand-yellow-50"
-    }
-  ];
-
-  const additionalFeatures = [
-    {
-      icon: Star,
-      title: "Luoghi Esclusivi",
-      description: "Accesso a location non turistiche e esperienze autentiche"
-    },
-    {
-      icon: Shield,
-      title: "Sicurezza Garantita",
-      description: "Tutte le attività sono verificate e rispettano standard di sicurezza"
-    },
-    {
-      icon: Heart,
-      title: "Preferiti e Wishlist",
-      description: "Salva i tuoi luoghi preferiti e crea liste personalizzate"
-    },
-    {
-      icon: Zap,
-      title: "Modalità Offline",
-      description: "Funziona anche senza connessione internet"
+      id: 3,
+      title: "Non Perderti Nulla di Ciò che Accade",
+      description: "Sagre, concerti, mostre. Ricevi notifiche e scopri gli eventi in corso vicino a te, aggiornati in tempo reale per vivere la Romagna al massimo.",
+      imagePosition: "left",
+      imagePlaceholder: "photo-1581090464777-f3220bbe1b8b"
     }
   ];
 
   return (
     <section className="py-20 bg-brand-gradient-soft">
       <div className="container mx-auto px-4">
-        {/* Header Section con Typography Sofisticata */}
+        {/* Header Section */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center space-x-2 bg-brand-blue-900 text-white px-6 py-3 rounded-full typography-body-small font-semibold mb-8 shadow-lg">
             <Smartphone className="h-4 w-4" />
             <span>Tecnologia All'Avanguardia</span>
           </div>
-          <h2 className="typography-h1 typography-brand-primary mb-8">I Punti di Forza dell'App</h2>
+          <h2 className="typography-h1 typography-brand-primary mb-8">La Tua Guida Intelligente</h2>
           <p className="typography-story-intro max-w-4xl mx-auto">
             Un compagno di viaggio intelligente che ti offre accesso privilegiato alle autentiche meraviglie della Romagna, 
             con tecnologie avanzate e il supporto di esperti locali per un'esperienza indimenticabile
           </p>
         </div>
 
-        {/* Main Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {/* Features with Alternating Layout */}
+        <div className="space-y-20">
           {features.map((feature, index) => (
-            <Card key={index} className="group p-8 hover:shadow-2xl transition-all duration-500 bg-white border-0 shadow-lg hover:scale-105 transform">
-              <div className="space-y-6">
-                <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className="h-8 w-8 text-white" />
-                </div>
-                <div className="space-y-4">
-                  <h3 className="typography-h4 typography-brand-primary group-hover:text-brand-blue-700 transition-colors">{feature.title}</h3>
-                  <p className="typography-body leading-relaxed">{feature.description}</p>
+            <div key={feature.id} className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+              {/* Content Section */}
+              <div className={`flex-1 ${feature.imagePosition === 'right' ? 'lg:order-1' : 'lg:order-2'}`}>
+                <div className="max-w-xl">
+                  <h3 className="typography-h3 typography-brand-primary mb-6">{feature.title}</h3>
+                  <p className="typography-body leading-relaxed text-slate-700">{feature.description}</p>
                 </div>
               </div>
-            </Card>
-          ))}
-        </div>
 
-        {/* Additional Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {additionalFeatures.map((feature, index) => (
-            <Card key={index} className="p-6 text-center hover:shadow-lg transition-all duration-300 bg-white border-brand-blue-100">
-              <feature.icon className="h-10 w-10 mx-auto mb-4 text-brand-blue-600" />
-              <h4 className="typography-h5 typography-brand-primary mb-3">{feature.title}</h4>
-              <p className="typography-body-small">{feature.description}</p>
-            </Card>
+              {/* Image Section */}
+              <div className={`flex-1 ${feature.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
+                <div className="relative group">
+                  <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-brand-blue-100 to-brand-yellow-100">
+                    <img
+                      src={`https://images.unsplash.com/${feature.imagePlaceholder}?auto=format&fit=crop&w=600&h=400&q=80`}
+                      alt={feature.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                  {/* Decorative Elements */}
+                  <div className="absolute -top-4 -right-4 w-8 h-8 bg-brand-yellow-400 rounded-full opacity-80"></div>
+                  <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-brand-blue-500 rounded-full opacity-60"></div>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
