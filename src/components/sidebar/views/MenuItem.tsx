@@ -1,19 +1,32 @@
+/**
+ * PRESENTATIONAL COMPONENT: MenuItem
+ * 
+ * Responsabilità:
+ * - Renderizzazione singolo item menu
+ * - Gestione stato attivo/inattivo
+ * - Tooltip per modalità collassata
+ * - Badge notifications
+ * 
+ * Props:
+ * - item: Dati dell'item (icon, title, url, badge)
+ * - isActive: Stato attivo
+ * - isCollapsed: Stato sidebar
+ */
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { MenuItem as MenuItemType } from '@/config/menuConfig';
-import { BadgeView } from './BadgeView';
+import { Badge } from '../shared/Badge';
 
-interface MenuItemViewProps {
+interface MenuItemProps {
   item: MenuItemType;
   isActive: boolean;
+  isCollapsed: boolean;
 }
 
-const MenuItemView = React.memo<MenuItemViewProps>(({ item, isActive }) => {
+const MenuItem = React.memo<MenuItemProps>(({ item, isActive, isCollapsed }) => {
   const { icon: Icon, title, url, badge } = item;
-  const { state } = useSidebar();
-  const isCollapsed = state === 'collapsed';
 
   return (
     <SidebarMenuItem>
@@ -28,23 +41,28 @@ const MenuItemView = React.memo<MenuItemViewProps>(({ item, isActive }) => {
           className="flex items-center gap-3 w-full"
           aria-label={`Naviga a ${title}`}
         >
+          {/* Icon Container con badge */}
           <div className="relative flex-shrink-0">
             <Icon className="h-5 w-5 transition-all duration-200 hover:animate-pulse" />
             {badge && !isCollapsed && (
-              <BadgeView 
+              <Badge 
                 count={badge}
-                isCollapsed={isCollapsed}
+                size="small"
                 label={`${badge} notifiche`}
               />
             )}
           </div>
-          {!isCollapsed && <span className="truncate">{title}</span>}
+          
+          {/* Title - nascosto quando collassato */}
+          {!isCollapsed && (
+            <span className="truncate">{title}</span>
+          )}
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
 });
 
-MenuItemView.displayName = 'MenuItemView';
+MenuItem.displayName = 'MenuItem';
 
-export { MenuItemView };
+export { MenuItem };
