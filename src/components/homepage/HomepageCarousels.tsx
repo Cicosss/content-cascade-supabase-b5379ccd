@@ -1,6 +1,7 @@
 import React from 'react';
 import HomepageSectionCarousel from '@/components/homepage/HomepageSectionCarousel';
 import MobileContainer from '@/components/ui/MobileContainer';
+import SeaBulletinWidget from '@/components/homepage/SeaBulletinWidget';
 import { UtensilsCrossed, Calendar, Mountain, PartyPopper, MapPin } from 'lucide-react';
 
 /**
@@ -32,6 +33,9 @@ const HomepageCarousels: React.FC = () => {
         subtitle="Scopri la tradizione culinaria della Romagna"
         withChildren={false}
       />
+
+      {/* Bollettino del Mare */}
+      <SeaBulletinWidget />
 
       {/* Eventi & Spettacoli */}
       <HomepageSectionCarousel

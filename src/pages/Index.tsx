@@ -13,7 +13,6 @@ import PullToRefresh from '@/components/ui/PullToRefresh';
 // Import the new homepage components
 import TopSection from '@/components/homepage/TopSection';
 import HomepageCarousels from '@/components/homepage/HomepageCarousels';
-import SeaBulletinWidget from '@/components/homepage/SeaBulletinWidget';
 import HelpBanner from '@/components/homepage/HelpBanner';
 import FamilySection from '@/components/homepage/FamilySection';
 
@@ -60,9 +59,6 @@ const Index = () => {
           <div className="space-y-8 md:space-y-12 lg:space-y-16">
             {/* Thematic Carousels */}
             <HomepageCarousels />
-
-            {/* Bollettino del Mare */}
-            <SeaBulletinWidget />
 
             {/* Hai bisogno di aiuto? */}
             <HelpBanner />
