@@ -33,10 +33,10 @@ export const OFFICIAL_CATEGORIES = [
 export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
   'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Mercati Locali'],
   'Eventi': ['Eventi'],
-  'Eventi & Spettacoli': ['Eventi', 'Sport', 'Mercati Locali'], // Include eventi misti da events table
-  'Natura & Avventura': ['Parchi Naturali e Riserve', 'Sport'],
-  'Divertimento & Famiglia': ['Sport'], // Per ora solo Sport disponibile
-  'Cultura & Territorio': [] // Nessuna categoria disponibile attualmente
+  'Eventi & Spettacoli': ['Eventi'], // Solo eventi dalla events table
+  'Natura & Avventura': ['Spiagge', 'Parchi Naturali e Riserve', 'Sport'],
+  'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Sport'],
+  'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'] // Categorie reali disponibili
 };
 
 // UNIFIED FILTER MAPPING - Replaces poiCategoryMapping.ts logic

@@ -52,7 +52,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
               src={embedUrl}
               className="absolute inset-0"
               frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
               onLoad={handleIframeLoad}

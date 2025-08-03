@@ -53,6 +53,14 @@ export function useSimpleCarousel(
       setIsLoading(true);
       setError(null);
 
+      // Verifica categorie disponibili prima delle query
+      if (!isEventSection && categories.length === 0) {
+        console.warn(`⚠️ ${section}: Nessuna categoria mappata, mostrando stato vuoto`);
+        setData([]);
+        setIsLoading(false);
+        return;
+      }
+
       if (isEventSection) {
         console.log(`📅 Fetching events for ${section}...`);
         // Fetch from events table
@@ -68,18 +76,16 @@ export function useSimpleCarousel(
         setData(events || []);
         console.log(`✅ ${section} events loaded:`, events?.length || 0, 'items');
       } else {
-        console.log(`🏛️ Fetching POIs for ${section}...`);
+        console.log(`🏛️ Fetching POIs for ${section} with categories:`, categories);
         // Fetch from points_of_interest table
         let query = supabase
           .from('points_of_interest')
           .select('*')
           .eq('status', 'approved');
 
-        // Filter by categories if available
-        if (categories.length > 0) {
-          query = query.in('category', categories);
-          console.log(`🔍 Filtering by categories:`, categories);
-        }
+        // Filter by categories
+        query = query.in('category', categories);
+        console.log(`🔍 Filtering by categories:`, categories);
 
         // Filter by target audience if withChildren is specified
         if (withChildren) {
