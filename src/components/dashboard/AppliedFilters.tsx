@@ -10,9 +10,6 @@ interface AppliedFiltersProps {
   filters: {
     categories: string[];
     period: DateRange | undefined;
-    timeSlots?: string[];
-    budgets?: string[];
-    specialPreferences?: string[];
   };
   onRemoveFilter: (filterType: string, value?: string) => void;
 }
@@ -50,41 +47,6 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
       });
     }
 
-    // Time slots filter
-    if (filters.timeSlots && filters.timeSlots.length > 0) {
-      filters.timeSlots.forEach(slot => {
-        activeFilters.push({
-          type: 'timeSlot',
-          label: slot,
-          icon: Tag,
-          onRemove: () => onRemoveFilter('timeSlot', slot)
-        });
-      });
-    }
-
-    // Budget filter
-    if (filters.budgets && filters.budgets.length > 0) {
-      filters.budgets.forEach(budget => {
-        activeFilters.push({
-          type: 'budget',
-          label: budget,
-          icon: Tag,
-          onRemove: () => onRemoveFilter('budget', budget)
-        });
-      });
-    }
-
-    // Special preferences filter
-    if (filters.specialPreferences && filters.specialPreferences.length > 0) {
-      filters.specialPreferences.forEach(pref => {
-        activeFilters.push({
-          type: 'specialPreference',
-          label: pref,
-          icon: Tag,
-          onRemove: () => onRemoveFilter('specialPreference', pref)
-        });
-      });
-    }
 
     return activeFilters;
   };

@@ -7,27 +7,20 @@ import { useFiltersState } from '@/hooks/useFiltersState';
 import FilterHeader from './filters/FilterHeader';
 import CategoryFilters from './filters/CategoryFilters';
 import PeriodFilters from './filters/PeriodFilters';
-import AdvancedFilters from './filters/AdvancedFilters';
-import FilterToggle from '@/components/filters/FilterToggle';
 
 interface ExperienceFiltersProps {
   filters: {
     categories: string[];
     period: any;
-    timeSlots?: string[];
-    budgets?: string[];
-    specialPreferences?: string[];
   };
   setFilters: (filters: any) => void;
 }
 
 const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilters }) => {
   const {
-    showAdvanced,
     activeFiltersCount,
     hasActiveFilters,
-    resetFilters,
-    toggleAdvanced
+    resetFilters
   } = useFiltersState({
     onFiltersChange: setFilters,
     debounceMs: 300
@@ -37,23 +30,12 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
     setFilters({ ...filters, [key]: value });
   }, [filters, setFilters]);
 
-  // Calcola i filtri avanzati attivi
-  const advancedFiltersCount = React.useMemo(() => {
-    let count = 0;
-    if (filters.timeSlots?.length > 0) count++;
-    if (filters.budgets?.length > 0) count++;
-    if (filters.specialPreferences?.length > 0) count++;
-    return count;
-  }, [filters.timeSlots, filters.budgets, filters.specialPreferences]);
 
   const handleReset = React.useCallback(() => {
     resetFilters();
     setFilters({
       categories: ['tutte'],
-      period: undefined,
-      timeSlots: [],
-      budgets: [],
-      specialPreferences: []
+      period: undefined
     });
   }, [resetFilters, setFilters]);
 
@@ -85,31 +67,6 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
           period={filters.period}
           onPeriodChange={(period) => updateFilter('period', period)}
         />
-
-        {/* Toggle filtri avanzati */}
-        <FilterToggle 
-          showAdvanced={showAdvanced}
-          onToggle={toggleAdvanced}
-          activeCount={advancedFiltersCount}
-        />
-
-        {/* Filtri avanzati con animazione fluida */}
-        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          showAdvanced 
-            ? 'max-h-[600px] opacity-100' 
-            : 'max-h-0 opacity-0'
-        }`}>
-          {showAdvanced && (
-            <AdvancedFilters
-              budgets={filters.budgets || []}
-              timeSlots={filters.timeSlots || []}
-              specialPreferences={filters.specialPreferences || []}
-              onBudgetsChange={(budgets) => updateFilter('budgets', budgets)}
-              onTimeSlotsChange={(timeSlots) => updateFilter('timeSlots', timeSlots)}
-              onSpecialPreferencesChange={(preferences) => updateFilter('specialPreferences', preferences)}
-            />
-          )}
-        </div>
       </div>
     </Card>
   );

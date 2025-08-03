@@ -7,9 +7,6 @@ import { FILTERS_CONFIG } from '@/config/filtersConfig';
 export interface FiltersState {
   categories: string[];
   period: DateRange | undefined;
-  timeSlots: string[];
-  budgets: string[];
-  specialPreferences: string[];
 }
 
 interface UseFiltersStateOptions {
@@ -24,15 +21,10 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
   const [filters, setFilters] = useState<FiltersState>(() => {
     const initialState: FiltersState = {
       categories: ['tutte'],
-      period: undefined,
-      timeSlots: [],
-      budgets: [],
-      specialPreferences: []
+      period: undefined
     };
     return initialState;
   });
-
-  const [showAdvanced, setShowAdvanced] = useState(false);
 
   // Debounced filters for external callbacks
   const debouncedFilters = useDebounce(filters, debounceMs);
@@ -47,17 +39,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
     setFilters(prev => ({ ...prev, period }));
   }, []);
 
-  const updateTimeSlots = useCallback((timeSlots: string[]) => {
-    setFilters(prev => ({ ...prev, timeSlots }));
-  }, []);
-
-  const updateBudgets = useCallback((budgets: string[]) => {
-    setFilters(prev => ({ ...prev, budgets }));
-  }, []);
-
-  const updateSpecialPreferences = useCallback((specialPreferences: string[]) => {
-    setFilters(prev => ({ ...prev, specialPreferences }));
-  }, []);
 
   const updateFilter = useCallback((key: keyof FiltersState, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -66,15 +47,8 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
   const resetFilters = useCallback(() => {
     setFilters({
       categories: ['tutte'],
-      period: undefined,
-      timeSlots: [],
-      budgets: [],
-      specialPreferences: []
+      period: undefined
     });
-  }, []);
-
-  const toggleAdvanced = useCallback((show?: boolean) => {
-    setShowAdvanced(prev => show !== undefined ? show : !prev);
   }, []);
 
   // Active filters summary
@@ -82,9 +56,6 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
     let count = 0;
     if (filters.categories.length > 0 && !filters.categories.includes('tutte')) count++;
     if (filters.period?.from) count++;
-    if (filters.timeSlots.length > 0) count++;
-    if (filters.budgets.length > 0) count++;
-    if (filters.specialPreferences.length > 0) count++;
     return count;
   }, [filters]);
 
@@ -100,19 +71,14 @@ export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
   return {
     // State
     filters,
-    showAdvanced,
     activeFiltersCount,
     hasActiveFilters,
     
     // Actions
     updateCategories,
     updatePeriod,
-    updateTimeSlots,
-    updateBudgets,
-    updateSpecialPreferences,
     updateFilter,
     resetFilters,
-    toggleAdvanced,
     
     // Utils
     debouncedFilters

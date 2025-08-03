@@ -23,9 +23,6 @@ const PersonalizedContent = () => {
     activityTypes: [],
     period: undefined,
     categories: [],
-    timeSlots: [],
-    budgets: [],
-    specialPreferences: [],
     isFirstVisit: true
   });
   
@@ -56,9 +53,6 @@ const PersonalizedContent = () => {
       activityTypes: [],
       period: undefined,
       categories: [],
-      timeSlots: [],
-      budgets: [],
-      specialPreferences: [],
       isFirstVisit: false
     });
   }, []);
@@ -84,21 +78,6 @@ const PersonalizedContent = () => {
           break;
         case 'period':
           newFilters.period = undefined;
-          break;
-        case 'timeSlot':
-          if (value) {
-            newFilters.timeSlots = newFilters.timeSlots?.filter(slot => slot !== value) || [];
-          }
-          break;
-        case 'budget':
-          if (value) {
-            newFilters.budgets = newFilters.budgets?.filter(budget => budget !== value) || [];
-          }
-          break;
-        case 'specialPreference':
-          if (value) {
-            newFilters.specialPreferences = newFilters.specialPreferences?.filter(pref => pref !== value) || [];
-          }
           break;
       }
       
