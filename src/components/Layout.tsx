@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   if (shouldShowSidebar) {
     return (
       <LocationProvider>
-        <SidebarProvider defaultOpen={true}>
+        <SidebarProvider defaultOpen={false}>
           <SidebarStateProvider>
             <HeaderProvider>
               <div className="min-h-screen flex flex-col w-full">
