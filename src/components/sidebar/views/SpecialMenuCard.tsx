@@ -33,7 +33,7 @@ const SpecialMenuCard = React.memo<SpecialMenuCardProps>(({ badge }) => {
               />
               
               <div className={`flex items-center ${isCollapsed ? 'gap-0' : 'gap-3'}`}>
-                <Zap className={`text-blue-800 ${isCollapsed ? 'h-4 w-4' : 'h-5 w-5'}`} strokeWidth={1.5} />
+                <Zap className={`text-blue-800 transition-all duration-200 hover:animate-pulse ${isCollapsed ? 'h-4 w-4' : 'h-5 w-5'}`} strokeWidth={1.5} />
                 {!isCollapsed && (
                   <span className="font-bold text-blue-800">
                     Oggi in Romagna

@@ -29,7 +29,7 @@ const MenuItemView = React.memo<MenuItemViewProps>(({ item, isActive }) => {
           aria-label={`Naviga a ${title}`}
         >
           <div className="relative">
-            <Icon className="h-5 w-5" />
+            <Icon className="h-5 w-5 transition-all duration-200 hover:animate-pulse" />
             {badge && (
               <BadgeView 
                 count={badge}
