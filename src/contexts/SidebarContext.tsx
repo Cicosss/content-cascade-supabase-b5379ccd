@@ -29,10 +29,10 @@ interface SidebarStateProviderProps {
 }
 
 export const SidebarStateProvider: React.FC<SidebarStateProviderProps> = ({ children }) => {
-  const { state } = useSidebar();
+  const sidebar = useSidebar();
   const [activeSection, setActiveSection] = useState<string | null>(null);
   
-  const isCollapsed = state === 'collapsed';
+  const isCollapsed = sidebar.state === 'collapsed';
   
   const getCollapseClasses = useCallback((expandedClass: string, collapsedClass: string) => {
     return isCollapsed ? collapsedClass : expandedClass;
