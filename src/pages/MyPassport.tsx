@@ -131,7 +131,7 @@ const MyPassport = () => {
                 }}
               >
                 {/* 3D Relief Shadow Layers */}
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-200/20 to-slate-400/10 rounded-3xl transform translate-x-1 translate-y-1 blur-sm -z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-200/20 to-slate-400/10 rounded-3xl transform translate-x-1 translate-y-1 blur-sm z-behind"></div>
                 
                 <div className="text-center relative z-10">
                   <div className={`relative w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-700 transform hover:scale-110 hover:rotate-6 ${
@@ -206,8 +206,8 @@ const MyPassport = () => {
           }`}
         >
           {/* 3D Relief Shadow Layers */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-200/30 to-slate-400/20 rounded-3xl transform translate-x-2 translate-y-2 blur-sm -z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-tl from-slate-300/20 to-slate-100/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-200/30 to-slate-400/20 rounded-3xl transform translate-x-2 translate-y-2 blur-sm z-behind"></div>
+          <div className="absolute inset-0 bg-gradient-to-tl from-slate-300/20 to-slate-100/30 rounded-3xl transform translate-x-1 translate-y-1 z-behind"></div>
           
           <div className="relative z-10">
             <h2 className="font-playfair text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 text-slate-900 dark:text-white leading-tight tracking-tight text-center">
