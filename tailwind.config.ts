@@ -30,10 +30,6 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			perspective: {
-				'1000': '1000px',
-				'1500': '1500px',
-			},
 			keyframes,
 			animation,
 			animationDelay
