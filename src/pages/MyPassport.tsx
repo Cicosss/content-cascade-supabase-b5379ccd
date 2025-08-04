@@ -37,13 +37,6 @@ const MyPassport = () => {
   }, [user, loading, navigate]);
 
   if (loading || achievementsLoading || visitsLoading) {
-    console.log('🔄 MyPassport loading states:', { 
-      loading, 
-      achievementsLoading, 
-      visitsLoading,
-      user: !!user,
-      achievementsCount: achievements?.length || 0 
-    });
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
@@ -71,17 +64,6 @@ const MyPassport = () => {
 
   const completedCount = getCompletedCount();
   const totalVisits = getTotalVisits();
-
-  console.log('🎯 MyPassport render data:', {
-    user: !!user,
-    achievements: achievements?.length || 0,
-    completedCount,
-    totalVisits,
-    userProgress: Object.keys(userProgress || {}).length,
-    badgesVisible,
-    headerVisible,
-    statsVisible
-  });
 
   return (
     <Layout>
