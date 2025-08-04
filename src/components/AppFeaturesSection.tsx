@@ -42,10 +42,6 @@ const AppFeaturesSection = () => {
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
         {/* Header Section */}
         <div className={`text-center mb-12 md:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-primary to-primary/90 text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-sm font-semibold mb-6 md:mb-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-            <Smartphone className="h-4 w-4 animate-pulse" />
-            <span className="font-inter tracking-wide">Tecnologia All'Avanguardia</span>
-          </div>
           <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6 md:mb-8 leading-tight tracking-tight">
             La Tua Guida Intelligente
           </h2>
