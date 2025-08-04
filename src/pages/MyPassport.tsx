@@ -69,9 +69,9 @@ const MyPassport = () => {
     <Layout>
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-8 relative overflow-hidden">
         {/* Background Animation Elements */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none z-behind">
           <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full animate-float animation-delay-0"></div>
-          <div className="absolute bottom-20 right-10 w-24 h-24 bg-accent/5 rounded-full animate-drift animation-delay-500"></div>
+          <div className="absolute bottom-20 right-10 w-24 h-24 bg-accent/5 rounded-full animate-float animation-delay-500"></div>
           <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-secondary/5 rounded-full animate-pulse animation-delay-1000"></div>
         </div>
 
