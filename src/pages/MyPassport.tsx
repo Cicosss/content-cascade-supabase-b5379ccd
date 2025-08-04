@@ -178,7 +178,7 @@ const MyPassport = () => {
                     </Badge>
                   ) : (
                     <div className="space-y-3">
-                      <div className="flex justify-between text-sm font-medium text-slate-600 dark:text-slate-400 font-inter">
+                      <div className="flex justify-between items-center text-sm font-medium text-slate-600 dark:text-slate-400 font-inter">
                         <span>Progresso</span>
                         <span className="animate-pulse text-red-600 font-bold">
                           {currentProgress}/{achievement.target}
@@ -186,7 +186,7 @@ const MyPassport = () => {
                       </div>
                       <Progress 
                         value={(currentProgress / achievement.target) * 100} 
-                        className="h-3 rounded-full shadow-inner"
+                        className="h-3 rounded-full shadow-inner w-full"
                       />
                     </div>
                   )}
