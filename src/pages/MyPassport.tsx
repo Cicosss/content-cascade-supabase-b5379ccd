@@ -122,8 +122,8 @@ const MyPassport = () => {
                 key={achievement.id}
                 className={`relative p-8 transition-all duration-700 hover:scale-105 transform perspective-1000 ${
                   isCompleted 
-                    ? 'bg-gradient-to-br from-accent/10 via-accent/5 to-primary/10 border-accent/30 shadow-2xl ring-2 ring-accent/20' 
-                    : 'bg-gradient-to-br from-slate-50/90 to-white/95 border-slate-200/50 shadow-lg hover:shadow-xl'
+                    ? 'bg-gradient-to-br from-green-50/80 via-green-100/60 to-accent/10 border-accent/30 shadow-2xl ring-2 ring-accent/20' 
+                    : 'bg-gradient-to-br from-red-50/80 via-red-100/60 to-slate-50/90 border-red-200/40 shadow-lg hover:shadow-xl hover:border-red-300/60'
                 } backdrop-blur-sm rounded-3xl`}
                 style={{ 
                   transitionDelay: `${index * 100}ms`,
@@ -180,7 +180,9 @@ const MyPassport = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between text-sm font-medium text-slate-600 dark:text-slate-400 font-inter">
                         <span>Progresso</span>
-                        <span>{currentProgress}/{achievement.target}</span>
+                        <span className="animate-pulse text-red-600 font-bold">
+                          {currentProgress}/{achievement.target}
+                        </span>
                       </div>
                       <Progress 
                         value={(currentProgress / achievement.target) * 100} 
