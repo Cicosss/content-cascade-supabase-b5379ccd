@@ -7,9 +7,6 @@ import { useUserAchievements } from '@/hooks/useUserAchievements';
 import { useServiceVisibility } from '@/hooks/useServiceVisibility';
 
 const ExplorerMap: React.FC = () => {
-  const { isVisible: mapVisible, elementRef: mapRef } = useServiceVisibility({ threshold: 0.2, rootMargin: '80px' });
-  const { isVisible: textVisible, elementRef: textRef } = useServiceVisibility({ threshold: 0.3, rootMargin: '60px' });
-  
   const { 
     achievements, 
     userProgress, 
@@ -55,10 +52,7 @@ const ExplorerMap: React.FC = () => {
       </div>
 
       <Card 
-        ref={mapRef}
-        className={`w-full bg-gradient-to-br from-slate-800/95 via-slate-900/98 to-indigo-900/95 border-gold-400/40 overflow-hidden relative backdrop-blur-sm shadow-2xl rounded-3xl transition-all duration-700 ease-out transform ${
-          mapVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-        }`}
+        className="w-full bg-gradient-to-br from-slate-800/95 via-slate-900/98 to-indigo-900/95 border-gold-400/40 overflow-hidden relative backdrop-blur-sm shadow-2xl rounded-3xl"
       >
         {/* 3D Relief Shadow Layers */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-700/30 to-slate-900/20 rounded-3xl transform translate-x-2 translate-y-2 blur-lg -z-10"></div>
@@ -118,10 +112,7 @@ const ExplorerMap: React.FC = () => {
 
       {/* Testo esplicativo */}
       <div 
-        ref={textRef}
-        className={`bg-gradient-to-br from-slate-50/95 via-blue-50/90 to-accent/5 backdrop-blur-sm rounded-2xl lg:rounded-3xl p-8 lg:p-10 border border-slate-200/60 shadow-2xl relative overflow-hidden transition-all duration-700 ease-out transform ${
-          textVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}
+        className="bg-gradient-to-br from-slate-50/95 via-blue-50/90 to-accent/5 backdrop-blur-sm rounded-2xl lg:rounded-3xl p-8 lg:p-10 border border-slate-200/60 shadow-2xl relative overflow-hidden"
       >
         {/* 3D Relief Shadow Layers */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-200/20 to-slate-300/10 rounded-2xl lg:rounded-3xl transform translate-x-1 translate-y-1 blur-sm -z-10"></div>
