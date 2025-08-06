@@ -16,8 +16,8 @@ import { Trophy, MapPin, Utensils, Camera, Heart, Star } from 'lucide-react';
 const MyPassport = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const { isVisible: badgesVisible, elementRef: badgesRef } = useServiceVisibility({ threshold: 0.1 });
-  const { isVisible: statsVisible, elementRef: statsRef } = useServiceVisibility({ threshold: 0.1 });
+  const { isVisible: badgesVisible, elementRef: badgesRef } = useServiceVisibility({ threshold: 0.3, rootMargin: '100px' });
+  const { isVisible: statsVisible, elementRef: statsRef } = useServiceVisibility({ threshold: 0.2, rootMargin: '80px' });
   const { isVisible: headerVisible, elementRef: headerRef } = useServiceVisibility({ threshold: 0.1 });
   
   const { 
@@ -106,7 +106,10 @@ const MyPassport = () => {
 
         {/* Badge Grid */}
         <div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 relative z-10"
+          ref={badgesRef}
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 relative z-10 transition-all duration-700 ease-out ${
+            badgesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
         >
           {achievements.map((achievement, index) => {
             const progress = userProgress[achievement.id];
@@ -117,14 +120,14 @@ const MyPassport = () => {
             return (
               <Card 
                 key={achievement.id}
-                className={`relative p-8 transition-all duration-700 hover:scale-105 transform perspective-1000 ${
+                className={`relative p-8 transition-all duration-500 hover:scale-102 transform will-change-transform ${
                   isCompleted 
                     ? 'bg-gradient-to-br from-green-50/80 via-green-100/60 to-accent/10 border-accent/30 shadow-2xl ring-2 ring-accent/20' 
                     : 'bg-gradient-to-br from-red-50/80 via-red-100/60 to-slate-50/90 border-red-200/40 shadow-lg hover:shadow-xl hover:border-red-300/60'
                 } backdrop-blur-sm rounded-3xl`}
                 style={{ 
-                  transitionDelay: `${index * 100}ms`,
-                  animationDelay: `${index * 150}ms`
+                  transitionDelay: badgesVisible ? `${index * 80}ms` : '0ms',
+                  animationDelay: `${index * 100}ms`
                 }}
               >
                 {/* 3D Relief Shadow Layers */}
@@ -200,8 +203,8 @@ const MyPassport = () => {
         {/* Statistics */}
         <Card 
           ref={statsRef}
-          className={`relative mb-12 p-8 lg:p-10 rounded-3xl shadow-2xl border border-slate-200/50 bg-gradient-to-br from-slate-50/90 to-white/95 backdrop-blur-sm perspective-1000 transition-all duration-1000 transform ${
-            statsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          className={`relative mb-12 p-8 lg:p-10 rounded-3xl shadow-2xl border border-slate-200/50 bg-gradient-to-br from-slate-50/90 to-white/95 backdrop-blur-sm transition-all duration-700 ease-out transform ${
+            statsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
           {/* 3D Relief Shadow Layers */}
