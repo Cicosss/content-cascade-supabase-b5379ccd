@@ -106,12 +106,72 @@ const OggiInRomagna = () => {
 
   return (
     <Layout>
-      <OggiHeroSection formattedDate={formattedDate} />
+      <div className="relative overflow-hidden">
+        {/* Background Animation Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full animate-float animation-delay-0"></div>
+          <div className="absolute bottom-20 right-10 w-24 h-24 bg-accent/5 rounded-full animate-drift animation-delay-500"></div>
+          <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-secondary/5 rounded-full animate-pulse animation-delay-1000"></div>
+          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-primary/3 rounded-full animate-bounce animation-delay-1500"></div>
+        </div>
 
-      <div className="container mx-auto px-4 py-8 space-y-12">
-        <FlashOffersSection offers={offers} />
-        <TodayEventsSection events={events} loading={loading} />
-        <SuggestionsSection suggestions={suggestions} />
+        <OggiHeroSection formattedDate={formattedDate} />
+
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-8 lg:py-12 space-y-16 lg:space-y-20 relative z-10">
+          {/* Flash Offers Section with 3D Effects */}
+          <div className="relative">
+            {/* 3D Relief Shadow Layers */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-200/30 to-slate-400/20 rounded-3xl transform translate-x-2 translate-y-2 blur-lg -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-tl from-slate-300/20 to-slate-100/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
+            
+            <div className="bg-gradient-to-br from-slate-50/95 via-blue-50/90 to-accent/5 backdrop-blur-sm rounded-2xl lg:rounded-3xl p-8 lg:p-10 border border-slate-200/60 shadow-2xl relative overflow-hidden">
+              {/* Floating particles */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-8 right-8 w-2 h-2 bg-primary/30 rounded-full animate-twinkle animation-delay-0"></div>
+                <div className="absolute bottom-12 left-12 w-1.5 h-1.5 bg-accent/30 rounded-full animate-twinkle animation-delay-500"></div>
+                <div className="absolute top-1/3 left-8 w-1 h-1 bg-secondary/30 rounded-full animate-twinkle animation-delay-1000"></div>
+              </div>
+              
+              <FlashOffersSection offers={offers} />
+            </div>
+          </div>
+
+          {/* Today Events Section with 3D Effects */}
+          <div className="relative">
+            {/* 3D Relief Shadow Layers */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-700/30 to-slate-900/20 rounded-3xl transform translate-x-2 translate-y-2 blur-lg -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-tl from-slate-600/20 to-slate-800/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
+            
+            <div className="bg-gradient-to-br from-slate-800/95 via-slate-900/98 to-indigo-900/95 backdrop-blur-sm rounded-2xl lg:rounded-3xl p-8 lg:p-10 border border-gold-400/40 shadow-2xl relative overflow-hidden">
+              {/* Floating particles */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-8 right-8 w-2 h-2 bg-gold-400/30 rounded-full animate-twinkle animation-delay-200"></div>
+                <div className="absolute bottom-12 left-12 w-1.5 h-1.5 bg-blue-400/30 rounded-full animate-twinkle animation-delay-700"></div>
+                <div className="absolute top-1/3 left-8 w-1 h-1 bg-white/30 rounded-full animate-twinkle animation-delay-1200"></div>
+              </div>
+              
+              <TodayEventsSection events={events} loading={loading} />
+            </div>
+          </div>
+
+          {/* Suggestions Section with 3D Effects */}
+          <div className="relative">
+            {/* 3D Relief Shadow Layers */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-200/30 to-green-400/20 rounded-3xl transform translate-x-2 translate-y-2 blur-lg -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-tl from-green-300/20 to-green-100/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
+            
+            <div className="bg-gradient-to-br from-green-50/95 via-emerald-50/90 to-green-100/95 backdrop-blur-sm rounded-2xl lg:rounded-3xl p-8 lg:p-10 border border-green-200/60 shadow-2xl relative overflow-hidden">
+              {/* Floating particles */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-8 right-8 w-2 h-2 bg-green-500/30 rounded-full animate-twinkle animation-delay-400"></div>
+                <div className="absolute bottom-12 left-12 w-1.5 h-1.5 bg-emerald-400/30 rounded-full animate-twinkle animation-delay-900"></div>
+                <div className="absolute top-1/3 left-8 w-1 h-1 bg-green-600/30 rounded-full animate-twinkle animation-delay-1400"></div>
+              </div>
+              
+              <SuggestionsSection suggestions={suggestions} />
+            </div>
+          </div>
+        </div>
       </div>
     </Layout>
   );
