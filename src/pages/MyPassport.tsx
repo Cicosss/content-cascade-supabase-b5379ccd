@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useUserAchievements } from '@/hooks/useUserAchievements';
 import { useUserVisits } from '@/hooks/useUserVisits';
-import { useServiceVisibility } from '@/hooks/useServiceVisibility';
 import TravelDiary from '@/components/passport/TravelDiary';
 import ExplorerMap from '@/components/passport/ExplorerMap';
 import { Trophy, MapPin, Utensils, Camera, Heart, Star } from 'lucide-react';
@@ -16,9 +15,6 @@ import { Trophy, MapPin, Utensils, Camera, Heart, Star } from 'lucide-react';
 const MyPassport = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const { isVisible: badgesVisible, elementRef: badgesRef } = useServiceVisibility({ threshold: 0.3, rootMargin: '100px' });
-  const { isVisible: statsVisible, elementRef: statsRef } = useServiceVisibility({ threshold: 0.2, rootMargin: '80px' });
-  const { isVisible: headerVisible, elementRef: headerRef } = useServiceVisibility({ threshold: 0.1 });
   
   const { 
     achievements, 
@@ -76,12 +72,7 @@ const MyPassport = () => {
         </div>
 
         {/* Header */}
-        <div 
-          ref={headerRef}
-          className={`mb-12 relative z-10 transition-all duration-1000 ${
-            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
+        <div className="mb-12 relative z-10">
           <div className="flex items-center gap-4 mb-6">
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse">
               <Trophy className="h-8 w-8 sm:h-10 sm:w-10 text-white animate-bounce" />
@@ -105,12 +96,7 @@ const MyPassport = () => {
         </div>
 
         {/* Badge Grid */}
-        <div 
-          ref={badgesRef}
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 relative z-10 transition-all duration-700 ease-out ${
-            badgesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 relative z-10">
           {achievements.map((achievement, index) => {
             const progress = userProgress[achievement.id];
             const isCompleted = progress?.completed || false;
@@ -126,7 +112,6 @@ const MyPassport = () => {
                     : 'bg-gradient-to-br from-red-50/80 via-red-100/60 to-slate-50/90 border-red-200/40 shadow-lg hover:shadow-xl hover:border-red-300/60'
                 } backdrop-blur-sm rounded-3xl`}
                 style={{ 
-                  transitionDelay: badgesVisible ? `${index * 80}ms` : '0ms',
                   animationDelay: `${index * 100}ms`
                 }}
               >
@@ -201,12 +186,7 @@ const MyPassport = () => {
         </div>
 
         {/* Statistics */}
-        <Card 
-          ref={statsRef}
-          className={`relative mb-12 p-8 lg:p-10 rounded-3xl shadow-2xl border border-slate-200/50 bg-gradient-to-br from-slate-50/90 to-white/95 backdrop-blur-sm transition-all duration-700 ease-out transform ${
-            statsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
+        <Card className="relative mb-12 p-8 lg:p-10 rounded-3xl shadow-2xl border border-slate-200/50 bg-gradient-to-br from-slate-50/90 to-white/95 backdrop-blur-sm">
           {/* 3D Relief Shadow Layers */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-200/30 to-slate-400/20 rounded-3xl transform translate-x-2 translate-y-2 blur-sm -z-10"></div>
           <div className="absolute inset-0 bg-gradient-to-tl from-slate-300/20 to-slate-100/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
