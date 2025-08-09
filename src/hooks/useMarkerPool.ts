@@ -14,11 +14,10 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
 
   // Manage POI markers with efficient pooling
   useEffect(() => {
-    if (!map || !window.google?.maps || !poiIcon) {
+    if (!map || !window.google?.maps) {
       console.log('⚠️ Marker pool skipped - missing requirements:', { 
         hasMap: !!map, 
-        hasGoogleMaps: !!window.google?.maps, 
-        hasIcon: !!poiIcon,
+        hasGoogleMaps: !!window.google?.maps,
         mapType: map ? map.constructor.name : 'null'
       });
       return;
@@ -45,12 +44,14 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
       
       if (!marker) {
         // Create new marker only if doesn't exist
-        marker = new google.maps.Marker({
+        const options: google.maps.MarkerOptions = {
           position: poi.coordinates,
           title: poi.name,
-          icon: poiIcon,
           map: null // Don't add to map yet
-        });
+        };
+        if (poiIcon) options.icon = poiIcon; // Use custom icon if available
+
+        marker = new google.maps.Marker(options);
 
         // Add click listener - directly call onPOISelect
         marker.addListener('click', () => {
@@ -58,13 +59,20 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
         });
 
         markerPoolRef.current.set(poi.id, marker);
+      } else if (poiIcon) {
+        // Keep marker icon in sync when icon becomes available/changes
+        try {
+          marker.setIcon(poiIcon);
+        } catch (e) {
+          console.warn('⚠️ Failed to set custom icon, using default marker for POI:', poi.name);
+        }
       }
 
       // Show marker on map with error handling
       try {
         marker.setMap(map);
         marker.setVisible(true);
-        console.log('✅ Marker created successfully for POI:', poi.name);
+        console.log('✅ Marker ready for POI:', poi.name, { usingCustomIcon: !!poiIcon });
       } catch (error) {
         console.error('❌ Failed to set marker on map for POI:', poi.name, error);
       }
