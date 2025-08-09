@@ -24,7 +24,7 @@ const HeroOverlayNavigation = () => {
         </div>
       </div>;
   }
-  return <div className="absolute top-0 left-0 right-0 z-20 w-full">
+  return <div className="absolute top-0 left-0 right-0 z-[5000] w-full">
       <div className="flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-screen-2xl mx-auto">
         {/* Logo */}
         <div className="mr-12 flex">
