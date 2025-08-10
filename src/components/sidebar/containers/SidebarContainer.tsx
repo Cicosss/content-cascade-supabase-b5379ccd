@@ -22,7 +22,7 @@ import { SidebarView } from '../views/SidebarView';
 const SidebarContainer = React.memo(() => {
   return (
     <Sidebar 
-      className="border-r border-slate-200 bg-[#F8F9FA] pt-16 md:pt-20 lg:pt-24" 
+      className="border-r border-slate-200 bg-[#F8F9FA]" 
       collapsible="icon"
     >
       <MenuStateProvider>
