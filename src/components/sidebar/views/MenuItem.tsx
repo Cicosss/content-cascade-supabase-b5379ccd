@@ -38,7 +38,7 @@ const MenuItem = React.memo<MenuItemProps>(({ item, isActive, isCollapsed }) => 
       >
         <Link 
           to={url} 
-          className="flex items-center gap-3 w-full"
+          className={`flex items-center w-full ${isCollapsed ? 'justify-center' : 'gap-3'}`}
           aria-label={`Naviga a ${title}`}
         >
           {/* Icon Container con badge */}

@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { Sidebar, SidebarContent } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarRail } from '@/components/ui/sidebar';
 import { MenuStateProvider } from '@/contexts/MenuStateContext';
 import { SidebarView } from '../views/SidebarView';
 
@@ -25,6 +25,7 @@ const SidebarContainer = React.memo(() => {
       className="border-r border-slate-200 bg-[#F8F9FA]" 
       collapsible="icon"
     >
+      <SidebarRail />
       <MenuStateProvider>
         <SidebarContent className="px-2 bg-[#F8F9FA]">
           <SidebarView />
