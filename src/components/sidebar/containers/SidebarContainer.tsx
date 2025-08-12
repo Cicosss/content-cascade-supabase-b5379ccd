@@ -15,19 +15,21 @@
  */
 
 import React from 'react';
-import { Sidebar, SidebarContent, SidebarRail } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarRail, useSidebar } from '@/components/ui/sidebar';
 import { MenuStateProvider } from '@/contexts/MenuStateContext';
 import { SidebarView } from '../views/SidebarView';
 
 const SidebarContainer = React.memo(() => {
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
   return (
     <Sidebar 
       className="border-r border-slate-200 bg-[#F8F9FA]" 
       collapsible="icon"
     >
-      <SidebarRail />
+      <SidebarRail className="border-r border-slate-200 bg-transparent" />
       <MenuStateProvider>
-        <SidebarContent className="px-2 bg-[#F8F9FA]">
+        <SidebarContent className={isCollapsed ? "px-0 bg-[#F8F9FA]" : "px-2 bg-[#F8F9FA]"}>
           <SidebarView />
         </SidebarContent>
       </MenuStateProvider>
