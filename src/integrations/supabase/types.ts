@@ -781,7 +781,7 @@ export type Database = {
     }
     Functions: {
       calculate_priority_score: {
-        Args: { avg_rating: number; created_at: string; reviews_count?: number }
+        Args: { reviews_count?: number; avg_rating: number; created_at: string }
         Returns: number
       }
       move_expired_events: {
