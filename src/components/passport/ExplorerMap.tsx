@@ -81,13 +81,13 @@ const ExplorerMap: React.FC = () => {
             <div className="space-y-4 lg:space-y-5">
               <div className="flex justify-between items-center bg-slate-700/50 rounded-xl p-4 hover:bg-slate-700/70 transition-all duration-300 transform hover:scale-102">
                 <span className="font-lora text-slate-300 font-medium text-base lg:text-lg">Badge Sbloccati</span>
-                <Badge className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-slate-900 font-bold text-base lg:text-lg px-4 py-2 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-pulse">
+                <Badge className="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-slate-900 font-bold text-base lg:text-lg px-4 py-2 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite]">
                   {completedCount}
                 </Badge>
               </div>
               <div className="flex justify-between items-center bg-slate-700/50 rounded-xl p-4 hover:bg-slate-700/70 transition-all duration-300 transform hover:scale-102">
                 <span className="font-lora text-slate-300 font-medium text-base lg:text-lg">Romagna Esplorata</span>
-                <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base lg:text-lg px-4 py-2 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-pulse animation-delay-300">
+                <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base lg:text-lg px-4 py-2 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite] animation-delay-300">
                   {completionPercentage}%
                 </Badge>
               </div>
