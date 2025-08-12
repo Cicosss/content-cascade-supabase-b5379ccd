@@ -19,14 +19,12 @@ interface UseSimpleMapProps {
 export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [selectedPOI, setSelectedPOI] = useState<POI | null>(null);
-  const [mapBounds, setMapBounds] = useState<any>(null);
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
   const [isMapInstanceReady, setIsMapInstanceReady] = useState(false);
   
-  const boundsTimeoutRef = useRef<NodeJS.Timeout>();
+  const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   const interactionTimeoutRef = useRef<NodeJS.Timeout>();
-  const stabilizationTimeoutRef = useRef<NodeJS.Timeout>();
   const lastBoundsRef = useRef<string>('');
 
   const { userLocation, getCurrentLocation, isLoadingLocation } = useLocation();
@@ -42,7 +40,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const poiFilters: POIFilters = {
     activityTypes: isAllCategories ? [] : filters.activityTypes,
     withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
-    bounds: isAllCategories ? mapBounds : null
+    bounds: null
   };
 
   // Use simplified POI fetching without geographic cache
@@ -90,8 +88,8 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     }
   }, [isLoaded, userLocation, mapInstance]);
 
-  // Optimized bounds change handler with enhanced stabilization
-  const handleBoundsChange = useCallback(() => {
+  // Optimized map idle handler with single debounced fetch
+  const handleMapIdle = useCallback(() => {
     if (!mapInstance) return;
 
     const bounds = mapInstance.getBounds();
@@ -109,34 +107,25 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
 
     // Create a bounds signature to prevent duplicate calls
     const boundsSignature = `${newBounds.north},${newBounds.south},${newBounds.east},${newBounds.west}`;
-    
+
     // Skip if bounds haven't actually changed
     if (boundsSignature === lastBoundsRef.current) {
       return;
     }
-    
+
     lastBoundsRef.current = boundsSignature;
 
-    // Clear existing timeouts
-    if (boundsTimeoutRef.current) clearTimeout(boundsTimeoutRef.current);
-    if (stabilizationTimeoutRef.current) clearTimeout(stabilizationTimeoutRef.current);
-
-    // Immediate cache check with reduced timing
-    boundsTimeoutRef.current = setTimeout(() => {
-      console.log('🗺️ Cache check for bounds:', newBounds);
-      setMapBounds(newBounds);
-    }, 100);
-
-    // Stabilized fetch (for fresh data if needed) with reduced delay
-    stabilizationTimeoutRef.current = setTimeout(() => {
-      console.log('🔄 Stabilized bounds change:', newBounds);
+    // Debounced fetch based on stabilized bounds
+    if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
+    debounceTimeoutRef.current = setTimeout(() => {
       const updatedFilters: POIFilters = {
-        ...poiFilters,
-        bounds: isAllCategories ? newBounds : null
+        activityTypes: isAllCategories ? [] : filters.activityTypes,
+        withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
+        bounds: isAllCategories ? newBounds : null,
       };
       fetchPOIs(updatedFilters);
-    }, 300); // Reduced from 3000ms to 300ms
-  }, [mapInstance, fetchPOIs, filters.activityTypes, filters.withChildren, filters.period, filters.zone, isAllCategories]);
+    }, 300);
+  }, [mapInstance, fetchPOIs, filters.activityTypes, filters.withChildren, isAllCategories]);
 
   // User interaction tracking
   const handleInteractionStart = useCallback(() => {
@@ -157,22 +146,21 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     if (!mapInstance) return;
 
     const listeners = [
-      mapInstance.addListener('bounds_changed', handleBoundsChange),
+      mapInstance.addListener('idle', handleMapIdle),
       mapInstance.addListener('dragstart', handleInteractionStart),
       mapInstance.addListener('dragend', handleInteractionEnd),
       mapInstance.addListener('zoom_changed', handleInteractionStart),
     ];
 
-    // Set initial bounds
-    handleBoundsChange();
+    // Set initial fetch on first idle
+    handleMapIdle();
 
     return () => {
       listeners.forEach(listener => listener.remove());
-      if (boundsTimeoutRef.current) clearTimeout(boundsTimeoutRef.current);
+      if (debounceTimeoutRef.current) clearTimeout(debounceTimeoutRef.current);
       if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
-      if (stabilizationTimeoutRef.current) clearTimeout(stabilizationTimeoutRef.current);
     };
-  }, [mapInstance, handleBoundsChange, handleInteractionStart, handleInteractionEnd]);
+  }, [mapInstance, handleMapIdle, handleInteractionStart, handleInteractionEnd]);
 
 
   // Marker management with optimized pooling - only when map is ready

@@ -72,33 +72,38 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
       }
     });
 
-    // Keep marker visibility in sync with current map bounds and movements
     try {
       const updateVisibility = () => {
         try {
           const bounds = map.getBounds();
+          if (!bounds) {
+            // Do not change visibility while bounds are unavailable (during transitions)
+            return;
+          }
           markerPoolRef.current.forEach((marker) => {
             const pos = marker.getPosition();
-            const isVisible = !!(pos && bounds?.contains(pos));
-            marker.setVisible(isVisible);
+            const shouldBeVisible = !!(pos && bounds.contains(pos));
+            if (marker.getVisible() !== shouldBeVisible) {
+              marker.setVisible(shouldBeVisible);
+            }
           });
         } catch (e) {
           console.error('❌ Failed to update marker visibility based on bounds:', e);
         }
       };
 
+      // Update when map becomes idle after interactions (stable state)
+      const idleListener = map.addListener('idle', updateVisibility);
+
       // Initial visibility update
       updateVisibility();
 
-      // Listen for bounds changes to update visibility during pan/zoom
-      const boundsListener = map.addListener('bounds_changed', updateVisibility);
-
       // Cleanup listener on deps change/unmount
       return () => {
-        boundsListener?.remove();
+        idleListener?.remove();
       };
     } catch (error) {
-      console.error('❌ Failed to attach bounds_changed listener:', error);
+      console.error('❌ Failed to attach idle listener for marker visibility:', error);
     }
 
   }, [map, validPOIs, poiIcon, onPOISelect]);
