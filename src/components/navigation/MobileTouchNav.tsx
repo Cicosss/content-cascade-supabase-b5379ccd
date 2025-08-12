@@ -30,6 +30,7 @@ export const MobileTouchNav: React.FC<MobileTouchNavProps> = ({
   const location = useLocation();
   const [selectedItem, setSelectedItem] = useState('scopri');
   const [pressedItem, setPressedItem] = useState<string | null>(null);
+const segmentCount = navigationItems.length;
 
   // Update selected item based on current path
   useEffect(() => {
@@ -62,7 +63,7 @@ export const MobileTouchNav: React.FC<MobileTouchNavProps> = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[5000] flex justify-center pb-4 px-2 md:hidden">
       <div 
-        className="relative bg-[#020817] rounded-3xl px-4 py-3 shadow-2xl"
+        className="relative bg-[#020817] rounded-3xl px-4 py-3 shadow-2xl overflow-hidden"
         style={{
           width: '95%',
           maxWidth: '400px',
@@ -71,17 +72,17 @@ export const MobileTouchNav: React.FC<MobileTouchNavProps> = ({
       >
         {/* Animated Active Indicator */}
         <motion.div
-          className="absolute top-2 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"
+          className="absolute top-2 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full -translate-x-1/2"
           style={{
-            width: `${100 / navigationItems.length}%`,
+            width: 56
           }}
           animate={{
-            x: `${getItemIndex(selectedItem) * 100}%`
+            left: `${((getItemIndex(selectedItem) + 0.5) * 100) / segmentCount}%`
           }}
           transition={{
             type: "spring",
-            stiffness: 300,
-            damping: 30
+            stiffness: 320,
+            damping: 28
           }}
         />
 
