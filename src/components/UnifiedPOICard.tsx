@@ -146,7 +146,7 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
 
   return (
     <Card 
-      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden flex flex-col poi-card-protected ${className}`}
+      className={`bg-white border border-gray-200 shadow-sm hover:shadow-md active:shadow-lg transition-shadow duration-300 cursor-pointer group overflow-hidden flex flex-col h-full poi-card-protected ${className}`}
       onClick={handleCardClick}
     >
       <div className="aspect-[4/3] relative overflow-hidden bg-gray-50 flex-shrink-0">
@@ -201,19 +201,21 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
             </div>
           </div>
 
-          {description && (
-            <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3">
-              {description
-                .replace(/<[^>]*>/g, '')
-                .replace(/&nbsp;/g, ' ')
-                .replace(/&amp;/g, '&')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>')
-                .replace(/&quot;/g, '"')
-                .replace(/&#39;/g, "'")
-                .trim()}
-            </p>
-          )}
+          <div className="mb-3 min-h-10">
+            {description && (
+              <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                {description
+                  .replace(/<[^>]*>/g, '')
+                  .replace(/&nbsp;/g, ' ')
+                  .replace(/&amp;/g, '&')
+                  .replace(/&lt;/g, '<')
+                  .replace(/&gt;/g, '>')
+                  .replace(/&quot;/g, '"')
+                  .replace(/&#39;/g, "'")
+                  .trim()}
+              </p>
+            )}
+          </div>
 
           <div className="space-y-2">
             {displayLocation && (
