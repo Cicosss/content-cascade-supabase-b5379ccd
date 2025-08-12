@@ -6,7 +6,7 @@ import { MapPin, Star, Euro, Clock, Users, Calendar, Eye, Phone, Globe } from 'l
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import FavoriteButton from './FavoriteButton';
-import HtmlContent from '@/components/ui/html-content';
+
 import { getCategoryIcon } from '@/utils/categoryIcons';
 
 
@@ -202,10 +202,17 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
           </div>
 
           {description && (
-            <HtmlContent 
-              content={description} 
-              className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3"
-            />
+            <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3">
+              {description
+                .replace(/<[^>]*>/g, '')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .trim()}
+            </p>
           )}
 
           <div className="space-y-2">
