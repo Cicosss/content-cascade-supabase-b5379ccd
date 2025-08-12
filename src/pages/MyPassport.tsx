@@ -197,23 +197,23 @@ const MyPassport = () => {
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
               <div className="text-center p-4 lg:p-6 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <div className="font-playfair text-3xl lg:text-4xl font-bold text-primary mb-2 animate-pulse">{completedCount}</div>
+                <div className="font-playfair text-3xl lg:text-4xl font-bold text-primary mb-2 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite]">{completedCount}</div>
                 <div className="font-lora text-sm lg:text-base text-slate-700 dark:text-slate-300 font-medium">Badge Ottenuti</div>
               </div>
               <div className="text-center p-4 lg:p-6 rounded-2xl bg-gradient-to-br from-green-500/5 to-green-500/10 border border-green-500/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <div className="font-playfair text-3xl lg:text-4xl font-bold text-green-600 mb-2 animate-pulse animation-delay-300">
+                <div className="font-playfair text-3xl lg:text-4xl font-bold text-green-600 mb-2 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite] animation-delay-300">
                   {getVisitsByAchievementCategory('borgo')}
                 </div>
                 <div className="font-lora text-sm lg:text-base text-slate-700 dark:text-slate-300 font-medium">Borghi Visitati</div>
               </div>
               <div className="text-center p-4 lg:p-6 rounded-2xl bg-gradient-to-br from-accent/5 to-accent/10 border border-accent/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <div className="font-playfair text-3xl lg:text-4xl font-bold text-accent mb-2 animate-pulse animation-delay-600">
+                <div className="font-playfair text-3xl lg:text-4xl font-bold text-accent mb-2 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite] animation-delay-600">
                   {getVisitsByAchievementCategory('ristoranti')}
                 </div>
                 <div className="font-lora text-sm lg:text-base text-slate-700 dark:text-slate-300 font-medium">Ristoranti Provati</div>
               </div>
               <div className="text-center p-4 lg:p-6 rounded-2xl bg-gradient-to-br from-secondary/5 to-secondary/10 border border-secondary/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <div className="font-playfair text-3xl lg:text-4xl font-bold text-secondary mb-2 animate-pulse animation-delay-1000">
+                <div className="font-playfair text-3xl lg:text-4xl font-bold text-secondary mb-2 animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite] animation-delay-1000">
                   {totalVisits}
                 </div>
                 <div className="font-lora text-sm lg:text-base text-slate-700 dark:text-slate-300 font-medium">Visite Totali</div>
