@@ -7,7 +7,7 @@ interface UseOptimizedMarkerPoolProps {
   map: google.maps.Map | null;
   pois: POI[];
   onPOISelect: (poi: POI) => void;
-  poiIcon?: google.maps.Icon | null;
+  poiIcon?: google.maps.Icon;
 }
 
 export const useOptimizedMarkerPool = ({
@@ -23,7 +23,7 @@ export const useOptimizedMarkerPool = ({
   const { clearMarkers, markerCount } = useMarkerPool({
     map,
     validPOIs,
-    poiIcon: poiIcon ?? undefined,
+    poiIcon,
     onPOISelect,
   });
 

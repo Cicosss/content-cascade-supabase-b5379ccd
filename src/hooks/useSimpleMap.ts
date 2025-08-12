@@ -139,7 +139,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       };
       fetchPOIs(updatedFilters);
     }, 300); // Reduced from 3000ms to 300ms
-  }, [mapInstance, fetchPOIs]);
+  }, [mapInstance, fetchPOIs, filters.activityTypes, filters.withChildren, filters.period, filters.zone]);
 
   // User interaction tracking
   const handleInteractionStart = useCallback(() => {
