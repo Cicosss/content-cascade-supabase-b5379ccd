@@ -453,6 +453,7 @@ export type Database = {
           start_datetime: string | null
           status: string | null
           submitter_email: string
+          submitter_id: string | null
           tags: string[] | null
           target_audience: string | null
           updated_at: string | null
@@ -484,6 +485,7 @@ export type Database = {
           start_datetime?: string | null
           status?: string | null
           submitter_email: string
+          submitter_id?: string | null
           tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
@@ -515,6 +517,7 @@ export type Database = {
           start_datetime?: string | null
           status?: string | null
           submitter_email?: string
+          submitter_id?: string | null
           tags?: string[] | null
           target_audience?: string | null
           updated_at?: string | null
@@ -740,6 +743,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_visits: {
         Row: {
           created_at: string
@@ -784,13 +808,24 @@ export type Database = {
         Args: { reviews_count?: number; avg_rating: number; created_at: string }
         Returns: number
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       move_expired_events: {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "promoter" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -917,6 +952,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "promoter", "user"],
+    },
   },
 } as const
