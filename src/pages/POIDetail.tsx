@@ -30,7 +30,9 @@ const POIDetail: React.FC = () => {
         <POIDetailHeader />
         
         {/* Hero Section - Full Width */}
-        <POIHeroSection poi={poi} />
+        <div className="-mt-16 sm:mt-0">
+          <POIHeroSection poi={poi} />
+        </div>
         
         {/* Image Gallery Section - Full Width */}
         <POIImageGallerySection
