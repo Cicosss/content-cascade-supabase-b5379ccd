@@ -29,21 +29,12 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
       return;
     }
 
-    const currentPOIIds = new Set(validPOIs.map(poi => poi.id));
-    
-    // Hide markers no longer needed
-    markerPoolRef.current.forEach((marker, poiId) => {
-      if (!currentPOIIds.has(poiId)) {
-        marker.setVisible(false);
-      }
-    });
-
-    // Show/create markers for current POIs
+    // Ensure markers exist for current POIs and keep icon in sync
     validPOIs.forEach(poi => {
       let marker = markerPoolRef.current.get(poi.id);
-      
+
       if (!marker) {
-        // Create new marker only if doesn't exist
+        // Create new marker only if it doesn't exist
         const options: google.maps.MarkerOptions = {
           position: poi.coordinates,
           title: poi.name,
@@ -68,15 +59,25 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
         }
       }
 
-      // Show marker on map with error handling
+      // Attach marker to map (visibility handled below)
       try {
         marker.setMap(map);
-        marker.setVisible(true);
-        console.log('✅ Marker ready for POI:', poi.name, { usingCustomIcon: !!poiIcon });
       } catch (error) {
         console.error('❌ Failed to set marker on map for POI:', poi.name, error);
       }
     });
+
+    // Update visibility of ALL pooled markers based on current map bounds
+    try {
+      const bounds = map.getBounds();
+      markerPoolRef.current.forEach((marker) => {
+        const pos = marker.getPosition();
+        const isVisible = !!(pos && bounds?.contains(pos));
+        marker.setVisible(isVisible);
+      });
+    } catch (error) {
+      console.error('❌ Failed to update marker visibility based on bounds:', error);
+    }
 
   }, [map, validPOIs, poiIcon, onPOISelect]);
 
