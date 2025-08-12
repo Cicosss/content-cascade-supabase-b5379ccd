@@ -23,9 +23,14 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
       return;
     }
 
-    // Validate that map is actually a Google Maps instance
-    if (!(map instanceof google.maps.Map)) {
-      console.error('❌ Invalid map instance provided to marker pool:', map);
+    // Validate map via feature detection to avoid instanceof issues (iframes/versions)
+    const hasMapShape = !!map &&
+      typeof (map as any).getBounds === 'function' &&
+      typeof (map as any).addListener === 'function';
+    if (!hasMapShape) {
+      console.error('❌ Invalid map-like instance provided to marker pool:', {
+        mapType: map ? (map as any).constructor?.name : 'null',
+      });
       return;
     }
 
