@@ -5,12 +5,15 @@ import POIStatusBadge from './POIStatusBadge';
 import VisitButton from './VisitButton';
 import FavoriteButton from '@/components/FavoriteButton';
 import { POIDetailData } from '@/types/poiDetail';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 interface POIHeroSectionProps {
   poi: POIDetailData;
 }
 
 const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
+  const navigate = useNavigate();
   const heroImage = poi.images?.[0] || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop&crop=center';
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -21,6 +24,14 @@ const POIHeroSection: React.FC<POIHeroSectionProps> = ({ poi }) => {
 
   return (
     <div className="relative w-full h-[60vh] min-h-[400px] sm:min-h-[300px] overflow-hidden">
+      {/* Back Button Overlay (Mobile) */}
+      <button
+        onClick={() => navigate(-1)}
+        aria-label="Torna indietro"
+        className="sm:hidden absolute top-4 left-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-md hover:bg-black/60 transition-colors"
+      >
+        <ArrowLeft className="h-5 w-5" />
+      </button>
       {/* Hero Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
