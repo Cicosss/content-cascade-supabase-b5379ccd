@@ -24,10 +24,10 @@ const SidebarContainer = React.memo(() => {
   const isCollapsed = state === 'collapsed';
   return (
     <Sidebar 
-      className="border-r border-slate-200 bg-[#F8F9FA]" 
+      className="bg-[#F8F9FA]" 
       collapsible="icon"
     >
-      <SidebarRail className="border-r border-slate-200 bg-transparent" />
+      <SidebarRail className="bg-transparent" />
       <MenuStateProvider>
         <SidebarContent className={isCollapsed ? "px-0 bg-[#F8F9FA]" : "px-2 bg-[#F8F9FA]"}>
           <SidebarView />

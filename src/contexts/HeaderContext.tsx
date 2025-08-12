@@ -45,7 +45,7 @@ export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
   let sidebarOpen = false;
   try {
     const sidebar = useSidebar();
-    sidebarOpen = sidebar.open || false;
+    sidebarOpen = sidebar.state === 'expanded';
   } catch {
     // Not within SidebarProvider, use default value
     sidebarOpen = false;
