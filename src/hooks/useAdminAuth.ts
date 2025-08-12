@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AdminUser {
   email: string;
@@ -13,27 +14,43 @@ export const useAdminAuth = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    // Check if the current authenticated user is admin
-    if (user && user.email === 'luca.litti@gmail.com') {
-      const admin = { email: user.email, isAdmin: true };
-      setAdminUser(admin);
-      localStorage.setItem('adminUser', JSON.stringify(admin));
-    } else {
-      setAdminUser(null);
-      localStorage.removeItem('adminUser');
-    }
-    setIsLoading(false);
+    const checkAdmin = async () => {
+      try {
+        if (!user) {
+          setAdminUser(null);
+          return;
+        }
+
+        // Fallback admin by email, plus role-based admin from user_roles
+        const isFallbackAdmin = user.email === 'luca.litti@gmail.com';
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id);
+
+        const hasAdminRole = Array.isArray(roles) && roles.some((r: any) => r.role === 'admin');
+        const isAdmin = isFallbackAdmin || hasAdminRole;
+
+        if (isAdmin) {
+          setAdminUser({ email: user.email ?? 'unknown', isAdmin: true });
+        } else {
+          setAdminUser(null);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAdmin();
   }, [user]);
 
-  const loginAdmin = (email: string, password: string): boolean => {
-    // This function is no longer needed as admin privileges are automatic
-    // for the designated email when they're authenticated
+  const loginAdmin = (_email: string, _password: string): boolean => {
+    // Not used anymore. Admin is determined by role in DB.
     return false;
   };
 
   const logoutAdmin = () => {
     setAdminUser(null);
-    localStorage.removeItem('adminUser');
   };
 
   return {
@@ -41,6 +58,6 @@ export const useAdminAuth = () => {
     isLoading,
     loginAdmin,
     logoutAdmin,
-    isAdmin: adminUser?.isAdmin || false
+    isAdmin: adminUser?.isAdmin || false,
   };
 };

@@ -1,4 +1,7 @@
 project_id = "jyyupvzawznwihojxiwk"
 
 [functions.maps-proxy]
-verify_jwt = false
+verify_jwt = true
+
+[functions.upload-image]
+verify_jwt = true

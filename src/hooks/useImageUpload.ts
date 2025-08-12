@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 interface UseImageUploadReturn {
   uploadImage: (file: File) => Promise<string | null>;
@@ -9,6 +10,19 @@ interface UseImageUploadReturn {
 
 export const useImageUpload = (): UseImageUploadReturn => {
   const [isUploading, setIsUploading] = useState(false);
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        const base64 = result.split('base64,')[1] || '';
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
 
   const uploadImage = async (file: File): Promise<string | null> => {
     // Validate file type
@@ -28,24 +42,27 @@ export const useImageUpload = (): UseImageUploadReturn => {
     setIsUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('key', '0631e6c971b0f2c10153dcfa6164c375');
+      const image_base64 = await fileToBase64(file);
 
-      const response = await fetch('https://api.imgbb.com/1/upload', {
-        method: 'POST',
-        body: formData,
+      const { data, error } = await supabase.functions.invoke('upload-image', {
+        body: {
+          image_base64,
+          filename: file.name,
+          contentType: file.type,
+        },
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success('Immagine caricata con successo!');
-        return data.data.url;
-      } else {
-        toast.error('Errore nel caricamento dell\'immagine');
-        return null;
+      if (error) {
+        throw error;
       }
+
+      if (data?.url) {
+        toast.success('Immagine caricata con successo!');
+        return data.url as string;
+      }
+
+      toast.error('Risposta non valida dal server di upload');
+      return null;
     } catch (error) {
       console.error('Error uploading image:', error);
       toast.error('Errore di connessione durante il caricamento');
