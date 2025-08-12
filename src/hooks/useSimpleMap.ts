@@ -33,7 +33,7 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const { isLoaded, error } = useGoogleMapsLoader();
 
   // Initialize marker icons
-  const { userIcon } = useMarkerIcons(isLoaded);
+  const { userIcon, poiIcon } = useMarkerIcons(isLoaded);
 
   // Prepare POI filters with proper type casting and bounds logic
   const poiFilters: POIFilters = {
@@ -177,26 +177,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
     };
   }, [mapInstance, handleBoundsChange, handleInteractionStart, handleInteractionEnd]);
 
-  // Trigger initial load when bounds are set
-  useEffect(() => {
-    if (mapBounds && pois.length === 0) {
-      const initialFilters: POIFilters = {
-        ...poiFilters,
-        bounds: (filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto')) 
-          ? null // Don't apply bounds when specific categories are selected
-          : mapBounds // Apply bounds only when showing all categories
-      };
-      fetchPOIs(initialFilters);
-    }
-  }, [mapBounds, fetchPOIs, pois.length]);
 
   // Marker management with optimized pooling - only when map is ready
   const { clearAllMarkers, validPOICount } = useOptimizedMarkerPool({
     map: isMapInstanceReady ? mapInstance : null,
     pois: isMapInstanceReady ? pois : [],
-    userLocation,
     onPOISelect: setSelectedPOI,
-    isGoogleMapsLoaded: isLoaded && isMapInstanceReady
+    poiIcon
   });
 
   // User location marker
