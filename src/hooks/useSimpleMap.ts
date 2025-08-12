@@ -36,14 +36,13 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
   const { userIcon, poiIcon } = useMarkerIcons(isLoaded);
 
   // Prepare POI filters with proper type casting and bounds logic
+  const isAllCategories = !filters.activityTypes?.length ||
+    filters.activityTypes.includes('tutte') ||
+    filters.activityTypes.includes('tutto');
   const poiFilters: POIFilters = {
-    activityTypes: filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto') 
-      ? filters.activityTypes 
-      : [],
+    activityTypes: isAllCategories ? [] : filters.activityTypes,
     withChildren: (filters.withChildren === 'si' ? 'si' : 'no') as 'si' | 'no',
-    bounds: (filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto')) 
-      ? null // Don't apply bounds when specific categories are selected
-      : mapBounds // Apply bounds only when showing all categories
+    bounds: isAllCategories ? mapBounds : null
   };
 
   // Use simplified POI fetching without geographic cache
@@ -133,13 +132,11 @@ export const useSimpleMap = ({ filters }: UseSimpleMapProps) => {
       console.log('🔄 Stabilized bounds change:', newBounds);
       const updatedFilters: POIFilters = {
         ...poiFilters,
-        bounds: (filters.activityTypes?.length > 0 && !filters.activityTypes.includes('tutto')) 
-          ? null // Don't apply bounds when specific categories are selected
-          : newBounds // Apply bounds only when showing all categories
+        bounds: isAllCategories ? newBounds : null
       };
       fetchPOIs(updatedFilters);
     }, 300); // Reduced from 3000ms to 300ms
-  }, [mapInstance, fetchPOIs, filters.activityTypes, filters.withChildren, filters.period, filters.zone]);
+  }, [mapInstance, fetchPOIs, filters.activityTypes, filters.withChildren, filters.period, filters.zone, isAllCategories]);
 
   // User interaction tracking
   const handleInteractionStart = useCallback(() => {

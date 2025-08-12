@@ -5,7 +5,7 @@ import { POI } from '@/types/poi';
 interface UseMarkerPoolProps {
   map: google.maps.Map | null;
   validPOIs: (POI & { coordinates: { lat: number; lng: number } })[];
-  poiIcon: google.maps.Icon | null;
+  poiIcon?: google.maps.Icon;
   onPOISelect: (poi: POI & { coordinates: { lat: number; lng: number } }) => void;
 }
 
@@ -67,16 +67,33 @@ export const useMarkerPool = ({ map, validPOIs, poiIcon, onPOISelect }: UseMarke
       }
     });
 
-    // Update visibility of ALL pooled markers based on current map bounds
+    // Keep marker visibility in sync with current map bounds and movements
     try {
-      const bounds = map.getBounds();
-      markerPoolRef.current.forEach((marker) => {
-        const pos = marker.getPosition();
-        const isVisible = !!(pos && bounds?.contains(pos));
-        marker.setVisible(isVisible);
-      });
+      const updateVisibility = () => {
+        try {
+          const bounds = map.getBounds();
+          markerPoolRef.current.forEach((marker) => {
+            const pos = marker.getPosition();
+            const isVisible = !!(pos && bounds?.contains(pos));
+            marker.setVisible(isVisible);
+          });
+        } catch (e) {
+          console.error('❌ Failed to update marker visibility based on bounds:', e);
+        }
+      };
+
+      // Initial visibility update
+      updateVisibility();
+
+      // Listen for bounds changes to update visibility during pan/zoom
+      const boundsListener = map.addListener('bounds_changed', updateVisibility);
+
+      // Cleanup listener on deps change/unmount
+      return () => {
+        boundsListener?.remove();
+      };
     } catch (error) {
-      console.error('❌ Failed to update marker visibility based on bounds:', error);
+      console.error('❌ Failed to attach bounds_changed listener:', error);
     }
 
   }, [map, validPOIs, poiIcon, onPOISelect]);
