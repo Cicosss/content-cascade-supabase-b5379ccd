@@ -14,19 +14,21 @@ const RespiroDelMare: React.FC = () => {
   return (
     <Layout>
       <div className="bg-white text-slate-800">
-        <YouTubeVideoBackground videoId={YOUTUBE_VIDEO_ID}>
-          <div className="space-y-6">
-            <TypingAnimation
-              text="Respiro del Mare"
-              duration={150}
-              delay={1000}
-              className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
-            />
-            <h2 className="text-xl md:text-3xl lg:text-4xl font-light max-w-4xl mx-auto leading-relaxed">
-              Insieme, puliamo la Costa della Romagna e creiamo Opportunità.
-            </h2>
-          </div>
-        </YouTubeVideoBackground>
+        <div className="-mt-16 md:-mt-20 lg:-mt-24">
+          <YouTubeVideoBackground videoId={YOUTUBE_VIDEO_ID}>
+            <div className="space-y-6">
+              <TypingAnimation
+                text="Respiro del Mare"
+                duration={150}
+                delay={1000}
+                className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight"
+              />
+              <h2 className="text-xl md:text-3xl lg:text-4xl font-light max-w-4xl mx-auto leading-relaxed">
+                Insieme, puliamo la Costa della Romagna e creiamo Opportunità.
+              </h2>
+            </div>
+          </YouTubeVideoBackground>
+        </div>
 
         {/* Sezioni del contenuto */}
         <FAQSection />
