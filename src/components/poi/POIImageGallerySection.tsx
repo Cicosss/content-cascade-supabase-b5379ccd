@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { X, Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { getTrustedVideoUrl } from '@/utils/url';
 
 interface POIImageGallerySectionProps {
   images: string[];
@@ -19,10 +20,9 @@ const POIImageGallerySection: React.FC<POIImageGallerySectionProps> = ({
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   const hasImages = images && images.length > 0;
-  const allMedia = hasImages ? [...images] : [];
-  if (videoUrl) allMedia.push(videoUrl);
+  const safeVideoUrl = videoUrl ? getTrustedVideoUrl(videoUrl) : null;
 
-  if (!hasImages && !videoUrl) {
+  if (!hasImages && !safeVideoUrl) {
     return null;
   }
 
@@ -78,7 +78,7 @@ const POIImageGallerySection: React.FC<POIImageGallerySectionProps> = ({
           )}
 
           {/* Video thumbnail if present */}
-          {videoUrl && (
+          {safeVideoUrl && (
             <button
               onClick={() => setIsVideoOpen(true)}
               className="relative aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center group hover:shadow-lg transition-all duration-300"
@@ -145,7 +145,7 @@ const POIImageGallerySection: React.FC<POIImageGallerySectionProps> = ({
         )}
 
         {/* Video Modal */}
-        {videoUrl && isVideoOpen && (
+        {safeVideoUrl && isVideoOpen && (
           <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
             <div className="relative w-full max-w-4xl">
               <Button
@@ -158,7 +158,7 @@ const POIImageGallerySection: React.FC<POIImageGallerySectionProps> = ({
               </Button>
               <div className="aspect-video bg-black rounded-lg overflow-hidden">
                 <iframe
-                  src={videoUrl}
+                  src={safeVideoUrl}
                   title={`Video di ${name}`}
                   className="w-full h-full"
                   allowFullScreen

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Phone, Mail, Globe } from 'lucide-react';
+import { ensureSafeExternalUrl } from '@/utils/url';
 
 interface POIContactInfoProps {
   phone?: string;
@@ -41,7 +42,7 @@ const POIContactInfo: React.FC<POIContactInfoProps> = ({
         <div className="flex items-center gap-3">
           <Globe className="h-4 w-4 text-gray-400 flex-shrink-0" />
           <a 
-            href={websiteUrl} 
+            href={ensureSafeExternalUrl(websiteUrl)} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-700 hover:underline text-sm"
