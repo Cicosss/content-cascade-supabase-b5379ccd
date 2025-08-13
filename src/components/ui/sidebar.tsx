@@ -176,14 +176,13 @@ const Sidebar = React.forwardRef<
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
 
     if (collapsible === "none") {
-      const hasGlassmorphism = className?.includes("glassmorphism");
-      console.log("Sidebar Debug - hasGlassmorphism:", hasGlassmorphism, "className:", className);
+      console.log("🚨 DEBUG: collapsible=none path - hasGlassmorphism:", className?.includes("glassmorphism"), "className:", className);
       
       return (
         <div
           className={cn(
             "flex h-full w-[--sidebar-width] flex-col text-sidebar-foreground",
-            hasGlassmorphism ? "" : "bg-sidebar",
+            className?.includes("glassmorphism") ? "" : "bg-sidebar",
             className
           )}
           ref={ref}
@@ -247,6 +246,8 @@ const Sidebar = React.forwardRef<
               variant === "floating" || variant === "inset"
                 ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
                 : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] group-data-[side=left]:border-r group-data-[side=right]:border-l group-data-[collapsible=icon]:border-none",
+              // Apply background conditionally for glassmorphism
+              className?.includes("glassmorphism") ? "" : "bg-sidebar",
               className
             )}
             {...props}
