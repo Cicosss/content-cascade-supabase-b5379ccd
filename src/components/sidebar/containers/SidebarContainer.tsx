@@ -22,14 +22,35 @@ import { SidebarView } from '../views/SidebarView';
 const SidebarContainer = React.memo(() => {
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
+  
+  const glassmorphismStyles = {
+    background: 'rgba(255, 255, 255, 0.15)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    borderRadius: '16px',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+  };
+
+  const contentStyles = {
+    background: 'rgba(255, 255, 255, 0.08)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    borderRadius: '12px'
+  };
+
   return (
     <Sidebar 
-      className="glassmorphism-sidebar" 
+      style={glassmorphismStyles}
       collapsible="icon"
     >
       <SidebarRail className="bg-transparent" />
       <MenuStateProvider>
-        <SidebarContent className={isCollapsed ? "px-0 glassmorphism-content" : "px-2 glassmorphism-content"}>
+        <SidebarContent 
+          className={isCollapsed ? "px-0" : "px-2"}
+          style={contentStyles}
+        >
           <SidebarView />
         </SidebarContent>
       </MenuStateProvider>
