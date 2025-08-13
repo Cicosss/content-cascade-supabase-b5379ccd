@@ -3,22 +3,15 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSidebar } from '@/components/ui/sidebar';
 
-interface NavigationItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: NavigationItem[];
-}
 
 interface HeaderContextType {
   // Navigation state
   isMobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
   
-  // Navigation actions
-  handleNavigation: (url: string) => void;
-  handleLogoClick: () => void;
+  // Navigation actions (moved to useNavigation hook)
+  
+  // Sidebar state
   
   // Sidebar state
   sidebarOpen: boolean;
@@ -53,20 +46,9 @@ export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
   
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleNavigation = useCallback((url: string) => {
-    navigate(url);
-    setMobileMenuOpen(false);
-  }, [navigate]);
-
-  const handleLogoClick = useCallback(() => {
-    navigate('/');
-  }, [navigate]);
-
   const value: HeaderContextType = {
     isMobileMenuOpen,
     setMobileMenuOpen,
-    handleNavigation,
-    handleLogoClick,
     sidebarOpen,
   };
 

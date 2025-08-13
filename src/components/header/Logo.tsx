@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useHeader } from '@/contexts/HeaderContext';
+import { useNavigation } from '@/hooks/useNavigation';
+import { LOGO_CONFIG } from '@/config/navigationConfig';
 
 export const Logo: React.FC = () => {
-  const { handleLogoClick } = useHeader();
+  const { handleLogoClick } = useNavigation();
 
   return (
     <Link 
@@ -14,8 +15,8 @@ export const Logo: React.FC = () => {
       aria-label="Vai a Mia Romagna"
     >
       <img 
-        src="/lovable-uploads/673fa174-b69d-4246-a652-97158e041630.png" 
-        alt="Logo Mia Romagna" 
+        src={LOGO_CONFIG.src} 
+        alt={LOGO_CONFIG.alt} 
         className="h-24 w-24 object-contain transition-transform duration-200 group-hover:scale-105"
       />
     </Link>

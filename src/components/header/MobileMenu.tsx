@@ -5,74 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { 
-  UtensilsCrossed, 
-  Landmark, 
-  CalendarHeart, 
-  Users, 
-  MountainSnow 
-} from 'lucide-react';
 import { useHeader } from '@/contexts/HeaderContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
-import { useNavigate } from 'react-router-dom';
-
-const menuItems = [
-  {
-    title: "Scopri",
-    url: "#",
-    items: [
-      {
-        title: "Gusto & Sapori",
-        description: "Ristoranti, cantine e prodotti tipici.",
-        icon: <UtensilsCrossed className="size-5 shrink-0" />,
-        url: "/dashboard?categories=Ristoranti,Agriturismi,Aziende Agricole,Street Food,Mercati Locali"
-      },
-      {
-        title: "Cultura & Territorio",
-        description: "Musei, borghi e tesori storici.",
-        icon: <Landmark className="size-5 shrink-0" />,
-        url: "/dashboard?categories=Musei,Artigianato Locale,Storia e Borghi"
-      },
-      {
-        title: "Eventi & Spettacoli",
-        description: "Feste, concerti e mostre da non perdere.",
-        icon: <CalendarHeart className="size-5 shrink-0" />,
-        url: "/dashboard?categories=Eventi"
-      },
-      {
-        title: "Divertimento & Famiglia",
-        description: "Parchi, attività e relax per tutti.",
-        icon: <Users className="size-5 shrink-0" />,
-        url: "/dashboard?categories=Parchi a Tema e Acquatici,Attività per Bambini,Fattorie Didattiche e Animali,Esperienze Educative,Vita Notturna"
-      },
-      {
-        title: "Natura & Avventura",
-        description: "Spiagge, parchi e sport all'aria aperta.",
-        icon: <MountainSnow className="size-5 shrink-0" />,
-        url: "/dashboard?categories=Spiagge,Parchi Naturali e Riserve,Sport"
-      }
-    ]
-  },
-  { title: "Il Mio Passaporto", url: "/my-passport" },
-  { title: "Respiro del Mare", url: "/respiro-del-mare" },
-  { title: "Oggi in Romagna", url: "/oggi" }
-];
+import { useNavigation } from '@/hooks/useNavigation';
+import { createMenuItems, LOGO_CONFIG, Z_INDEX } from '@/config/navigationConfig';
 
 export const MobileMenu: React.FC = () => {
-  const { isMobileMenuOpen, setMobileMenuOpen, handleNavigation } = useHeader();
+  const { isMobileMenuOpen, setMobileMenuOpen } = useHeader();
   const { user, signOut } = useAuth();
   const { profile } = useUserProfile();
-  const navigate = useNavigate();
-
+  const { handleNavigation, handleAuthNavigation } = useNavigation();
+  const menuItems = createMenuItems();
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
-    setMobileMenuOpen(false);
-  };
-
-  const handleAuthNavigation = (path: string) => {
-    navigate(path);
     setMobileMenuOpen(false);
   };
 
@@ -90,11 +36,11 @@ export const MobileMenu: React.FC = () => {
           <Menu className="h-7 w-7" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 bg-slate-900 border-slate-700 w-[85vw] max-w-80 z-[5001] overflow-y-auto">
+      <SheetContent side="left" className={`pr-0 bg-slate-900 border-slate-700 w-[85vw] max-w-80 z-[${Z_INDEX.DROPDOWN}] overflow-y-auto`}>
         <div className="flex items-center space-x-2 pb-4 border-b border-slate-700">
           <img 
-            src="/lovable-uploads/673fa174-b69d-4246-a652-97158e041630.png" 
-            alt="Logo Mia Romagna" 
+            src={LOGO_CONFIG.src} 
+            alt={LOGO_CONFIG.alt} 
             className="h-12 w-auto object-contain"
           />
           <span className="font-bold text-white text-lg">Mia Romagna</span>

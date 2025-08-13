@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import LanguageSelector from './LanguageSelector';
 import ProfileMenu from '@/components/ProfileMenu';
 
 export const UserActions: React.FC = () => {
@@ -10,7 +9,6 @@ export const UserActions: React.FC = () => {
 
   return (
     <div className="flex items-center gap-4">
-      <LanguageSelector />
       
       {user ? (
         <ProfileMenu />
