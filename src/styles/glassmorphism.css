@@ -1,64 +1,20 @@
-/* Glassmorphism Effects per Sidebar */
+/* Ultra-simplified Glassmorphism */
 
-/* Glassmorphism per sidebar - semplificato */
 .glassmorphism-sidebar {
   background: rgba(255, 255, 255, 0.15) !important;
   backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
   border-radius: 16px !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-}
-
-[data-sidebar="sidebar"] .glassmorphism-content,
-.glassmorphism-content {
-  /* Contenuto con sfondo ancora più traslucido */
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glassmorphism-footer {
   background: rgba(255, 255, 255, 0.12) !important;
   backdrop-filter: blur(12px) !important;
-  border-radius: 0 0 12px 12px !important;
-}
-
-/* Override any bg-sidebar or bg-background classes with maximum specificity */
-[data-sidebar="sidebar"].glassmorphism-inner,
-.glassmorphism-inner[data-sidebar="sidebar"],
-.glassmorphism-inner {
-  /* Inner container */
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border-radius: 14px !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  
-  /* Ombra interna per profondità */
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 4px 20px rgba(0, 0, 0, 0.08) !important;
-}
-
-
-/* Animazioni smooth per il blur */
-.glassmorphism-sidebar,
-.glassmorphism-content,
-.glassmorphism-footer,
-.glassmorphism-inner {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-
-/* Effetto hover per la sidebar con alta specificità */
-[data-sidebar="sidebar"].glassmorphism-sidebar:hover,
-.glassmorphism-sidebar[data-sidebar="sidebar"]:hover,
-.glassmorphism-sidebar:hover {
-  background: rgba(255, 255, 255, 0.18) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.15),
-    0 6px 20px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  border-radius: 0 0 12px 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 0.5rem !important;
 }
