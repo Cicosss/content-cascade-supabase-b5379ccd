@@ -10,6 +10,15 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* QUESTO È IL PEZZO MANCANTE - il div interno della sidebar */
+.glassmorphism-inner {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
 .glassmorphism-footer {
   background: rgba(255, 255, 255, 0.12) !important;
   backdrop-filter: blur(12px) !important;
