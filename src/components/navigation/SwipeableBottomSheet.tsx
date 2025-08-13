@@ -97,7 +97,7 @@ export const SwipeableBottomSheet: React.FC<SwipeableBottomSheetProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 z-[5000] transition-opacity duration-300"
+        className="fixed inset-0 bg-black/50 z-header transition-opacity duration-300"
         onClick={onClose}
       />
 
@@ -105,7 +105,7 @@ export const SwipeableBottomSheet: React.FC<SwipeableBottomSheetProps> = ({
       <div
         ref={sheetRef}
         className={cn(
-          "fixed bottom-0 left-0 right-0 z-[5001]",
+          "fixed bottom-0 left-0 right-0 z-dropdown",
           "bg-background rounded-t-2xl shadow-2xl",
           "transform transition-transform duration-300 ease-out",
           "max-h-[95vh] overflow-hidden",

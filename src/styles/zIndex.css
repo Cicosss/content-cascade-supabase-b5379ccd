@@ -12,8 +12,8 @@
 }
 
 /* Classi Tailwind personalizzate per z-index */
-.z-header { z-index: 5000; }
-.z-dropdown { z-index: 5001; }
+.z-header { z-index: 5000 !important; }
+.z-dropdown { z-index: 5001 !important; }
 
 /* Regole specifiche per garantire header sempre visibile */
 .header-fixed {

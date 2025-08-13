@@ -36,7 +36,7 @@ export const MobileMenu: React.FC = () => {
           <Menu className="h-7 w-7" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className={`pr-0 bg-slate-900 border-slate-700 w-[85vw] max-w-80 z-[${Z_INDEX.DROPDOWN}] overflow-y-auto`}>
+      <SheetContent side="left" className="pr-0 bg-slate-900 border-slate-700 w-[85vw] max-w-80 z-dropdown overflow-y-auto">
         <div className="flex items-center space-x-2 pb-4 border-b border-slate-700">
           <img 
             src={LOGO_CONFIG.src} 

@@ -196,7 +196,7 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="z-[5001] w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            className="z-dropdown w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
             style={
               {
                 "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -232,7 +232,7 @@ const Sidebar = React.forwardRef<
         />
         <div
             className={cn(
-              "duration-200 fixed top-16 md:top-20 lg:top-24 bottom-0 z-[4999] hidden h-[calc(100svh-theme(spacing.16))] md:h-[calc(100svh-theme(spacing.20))] lg:h-[calc(100svh-theme(spacing.24))] w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
+              "duration-200 fixed top-16 md:top-20 lg:top-24 bottom-0 z-header hidden h-[calc(100svh-theme(spacing.16))] md:h-[calc(100svh-theme(spacing.20))] lg:h-[calc(100svh-theme(spacing.24))] w-[--sidebar-width] transition-[left,right,width] ease-linear md:flex",
               side === "left"
                 ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
                 : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
