@@ -1,27 +1,12 @@
 /* Glassmorphism Effects per Sidebar */
 
-/* Override Tailwind sidebar classes with high specificity */
-[data-sidebar="sidebar"].glassmorphism-sidebar,
-.glassmorphism-sidebar[data-sidebar="sidebar"],
+/* Glassmorphism per sidebar - semplificato */
 .glassmorphism-sidebar {
-  /* Sfondo traslucido */
   background: rgba(255, 255, 255, 0.15) !important;
-  
-  /* Effetto blur sul background */
   backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  
-  /* Bordi arrotondati */
   border-radius: 16px !important;
-  
-  /* Bordo semi-trasparente */
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  
-  /* Ombra per profondità */
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    0 4px 16px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
 }
 
 [data-sidebar="sidebar"] .glassmorphism-content,
@@ -33,14 +18,10 @@
   border-radius: 12px !important;
 }
 
-[data-sidebar="sidebar"] .glassmorphism-footer,
 .glassmorphism-footer {
-  /* Footer con glassmorphism */
   background: rgba(255, 255, 255, 0.12) !important;
   backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
   border-radius: 0 0 12px 12px !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Override any bg-sidebar or bg-background classes with maximum specificity */
