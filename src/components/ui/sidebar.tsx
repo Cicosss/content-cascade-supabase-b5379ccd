@@ -176,11 +176,14 @@ const Sidebar = React.forwardRef<
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
 
     if (collapsible === "none") {
+      const hasGlassmorphism = className?.includes("glassmorphism");
+      console.log("Sidebar Debug - hasGlassmorphism:", hasGlassmorphism, "className:", className);
+      
       return (
         <div
           className={cn(
             "flex h-full w-[--sidebar-width] flex-col text-sidebar-foreground",
-            !className?.includes("glassmorphism") && "bg-sidebar",
+            hasGlassmorphism ? "" : "bg-sidebar",
             className
           )}
           ref={ref}
@@ -199,7 +202,7 @@ const Sidebar = React.forwardRef<
             data-mobile="true"
             className={cn(
               "z-dropdown w-[--sidebar-width] p-0 text-sidebar-foreground [&>button]:hidden",
-              !className?.includes("glassmorphism") && "bg-sidebar"
+              className?.includes("glassmorphism") ? "" : "bg-sidebar"
             )}
             style={
               {
