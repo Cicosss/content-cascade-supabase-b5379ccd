@@ -17,15 +17,19 @@ import React from 'react';
 import { SidebarMenuContainer } from '../containers/SidebarMenuContainer';
 import { UserProfileContainer } from '../containers/UserProfileContainer';
 import { SidebarFooter as BaseSidebarFooter } from '@/components/ui/sidebar';
+import { SidebarStyles } from '../core/SidebarStyles';
+import { useSidebarDebug } from '../hooks/useSidebarDebug';
 
-const SidebarView = React.memo(() => {
-  const footerStyles = {
-    background: 'rgba(255, 255, 255, 0.12)',
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    borderRadius: '0 0 12px 12px',
-    borderTop: '1px solid rgba(255, 255, 255, 0.2)'
-  };
+interface SidebarViewProps {
+  enableGlassmorphism?: boolean;
+}
+
+const SidebarView: React.FC<SidebarViewProps> = ({ enableGlassmorphism = true }) => {
+  const { logAction } = useSidebarDebug('SidebarView');
+
+  React.useEffect(() => {
+    logAction('SidebarView rendered', { enableGlassmorphism });
+  }, [enableGlassmorphism, logAction]);
 
   return (
     <>
@@ -33,15 +37,17 @@ const SidebarView = React.memo(() => {
       <SidebarMenuContainer />
       
       {/* User Profile Footer */}
-      <BaseSidebarFooter 
-        className="border-t border-white/20 p-2"
-        style={footerStyles}
+      <SidebarStyles 
+        type="footer"
+        enableGlassmorphism={enableGlassmorphism}
       >
-        <UserProfileContainer />
-      </BaseSidebarFooter>
+        <BaseSidebarFooter className="border-t border-white/20 p-2">
+          <UserProfileContainer />
+        </BaseSidebarFooter>
+      </SidebarStyles>
     </>
   );
-});
+};
 
 SidebarView.displayName = 'SidebarView';
 

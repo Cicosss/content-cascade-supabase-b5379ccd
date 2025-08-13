@@ -29,7 +29,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 
                 {/* Layout principale con sidebar - con padding per header responsive */}
                 <div className="flex flex-1 w-full pt-16 md:pt-20 lg:pt-24">
-                  <AppSidebar />
+            <AppSidebar 
+              enableDebug={process.env.NODE_ENV === 'development'}
+              enableGlassmorphism={true}
+            />
                   <SidebarInset className="flex-1 flex flex-col">
                     <main className="flex-1 relative pb-20 md:pb-0">
                       {children}

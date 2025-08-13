@@ -1,10 +1,23 @@
 
 import React from 'react';
-import { SidebarContainer } from './sidebar/containers/SidebarContainer';
+import { SidebarRoot } from './sidebar/core/SidebarRoot';
 
-const AppSidebar = React.memo(() => {
-  return <SidebarContainer />;
-});
+interface AppSidebarProps {
+  enableDebug?: boolean;
+  enableGlassmorphism?: boolean;
+}
+
+const AppSidebar: React.FC<AppSidebarProps> = ({ 
+  enableDebug = false,
+  enableGlassmorphism = true 
+}) => {
+  return (
+    <SidebarRoot 
+      enableDebug={enableDebug}
+      enableGlassmorphism={enableGlassmorphism}
+    />
+  );
+};
 
 AppSidebar.displayName = 'AppSidebar';
 
