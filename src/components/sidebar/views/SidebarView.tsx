@@ -17,7 +17,6 @@ import React from 'react';
 import { SidebarMenuContainer } from '../containers/SidebarMenuContainer';
 import { UserProfileContainer } from '../containers/UserProfileContainer';
 import { SidebarFooter as BaseSidebarFooter } from '@/components/ui/sidebar';
-import { SidebarStyles } from '../core/SidebarStyles';
 import { useSidebarDebug } from '../hooks/useSidebarDebug';
 
 interface SidebarViewProps {
@@ -31,20 +30,19 @@ const SidebarView: React.FC<SidebarViewProps> = ({ enableGlassmorphism = true })
     logAction('SidebarView rendered', { enableGlassmorphism });
   }, [enableGlassmorphism, logAction]);
 
+  const footerClasses = enableGlassmorphism 
+    ? 'glassmorphism-footer border-t border-white/20 p-2' 
+    : 'border-t border-border p-2';
+
   return (
     <>
       {/* Menu Content */}
       <SidebarMenuContainer />
       
       {/* User Profile Footer */}
-      <SidebarStyles 
-        type="footer"
-        enableGlassmorphism={enableGlassmorphism}
-      >
-        <BaseSidebarFooter className="border-t border-white/20 p-2">
-          <UserProfileContainer />
-        </BaseSidebarFooter>
-      </SidebarStyles>
+      <BaseSidebarFooter className={footerClasses}>
+        <UserProfileContainer />
+      </BaseSidebarFooter>
     </>
   );
 };
