@@ -53,7 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Header />
           
           {/* Main content con padding per header fisso responsive */}
-          <main className="flex-1 relative pb-20 md:pb-0">
+          <main className="flex-1 relative pb-20 md:pb-0 pt-16 md:pt-20 lg:pt-24">
             {children}
           </main>
           <Footer />

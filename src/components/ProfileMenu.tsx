@@ -13,20 +13,20 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@/hooks/useNavigation';
 
 const ProfileMenu = () => {
   const { user, signOut } = useAuth();
   const { profile } = useUserProfile();
   const { logoutAdmin, isAdmin } = useAdminAuth();
-  const navigate = useNavigate();
+  const { handleNavigation } = useNavigation();
 
   const handleSignOut = async () => {
     await signOut();
     if (isAdmin) {
       logoutAdmin();
     }
-    navigate('/');
+    handleNavigation('/');
   };
 
   if (!user) return null;
@@ -53,24 +53,24 @@ const ProfileMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent 
         align="end" 
-        className="w-48 rounded-xl border border-slate-300 shadow-xl z-[5001] bg-[#2A3385]"
+        className="w-48 rounded-xl border border-slate-300 shadow-xl z-dropdown bg-[#2A3385]"
       >
         <DropdownMenuItem 
-          onClick={() => navigate('/dashboard')}
+          onClick={() => handleNavigation('/dashboard')}
           className="rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
         >
           <LayoutDashboard className="h-4 w-4 mr-3 text-blue-200" />
           Dashboard
         </DropdownMenuItem>
         <DropdownMenuItem 
-          onClick={() => navigate('/profile')}
+          onClick={() => handleNavigation('/profile')}
           className="rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
         >
           <Settings className="h-4 w-4 mr-3 text-emerald-200" />
           Il Mio Profilo
         </DropdownMenuItem>
         <DropdownMenuItem 
-          onClick={() => navigate('/favorites')}
+          onClick={() => handleNavigation('/favorites')}
           className="rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
         >
           <Heart className="h-4 w-4 mr-3 text-red-200" />
@@ -81,7 +81,7 @@ const ProfileMenu = () => {
           <>
             <DropdownMenuSeparator className="bg-white/20" />
             <DropdownMenuItem 
-              onClick={() => navigate('/admin')}
+              onClick={() => handleNavigation('/admin')}
               className="rounded-lg hover:bg-orange-500/20 cursor-pointer text-orange-200 hover:text-orange-100 focus:bg-orange-500/20 focus:text-orange-100"
             >
               <Shield className="h-4 w-4 mr-3" />

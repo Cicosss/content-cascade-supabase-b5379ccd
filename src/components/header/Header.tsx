@@ -19,8 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 
   return (
       <header className={cn(
-        "fixed top-0 left-0 right-0 z-[5000] w-full overflow-visible",
-        "bg-[#192335] backdrop-blur-sm",
+        "header-fixed bg-[#192335] backdrop-blur-sm",
         "transition-all duration-300 ease-in-out",
         className
       )}>
