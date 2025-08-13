@@ -20,7 +20,7 @@ const DesktopDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
   return (
     <DashboardErrorBoundary>
       <Layout>
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen">
           {/* Header Section */}
           <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900">
             <div className="container mx-auto py-8 space-y-8">
