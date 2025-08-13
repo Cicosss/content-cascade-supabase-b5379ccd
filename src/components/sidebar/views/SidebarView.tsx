@@ -25,7 +25,7 @@ const SidebarView = React.memo(() => {
       <SidebarMenuContainer />
       
       {/* User Profile Footer */}
-      <BaseSidebarFooter className="border-t border-slate-200 p-2 bg-[#F8F9FA]">
+      <BaseSidebarFooter className="border-t border-white/20 p-2 glassmorphism-footer">
         <UserProfileContainer />
       </BaseSidebarFooter>
     </>

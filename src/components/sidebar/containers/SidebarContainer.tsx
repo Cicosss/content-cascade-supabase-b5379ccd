@@ -24,12 +24,12 @@ const SidebarContainer = React.memo(() => {
   const isCollapsed = state === 'collapsed';
   return (
     <Sidebar 
-      className="bg-[#F8F9FA]" 
+      className="glassmorphism-sidebar" 
       collapsible="icon"
     >
       <SidebarRail className="bg-transparent" />
       <MenuStateProvider>
-        <SidebarContent className={isCollapsed ? "px-0 bg-[#F8F9FA]" : "px-2 bg-[#F8F9FA]"}>
+        <SidebarContent className={isCollapsed ? "px-0 glassmorphism-content" : "px-2 glassmorphism-content"}>
           <SidebarView />
         </SidebarContent>
       </MenuStateProvider>
