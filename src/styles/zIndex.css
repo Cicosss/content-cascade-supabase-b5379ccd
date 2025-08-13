@@ -11,15 +11,9 @@
   --z-mobile-menu: 5001;   /* Mobile menu sopra header */
 }
 
-/* Classi Tailwind personalizzate per z-index - NUOVE E ROBUSTE */
-.z-behind { z-index: -1; }
-.z-normal { z-index: 1; }
-.z-elevated { z-index: 10; }
-.z-overlay { z-index: 100; }
-.z-modal { z-index: 1000; }
+/* Classi Tailwind personalizzate per z-index */
 .z-header { z-index: 5000; }
 .z-dropdown { z-index: 5001; }
-.z-mobile-menu { z-index: 5001; }
 
 /* Regole specifiche per garantire header sempre visibile */
 .header-fixed {
@@ -36,12 +30,6 @@
   padding-top: 6rem; /* h-24 = 6rem */
 }
 
-/* Reset per evitare conflitti con Google Maps e altri elementi */
-.google-maps-container {
-  position: relative !important;
-  z-index: 1 !important;
-}
-
 /* Dropdown e menu con z-index garantito */
 [data-radix-popper-content-wrapper] {
   z-index: 5001 !important;
@@ -53,13 +41,4 @@
 
 .sheet-content {
   z-index: 5001 !important;
-}
-
-/* Utility per forzare z-index */
-.force-above-header {
-  z-index: 5001 !important;
-}
-
-.force-header-level {
-  z-index: 5000 !important;
 }
