@@ -1,5 +1,7 @@
 /* Glassmorphism Effects per Sidebar */
 
+/* Override Tailwind sidebar classes */
+[data-sidebar="sidebar"].glassmorphism-sidebar,
 .glassmorphism-sidebar {
   /* Sfondo traslucido */
   background: rgba(255, 255, 255, 0.15) !important;
@@ -21,6 +23,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
+[data-sidebar="content"].glassmorphism-content,
 .glassmorphism-content {
   /* Contenuto con sfondo ancora più traslucido */
   background: rgba(255, 255, 255, 0.08) !important;
@@ -38,6 +41,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
+/* Override any bg-sidebar or bg-background classes */
+[data-sidebar="sidebar"] .glassmorphism-inner,
 .glassmorphism-inner {
   /* Inner container */
   background: rgba(255, 255, 255, 0.1) !important;
@@ -76,7 +81,19 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Force override for Tailwind classes */
+.bg-sidebar.glassmorphism-sidebar,
+.bg-background.glassmorphism-sidebar {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.bg-sidebar.glassmorphism-content,
+.bg-background.glassmorphism-content {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
 /* Effetto hover per la sidebar */
+[data-sidebar="sidebar"].glassmorphism-sidebar:hover,
 .glassmorphism-sidebar:hover {
   background: rgba(255, 255, 255, 0.18);
   border-color: rgba(255, 255, 255, 0.3);
