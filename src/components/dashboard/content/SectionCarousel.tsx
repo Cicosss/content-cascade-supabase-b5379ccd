@@ -21,6 +21,7 @@ interface SectionCarouselProps {
   title: string;
   subtitle: string;
   withChildren?: boolean;
+  categoryFilters?: string[];
 }
 
 const SectionCarousel: React.FC<SectionCarouselProps> = ({ 
@@ -28,11 +29,13 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   icon,
   title,
   subtitle,
-  withChildren = false
+  withChildren = false,
+  categoryFilters = []
 }) => {
   const { data, isLoading, error, retry, isEmpty, categories } = useSimpleCarousel(section, {
     withChildren,
-    limit: 8
+    limit: 8,
+    categoryFilters
   });
 
   // Show loading state

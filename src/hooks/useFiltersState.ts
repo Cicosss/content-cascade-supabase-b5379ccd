@@ -15,7 +15,7 @@ interface UseFiltersStateOptions {
 }
 
 export const useFiltersState = (options: UseFiltersStateOptions = {}) => {
-  const { onFiltersChange, debounceMs = 500 } = options;
+  const { onFiltersChange, debounceMs = 300 } = options;
 
   // Initialize state with default values from config
   const [filters, setFilters] = useState<FiltersState>(() => {

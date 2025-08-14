@@ -112,6 +112,7 @@ const PersonalizedContent = () => {
             title="Gusto & Sapori"
             subtitle="Scopri i sapori autentici della Romagna"
             withChildren={activeFilters.withChildren === 'sì'}
+            categoryFilters={activeFilters.categories}
           />
 
           <SectionCarousel 
@@ -120,6 +121,7 @@ const PersonalizedContent = () => {
             title="Eventi"
             subtitle="Non perdere gli appuntamenti più interessanti del territorio"
             withChildren={activeFilters.withChildren === 'sì'}
+            categoryFilters={activeFilters.categories}
           />
 
           <SectionCarousel 
@@ -128,6 +130,7 @@ const PersonalizedContent = () => {
             title="Natura & Avventura"
             subtitle="Esplora la natura e vivi l'avventura in Romagna"
             withChildren={activeFilters.withChildren === 'sì'}
+            categoryFilters={activeFilters.categories}
           />
 
           <SectionCarousel 
@@ -136,6 +139,7 @@ const PersonalizedContent = () => {
             title="Divertimento & Famiglia"
             subtitle="Attività perfette per tutta la famiglia"
             withChildren={activeFilters.withChildren === 'sì'}
+            categoryFilters={activeFilters.categories}
           />
 
           <SectionCarousel 
@@ -144,6 +148,7 @@ const PersonalizedContent = () => {
             title="Cultura & Territorio"
             subtitle="Immergiti nella cultura e storia del territorio"
             withChildren={activeFilters.withChildren === 'sì'}
+            categoryFilters={activeFilters.categories}
           />
         </div>
       </div>

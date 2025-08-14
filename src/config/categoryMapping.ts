@@ -33,7 +33,6 @@ export const OFFICIAL_CATEGORIES = [
 export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
   'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Mercati Locali'],
   'Eventi': ['Eventi'],
-  'Eventi & Spettacoli': ['Eventi'], // Solo eventi dalla events table
   'Natura & Avventura': ['Spiagge', 'Parchi Naturali e Riserve', 'Sport'],
   'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Sport'],
   'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'] // Categorie reali disponibili
@@ -92,36 +91,24 @@ export const getCategoriesForNavbar = (navbarItem: string): string[] => {
 
 // UNIFIED FILTER PROCESSING - Replaces poiCategoryMapping.ts getCategoriesForFilters
 export const getCategoriesForFilters = (activityTypes: string[]): string[] => {
-  console.log('🏷️ [UNIFIED] getCategoriesForFilters called with:', activityTypes);
-  
   // If "tutto" or "tutte" is selected, return empty array to show all categories
   if (activityTypes.includes('tutto') || activityTypes.includes('tutte') || activityTypes.length === 0) {
-    console.log('🌍 [UNIFIED] Returning empty array for all categories');
     return [];
   }
 
   const categories: string[] = [];
-  const unmappedTypes: string[] = [];
   
   activityTypes.forEach(filterType => {
     const mappedCategories = FILTER_TO_CATEGORY_MAPPING[filterType.toLowerCase()];
     if (mappedCategories) {
       categories.push(...mappedCategories);
-      console.log(`🎯 [UNIFIED] Added categories for ${filterType}:`, mappedCategories);
     } else {
-      unmappedTypes.push(filterType);
       // Fallback: use the filter type as category name (capitalized)
       const fallbackCategory = filterType.charAt(0).toUpperCase() + filterType.slice(1);
       categories.push(fallbackCategory);
-      console.log(`⚠️ [UNIFIED] No mapping found for filter type: ${filterType}, using fallback: ${fallbackCategory}`);
     }
   });
 
-  if (unmappedTypes.length > 0) {
-    console.warn('🔧 [UNIFIED] Consider updating FILTER_TO_CATEGORY_MAPPING for:', unmappedTypes);
-  }
-
-  console.log('🏷️ [UNIFIED] Final categories array:', categories);
   return [...new Set(categories)]; // Remove duplicates
 };
 

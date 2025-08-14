@@ -30,39 +30,39 @@ interface CarouselItem {
 interface UseSimpleCarouselOptions {
   withChildren?: boolean;
   limit?: number;
+  categoryFilters?: string[];
 }
 
 export function useSimpleCarousel(
   section: SectionType, 
   options: UseSimpleCarouselOptions = {}
 ) {
-  const { withChildren = false, limit = 8 } = options;
+  const { withChildren = false, limit = 8, categoryFilters = [] } = options;
   const [data, setData] = useState<CarouselItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<CarouselError | null>(null);
 
-  // Get categories for this section
-  const categories = NAVBAR_CATEGORY_MAPPING[section] || [];
+  // Get categories for this section - use filters if provided, otherwise default mapping
+  const categories = categoryFilters.length > 0 && !categoryFilters.includes('tutte') 
+    ? categoryFilters 
+    : NAVBAR_CATEGORY_MAPPING[section] || [];
 
   // Determine if we need events or POIs
   const isEventSection = section === 'Eventi' || section === 'Eventi & Spettacoli';
 
   const fetchData = async () => {
     try {
-      console.log(`🎯 fetchData START for ${section}:`, { categories, withChildren, limit, isEventSection });
       setIsLoading(true);
       setError(null);
 
-      // Verifica categorie disponibili prima delle query
+      // Verify categories are available before queries
       if (!isEventSection && categories.length === 0) {
-        console.warn(`⚠️ ${section}: Nessuna categoria mappata, mostrando stato vuoto`);
         setData([]);
         setIsLoading(false);
         return;
       }
 
       if (isEventSection) {
-        console.log(`📅 Fetching events for ${section}...`);
         // Fetch from events table
         const { data: events, error: eventsError } = await supabase
           .from('events')
@@ -71,12 +71,9 @@ export function useSimpleCarousel(
           .order('start_datetime', { ascending: true })
           .limit(limit);
 
-        console.log(`📅 Events result:`, { events, eventsError, count: events?.length });
         if (eventsError) throw eventsError;
         setData(events || []);
-        console.log(`✅ ${section} events loaded:`, events?.length || 0, 'items');
       } else {
-        console.log(`🏛️ Fetching POIs for ${section} with categories:`, categories);
         // Fetch from points_of_interest table
         let query = supabase
           .from('points_of_interest')
@@ -85,25 +82,20 @@ export function useSimpleCarousel(
 
         // Filter by categories
         query = query.in('category', categories);
-        console.log(`🔍 Filtering by categories:`, categories);
 
         // Filter by target audience if withChildren is specified
         if (withChildren) {
           query = query.or('target_audience.eq.families,target_audience.eq.everyone');
-          console.log(`👶 Filtering for families/everyone`);
         }
 
         const { data: pois, error: poisError } = await query
           .order('priority_score', { ascending: false })
           .limit(limit);
 
-        console.log(`🏛️ POIs result:`, { pois, poisError, count: pois?.length });
         if (poisError) throw poisError;
         setData(pois || []);
-        console.log(`✅ ${section} POIs loaded:`, pois?.length || 0, 'items');
       }
     } catch (err) {
-      console.error(`❌ Error loading ${section} carousel:`, err);
       setError({ 
         type: 'network',
         message: err instanceof Error ? err.message : 'Failed to load data',
@@ -113,14 +105,12 @@ export function useSimpleCarousel(
       });
     } finally {
       setIsLoading(false);
-      console.log(`🎯 fetchData END for ${section}:`, { finalDataLength: data.length });
     }
   };
 
   useEffect(() => {
-    console.log(`🎯 useSimpleCarousel: Loading ${section} carousel...`);
     fetchData();
-  }, [section, withChildren, limit]);
+  }, [section, withChildren, limit, JSON.stringify(categoryFilters)]);
 
   const isEmpty = !isLoading && !error && data.length === 0;
 
@@ -131,12 +121,7 @@ export function useSimpleCarousel(
     isEmpty,
     categories,
     retry: fetchData,
-    refresh: fetchData,
-    metrics: {
-      responseTime: 0,
-      cacheHit: false,
-      retryCount: 0
-    }
+    refresh: fetchData
   };
 }
 
