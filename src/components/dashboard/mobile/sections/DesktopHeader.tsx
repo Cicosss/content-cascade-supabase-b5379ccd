@@ -15,9 +15,9 @@ interface DesktopHeaderProps {
 
 const DesktopHeader: React.FC<DesktopHeaderProps> = memo(({ userName }) => {
   return (
-    <div className="text-center space-y-6 py-4">
+    <div className="text-center space-y-6 py-6 px-4">
       {/* Titolo grande per desktop */}
-      <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-b from-white to-blue-100 bg-clip-text text-transparent">
+      <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-b from-white to-blue-100 bg-clip-text text-transparent leading-tight pt-2">
         Ciao, {userName}!
       </h1>
       

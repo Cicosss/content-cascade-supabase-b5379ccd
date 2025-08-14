@@ -15,9 +15,9 @@ interface MobileHeaderProps {
 
 const MobileHeader: React.FC<MobileHeaderProps> = memo(({ userName }) => {
   return (
-    <div className="text-center space-y-4">
+    <div className="text-center space-y-4 pt-4 px-2">
       {/* Titolo più compatto per mobile */}
-      <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-b from-white to-blue-100 bg-clip-text text-transparent">
+      <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-b from-white to-blue-100 bg-clip-text text-transparent leading-tight pt-2">
         Ciao, {userName}!
       </h1>
       
