@@ -133,14 +133,14 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
   const primaryImage = poi.images?.[0] || placeholderImage;
 
   return (
-    <Card className={`${isMobile ? 'w-full max-w-[280px]' : 'max-w-[300px]'} overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm relative p-4`}>
+    <Card className={`${isMobile ? 'w-full max-w-[240px]' : 'max-w-[300px]'} overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group bg-white border border-gray-200 shadow-sm relative ${isMobile ? 'p-2' : 'p-4'}`}>
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 z-10 bg-black/50 hover:bg-black/70 rounded-full w-6 h-6 flex items-center justify-center transition-colors"
+        className="absolute top-1 right-1 z-10 bg-black/50 hover:bg-black/70 rounded-full w-5 h-5 flex items-center justify-center transition-colors"
         aria-label="Chiudi anteprima"
       >
-        <X className="h-3 w-3 text-white" />
+        <X className="h-2.5 w-2.5 text-white" />
       </button>
 
       {/* Image section - Always visible now */}
@@ -161,10 +161,10 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
       </div>
 
       {/* Content section */}
-      <CardContent className="space-y-3 p-0 mt-4">
+      <CardContent className={`space-y-2 p-0 ${isMobile ? 'mt-2' : 'mt-4'}`}>
         {/* Title and category */}
         <div>
-          <h4 className={`font-semibold line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight ${isMobile ? 'text-base mb-1' : 'text-lg mb-2'}`}>
+          <h4 className={`font-semibold line-clamp-1 text-gray-900 group-hover:text-blue-600 transition-colors leading-tight ${isMobile ? 'text-sm mb-0.5' : 'text-lg mb-2'}`}>
             {poi.name}
           </h4>
           <div className={`flex items-center gap-1 text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -177,8 +177,8 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
 
         {/* Description - Now visible on mobile too, but shorter */}
         {truncatedDescription && (
-          <p className={`text-gray-600 line-clamp-2 leading-relaxed ${isMobile ? 'text-xs mb-2' : 'text-sm mb-3'}`}>
-            {isMobile ? truncateText(poi.description, 12) : truncatedDescription}
+          <p className={`text-gray-600 line-clamp-2 leading-relaxed ${isMobile ? 'text-xs mb-1' : 'text-sm mb-3'}`}>
+            {isMobile ? truncateText(poi.description, 8) : truncatedDescription}
           </p>
         )}
 
@@ -188,7 +188,7 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
           <div className="flex items-center">
             {hasValidRating && (
               <>
-                <Star className={`fill-yellow-400 text-yellow-400 mr-1 ${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+                <Star className={`fill-yellow-400 text-yellow-400 mr-1 ${isMobile ? 'h-2.5 w-2.5' : 'h-4 w-4'}`} />
                 <span className={`font-medium text-gray-900 ${isMobile ? 'text-xs' : 'text-sm'}`}>
                   {formatRating(poi.avg_rating!)}
                 </span>
@@ -199,24 +199,24 @@ const OptimizedPOIPreview: React.FC<OptimizedPOIPreviewProps> = memo(({
           {/* Price section */}
           {hasValidPrice && (
             <div className="flex items-center text-green-600 font-medium">
-              <Euro className={`mr-1 ${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
+              <Euro className={`mr-1 ${isMobile ? 'h-2.5 w-2.5' : 'h-4 w-4'}`} />
               <span className={`${isMobile ? 'text-xs' : 'text-sm'}`}>{poi.price_info}</span>
             </div>
           )}
         </div>
 
         {/* Action buttons */}
-        <div className={`flex gap-2 ${isMobile ? 'pt-1' : 'pt-2'}`}>
+        <div className={`flex gap-1.5 ${isMobile ? 'pt-1' : 'pt-2'}`}>
           <Button
             onClick={handleDiscoverMore}
-            className={`flex-1 bg-blue-900 hover:bg-blue-800 text-white ${isMobile ? 'text-xs h-8' : 'text-sm h-9'}`}
+            className={`flex-1 bg-blue-900 hover:bg-blue-800 text-white ${isMobile ? 'text-xs h-7 px-2' : 'text-sm h-9'}`}
           >
             Scopri di più
           </Button>
           <Button
             onClick={handleGetDirections}
             variant="outline"
-            className={`flex-1 border-blue-900 text-blue-900 hover:bg-blue-50 ${isMobile ? 'text-xs h-8' : 'text-sm h-9'}`}
+            className={`flex-1 border-blue-900 text-blue-900 hover:bg-blue-50 ${isMobile ? 'text-xs h-7 px-2' : 'text-sm h-9'}`}
           >
             <ExternalLink className={`mr-1 ${isMobile ? 'h-2 w-2' : 'h-3 w-3'}`} />
             Raggiungi
