@@ -25,11 +25,6 @@ const DesktopHeader: React.FC<DesktopHeaderProps> = memo(({ userName }) => {
       <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed tracking-wide">
         Iniziamo? Esplora la mappa o applica i filtri per scoprire la tua Romagna.
       </p>
-      
-      {/* Barra decorativa più grande */}
-      <div className="flex justify-center">
-        <div className="w-36 h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-blue-600 rounded-full"></div>
-      </div>
     </div>
   );
 });

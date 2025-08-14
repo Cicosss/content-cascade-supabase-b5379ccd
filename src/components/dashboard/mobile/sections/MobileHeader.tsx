@@ -25,11 +25,6 @@ const MobileHeader: React.FC<MobileHeaderProps> = memo(({ userName }) => {
       <p className="text-lg sm:text-xl text-white/80 leading-relaxed px-4">
         Esplora la mappa per scoprire la tua Romagna
       </p>
-      
-      {/* Barra decorativa */}
-      <div className="flex justify-center">
-        <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-blue-600 rounded-full"></div>
-      </div>
     </div>
   );
 });
