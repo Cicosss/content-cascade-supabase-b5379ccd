@@ -31,11 +31,8 @@ const DesktopDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
             </div>
           </div>
 
-          {/* Elegant Divider with Gradient Transition */}
-          <div className="h-16 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-50"></div>
-
           {/* Content Section */}
-          <div className="bg-slate-50 -mt-8 pt-8">
+          <div className="bg-slate-50">
             <div className="container mx-auto py-8">
               <DesktopContentSection />
             </div>

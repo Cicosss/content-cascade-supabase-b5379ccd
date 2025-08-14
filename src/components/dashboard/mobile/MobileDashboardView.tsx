@@ -33,15 +33,10 @@ const MobileDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
             </div>
           </div>
 
-          {/* Elegant Divider with Gradient Transition */}
-          <div className="h-12 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-50"></div>
-
           {/* Widgets Section - Stack orizzontale compatto su mobile */}
-          <div className="bg-slate-50 -mt-6 pt-6">
-            <div className="bg-slate-800 rounded-t-3xl">
-              <div className="container mx-auto py-3 px-3 md:px-4 lg:px-6 sm:py-4">
-                <MobileWidgetsSection />
-              </div>
+          <div className="bg-slate-800">
+            <div className="container mx-auto py-3 px-3 md:px-4 lg:px-6 sm:py-4">
+              <MobileWidgetsSection />
             </div>
           </div>
 
