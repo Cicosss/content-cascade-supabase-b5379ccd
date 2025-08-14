@@ -92,7 +92,7 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
 
       {/* POI Preview - Mobile optimized */}
       {selectedPOI && (
-        <div className={`absolute ${isMobile ? 'bottom-2 left-2 right-2' : 'bottom-4 left-1/2 transform -translate-x-1/2'} map-poi-preview`}>
+        <div className={`absolute ${isMobile ? 'bottom-2 left-1/2 transform -translate-x-1/2' : 'bottom-4 left-1/2 transform -translate-x-1/2'} map-poi-preview`}>
           <OptimizedPOIPreview
             poi={selectedPOI}
             onClose={handleClosePreview}
