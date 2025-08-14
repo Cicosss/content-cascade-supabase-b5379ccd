@@ -22,7 +22,7 @@ const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLoca
         variant="secondary"
         onClick={onCenterOnUser}
         disabled={isLoadingLocation}
-        className={`bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white flex items-center gap-2 ${isMobile ? 'h-12 w-12 p-0' : ''}`}
+        className={`bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white flex items-center gap-2 ${isMobile ? 'h-8 w-8 p-0' : ''}`}
         title="Trova la mia posizione"
       >
         {isLoadingLocation ? (
