@@ -5,8 +5,7 @@ import EventCard from '@/components/EventCard';
 import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { Calendar } from 'lucide-react';
-import { useCarouselAPI } from '@/hooks/useCarouselAPI';
-import { EventFilters } from '@/types/carousel';
+import { useSimpleCarousel } from '@/hooks/useSimpleCarousel';
 import {
   Carousel,
   CarouselContent,
@@ -16,17 +15,17 @@ import {
 } from "@/components/ui/carousel";
 
 interface EventsCarouselProps {
-  filters?: EventFilters;
   title?: string;
   subtitle?: string;
+  withChildren?: boolean;
 }
 
 const EventsCarousel: React.FC<EventsCarouselProps> = ({ 
-  filters = {},
   title = "Eventi nella tua zona",
-  subtitle = "Non perdere gli appuntamenti più interessanti del territorio"
+  subtitle = "Non perdere gli appuntamenti più interessanti del territorio",
+  withChildren = false
 }) => {
-  const { data: events, isLoading, error, retry, isEmpty, metrics } = useCarouselAPI('events', filters);
+  const { data: events, isLoading, error, retry, isEmpty } = useSimpleCarousel('Eventi', { withChildren, limit: 8 });
 
   // Show loading state
   if (isLoading) {
@@ -64,14 +63,6 @@ const EventsCarousel: React.FC<EventsCarouselProps> = ({
     <section className="space-y-4">
       <CarouselHeader icon={Calendar} title={title} subtitle={subtitle} />
       
-      {/* Performance metrics (dev mode only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="text-xs text-gray-400 flex space-x-4">
-          <span>⚡ {metrics.responseTime}ms</span>
-          <span>{metrics.cacheHit ? '📋 Cache hit' : '🌐 Fresh'}</span>
-          {metrics.retryCount > 0 && <span>🔄 {metrics.retryCount} retry</span>}
-        </div>
-      )}
 
       <Carousel
         opts={{

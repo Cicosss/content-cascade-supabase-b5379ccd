@@ -6,7 +6,6 @@ import ExperienceFilters from './ExperienceFilters';
 import AppliedFilters from './AppliedFilters';
 import SortingDropdown, { SortOption } from './SortingDropdown';
 import SectionCarousel from './content/SectionCarousel';
-import { usePersonalizedContent } from '@/hooks/usePersonalizedContent';
 import { useStableFilters } from '@/hooks/useStableFilters';
 import { 
   UtensilsCrossed, 
@@ -28,15 +27,6 @@ const PersonalizedContent = () => {
   
   const [sortBy, setSortBy] = useState<SortOption>('recommended');
 
-  // Usa hook di stabilizzazione filtri per prevenire loop infiniti
-  const { stableFilters: memoizedFilters } = useStableFilters({
-    zone: activeFilters.zone,
-    category: activeFilters.activityTypes?.[0] || null,
-    withChildren: activeFilters.withChildren,
-    period: activeFilters.period
-  }, 500);
-
-  const { data: allPOIs, isLoading, error } = usePersonalizedContent(memoizedFilters);
 
   const handleFilterChange = useCallback((newFilters) => {
     setActiveFilters(prev => ({
@@ -85,26 +75,6 @@ const PersonalizedContent = () => {
     });
   }, [handleClearFilters]);
 
-  // Filtri stabilizzati per ogni carosello usando hook ottimizzato
-  const { stableFilters: experiencesFilters } = useStableFilters({
-    with_children: activeFilters.withChildren === 'sì',
-    experience_type: activeFilters.activityTypes?.[0] as any,
-    withChildren: activeFilters.withChildren
-  }, 300);
-
-
-  const { stableFilters: eventsFilters } = useStableFilters({
-    category: activeFilters.categories?.[0]
-  }, 300);
-
-  if (error) {
-    return (
-      <Card className="p-6">
-        <p className="text-red-600">Errore nel caricamento dei contenuti. Riprova più tardi.</p>
-      </Card>
-    );
-  }
-
   return (
     <MobileContainer variant="default" paddingTop="md" paddingBottom="lg">
       <div className="space-y-6 md:space-y-8">
@@ -147,7 +117,7 @@ const PersonalizedContent = () => {
           <SectionCarousel 
             section="Eventi"
             icon={Calendar}
-            title="Eventi & Spettacoli"
+            title="Eventi"
             subtitle="Non perdere gli appuntamenti più interessanti del territorio"
             withChildren={activeFilters.withChildren === 'sì'}
           />

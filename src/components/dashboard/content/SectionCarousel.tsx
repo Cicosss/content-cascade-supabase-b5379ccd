@@ -5,7 +5,7 @@ import EventCard from '@/components/EventCard';
 import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { LucideIcon } from 'lucide-react';
-import { useSectionCarousel, SectionType } from '@/hooks/useSectionCarousel';
+import { useSimpleCarousel, SectionType } from '@/hooks/useSimpleCarousel';
 
 import {
   Carousel,
@@ -30,7 +30,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
   subtitle,
   withChildren = false
 }) => {
-  const { data, isLoading, error, retry, isEmpty, metrics, categories } = useSectionCarousel(section, {
+  const { data, isLoading, error, retry, isEmpty, categories } = useSimpleCarousel(section, {
     withChildren,
     limit: 8
   });
@@ -72,15 +72,6 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     <section className="space-y-4">
       <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
       
-      {/* Performance metrics (dev mode only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="text-xs text-gray-400 flex space-x-4">
-          <span>⚡ {metrics.responseTime}ms</span>
-          <span>{metrics.cacheHit ? '📋 Cache hit' : '🌐 Fresh'}</span>
-          {metrics.retryCount > 0 && <span>🔄 {metrics.retryCount} retry</span>}
-          <span>🏷️ {categories.join(', ')}</span>
-        </div>
-      )}
 
       <Carousel
         opts={{

@@ -5,8 +5,7 @@ import UnifiedPOICard from '@/components/UnifiedPOICard';
 import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { Compass } from 'lucide-react';
-import { useCarouselAPI } from '@/hooks/useCarouselAPI';
-import { ExperienceFilters } from '@/types/carousel';
+import { useSimpleCarousel } from '@/hooks/useSimpleCarousel';
 import {
   Carousel,
   CarouselContent,
@@ -16,29 +15,22 @@ import {
 } from "@/components/ui/carousel";
 
 interface ExperiencesCarouselProps {
-  filters?: ExperienceFilters & {
-    withChildren: string;
-  };
+  withChildren?: boolean;
   title?: string;
   subtitle?: string;
+  section?: string;
 }
 
 const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({ 
-  filters = { withChildren: 'no' },
+  withChildren = false,
   title,
-  subtitle
+  subtitle,
+  section = "Gusto & Sapori"
 }) => {
-  // Transform filters for the API
-  const apiFilters: ExperienceFilters = {
-    with_children: filters.withChildren === 'sì',
-    experience_type: filters.experience_type,
-    difficulty_level: filters.difficulty_level
-  };
-
-  const dynamicTitle = title || `Esperienze ${filters.withChildren === 'sì' ? 'Family-Friendly' : 'Personalizzate'}`;
+  const dynamicTitle = title || `Esperienze ${withChildren ? 'Family-Friendly' : 'Personalizzate'}`;
   const dynamicSubtitle = subtitle || `Attività selezionate in base alle tue preferenze`;
 
-  const { data: experiences, isLoading, error, retry, isEmpty, metrics } = useCarouselAPI('experiences', apiFilters);
+  const { data: experiences, isLoading, error, retry, isEmpty } = useSimpleCarousel(section as any, { withChildren, limit: 8 });
 
   // Show loading state
   if (isLoading) {
@@ -76,15 +68,6 @@ const ExperiencesCarousel: React.FC<ExperiencesCarouselProps> = ({
     <section className="space-y-4">
       <CarouselHeader icon={Compass} title={dynamicTitle} subtitle={dynamicSubtitle} />
       
-      {/* Performance metrics (dev mode only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="text-xs text-gray-400 flex space-x-4">
-          <span>⚡ {metrics.responseTime}ms</span>
-          <span>{metrics.cacheHit ? '📋 Cache hit' : '🌐 Fresh'}</span>
-          {metrics.retryCount > 0 && <span>🔄 {metrics.retryCount} retry</span>}
-          <span>🎯 Score: {experiences[0]?.priority_score?.toFixed(1) || 'N/A'}</span>
-        </div>
-      )}
 
       <Carousel
         opts={{
