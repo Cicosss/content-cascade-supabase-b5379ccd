@@ -2,7 +2,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { DateRange } from 'react-day-picker';
 import { useDebounce } from './useDebounce';
-import { FILTERS_CONFIG } from '@/config/filtersConfig';
 
 export interface FiltersState {
   categories: string[];

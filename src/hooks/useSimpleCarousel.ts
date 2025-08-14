@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { NAVBAR_CATEGORY_MAPPING } from '@/config/categoryMapping';
 import { CarouselError } from '@/types/carousel';
 
-export type SectionType = 'Gusto & Sapori' | 'Eventi' | 'Eventi & Spettacoli' | 'Natura & Avventura' | 'Divertimento & Famiglia' | 'Cultura & Territorio';
+export type SectionType = 'Gusto & Sapori' | 'Eventi' | 'Natura & Avventura' | 'Divertimento & Famiglia' | 'Cultura & Territorio';
 
 interface CarouselItem {
   id: string;
@@ -48,7 +48,7 @@ export function useSimpleCarousel(
     : NAVBAR_CATEGORY_MAPPING[section] || [];
 
   // Determine if we need events or POIs
-  const isEventSection = section === 'Eventi' || section === 'Eventi & Spettacoli';
+  const isEventSection = section === 'Eventi';
 
   const fetchData = async () => {
     try {

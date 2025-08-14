@@ -20,24 +20,17 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
   const {
     activeFiltersCount,
     hasActiveFilters,
+    updateCategories,
+    updatePeriod,
     resetFilters
   } = useFiltersState({
     onFiltersChange: setFilters,
     debounceMs: 300
   });
 
-  const updateFilter = React.useCallback((key: string, value: any) => {
-    setFilters({ ...filters, [key]: value });
-  }, [filters, setFilters]);
-
-
   const handleReset = React.useCallback(() => {
     resetFilters();
-    setFilters({
-      categories: ['tutte'],
-      period: undefined
-    });
-  }, [resetFilters, setFilters]);
+  }, [resetFilters]);
 
   return (
     <Card className="p-8 rounded-3xl border-0 shadow-xl bg-white/95 backdrop-blur-sm">
@@ -60,12 +53,12 @@ const ExperienceFilters = React.memo<ExperienceFiltersProps>(({ filters, setFilt
         {/* Filtri principali */}
         <CategoryFilters 
           categories={filters.categories}
-          onCategoriesChange={(categories) => updateFilter('categories', categories)}
+          onCategoriesChange={updateCategories}
         />
         
         <PeriodFilters 
           period={filters.period}
-          onPeriodChange={(period) => updateFilter('period', period)}
+          onPeriodChange={updatePeriod}
         />
       </div>
     </Card>
