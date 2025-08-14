@@ -32,22 +32,21 @@ const DesktopDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
           </div>
 
           {/* Elegant Divider with Wave Effect */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-800 via-slate-700 to-slate-50 h-40"></div>
+          <div className="relative bg-slate-800 overflow-hidden">
             <svg 
-              className="relative z-10 w-full h-32" 
+              className="w-full h-20" 
               viewBox="0 0 1200 120" 
               preserveAspectRatio="none"
             >
               <path 
-                d="M0,0 C150,120 350,0 600,60 C850,120 1050,0 1200,60 V120 H0 V0 Z" 
+                d="M0,120 C150,0 350,120 600,60 C850,0 1050,120 1200,60 V0 H0 V120 Z" 
                 className="fill-slate-50"
               ></path>
             </svg>
           </div>
 
           {/* Content Section */}
-          <div className="bg-slate-50 -mt-20">
+          <div className="bg-slate-50">
             <div className="container mx-auto py-8">
               <DesktopContentSection />
             </div>
