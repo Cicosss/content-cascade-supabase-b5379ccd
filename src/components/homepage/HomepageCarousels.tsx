@@ -37,11 +37,11 @@ const HomepageCarousels: React.FC = () => {
       {/* Bollettino del Mare */}
       <SeaBulletinWidget />
 
-      {/* Eventi & Spettacoli */}
+      {/* Eventi */}
       <HomepageSectionCarousel
-        section="Eventi & Spettacoli"
+        section="Eventi"
         icon={Calendar}
-        title="Eventi & Spettacoli"
+        title="Eventi"
         subtitle="Gli eventi imperdibili del territorio"
         withChildren={false}
       />
