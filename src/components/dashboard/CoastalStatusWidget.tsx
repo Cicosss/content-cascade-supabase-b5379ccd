@@ -47,7 +47,7 @@ const CoastalStatusWidget: React.FC = () => {
   };
 
   return (
-    <Card className="p-4 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 text-white">
+    <Card className="p-4 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900 text-white">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
         <Waves className="h-4 w-4 text-cyan-200 flex-shrink-0" />

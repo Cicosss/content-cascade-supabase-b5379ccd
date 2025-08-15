@@ -80,7 +80,7 @@ const PersonalizedWeather: React.FC = () => {
   }
 
   return (
-    <Card className={`p-4 rounded-3xl border-0 shadow-xl bg-gradient-to-br ${getStandardGradient()} text-white`}>
+    <Card className="p-4 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900 text-white">
       {/* Header with proper mobile layout */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex-1 min-w-0">
