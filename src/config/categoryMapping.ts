@@ -31,7 +31,7 @@ export const OFFICIAL_CATEGORIES = [
 
 // Mapping navbar → categorie per pre-filtri intelligenti (basato sui dati reali del DB)
 export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
-  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Mercati Locali'],
+  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Street Food', 'Mercati Locali'],
   'Eventi': ['Eventi'],
   'Natura & Avventura': ['Spiagge', 'Parchi Naturali e Riserve', 'Sport'],
   'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Sport'],
