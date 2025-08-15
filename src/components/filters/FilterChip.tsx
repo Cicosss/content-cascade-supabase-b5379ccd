@@ -25,7 +25,7 @@ const FilterChip = React.memo<FilterChipProps>(({
   className 
 }) => {
   const getVariantClasses = () => {
-    const baseClasses = "font-medium transition-all duration-200 border-2";
+    const baseClasses = "typography-small font-medium transition-all duration-200 border-2";
     
     switch (variant) {
       case 'category':
@@ -53,12 +53,12 @@ const FilterChip = React.memo<FilterChipProps>(({
   const getSizeClasses = () => {
     switch (size) {
       case 'lg':
-        return 'px-6 py-3 text-base rounded-lg';
+        return 'typography-body px-6 py-3 rounded-lg';
       case 'md':
-        return 'px-4 py-2 text-sm rounded-lg';
+        return 'typography-small px-4 py-2 rounded-lg';
       case 'sm':
       default:
-        return 'px-3 py-1.5 text-xs rounded-md';
+        return 'typography-caption px-3 py-1.5 rounded-md';
     }
   };
 

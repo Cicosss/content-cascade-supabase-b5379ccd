@@ -45,9 +45,9 @@ const CategoryFilters = React.memo<CategoryFiltersProps>(({ categories, onCatego
           className="w-full flex items-center justify-between p-4 h-auto"
         >
           <div className="flex items-center gap-2">
-            <span className="font-medium">Categorie</span>
+            <span className="typography-small font-medium">Categorie</span>
             {hasSelection && (
-              <span className="bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
+              <span className="typography-caption bg-primary text-primary-foreground px-2 py-1 rounded-full">
                 {selectedCount}
               </span>
             )}

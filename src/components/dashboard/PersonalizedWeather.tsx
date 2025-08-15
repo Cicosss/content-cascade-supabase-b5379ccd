@@ -85,8 +85,8 @@ const PersonalizedWeather: React.FC = () => {
         {/* Header with proper visual hierarchy */}
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h3 className="text-base font-bold mb-1 text-white">Meteo Locale</h3>
-            <div className="flex items-center gap-1 text-blue-100 text-xs">
+            <h3 className="typography-small font-bold mb-1 text-white">Meteo Locale</h3>
+            <div className="typography-caption flex items-center gap-1 text-blue-100">
               {userLocation ? (
                 <Crosshair className="h-3 w-3 flex-shrink-0" />
               ) : (
@@ -105,8 +105,8 @@ const PersonalizedWeather: React.FC = () => {
         
         {/* Temperature display with proper hierarchy */}
         <div className="text-center py-2">
-          <div className="text-3xl font-bold tracking-tight text-white">{weather.temperature}°C</div>
-          <div className="text-blue-100 capitalize text-xs mt-1 font-medium">{weather.description}</div>
+          <div className="typography-h2 text-3xl tracking-tight text-white">{weather.temperature}°C</div>
+          <div className="typography-caption text-blue-100 capitalize mt-1 font-medium">{weather.description}</div>
         </div>
 
         {/* Weather details grid */}
@@ -114,15 +114,15 @@ const PersonalizedWeather: React.FC = () => {
           <div className="flex items-center gap-2">
             <Droplets className="h-3 w-3 text-blue-200 flex-shrink-0" />
             <div>
-              <div className="text-xs text-blue-200 font-medium">Umidità</div>
-              <div className="font-bold text-white text-xs">{weather.humidity}%</div>
+              <div className="typography-caption text-blue-200 font-medium">Umidità</div>
+              <div className="typography-caption font-bold text-white">{weather.humidity}%</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Wind className="h-3 w-3 text-blue-200 flex-shrink-0" />
             <div>
-              <div className="text-xs text-blue-200 font-medium">Vento</div>
-              <div className="font-bold text-white text-xs">{weather.wind} km/h</div>
+              <div className="typography-caption text-blue-200 font-medium">Vento</div>
+              <div className="typography-caption font-bold text-white">{weather.wind} km/h</div>
             </div>
           </div>
         </div>
@@ -131,8 +131,8 @@ const PersonalizedWeather: React.FC = () => {
         <div className="flex items-center justify-center gap-2 py-2 border-t border-white/20 mt-2">
           <Clock className="h-3 w-3 text-blue-200" />
           <div className="text-center">
-            <div className="text-xs text-blue-200 font-medium">Ora locale</div>
-            <div className="font-bold text-white text-sm">{currentTime}</div>
+            <div className="typography-caption text-blue-200 font-medium">Ora locale</div>
+            <div className="typography-small font-bold text-white">{currentTime}</div>
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@ const PersonalizedWeather: React.FC = () => {
       {/* Footer info with consistent styling */}
       <div className="flex items-start gap-2 text-xs text-blue-200 pt-2 border-t border-white/20 mt-2">
         <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
-        <span className="leading-tight text-xs">
+        <span className="typography-caption leading-tight">
           {error ? `Usando dati fallback - ${error}` : 
            userLocation ? 'Meteo preciso dalla tua posizione GPS' : 'Meteo per la zona selezionata'}
         </span>

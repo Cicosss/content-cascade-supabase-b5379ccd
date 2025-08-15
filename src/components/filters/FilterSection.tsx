@@ -25,12 +25,12 @@ const FilterSection = React.memo<FilterSectionProps>(({
       <div className="space-y-1">
         <div className="flex items-center gap-3">
           {icon && <span className="text-xl">{icon}</span>}
-          <Label className={cn('text-lg font-semibold text-gray-800', titleClassName)}>
+          <Label className={cn('typography-h4 text-gray-800', titleClassName)}>
             {title}
           </Label>
         </div>
         {description && (
-          <p className="text-sm text-gray-600">{description}</p>
+          <p className="typography-small text-gray-600">{description}</p>
         )}
       </div>
       {children}

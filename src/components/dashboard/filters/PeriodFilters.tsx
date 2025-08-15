@@ -34,7 +34,7 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
       <div className="space-y-3">
         <div className="flex items-center gap-3 mb-4">
           <span className="text-2xl">📅</span>
-          <h3 className="font-bold text-gray-800 text-lg">Periodo Vacanza</h3>
+          <h3 className="typography-h4 text-gray-800">Periodo Vacanza</h3>
         </div>
         
         <Popover>
@@ -43,7 +43,7 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
               variant="outline"
               className="w-full justify-start text-left font-normal border-2 hover:border-red-300 bg-white h-auto min-h-[2.5rem] py-2 px-3"
             >
-              <span className="flex-1 text-gray-700 text-xs sm:text-sm leading-tight break-words">
+              <span className="typography-small flex-1 text-gray-700 leading-tight break-words">
                 {displayText}
               </span>
             </Button>
@@ -85,7 +85,7 @@ const PeriodFilters: React.FC<PeriodFiltersProps> = ({ period, onPeriodChange })
             variant="ghost"
             size="sm"
             onClick={clearDateRange}
-            className="text-red-500 hover:text-red-700 text-sm p-0 h-auto hover:bg-transparent"
+            className="typography-small text-red-500 hover:text-red-700 p-0 h-auto hover:bg-transparent"
           >
             <X className="h-4 w-4 mr-1" />
             Rimuovi date
