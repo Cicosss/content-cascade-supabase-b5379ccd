@@ -43,10 +43,10 @@ const UserProfileView = React.memo<UserProfileViewProps>(({ profile, onSignOut }
     >
       <ProfileAvatarView size="md" profile={profile} />
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-bold text-slate-900 truncate">
+        <p className="typography-small font-bold text-slate-900 truncate">
           {profile?.first_name || 'giulia'}
         </p>
-        <p className="text-xs text-slate-500 truncate">
+        <p className="typography-caption text-slate-500 truncate">
           Promotore Bronzo
         </p>
       </div>

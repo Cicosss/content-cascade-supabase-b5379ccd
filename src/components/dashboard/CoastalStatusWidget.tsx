@@ -52,7 +52,7 @@ const CoastalStatusWidget: React.FC = () => {
         {/* Header */}
         <div className="flex items-center gap-2">
           <Waves className="h-4 w-4 text-cyan-200" />
-          <h3 className="text-base font-bold text-white">{getTitle()}</h3>
+          <h3 className="typography-small font-bold text-white">{getTitle()}</h3>
         </div>
 
         {/* Three Circular Indicators */}
@@ -64,8 +64,8 @@ const CoastalStatusWidget: React.FC = () => {
                 <Flag className="h-5 w-5 text-white animate-pulse" />
               </div>
             </div>
-            <div className="text-xs font-medium text-cyan-100">{flagStatus.text}</div>
-            <div className="text-xs text-cyan-200">Bandiera</div>
+            <div className="typography-caption font-medium text-cyan-100">{flagStatus.text}</div>
+            <div className="typography-caption text-cyan-200">Bandiera</div>
           </div>
 
           {/* Water Temperature Indicator */}
@@ -75,8 +75,8 @@ const CoastalStatusWidget: React.FC = () => {
                 <Thermometer className="h-5 w-5 text-white" />
               </div>
             </div>
-            <div className="text-xs font-bold text-white">{waterTemperature}°C</div>
-            <div className="text-xs text-cyan-200">Acqua</div>
+            <div className="typography-caption font-bold text-white">{waterTemperature}°C</div>
+            <div className="typography-caption text-cyan-200">Acqua</div>
           </div>
 
           {/* Water Quality Indicator */}
@@ -86,16 +86,16 @@ const CoastalStatusWidget: React.FC = () => {
                 <Droplets className={`h-5 w-5 ${getQualityColor()}`} />
               </div>
             </div>
-            <div className="text-xs font-medium text-cyan-100">{waterQuality.text}</div>
-            <div className="text-xs text-cyan-200">Qualità</div>
+            <div className="typography-caption font-medium text-cyan-100">{waterQuality.text}</div>
+            <div className="typography-caption text-cyan-200">Qualità</div>
           </div>
         </div>
       </div>
 
       {/* Info Section */}
-      <div className="flex items-start gap-2 text-xs text-cyan-200 pt-2 border-t border-white/20">
+      <div className="typography-caption flex items-start gap-2 text-cyan-200 pt-2 border-t border-white/20">
         <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
-        <button className="leading-tight hover:text-white transition-colors duration-200 text-left text-xs">
+        <button className="typography-caption leading-tight hover:text-white transition-colors duration-200 text-left">
           {getInfoMessage()}
         </button>
       </div>

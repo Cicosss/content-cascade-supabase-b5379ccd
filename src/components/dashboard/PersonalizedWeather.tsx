@@ -61,8 +61,8 @@ const PersonalizedWeather: React.FC = () => {
     return (
       <Card className="p-3 h-full rounded-3xl border-0 shadow-xl bg-gradient-to-br from-red-500 to-red-600 text-white">
         <div className="text-center">
-          <h3 className="text-sm font-semibold mb-1">Errore Meteo</h3>
-          <p className="text-red-100 text-xs">{error}</p>
+          <h3 className="typography-small font-semibold mb-1">Errore Meteo</h3>
+          <p className="typography-caption text-red-100">{error}</p>
         </div>
       </Card>
     );
@@ -72,8 +72,8 @@ const PersonalizedWeather: React.FC = () => {
     return (
       <Card className={`p-3 h-full rounded-3xl border-0 shadow-xl bg-gradient-to-br ${getStandardGradient()} text-white`}>
         <div className="text-center">
-          <h3 className="text-sm font-semibold mb-1">Meteo non disponibile</h3>
-          <p className="text-blue-100 text-xs">Dati meteo in caricamento...</p>
+          <h3 className="typography-small font-semibold mb-1">Meteo non disponibile</h3>
+          <p className="typography-caption text-blue-100">Dati meteo in caricamento...</p>
         </div>
       </Card>
     );

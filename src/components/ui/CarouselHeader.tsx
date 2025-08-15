@@ -12,8 +12,8 @@ const CarouselHeader: React.FC<CarouselHeaderProps> = ({ icon: Icon, title, subt
     <div className="flex items-center gap-3">
       <Icon className="h-6 w-6 text-blue-800" strokeWidth={1.5} />
       <div>
-        <h2 className="text-2xl font-bold text-blue-800">{title}</h2>
-        <p className="text-slate-600 text-sm">{subtitle}</p>
+        <h2 className="typography-h3 text-2xl text-blue-800">{title}</h2>
+        <p className="typography-small text-slate-600">{subtitle}</p>
       </div>
     </div>
   );

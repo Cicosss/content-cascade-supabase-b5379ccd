@@ -60,7 +60,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
   return (
     <div className="sticky top-4 z-sticky bg-white rounded-2xl p-4 shadow-lg border border-gray-100 mb-8 backdrop-blur-sm bg-white/95">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+        <h3 className="typography-h4 text-gray-800 flex items-center gap-2">
           <Tag className="h-5 w-5 text-blue-900" strokeWidth={1.5} />
           Filtri Applicati
         </h3>
@@ -68,7 +68,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
           variant="ghost"
           size="sm"
           onClick={() => onRemoveFilter('all')}
-          className="text-gray-500 hover:text-red-500 text-sm"
+          className="typography-small text-gray-500 hover:text-red-500"
         >
           Rimuovi tutti
         </Button>
@@ -80,7 +80,7 @@ const AppliedFilters: React.FC<AppliedFiltersProps> = ({ filters, onRemoveFilter
           return (
             <div
               key={`${filter.type}-${index}`}
-              className="flex items-center gap-2 bg-blue-900 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-md"
+              className="typography-small flex items-center gap-2 bg-blue-900 text-white px-3 py-1.5 rounded-full font-medium shadow-md"
             >
               <IconComponent className="h-4 w-4" strokeWidth={1.5} />
               <span>{filter.label}</span>

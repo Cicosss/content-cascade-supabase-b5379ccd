@@ -64,8 +64,8 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
         <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
         <div className="text-center py-8 text-gray-500">
           {React.createElement(icon, { className: "h-12 w-12 mx-auto mb-4 opacity-50" })}
-          <p>Nessun contenuto trovato per {title.toLowerCase()}.</p>
-          <p className="text-xs mt-2">Categorie: {categories.join(', ')}</p>
+          <p className="typography-body">Nessun contenuto trovato per {title.toLowerCase()}.</p>
+          <p className="typography-caption mt-2">Categorie: {categories.join(', ')}</p>
         </div>
       </div>
     );
@@ -124,7 +124,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
         <CarouselNext className="hidden md:flex" />
       </Carousel>
       
-      <div className="text-xs text-gray-400 text-right">
+      <div className="typography-caption text-gray-400 text-right">
         {data.length} elementi • Aggiornato {new Date().toLocaleTimeString()}
       </div>
     </section>

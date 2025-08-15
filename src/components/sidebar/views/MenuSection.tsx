@@ -40,7 +40,7 @@ const MenuSection = React.memo<MenuSectionProps>(({
     <SidebarGroup className={showAtBottom ? "mt-auto" : ""}>
       {/* Header condizionale - nascosto quando collassato */}
       {section.showHeader && !isCollapsed && (
-        <h2 className="mb-2 px-2 text-xs font-medium text-gray-500 uppercase tracking-wide mt-8">
+        <h2 className="typography-caption mb-2 px-2 font-medium text-gray-500 uppercase tracking-wide mt-8">
           {section.title}
         </h2>
       )}

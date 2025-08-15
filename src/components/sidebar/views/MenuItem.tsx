@@ -55,7 +55,7 @@ const MenuItem = React.memo<MenuItemProps>(({ item, isActive, isCollapsed }) => 
           
           {/* Title - nascosto quando collassato */}
           {!isCollapsed && (
-            <span className="truncate">{title}</span>
+            <span className="typography-small truncate">{title}</span>
           )}
         </Link>
       </SidebarMenuButton>
