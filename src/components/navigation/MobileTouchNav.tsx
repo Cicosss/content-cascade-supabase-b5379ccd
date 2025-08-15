@@ -61,7 +61,7 @@ const segmentCount = navigationItems.length;
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-header flex justify-center pb-4 px-2 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-[5100] flex justify-center pb-4 px-2 md:hidden">
       <div 
         className="relative bg-[#020817] rounded-3xl px-4 py-3 shadow-2xl overflow-hidden"
         style={{

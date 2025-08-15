@@ -5,7 +5,7 @@ import MiaRomagnaLogo from './MiaRomagnaLogo';
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white py-16 mt-16 overflow-hidden">
+    <footer className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white py-16 mt-16 overflow-hidden pb-24 md:pb-16">
       {/* Geometric Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-32 h-32 border border-orange-400 rotate-45"></div>
