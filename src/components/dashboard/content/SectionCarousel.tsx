@@ -6,6 +6,7 @@ import CarouselErrorBoundary from '@/components/carousel/CarouselErrorBoundary';
 import CarouselLoadingState from '@/components/carousel/CarouselLoadingState';
 import { LucideIcon } from 'lucide-react';
 import { useSimpleCarousel, SectionType } from '@/hooks/useSimpleCarousel';
+import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 
 import {
   Carousel,
@@ -37,6 +38,8 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     limit: 8,
     categoryFilters
   });
+
+  const { isGuest, handleGuestClick } = useGuestRedirect();
 
   // Show loading state
   if (isLoading) {
@@ -71,10 +74,21 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
     );
   }
 
+  const handleItemClick = () => {
+    if (isGuest) {
+      handleGuestClick();
+    }
+  };
+
   return (
     <section className="space-y-4">
       <CarouselHeader icon={icon} title={title} subtitle={subtitle} />
       
+      {isGuest && (
+        <div className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
+          🌟 Registrati per accedere a tutti i dettagli e funzionalità!
+        </div>
+      )}
 
       <Carousel
         opts={{
@@ -89,15 +103,17 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
           {data.map((item: any, index: number) => (
             <CarouselItem key={item.id || index} className="pl-3 md:pl-4 basis-4/5 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
               {section === 'Eventi' ? (
-                <EventCard 
-                  id={item.id}
-                  title={item.name}
-                  date={new Date(item.start_datetime || '').toLocaleDateString('it-IT')}
-                  time={new Date(item.start_datetime || '').toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
-                  location_name={item.location_name || item.address || ''}
-                  category={item.category}
-                  image={item.images?.[0] || ''}
-                />
+                <div onClick={isGuest ? handleItemClick : undefined}>
+                  <EventCard 
+                    id={item.id}
+                    title={item.name}
+                    date={new Date(item.start_datetime || '').toLocaleDateString('it-IT')}
+                    time={new Date(item.start_datetime || '').toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}
+                    location_name={item.location_name || item.address || ''}
+                    category={item.category}
+                    image={item.images?.[0] || ''}
+                  />
+                </div>
               ) : (
                 <UnifiedPOICard 
                   id={item.id}
@@ -115,6 +131,7 @@ const SectionCarousel: React.FC<SectionCarouselProps> = ({
                   endDatetime={item.end_datetime}
                   poiType={item.poi_type as 'place' | 'event' | 'experience'}
                   isLoading={false}
+                  onClick={isGuest ? handleItemClick : undefined}
                 />
               )}
             </CarouselItem>

@@ -63,10 +63,10 @@ export function useSimpleCarousel(
       }
 
       if (isEventSection) {
-        // Fetch from events table
+        // Fetch from events table - select specific columns for public access
         const { data: events, error: eventsError } = await supabase
           .from('events')
-          .select('*')
+          .select('id, name, description, category, latitude, longitude, address, location_name, images, price_info, avg_rating, start_datetime, end_datetime, organizer_info, tags')
           .gte('start_datetime', new Date().toISOString())
           .order('start_datetime', { ascending: true })
           .limit(limit);
@@ -74,19 +74,17 @@ export function useSimpleCarousel(
         if (eventsError) throw eventsError;
         setData(events || []);
       } else {
-        // Fetch from points_of_interest table
+        // Fetch from points_of_interest table - select specific columns for public access
         let query = supabase
           .from('points_of_interest')
-          .select('*')
+          .select('id, name, description, category, latitude, longitude, address, location_name, images, price_info, avg_rating, target_audience, priority_score, duration_info, poi_type, start_datetime, end_datetime, organizer_info')
           .eq('status', 'approved');
 
         // Filter by categories
         query = query.in('category', categories);
 
-        // Filter by target audience if withChildren is specified
-        if (withChildren) {
-          query = query.or('target_audience.eq.families,target_audience.eq.everyone');
-        }
+        // Remove withChildren filter completely to ensure public access
+        // All target audiences are now allowed for public viewing
 
         const { data: pois, error: poisError } = await query
           .order('priority_score', { ascending: false })
