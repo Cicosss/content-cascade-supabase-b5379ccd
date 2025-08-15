@@ -70,7 +70,10 @@ export const MobileMenu: React.FC = () => {
                         {item.items.map((subItem, subIndex) => (
                           <button
                             key={subIndex}
-                            onClick={() => handleNavigation(subItem.url)}
+                            onClick={() => {
+                              handleNavigation(subItem.url);
+                              setMobileMenuOpen(false);
+                            }}
                             className="flex items-start space-x-3 rounded-lg p-4 min-h-[48px] text-sm hover:bg-slate-700/50 text-slate-200 hover:text-white text-left transition-all duration-300 group active:bg-slate-600 active:scale-98 touch-manipulation border border-transparent hover:border-slate-600/30"
                           >
                             <div className="text-slate-400 group-hover:text-orange-400 mt-0.5 flex-shrink-0 transition-colors duration-300">
@@ -92,7 +95,10 @@ export const MobileMenu: React.FC = () => {
                 ) : (
                   <div className="border-b border-slate-600/50 py-3">
                     <button
-                      onClick={() => handleNavigation(item.url)}
+                      onClick={() => {
+                        handleNavigation(item.url);
+                        setMobileMenuOpen(false);
+                      }}
                       className="text-base font-semibold text-slate-200 hover:text-orange-400 text-left w-full transition-all duration-300 hover:bg-slate-800/30 p-4 min-h-[48px] rounded-lg active:bg-slate-700 active:scale-98 touch-manipulation relative group"
                     >
                       {item.title}
@@ -141,7 +147,10 @@ export const MobileMenu: React.FC = () => {
             <div className="space-y-4">
               {/* Login Button */}
               <Button
-                onClick={() => handleAuthNavigation('/auth')}
+                onClick={() => {
+                  handleAuthNavigation('/auth');
+                  setMobileMenuOpen(false);
+                }}
                 variant="outline"
                 className="w-full min-h-[48px] border-orange-500/30 text-orange-300 hover:bg-orange-500/20 hover:text-orange-200 hover:border-orange-500/50 bg-transparent transition-all duration-300 active:scale-98 touch-manipulation font-medium tracking-wide shadow-lg hover:shadow-orange-500/20 relative group"
               >
@@ -152,7 +161,10 @@ export const MobileMenu: React.FC = () => {
               
               {/* Register Button */}
               <Button
-                onClick={() => handleAuthNavigation('/auth')}
+                onClick={() => {
+                  handleAuthNavigation('/auth');
+                  setMobileMenuOpen(false);
+                }}
                 className="w-full min-h-[48px] bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 transition-all duration-300 active:scale-98 touch-manipulation font-semibold tracking-wide shadow-lg hover:shadow-orange-500/25 hover:scale-105"
               >
                 <User className="h-4 w-4 mr-2" />
