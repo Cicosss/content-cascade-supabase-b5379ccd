@@ -13,7 +13,12 @@ const HeaderContext = createContext<HeaderContextType | undefined>(undefined);
 export const useHeader = () => {
   const context = useContext(HeaderContext);
   if (!context) {
-    throw new Error('useHeader must be used within HeaderProvider');
+    // Safe fallback to prevent runtime crashes when provider is missing
+    return {
+      isMobileMenuOpen: false,
+      setMobileMenuOpen: () => {},
+      sidebarOpen: false,
+    } as HeaderContextType;
   }
   return context;
 };
