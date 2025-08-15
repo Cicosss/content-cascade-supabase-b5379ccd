@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
   const isHomepage = location.pathname === '/';
   
   const getHeaderBackground = () => {
-    if (isHomepage) return "bg-background/95 backdrop-blur-md border-border/30";
+    if (isHomepage) return "bg-transparent backdrop-blur-sm";
     if (isDashboard) return "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900";
     return "bg-background/95 backdrop-blur-sm";
   };
@@ -36,6 +36,12 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
         getHeaderBackground(),
         className
       )}>
+      {/* Geometric Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+         <div className="absolute top-2 right-20 w-16 h-16 border border-primary rotate-45"></div>
+         <div className="absolute bottom-2 left-32 w-12 h-12 bg-blue-500/20 rounded-full"></div>
+         <div className="absolute top-1/2 right-1/4 w-8 h-8 border border-green-400 rotate-12"></div>
+      </div>
       
       <div className={cn(
         "flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-screen-2xl mx-auto relative z-10",

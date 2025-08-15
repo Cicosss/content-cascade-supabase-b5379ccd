@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import HomepageLayout from '@/components/HomepageLayout';
 import InteractiveHeroSection from '@/components/InteractiveHeroSection';
 import ValuePropositionSection from '@/components/ValuePropositionSection';
 import AppFeaturesSection from '@/components/AppFeaturesSection';
@@ -44,7 +45,7 @@ const Index = () => {
   }
 
   return (
-    <Layout>
+    <HomepageLayout>
       <PullToRefresh onRefresh={handleRefresh}>
         <InteractiveHeroSection />
         <ValuePropositionSection />
@@ -68,7 +69,7 @@ const Index = () => {
         </div>
       </PullToRefresh>
       <ScrollToTop />
-    </Layout>
+    </HomepageLayout>
   );
 };
 
