@@ -195,7 +195,7 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
           <div className="flex items-start justify-between gap-2 mb-2">
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <CategoryIcon className="h-4 w-4 text-gray-500 flex-shrink-0" />
-              <h3 className="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-tight">
+              <h3 className="typography-h4 font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
                 {displayName}
               </h3>
             </div>

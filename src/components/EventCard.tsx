@@ -80,14 +80,14 @@ const EventCard: React.FC<EventCardProps> = ({
       <div className={`${isMobile ? 'p-3' : 'p-4'}`}>
         <div className="flex items-center gap-2 mb-2">
           <Calendar className="h-4 w-4 text-muted-foreground" />
-          <span className={`${getMobileTypography('text-sm')} text-muted-foreground`}>{category}</span>
+          <span className={`typography-small ${getMobileTypography('text-sm')} text-muted-foreground`}>{category}</span>
         </div>
 
-        <h3 className={`font-semibold ${getMobileTypography('text-lg')} ${isMobile ? 'mb-2' : 'mb-3'} line-clamp-2 text-foreground group-hover:text-primary transition-colors`}>
+        <h3 className={`typography-h4 ${getMobileTypography('text-lg')} ${isMobile ? 'mb-2' : 'mb-3'} line-clamp-2 text-foreground group-hover:text-primary transition-colors`}>
           {title}
         </h3>
         
-        <div className={`space-y-${isMobile ? '1' : '2'} ${getMobileTypography('text-sm')} text-muted-foreground`}>
+        <div className={`typography-small space-y-${isMobile ? '1' : '2'} ${getMobileTypography('text-sm')} text-muted-foreground`}>
           <div className="flex items-center">
             <Calendar className="h-4 w-4 mr-2 text-muted-foreground/70" />
             <span className="truncate">{date}</span>

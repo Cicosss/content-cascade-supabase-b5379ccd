@@ -42,10 +42,10 @@ const AppFeaturesSection = () => {
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
         {/* Header Section */}
         <div className={`text-center mb-12 md:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="font-playfair text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6 md:mb-8 leading-tight tracking-tight">
+          <h2 className="typography-h1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-slate-900 dark:text-white mb-6 md:mb-8">
             La Tua Guida Intelligente
           </h2>
-          <p className="font-lora text-lg sm:text-xl md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto text-slate-700 dark:text-slate-300 px-4">
+          <p className="typography-subtitle text-lg sm:text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto text-slate-700 dark:text-slate-300 px-4">
             Un compagno di viaggio intelligente che ti offre accesso privilegiato alle autentiche meraviglie della Romagna, 
             con tecnologie avanzate e il supporto di esperti locali per un'esperienza indimenticabile
           </p>
@@ -64,10 +64,10 @@ const AppFeaturesSection = () => {
               {/* Content Section */}
               <div className={`flex-1 ${feature.imagePosition === 'right' ? 'lg:order-1' : 'lg:order-2'}`}>
                 <div className={`max-w-xl mx-auto lg:mx-0 ${feature.imagePosition === 'right' ? 'text-center lg:text-right' : 'text-center lg:text-left'} px-4 lg:px-0`}>
-                  <h3 className="font-playfair text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-slate-900 dark:text-white mb-6 md:mb-8 leading-tight tracking-tight">
+                  <h3 className="typography-h2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-900 dark:text-white mb-6 md:mb-8">
                     {feature.title}
                   </h3>
-                  <p className="font-lora text-lg sm:text-xl md:text-2xl leading-relaxed text-slate-700 dark:text-slate-300 font-normal">
+                  <p className="typography-subtitle text-lg sm:text-xl md:text-2xl text-slate-700 dark:text-slate-300">
                     {feature.description}
                   </p>
                 </div>

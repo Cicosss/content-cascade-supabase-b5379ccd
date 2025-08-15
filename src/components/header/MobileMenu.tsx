@@ -52,7 +52,7 @@ export const MobileMenu: React.FC = () => {
               className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
           </div>
-          <span className="font-bold text-white text-lg tracking-wide">Mia Romagna</span>
+          <span className="typography-h4 text-white tracking-wide">Mia Romagna</span>
         </div>
         
         <div className="mt-6 relative z-10">
@@ -61,7 +61,7 @@ export const MobileMenu: React.FC = () => {
               <div key={index}>
                 {item.items ? (
                   <AccordionItem value={`item-${index}`} className="border-b border-slate-600/50">
-                    <AccordionTrigger className="text-base font-semibold text-slate-200 hover:text-orange-400 py-4 hover:no-underline min-h-[48px] flex items-center transition-all duration-300 hover:bg-slate-800/30 rounded-lg px-3 active:bg-slate-700 relative group">
+                    <AccordionTrigger className="typography-small font-semibold text-slate-200 hover:text-orange-400 py-4 hover:no-underline min-h-[48px] flex items-center transition-all duration-300 hover:bg-slate-800/30 rounded-lg px-3 active:bg-slate-700 relative group">
                       {item.title}
                       <div className="absolute bottom-0 left-3 right-3 h-0.5 bg-orange-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                     </AccordionTrigger>
@@ -74,15 +74,15 @@ export const MobileMenu: React.FC = () => {
                               handleNavigation(subItem.url);
                               setMobileMenuOpen(false);
                             }}
-                            className="flex items-start space-x-3 rounded-lg p-4 min-h-[48px] text-sm hover:bg-slate-700/50 text-slate-200 hover:text-white text-left transition-all duration-300 group active:bg-slate-600 active:scale-98 touch-manipulation border border-transparent hover:border-slate-600/30"
+                            className="typography-small flex items-start space-x-3 rounded-lg p-4 min-h-[48px] hover:bg-slate-700/50 text-slate-200 hover:text-white text-left transition-all duration-300 group active:bg-slate-600 active:scale-98 touch-manipulation border border-transparent hover:border-slate-600/30"
                           >
                             <div className="text-slate-400 group-hover:text-orange-400 mt-0.5 flex-shrink-0 transition-colors duration-300">
                               {subItem.icon}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="font-medium tracking-wide">{subItem.title}</div>
+                              <div className="typography-small font-medium tracking-wide">{subItem.title}</div>
                               {subItem.description && (
-                                <div className="text-xs text-slate-400 group-hover:text-slate-300 mt-1 leading-relaxed">
+                                <div className="typography-caption text-slate-400 group-hover:text-slate-300 mt-1 leading-relaxed">
                                   {subItem.description}
                                 </div>
                               )}
@@ -99,7 +99,7 @@ export const MobileMenu: React.FC = () => {
                         handleNavigation(item.url);
                         setMobileMenuOpen(false);
                       }}
-                      className="text-base font-semibold text-slate-200 hover:text-orange-400 text-left w-full transition-all duration-300 hover:bg-slate-800/30 p-4 min-h-[48px] rounded-lg active:bg-slate-700 active:scale-98 touch-manipulation relative group"
+                      className="typography-small font-semibold text-slate-200 hover:text-orange-400 text-left w-full transition-all duration-300 hover:bg-slate-800/30 p-4 min-h-[48px] rounded-lg active:bg-slate-700 active:scale-98 touch-manipulation relative group"
                     >
                       {item.title}
                       <div className="absolute bottom-2 left-4 right-4 h-0.5 bg-orange-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -124,10 +124,10 @@ export const MobileMenu: React.FC = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-white truncate tracking-wide">
+                  <div className="typography-small font-semibold text-white truncate tracking-wide">
                     {displayName}
                   </div>
-                  <div className="text-xs text-slate-400 truncate">
+                  <div className="typography-caption text-slate-400 truncate">
                     {user.email}
                   </div>
                 </div>

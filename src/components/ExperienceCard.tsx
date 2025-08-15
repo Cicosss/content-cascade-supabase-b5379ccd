@@ -124,22 +124,22 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({
             <span className="text-gray-500">
               {getCategoryIcon()}
             </span>
-            <span className={`${getMobileTypography('text-sm')} text-gray-600`}>{category}</span>
+            <span className={`typography-small ${getMobileTypography('text-sm')} text-gray-600`}>{category}</span>
           </div>
 
-          <h3 className={`font-semibold ${getMobileTypography('text-lg')} mb-2 truncate-mobile-2 text-gray-900 group-hover:text-blue-600 transition-colors`}>
+          <h3 className={`typography-h4 ${getMobileTypography('text-lg')} mb-2 truncate-mobile-2 text-gray-900 group-hover:text-blue-600 transition-colors`}>
             {displayName}
           </h3>
 
           {description && (
-            <p className={`${getMobileTypography('text-sm')} text-gray-600 mb-3 truncate-mobile-2`}>
+            <p className={`typography-small ${getMobileTypography('text-sm')} text-gray-600 mb-3 truncate-mobile-2`}>
               {description}
             </p>
           )}
 
           <div className="space-y-2 mb-3">
             {(address || location_name) && (
-              <div className={`flex items-center ${getMobileTypography('text-sm')} text-gray-600`}>
+              <div className={`typography-small flex items-center ${getMobileTypography('text-sm')} text-gray-600`}>
                 <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-gray-400" />
                 <span className="truncate">
                   {location_name || address}

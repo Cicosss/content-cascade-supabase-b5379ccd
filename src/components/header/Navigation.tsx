@@ -23,7 +23,7 @@ export const Navigation: React.FC = () => {
           <NavigationMenuItem key={index}>
             {item.items ? (
               <>
-                <NavigationMenuTrigger className="h-9 px-4 py-2 text-slate-200 hover:text-orange-400 bg-transparent border-none transition-all duration-300 font-medium tracking-wide relative group">
+                <NavigationMenuTrigger className="typography-small h-9 px-4 py-2 text-slate-200 hover:text-orange-400 bg-transparent border-none transition-all duration-300 font-medium tracking-wide relative group">
                   {item.title}
                   <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-orange-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center"></span>
                 </NavigationMenuTrigger>
@@ -41,12 +41,12 @@ export const Navigation: React.FC = () => {
                             <div className="text-slate-400 group-hover/item:text-orange-400 transition-colors duration-300">
                               {subItem.icon}
                             </div>
-                            <div className="text-sm font-semibold leading-none tracking-wide">
+                            <div className="typography-small font-semibold leading-none tracking-wide">
                               {subItem.title}
                             </div>
                           </div>
                           {subItem.description && (
-                            <p className="line-clamp-2 text-sm leading-relaxed text-slate-400 group-hover/item:text-slate-300 transition-colors duration-300">
+                            <p className="typography-small line-clamp-2 leading-relaxed text-slate-400 group-hover/item:text-slate-300 transition-colors duration-300">
                               {subItem.description}
                             </p>
                           )}
@@ -61,7 +61,7 @@ export const Navigation: React.FC = () => {
                 <button
                   onClick={() => handleNavigation(item.url)}
                   className={cn(
-                    "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-300 text-slate-200 hover:text-orange-400 focus:text-orange-400 focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-slate-800/30 relative"
+                    "typography-small group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 font-medium transition-all duration-300 text-slate-200 hover:text-orange-400 focus:text-orange-400 focus:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-slate-800/30 relative"
                   )}
                 >
                   {item.title}
