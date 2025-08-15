@@ -1,0 +1,215 @@
+/* 
+ * SCALA TIPOGRAFICA UFFICIALE - MIA ROMAGNA
+ * Sistema di font pairing: Playfair Display + Inter
+ * Implementazione conforme alle specifiche del design system
+ */
+
+@layer components {
+  /* ========================================
+     TITOLI - PLAYFAIR DISPLAY (SERIF)
+     ======================================== */
+  
+  /* H1 - Titoli di pagina, Hero */
+  .typography-h1-official {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  
+  /* H2 - Titoli di sezione */
+  .typography-h2-official {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  /* H3 - Sottotitoli, Titoli Card */
+  .typography-h3-official {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  /* ========================================
+     TESTO INTERFACCIA - INTER (SANS-SERIF)
+     ======================================== */
+  
+  /* H4 - Titoli minori */
+  .typography-h4-official {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  
+  /* Sottotitolo / Paragrafo Grande */
+  .typography-subtitle-official {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  
+  /* Testo Corpo - Base */
+  .typography-body-official {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+  
+  /* Testo Piccolo - Etichette, Input */
+  .typography-small-official {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  
+  /* Testo Minuscolo - Caption, Note */
+  .typography-caption-official {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+  
+  /* ========================================
+     RESPONSIVE VARIANTS
+     ======================================== */
+  
+  /* H1 Responsive */
+  .typography-h1-responsive {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+  
+  @media (min-width: 768px) {
+    .typography-h1-responsive {
+      font-size: 40px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .typography-h1-responsive {
+      font-size: 48px;
+    }
+  }
+  
+  /* H2 Responsive */
+  .typography-h2-responsive {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.3;
+  }
+  
+  @media (min-width: 768px) {
+    .typography-h2-responsive {
+      font-size: 30px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .typography-h2-responsive {
+      font-size: 36px;
+    }
+  }
+  
+  /* H3 Responsive */
+  .typography-h3-responsive {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  
+  @media (min-width: 768px) {
+    .typography-h3-responsive {
+      font-size: 22px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .typography-h3-responsive {
+      font-size: 24px;
+    }
+  }
+  
+  /* Body Responsive */
+  .typography-body-responsive {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+  
+  @media (min-width: 768px) {
+    .typography-body-responsive {
+      font-size: 15px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .typography-body-responsive {
+      font-size: 16px;
+    }
+  }
+  
+  /* ========================================
+     HTML ELEMENTS GLOBAL STYLES
+     ======================================== */
+  
+  /* Apply official typography to HTML elements */
+  h1 {
+    @apply typography-h1-responsive;
+  }
+  
+  h2 {
+    @apply typography-h2-responsive;
+  }
+  
+  h3 {
+    @apply typography-h3-responsive;
+  }
+  
+  h4 {
+    @apply typography-h4-official;
+  }
+  
+  p {
+    @apply typography-body-responsive;
+  }
+  
+  /* ========================================
+     UTILITY CLASSES
+     ======================================== */
+  
+  .font-serif-official {
+    font-family: var(--font-serif);
+  }
+  
+  .font-sans-official {
+    font-family: var(--font-sans);
+  }
+  
+  /* Weight utilities matching official scale */
+  .font-weight-regular {
+    font-weight: 400;
+  }
+  
+  .font-weight-semibold {
+    font-weight: 600;
+  }
+  
+  .font-weight-bold {
+    font-weight: 700;
+  }
+}
