@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Logo } from './Logo';
 import { Navigation } from './Navigation';
@@ -16,11 +17,19 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ className }) => {
   const { sidebarOpen } = useHeader();
   const { user } = useAuth();
+  const location = useLocation();
+  
+  // Applica il gradiente solo nella dashboard
+  const isDashboard = location.pathname === '/dashboard';
+  const headerBg = isDashboard 
+    ? "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900" 
+    : "bg-slate-900/95 backdrop-blur-sm";
 
   return (
       <header className={cn(
-        "header-fixed relative bg-slate-900/95 backdrop-blur-sm border-b border-slate-800/50 overflow-hidden",
+        "header-fixed relative border-b border-slate-800/50 overflow-hidden",
         "transition-all duration-300 ease-in-out",
+        headerBg,
         className
       )}>
       {/* Geometric Background Elements */}
