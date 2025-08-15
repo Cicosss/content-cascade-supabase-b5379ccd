@@ -18,8 +18,8 @@ const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
     <LocationProvider>
       <HeaderProvider>
         <div className="min-h-screen bg-slate-50 flex flex-col">
-          {/* Header fisso uniforme con stile trasparente */}
-          <Header className="bg-transparent backdrop-blur-sm" />
+          {/* Header fisso con stile automatico (trasparente per homepage) */}
+          <Header />
           
           {/* Main content con padding per header fisso responsive */}
           <main className="flex-1 relative pb-20 md:pb-0 pt-16 md:pt-20 lg:pt-24">
