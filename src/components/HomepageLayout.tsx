@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
-import { HeaderProvider } from '@/contexts/HeaderContext';
+import { HomepageNavProvider } from '@/contexts/HomepageNavContext';
 import { MobileTouchNav } from './navigation/MobileTouchNav';
 import Footer from './Footer';
 
@@ -14,7 +14,7 @@ const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   
   return (
     <LocationProvider>
-      <HeaderProvider>
+      <HomepageNavProvider>
         <div className="min-h-screen bg-slate-50 flex flex-col">
           {/* No fixed header - navbar is integrated into hero section */}
           
@@ -25,7 +25,7 @@ const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
           <Footer />
           <MobileTouchNav />
         </div>
-      </HeaderProvider>
+      </HomepageNavProvider>
     </LocationProvider>
   );
 };

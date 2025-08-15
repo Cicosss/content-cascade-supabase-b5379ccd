@@ -1,0 +1,51 @@
+/* Homepage Navbar Specific Styles */
+.homepage-navbar {
+  /* Transparent background with glass effect */
+  background: transparent;
+  backdrop-filter: none;
+  
+  /* Text shadow for readability over video */
+  --homepage-text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.homepage-navbar * {
+  text-shadow: var(--homepage-text-shadow);
+}
+
+/* Hover states for homepage navbar */
+.homepage-navbar .nav-item:hover {
+  color: hsl(var(--primary));
+  transform: translateY(-1px);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mobile menu z-index override for homepage */
+.homepage-mobile-sheet {
+  z-index: 40 !important;
+}
+
+/* Smooth transitions */
+.homepage-navbar-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Touch targets for mobile */
+.homepage-touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Desktop navigation menu dropdown z-index */
+.homepage-navbar .navigation-menu-content {
+  z-index: 45 !important;
+}
+
+/* Logo hover animation specific to homepage */
+.homepage-logo-hover {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.homepage-logo-hover:hover {
+  transform: scale(1.05);
+}

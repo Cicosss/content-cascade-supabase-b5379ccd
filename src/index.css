@@ -17,6 +17,7 @@
 @import './styles/zIndex.css';
 @import './styles/hover-scale.css';
 @import './styles/glassmorphism.css';
+@import './styles/homepage-navbar.css';
 
 /* Google Maps CSS Isolation - Complete Protection */
 .map-isolation-container {
