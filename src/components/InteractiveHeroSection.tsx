@@ -3,7 +3,7 @@ import React from 'react';
 import HeroBackground from './hero/HeroBackground';
 import HeroBrandSection from './hero/HeroBrandSection';
 import HeroFeatures from './hero/HeroFeatures';
-import { Header } from './header/Header';
+import { HomepageHeader } from './header/HomepageHeader';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const InteractiveHeroSection = () => {
@@ -14,8 +14,8 @@ const InteractiveHeroSection = () => {
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
 
-      {/* Header integrato nella hero - Floating over video */}
-      <Header />
+      {/* Homepage Header - Floating over video with transparent background */}
+      <HomepageHeader />
 
       {/* Content Overlay - Restructured */}
       <div className="relative z-10 h-full flex flex-col text-white">

@@ -12,14 +12,13 @@ interface HomepageLayoutProps {
 const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   
-  // Per la homepage, non mostriamo mai l'header fisso - è integrato nella hero
   return (
     <LocationProvider>
       <HeaderProvider>
         <div className="min-h-screen bg-slate-50 flex flex-col">
-          {/* Nessun header fisso - navigazione integrata nella hero */}
+          {/* No fixed header - navbar is integrated into hero section */}
           
-          {/* Main content senza padding per header */}
+          {/* Main content without padding for header */}
           <main className="flex-1 relative pb-20 md:pb-0">
             {children}
           </main>
