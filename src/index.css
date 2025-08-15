@@ -7,7 +7,6 @@
 
 /* Import custom styles */
 @import './styles/base.css';
-@import './styles/typography-official.css';
 @import './styles/typography.css';
 @import './styles/mobile-typography.css';
 @import './styles/mobile-performance.css';
