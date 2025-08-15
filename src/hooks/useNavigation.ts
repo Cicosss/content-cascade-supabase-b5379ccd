@@ -6,23 +6,19 @@ export const useNavigation = () => {
   const navigate = useNavigate();
   const { setMobileMenuOpen } = useHeader();
 
-  const handleNavigation = useCallback((url: string) => {
+  const handleNavigation = useCallback((url: string, closeMobileMenu: boolean = true) => {
     navigate(url);
-    setMobileMenuOpen(false);
+    if (closeMobileMenu) {
+      setMobileMenuOpen(false);
+    }
   }, [navigate, setMobileMenuOpen]);
 
   const handleLogoClick = useCallback(() => {
     navigate('/');
   }, [navigate]);
 
-  const handleAuthNavigation = useCallback((path: string) => {
-    navigate(path);
-    setMobileMenuOpen(false);
-  }, [navigate, setMobileMenuOpen]);
-
   return {
     handleNavigation,
-    handleLogoClick,
-    handleAuthNavigation
+    handleLogoClick
   };
 };

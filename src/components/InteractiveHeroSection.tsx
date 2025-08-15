@@ -14,8 +14,8 @@ const InteractiveHeroSection = () => {
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
 
-      {/* Overlay Navigation - Floating over video */}
-      <Header className="bg-transparent backdrop-blur-sm" />
+      {/* Header integrato nella hero - Floating over video */}
+      <Header />
 
       {/* Content Overlay - Restructured */}
       <div className="relative z-10 h-full flex flex-col text-white">

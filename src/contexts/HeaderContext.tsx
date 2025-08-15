@@ -1,19 +1,10 @@
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useState } from 'react';
 import { useSidebar } from '@/components/ui/sidebar';
 
-
 interface HeaderContextType {
-  // Navigation state
   isMobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
-  
-  // Navigation actions (moved to useNavigation hook)
-  
-  // Sidebar state
-  
-  // Sidebar state
   sidebarOpen: boolean;
 }
 
@@ -32,19 +23,19 @@ interface HeaderProviderProps {
 }
 
 export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
-  const navigate = useNavigate();
-  
-  // Try to get sidebar state, fallback to false if not available
-  let sidebarOpen = false;
-  try {
-    const sidebar = useSidebar();
-    sidebarOpen = sidebar.state === 'expanded';
-  } catch {
-    // Not within SidebarProvider, use default value
-    sidebarOpen = false;
-  }
-  
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Get sidebar state with safe fallback
+  const getSidebarState = () => {
+    try {
+      const sidebar = useSidebar();
+      return sidebar.state === 'expanded';
+    } catch {
+      return false;
+    }
+  };
+  
+  const sidebarOpen = getSidebarState();
 
   const value: HeaderContextType = {
     isMobileMenuOpen,

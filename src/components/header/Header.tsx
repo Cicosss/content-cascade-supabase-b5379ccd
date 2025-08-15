@@ -19,24 +19,28 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
   const { user } = useAuth();
   const location = useLocation();
   
-  // Applica il gradiente solo nella dashboard
+  // Dynamic background based on route
   const isDashboard = location.pathname === '/dashboard';
-  const headerBg = isDashboard 
-    ? "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900" 
-    : "bg-slate-900/95 backdrop-blur-sm";
+  const isHomepage = location.pathname === '/';
+  
+  const getHeaderBackground = () => {
+    if (isHomepage) return "bg-transparent backdrop-blur-sm";
+    if (isDashboard) return "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900";
+    return "bg-background/95 backdrop-blur-sm";
+  };
 
   return (
       <header className={cn(
-        "header-fixed relative border-b border-slate-800/50 overflow-hidden",
+        "header-fixed relative border-b border-border/50 overflow-hidden",
         "transition-all duration-300 ease-in-out",
-        headerBg,
+        getHeaderBackground(),
         className
       )}>
       {/* Geometric Background Elements */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-2 right-20 w-16 h-16 border border-orange-400 rotate-45"></div>
-        <div className="absolute bottom-2 left-32 w-12 h-12 bg-blue-500/20 rounded-full"></div>
-        <div className="absolute top-1/2 right-1/4 w-8 h-8 border border-green-400 rotate-12"></div>
+         <div className="absolute top-2 right-20 w-16 h-16 border border-primary rotate-45"></div>
+         <div className="absolute bottom-2 left-32 w-12 h-12 bg-blue-500/20 rounded-full"></div>
+         <div className="absolute top-1/2 right-1/4 w-8 h-8 border border-green-400 rotate-12"></div>
       </div>
       
       <div className={cn(
@@ -46,9 +50,9 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
       )}>
         {/* Sidebar Trigger (only for authenticated users on desktop) */}
         {user && (
-          <div className="hidden lg:flex mr-4">
-            <SidebarTrigger className="text-white hover:text-orange-400 transition-colors duration-300" />
-          </div>
+           <div className="hidden lg:flex mr-4">
+             <SidebarTrigger className="text-foreground hover:text-primary transition-colors duration-300" />
+           </div>
         )}
 
         {/* Logo */}
