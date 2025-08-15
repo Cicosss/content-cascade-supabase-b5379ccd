@@ -16,7 +16,7 @@ import { WeatherErrorBoundary } from '@/components/dashboard/error-boundaries/We
 
 const MobileWidgetsSection: React.FC = memo(() => {
   return (
-    <div className="space-y-3">
+    <div className="p-4 rounded-3xl bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900 space-y-3">
       {/* Weather Widget */}
       <div className="w-full">
         <WeatherErrorBoundary>
