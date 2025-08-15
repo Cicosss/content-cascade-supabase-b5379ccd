@@ -36,7 +36,7 @@ export const MobileMenu: React.FC = () => {
           <Menu className="h-7 w-7 transition-transform duration-300 group-hover:rotate-90" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 bg-gradient-to-br from-background via-card to-background border-border z-dropdown overflow-y-auto relative">
+      <SheetContent side="left" className="pr-0 bg-gradient-to-br from-background via-card to-background border-border z-dropdown overflow-y-auto relative" portalContainer={typeof document !== 'undefined' ? document.body : undefined}>
         {/* Geometric Background Elements */}
         <div className="absolute inset-0 opacity-10">
            <div className="absolute top-10 left-6 w-20 h-20 border border-primary rotate-45"></div>
