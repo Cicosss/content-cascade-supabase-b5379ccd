@@ -19,25 +19,34 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 
   return (
       <header className={cn(
-        "header-fixed bg-[#192335] backdrop-blur-sm",
+        "header-fixed relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 backdrop-blur-sm overflow-hidden",
         "transition-all duration-300 ease-in-out",
         className
       )}>
+      {/* Geometric Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-2 right-20 w-16 h-16 border border-orange-400 rotate-45"></div>
+        <div className="absolute bottom-2 left-32 w-12 h-12 bg-blue-500/20 rounded-full"></div>
+        <div className="absolute top-1/2 right-1/4 w-8 h-8 border border-green-400 rotate-12"></div>
+      </div>
+      
       <div className={cn(
-        "flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-screen-2xl mx-auto",
+        "flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-screen-2xl mx-auto relative z-10",
         "transition-all duration-300 ease-in-out",
         sidebarOpen ? "lg:pl-72" : ""
       )}>
         {/* Sidebar Trigger (only for authenticated users on desktop) */}
         {user && (
           <div className="hidden lg:flex mr-4">
-            <SidebarTrigger className="text-white hover:text-slate-300" />
+            <SidebarTrigger className="text-white hover:text-orange-400 transition-colors duration-300" />
           </div>
         )}
 
         {/* Logo */}
-        <div className="mr-12 flex">
-          <Logo />
+        <div className="mr-12 flex group">
+          <div className="transition-transform duration-300 group-hover:scale-105">
+            <Logo />
+          </div>
         </div>
 
         {/* Navigation and Actions */}
