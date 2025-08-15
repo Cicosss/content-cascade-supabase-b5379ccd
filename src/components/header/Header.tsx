@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
   const getHeaderBackground = () => {
     if (isHomepage) return "bg-transparent backdrop-blur-sm";
     if (isDashboard) return "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900";
-    return "bg-background/95 backdrop-blur-sm border-border/50";
+    return "bg-background/95 backdrop-blur-sm";
   };
 
   return (

@@ -3,19 +3,22 @@ import React from 'react';
 import HeroBackground from './hero/HeroBackground';
 import HeroBrandSection from './hero/HeroBrandSection';
 import HeroFeatures from './hero/HeroFeatures';
-
+import { Header } from './header/Header';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const InteractiveHeroSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="relative w-full h-[100svh] md:h-screen overflow-hidden -mt-16 md:-mt-20 lg:-mt-24">
+    <div className="relative w-full h-[100svh] md:h-screen overflow-hidden">
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
 
-      {/* Content Overlay - Restructured con padding per header */}
-      <div className="relative z-10 h-full flex flex-col text-white pt-16 md:pt-20 lg:pt-24">
+      {/* Header integrato nella hero - Floating over video */}
+      <Header />
+
+      {/* Content Overlay - Restructured */}
+      <div className="relative z-10 h-full flex flex-col text-white">
         {/* Brand Section - Left aligned and vertically centered (solo desktop) */}
         <div className="flex-1 flex items-center justify-start">
           <HeroBrandSection />
