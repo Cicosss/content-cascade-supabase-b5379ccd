@@ -16,16 +16,16 @@ import { WeatherErrorBoundary } from '@/components/dashboard/error-boundaries/We
 
 const MobileWidgetsSection: React.FC = memo(() => {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="space-y-3">
       {/* Weather Widget */}
-      <div className="min-h-[120px]">
+      <div className="w-full">
         <WeatherErrorBoundary>
           <PersonalizedWeather />
         </WeatherErrorBoundary>
       </div>
       
       {/* Coastal Status Widget */}
-      <div className="min-h-[120px]">
+      <div className="w-full">
         <APIErrorBoundary>
           <CoastalStatusWidget />
         </APIErrorBoundary>

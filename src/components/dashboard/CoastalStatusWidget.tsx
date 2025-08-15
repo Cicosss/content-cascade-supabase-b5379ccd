@@ -47,57 +47,57 @@ const CoastalStatusWidget: React.FC = () => {
   };
 
   return (
-    <Card className="p-3 h-full rounded-3xl border-0 shadow-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 text-white flex flex-col justify-between">
-      <div className="space-y-3">
-        {/* Header */}
-        <div className="flex items-center gap-2">
-          <Waves className="h-4 w-4 text-cyan-200" />
-          <h3 className="typography-small font-bold text-white">{getTitle()}</h3>
+    <Card className="p-4 rounded-3xl border-0 shadow-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 text-white">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-3">
+        <Waves className="h-4 w-4 text-cyan-200 flex-shrink-0" />
+        <h3 className="typography-small font-bold text-white truncate">{getTitle()}</h3>
+      </div>
+
+      {/* Three Circular Indicators */}
+      <div className="grid grid-cols-3 gap-2 mb-3">
+        {/* Flag Safety Indicator */}
+        <div className="text-center">
+          <div className="mb-2">
+            <div className={`w-10 h-10 rounded-full ${getFlagColor()} flex items-center justify-center mx-auto shadow-lg`}>
+              <Flag className="h-4 w-4 text-white" />
+            </div>
+          </div>
+          <div className="typography-caption font-medium text-cyan-100 leading-tight">{flagStatus.text}</div>
+          <div className="typography-caption text-cyan-200 text-xs">Bandiera</div>
         </div>
 
-        {/* Three Circular Indicators */}
-        <div className="grid grid-cols-3 gap-2">
-          {/* Flag Safety Indicator */}
-          <div className="text-center group cursor-pointer">
-            <div className="relative mb-2 transform transition-transform duration-200 hover:scale-105">
-              <div className={`w-10 h-10 rounded-full ${getFlagColor()} flex items-center justify-center mx-auto shadow-lg`}>
-                <Flag className="h-5 w-5 text-white animate-pulse" />
-              </div>
+        {/* Water Temperature Indicator */}
+        <div className="text-center">
+          <div className="mb-2">
+            <div className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center mx-auto shadow-lg">
+              <Thermometer className="h-4 w-4 text-white" />
             </div>
-            <div className="typography-caption font-medium text-cyan-100">{flagStatus.text}</div>
-            <div className="typography-caption text-cyan-200">Bandiera</div>
           </div>
+          <div className="typography-caption font-bold text-white">{waterTemperature}°C</div>
+          <div className="typography-caption text-cyan-200 text-xs">Acqua</div>
+        </div>
 
-          {/* Water Temperature Indicator */}
-          <div className="text-center group cursor-pointer">
-            <div className="relative mb-2 transform transition-transform duration-200 hover:scale-105">
-              <div className="w-10 h-10 rounded-full bg-blue-400 flex items-center justify-center mx-auto shadow-lg">
-                <Thermometer className="h-5 w-5 text-white" />
-              </div>
+        {/* Water Quality Indicator */}
+        <div className="text-center">
+          <div className="mb-2">
+            <div className="w-10 h-10 rounded-full bg-blue-300 flex items-center justify-center mx-auto shadow-lg">
+              <Droplets className={`h-4 w-4 ${getQualityColor()}`} />
             </div>
-            <div className="typography-caption font-bold text-white">{waterTemperature}°C</div>
-            <div className="typography-caption text-cyan-200">Acqua</div>
           </div>
-
-          {/* Water Quality Indicator */}
-          <div className="text-center group cursor-pointer">
-            <div className="relative mb-2 transform transition-transform duration-200 hover:scale-105">
-              <div className="w-10 h-10 rounded-full bg-blue-300 flex items-center justify-center mx-auto shadow-lg">
-                <Droplets className={`h-5 w-5 ${getQualityColor()}`} />
-              </div>
-            </div>
-            <div className="typography-caption font-medium text-cyan-100">{waterQuality.text}</div>
-            <div className="typography-caption text-cyan-200">Qualità</div>
-          </div>
+          <div className="typography-caption font-medium text-cyan-100 leading-tight">{waterQuality.text}</div>
+          <div className="typography-caption text-cyan-200 text-xs">Qualità</div>
         </div>
       </div>
 
-      {/* Info Section */}
-      <div className="typography-caption flex items-start gap-2 text-cyan-200 pt-2 border-t border-white/20">
-        <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
-        <button className="typography-caption leading-tight hover:text-white transition-colors duration-200 text-left">
-          {getInfoMessage()}
-        </button>
+      {/* Compact Info Section */}
+      <div className="pt-2 border-t border-white/20">
+        <div className="flex items-center gap-2">
+          <Info className="h-3 w-3 flex-shrink-0 text-cyan-200" />
+          <span className="typography-caption text-cyan-200 leading-tight">
+            {getInfoMessage()}
+          </span>
+        </div>
       </div>
     </Card>
   );

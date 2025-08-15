@@ -80,69 +80,65 @@ const PersonalizedWeather: React.FC = () => {
   }
 
   return (
-    <Card className={`p-3 h-full rounded-3xl border-0 shadow-xl bg-gradient-to-br ${getStandardGradient()} text-white flex flex-col justify-between`}>
-      <div className="space-y-2">
-        {/* Header with proper visual hierarchy */}
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <h3 className="typography-small font-bold mb-1 text-white">Meteo Locale</h3>
-            <div className="typography-caption flex items-center gap-1 text-blue-100">
-              {userLocation ? (
-                <Crosshair className="h-3 w-3 flex-shrink-0" />
-              ) : (
-                <MapPin className="h-3 w-3 flex-shrink-0" />
-              )}
-              <span className="font-medium truncate">{weather.location}</span>
-            </div>
+    <Card className={`p-4 rounded-3xl border-0 shadow-xl bg-gradient-to-br ${getStandardGradient()} text-white`}>
+      {/* Header with proper mobile layout */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex-1 min-w-0">
+          <h3 className="typography-small font-bold text-white">Meteo Locale</h3>
+          <div className="typography-caption flex items-center gap-1 text-blue-100 mt-1">
+            {userLocation ? (
+              <Crosshair className="h-3 w-3 flex-shrink-0" />
+            ) : (
+              <MapPin className="h-3 w-3 flex-shrink-0" />
+            )}
+            <span className="font-medium truncate">{weather.location}</span>
           </div>
-          <AnimatedWeatherIcon 
-            condition={weather.condition} 
-            iconCode={weather.icon}
-            className="h-8 w-8 flex-shrink-0"
-            isNight={isNight()}
-          />
         </div>
-        
-        {/* Temperature display with proper hierarchy */}
-        <div className="text-center py-2">
-          <div className="typography-h2 text-3xl tracking-tight text-white">{weather.temperature}°C</div>
-          <div className="typography-caption text-blue-100 capitalize mt-1 font-medium">{weather.description}</div>
-        </div>
+        <AnimatedWeatherIcon 
+          condition={weather.condition} 
+          iconCode={weather.icon}
+          className="h-8 w-8 flex-shrink-0 ml-2"
+          isNight={isNight()}
+        />
+      </div>
+      
+      {/* Temperature and description */}
+      <div className="text-center mb-3">
+        <div className="text-2xl font-bold text-white mb-1">{weather.temperature}°C</div>
+        <div className="typography-caption text-blue-100 capitalize font-medium">{weather.description}</div>
+      </div>
 
-        {/* Weather details grid */}
-        <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/20">
-          <div className="flex items-center gap-2">
-            <Droplets className="h-3 w-3 text-blue-200 flex-shrink-0" />
-            <div>
-              <div className="typography-caption text-blue-200 font-medium">Umidità</div>
-              <div className="typography-caption font-bold text-white">{weather.humidity}%</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Wind className="h-3 w-3 text-blue-200 flex-shrink-0" />
-            <div>
-              <div className="typography-caption text-blue-200 font-medium">Vento</div>
-              <div className="typography-caption font-bold text-white">{weather.wind} km/h</div>
-            </div>
+      {/* Compact weather details */}
+      <div className="flex items-center justify-between gap-4 py-2 border-t border-white/20">
+        <div className="flex items-center gap-2 flex-1">
+          <Droplets className="h-3 w-3 text-blue-200 flex-shrink-0" />
+          <div className="min-w-0">
+            <div className="typography-caption text-blue-200">Umidità</div>
+            <div className="typography-caption font-bold text-white">{weather.humidity}%</div>
           </div>
         </div>
-
-        {/* Local Time Display */}
-        <div className="flex items-center justify-center gap-2 py-2 border-t border-white/20 mt-2">
-          <Clock className="h-3 w-3 text-blue-200" />
-          <div className="text-center">
-            <div className="typography-caption text-blue-200 font-medium">Ora locale</div>
-            <div className="typography-small font-bold text-white">{currentTime}</div>
+        <div className="flex items-center gap-2 flex-1">
+          <Wind className="h-3 w-3 text-blue-200 flex-shrink-0" />
+          <div className="min-w-0">
+            <div className="typography-caption text-blue-200">Vento</div>
+            <div className="typography-caption font-bold text-white">{weather.wind} km/h</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 flex-1">
+          <Clock className="h-3 w-3 text-blue-200 flex-shrink-0" />
+          <div className="min-w-0">
+            <div className="typography-caption text-blue-200">Ora</div>
+            <div className="typography-caption font-bold text-white">{currentTime}</div>
           </div>
         </div>
       </div>
 
-      {/* Footer info with consistent styling */}
-      <div className="flex items-start gap-2 text-xs text-blue-200 pt-2 border-t border-white/20 mt-2">
-        <Info className="h-3 w-3 flex-shrink-0 mt-0.5" />
-        <span className="typography-caption leading-tight">
-          {error ? `Usando dati fallback - ${error}` : 
-           userLocation ? 'Meteo preciso dalla tua posizione GPS' : 'Meteo per la zona selezionata'}
+      {/* Compact footer info */}
+      <div className="flex items-center gap-2 pt-2 border-t border-white/20 mt-2">
+        <Info className="h-3 w-3 flex-shrink-0 text-blue-200" />
+        <span className="typography-caption text-blue-200 leading-tight">
+          {error ? 'Dati fallback' : 
+           userLocation ? 'GPS attivo' : 'Zona selezionata'}
         </span>
       </div>
     </Card>
