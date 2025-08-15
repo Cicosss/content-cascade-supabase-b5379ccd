@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 
   return (
       <header className={cn(
-        "header-fixed relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 backdrop-blur-sm overflow-hidden",
+        "header-fixed relative bg-transparent backdrop-blur-sm overflow-hidden",
         "transition-all duration-300 ease-in-out",
         className
       )}>
