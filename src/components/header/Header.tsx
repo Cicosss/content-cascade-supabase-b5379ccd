@@ -19,23 +19,17 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
   const { user } = useAuth();
   const location = useLocation();
   
-  // Determina lo stile della navbar in base alla pagina
-  const isHomepage = location.pathname === '/';
+  // Applica il gradiente solo nella dashboard
   const isDashboard = location.pathname === '/dashboard';
-  
-  // Stile navbar adattivo: trasparente solo sulla homepage, altrimenti sfondo visibile
-  const getHeaderBg = () => {
-    if (className?.includes('bg-')) return ''; // Se className ha già un background, non override
-    if (isHomepage) return 'bg-transparent backdrop-blur-sm';
-    if (isDashboard) return 'bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900';
-    return 'bg-slate-900/95 backdrop-blur-sm';
-  };
+  const headerBg = isDashboard 
+    ? "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900" 
+    : "bg-slate-900/95 backdrop-blur-sm";
 
   return (
       <header className={cn(
         "header-fixed relative border-b border-slate-800/50 overflow-hidden",
         "transition-all duration-300 ease-in-out",
-        getHeaderBg(),
+        headerBg,
         className
       )}>
       {/* Geometric Background Elements */}
