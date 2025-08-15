@@ -22,9 +22,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   if (shouldShowSidebar) {
     return (
       <LocationProvider>
-        <MenuStateProvider>
-          <SidebarProvider defaultOpen={false}>
-            <HeaderProvider>
+        <HeaderProvider>
+          <MenuStateProvider>
+            <SidebarProvider defaultOpen={false}>
                 <div className="min-h-screen flex flex-col w-full">
                   {/* Header fisso con z-index garantito */}
                   <Header />
@@ -41,9 +41,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </div>
                   <MobileTouchNav />
                 </div>
-              </HeaderProvider>
-          </SidebarProvider>
-        </MenuStateProvider>
+            </SidebarProvider>
+          </MenuStateProvider>
+        </HeaderProvider>
       </LocationProvider>
     );
   }
