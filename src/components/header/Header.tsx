@@ -19,18 +19,14 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
   const { user } = useAuth();
   const location = useLocation();
   
-  // Applica il gradiente solo nella dashboard
-  const isDashboard = location.pathname === '/dashboard';
-  const headerBg = isDashboard 
-    ? "bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900" 
-    : "bg-slate-900/95 backdrop-blur-sm";
+  // Stile uniforme trasparente per tutte le pagine, con possibilità di override tramite className
+  const headerBg = "bg-transparent backdrop-blur-sm";
 
   return (
       <header className={cn(
         "header-fixed relative border-b border-slate-800/50 overflow-hidden",
         "transition-all duration-300 ease-in-out",
-        headerBg,
-        className
+        className || headerBg
       )}>
       {/* Geometric Background Elements */}
       <div className="absolute inset-0 opacity-5">

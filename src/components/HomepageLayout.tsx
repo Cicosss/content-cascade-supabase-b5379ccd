@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 import { HeaderProvider } from '@/contexts/HeaderContext';
+import { Header } from './header/Header';
 import { MobileTouchNav } from './navigation/MobileTouchNav';
 import Footer from './Footer';
 
@@ -12,15 +13,16 @@ interface HomepageLayoutProps {
 const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   
-  // Per la homepage, non mostriamo mai l'header fisso - è integrato nella hero
+  // Ora anche la homepage ha l'header fisso uniformato
   return (
     <LocationProvider>
       <HeaderProvider>
         <div className="min-h-screen bg-slate-50 flex flex-col">
-          {/* Nessun header fisso - navigazione integrata nella hero */}
+          {/* Header fisso uniforme con stile trasparente */}
+          <Header className="bg-transparent backdrop-blur-sm" />
           
-          {/* Main content senza padding per header */}
-          <main className="flex-1 relative pb-20 md:pb-0">
+          {/* Main content con padding per header fisso responsive */}
+          <main className="flex-1 relative pb-20 md:pb-0 pt-16 md:pt-20 lg:pt-24">
             {children}
           </main>
           <Footer />

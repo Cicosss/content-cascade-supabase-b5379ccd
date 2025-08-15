@@ -3,7 +3,6 @@ import React from 'react';
 import HeroBackground from './hero/HeroBackground';
 import HeroBrandSection from './hero/HeroBrandSection';
 import HeroFeatures from './hero/HeroFeatures';
-import { Header } from './header/Header';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const InteractiveHeroSection = () => {
@@ -14,10 +13,7 @@ const InteractiveHeroSection = () => {
       {/* Dynamic Background with Video/Image */}
       <HeroBackground isHovered={false} />
 
-      {/* Overlay Navigation - Floating over video */}
-      <Header className="bg-transparent backdrop-blur-sm" />
-
-      {/* Content Overlay - Restructured */}
+      {/* Content Overlay - Restructured senza header integrato */}
       <div className="relative z-10 h-full flex flex-col text-white">
         {/* Brand Section - Left aligned and vertically centered (solo desktop) */}
         <div className="flex-1 flex items-center justify-start">
