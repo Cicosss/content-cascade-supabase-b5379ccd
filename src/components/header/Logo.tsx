@@ -17,7 +17,7 @@ export const Logo: React.FC = () => {
       <img 
         src={LOGO_CONFIG.src} 
         alt={LOGO_CONFIG.alt} 
-        className="h-36 w-36 object-contain transition-all duration-300 group-hover:scale-110 drop-shadow-lg hover:drop-shadow-2xl"
+        className="h-54 w-54 object-contain transition-all duration-300 group-hover:scale-110 drop-shadow-lg hover:drop-shadow-2xl mt-2"
       />
     </Link>
   );
