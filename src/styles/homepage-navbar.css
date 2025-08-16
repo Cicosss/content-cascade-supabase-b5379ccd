@@ -31,40 +31,156 @@
   overflow: hidden;
 }
 
-/* Effetti hover semplici e puliti */
-.homepage-navbar a,
-.homepage-navbar button {
-  text-shadow: var(--homepage-text-shadow);
-  transition: all 0.3s ease;
+/* === STILI PREMIUM HOMEPAGE NAVBAR === */
+
+/* 1. Link di Navigazione Principali - Sottolineatura Animata */
+.homepage-navbar .group .typography-small,
+.homepage-navbar [role="menuitem"],
+.homepage-navbar button[class*="typography-small"] {
   position: relative;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
-.homepage-navbar a:hover,
-.homepage-navbar button:hover {
+.homepage-navbar .group .typography-small::after,
+.homepage-navbar [role="menuitem"]::after,
+.homepage-navbar button[class*="typography-small"]::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 4px;
+  left: 50%;
+  bottom: -6px;
+  background: linear-gradient(90deg, #FBBF24, #F59E0B, #FBBF24);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+}
+
+.homepage-navbar .group:hover .typography-small::after,
+.homepage-navbar [role="menuitem"]:hover::after,
+.homepage-navbar button[class*="typography-small"]:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.homepage-navbar .group:hover .typography-small,
+.homepage-navbar [role="menuitem"]:hover,
+.homepage-navbar button[class*="typography-small"]:hover {
+  color: rgba(255, 255, 255, 1) !important;
   text-shadow: 
-    0px 1px 3px rgba(0, 0, 0, 0.4);
+    0px 1px 3px rgba(0, 0, 0, 0.4),
+    0px 0px 12px rgba(251, 191, 36, 0.3);
   transform: translateY(-1px);
-  color: rgba(255, 255, 255, 1);
 }
 
-/* Logo con effetto semplice */
-.homepage-logo-enhanced {
-  transition: all 0.3s ease;
+/* 2. Pulsante "Accedi" - Effetto Riempimento Fluido */
+.homepage-navbar a[href="/auth"]:first-child,
+.homepage-navbar button[class*="outline"] {
+  position: relative;
+  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  backdrop-filter: blur(8px);
 }
 
+.homepage-navbar a[href="/auth"]:first-child::before,
+.homepage-navbar button[class*="outline"]::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.homepage-navbar a[href="/auth"]:first-child:hover::before,
+.homepage-navbar button[class*="outline"]:hover::before {
+  top: 0;
+}
+
+.homepage-navbar a[href="/auth"]:first-child:hover,
+.homepage-navbar button[class*="outline"]:hover {
+  color: hsl(var(--primary)) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  text-shadow: none;
+}
+
+/* 3. Pulsante "Registrati" - Effetto Glow e Movimento */
+.homepage-navbar a[href="/auth"]:last-child,
+.homepage-navbar button[class*="bg-gradient"] {
+  background: linear-gradient(135deg, #FBBF24, #F59E0B, #EAB308) !important;
+  color: hsl(var(--primary)) !important;
+  border: none !important;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 15px rgba(251, 191, 36, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.homepage-navbar a[href="/auth"]:last-child::before,
+.homepage-navbar button[class*="bg-gradient"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.homepage-navbar a[href="/auth"]:last-child:hover,
+.homepage-navbar button[class*="bg-gradient"]:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 12px 30px rgba(251, 191, 36, 0.6),
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    0 0 25px rgba(251, 191, 36, 0.4);
+  background: linear-gradient(135deg, #FCD34D, #FBBF24, #F59E0B) !important;
+}
+
+.homepage-navbar a[href="/auth"]:last-child:hover::before,
+.homepage-navbar button[class*="bg-gradient"]:hover::before {
+  left: 100%;
+}
+
+/* 4. Logo con Effetto Premium */
 .homepage-logo-enhanced:hover {
-  transform: translateY(-1px) scale(1.02);
+  transform: translateY(-2px) scale(1.04);
+  filter: drop-shadow(0 8px 20px rgba(255, 255, 255, 0.4));
 }
 
-/* Navigazione con sfondo leggero */
-.homepage-nav-enhanced {
-  transition: all 0.3s ease;
-}
-
+/* 5. Container Navigazione Migliorato */
 .homepage-nav-enhanced:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0.75rem;
+  backdrop-filter: blur(12px);
 }
 
 /* Mobile menu z-index override for homepage */
