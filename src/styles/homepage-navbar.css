@@ -21,7 +21,7 @@
 
 /* Mobile menu z-index override for homepage */
 .homepage-mobile-sheet {
-  z-index: 40 !important;
+  z-index: 9998 !important;
 }
 
 /* Smooth transitions */
@@ -38,7 +38,7 @@
 
 /* Desktop navigation menu dropdown z-index */
 .homepage-navbar .navigation-menu-content {
-  z-index: 45 !important;
+  z-index: 9999 !important;
 }
 
 /* Logo hover animation specific to homepage */
