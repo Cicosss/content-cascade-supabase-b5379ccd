@@ -1,36 +1,31 @@
 /* Homepage Navbar Specific Styles */
 .homepage-navbar {
-  position: relative;
-  z-index: 50;
+  /* Modern frosted glass effect for improved readability */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  
+  /* Enhanced text contrast - reduced shadow dependency */
+  --homepage-text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Enhanced glass morphism container with pseudo-element */
+.homepage-navbar * {
+  text-shadow: var(--homepage-text-shadow);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Enhanced glass morphism container */
 .homepage-navbar-glass {
-  position: relative;
-  background: rgba(255, 255, 255, 0.12);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-}
-
-.homepage-navbar-glass::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-radius: inherit;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.homepage-navbar-glass > * {
-  position: relative;
-  z-index: 1;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Hover states for homepage navbar */

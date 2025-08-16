@@ -23,9 +23,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const videoId = getYouTubeVideoId(videoUrl);
   
-  // URL embed semplice
+  // URL embed ottimizzato per effetto cinema - parametri aggiuntivi per rimuovere branding
   const embedUrl = videoId ? 
-    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` 
+    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&branding=0&cc_lang_pref=0&disablekb=1&start=1&origin=${encodeURIComponent(window.location.origin)}` 
     : null;
 
   const handleIframeLoad = () => {
@@ -61,10 +61,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '177.77vh',
-                height: '100vh',
-                minWidth: '100vw',
-                minHeight: '56.25vw',
+                width: isMobile ? '300vw' : '300vw',
+                height: isMobile ? '300vh' : '300vh',
+                minWidth: isMobile ? '300vw' : undefined,
+                minHeight: isMobile ? '300vh' : undefined,
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'none'
               }}
@@ -72,11 +72,19 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             />
           </div>
           
-          {/* Loading state overlay */}
+          {/* Overlay per nascondere eventuali elementi YouTube rimanenti */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Overlay corners per nascondere loghi o controlli YouTube */}
+            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-10" />
+            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-10" />
+            <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-10" />
+          </div>
+          
+          {/* Loading state overlay cinematografico */}
           {!isVideoReady && !videoError && (
             <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
               <div className="text-white text-lg font-light animate-pulse">
-                Caricamento...
+                Caricamento esperienza cinematografica...
               </div>
             </div>
           )}

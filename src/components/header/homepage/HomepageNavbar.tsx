@@ -12,7 +12,7 @@ export const HomepageNavbar: React.FC = React.memo(() => {
   return (
     <>
       {/* Navigation Bar */}
-      <div className="homepage-navbar homepage-navbar-glass flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 w-full isolate overflow-hidden relative transition-all duration-300 ease-in-out">
+      <div className="homepage-navbar homepage-navbar-glass flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-full mx-auto relative z-10 transition-all duration-300 ease-in-out">
         {/* Logo */}
         <div className="mr-12 flex group">
           <div 
