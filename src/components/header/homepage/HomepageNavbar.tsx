@@ -24,18 +24,12 @@ export const HomepageNavbar: React.FC = React.memo(() => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex flex-1 items-center justify-between gap-8">
+        <div className="hidden md:flex flex-1 items-center justify-end gap-8">
           <div 
-            className="w-full flex-1 md:w-auto md:flex-none" 
+            className="flex items-center space-x-8" 
             style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)' }}
           >
             <Navigation />
-          </div>
-
-          <div 
-            className="flex items-center space-x-4" 
-            style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)' }}
-          >
             <UserActions />
           </div>
         </div>
