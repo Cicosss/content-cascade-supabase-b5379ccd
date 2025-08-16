@@ -1,32 +1,31 @@
 /* Homepage Navbar Specific Styles */
+.homepage-navbar {
+  /* Modern frosted glass effect for improved readability */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  
+  /* Enhanced text contrast - reduced shadow dependency */
+  --homepage-text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.homepage-navbar * {
+  text-shadow: var(--homepage-text-shadow);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Enhanced glass morphism container */
 .homepage-navbar-glass {
-  position: relative;
-}
-
-.homepage-navbar-glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.30);
-  backdrop-filter: blur(18px) saturate(170%);
-  -webkit-backdrop-filter: blur(18px) saturate(170%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.homepage-navbar-glass > * {
-  position: relative;
-  z-index: 10;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-/* Fallback for browsers without backdrop-filter support */
-@supports not (backdrop-filter: blur(1px)) {
-  .homepage-navbar-glass::before {
-    background: rgba(255, 255, 255, 0.32);
-  }
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Hover states for homepage navbar */
