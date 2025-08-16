@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, MapPin, Calendar, Settings } from 'lucide-react';
-import { Z_INDEX } from '@/config/zIndex';
 
 interface NavItem {
   id: string;
@@ -24,11 +23,9 @@ interface MobileTouchNavProps {
   isVisible?: boolean;
 }
 
-const MobileTouchNav: React.FC<MobileTouchNavProps> = ({ 
-  className, 
-  onMenuOpen, 
-  isVisible = true 
-}) => {
+const MobileTouchNav: React.FC<MobileTouchNavProps> = (props) => {
+  const { className, onMenuOpen } = props;
+  const isVisible = props.isVisible ?? true;
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedItem, setSelectedItem] = useState('home');
