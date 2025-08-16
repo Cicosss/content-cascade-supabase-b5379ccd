@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 
 import { MobileTouchNav } from './navigation/MobileTouchNav';
+import MainNavbar from './navigation/MainNavbar';
 
 import Footer from './Footer';
 
@@ -16,6 +17,7 @@ const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   return (
     <LocationProvider>
       <div className="min-h-screen bg-slate-50 flex flex-col">
+        <MainNavbar />
         {/* Main content starts from top of screen */}
         <main className="flex-1 relative pb-20 md:pb-0">
           {children}
