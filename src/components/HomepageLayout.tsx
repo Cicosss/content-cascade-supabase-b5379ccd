@@ -12,7 +12,7 @@ interface HomepageLayoutProps {
 }
 
 const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   
   return (

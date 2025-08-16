@@ -23,9 +23,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const videoId = getYouTubeVideoId(videoUrl);
   
-  // URL embed ottimizzato per effetto cinema - parametri aggiuntivi per rimuovere branding
+  // URL embed ottimizzato per autoplay in loop
   const embedUrl = videoId ? 
-    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&fs=0&cc_load_policy=0&iv_load_policy=3&autohide=0&enablejsapi=1&branding=0&cc_lang_pref=0&disablekb=1&start=1&origin=${encodeURIComponent(window.location.origin)}` 
+    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` 
     : null;
 
   const handleIframeLoad = () => {
@@ -61,10 +61,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: isMobile ? '300vw' : '300vw',
-                height: isMobile ? '300vh' : '300vh',
-                minWidth: isMobile ? '300vw' : undefined,
-                minHeight: isMobile ? '300vh' : undefined,
+                width: '300vw',
+                height: '300vh',
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'none'
               }}
@@ -72,12 +70,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             />
           </div>
           
-          {/* Overlay per nascondere eventuali elementi YouTube rimanenti */}
+          {/* Overlay per nascondere elementi YouTube residui */}
           <div className="absolute inset-0 pointer-events-none">
-            {/* Overlay corners per nascondere loghi o controlli YouTube - z-index più basso della navbar */}
             <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
-            <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-[5]" />
           </div>
           
           {/* Loading state overlay cinematografico */}
