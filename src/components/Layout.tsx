@@ -3,9 +3,7 @@ import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { HeaderProvider } from '@/contexts/HeaderContext';
 import { MenuStateProvider } from '@/contexts/MenuStateContext';
-import { Header } from '@/components/header/Header';
 import { MobileTouchNav } from './navigation/MobileTouchNav';
 import AppSidebar from './AppSidebar';
 import Footer from './Footer';
@@ -22,47 +20,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   if (shouldShowSidebar) {
     return (
       <LocationProvider>
-        <HeaderProvider>
-          <MenuStateProvider>
-            <SidebarProvider defaultOpen={false}>
-                <div className="min-h-screen flex flex-col w-full">
-                  {/* Header fisso con z-index garantito */}
-                  <Header />
-                  
-                  {/* Layout principale con sidebar - con padding per header responsive */}
-                  <div className="flex flex-1 w-full pt-16 md:pt-20 lg:pt-24">
-              <AppSidebar />
-                    <SidebarInset className="flex-1 flex flex-col">
-                      <main className="flex-1 relative pb-20 md:pb-0">
-                        {children}
-                      </main>
-                      <Footer />
-                    </SidebarInset>
-                  </div>
-                  <MobileTouchNav />
+        <MenuStateProvider>
+          <SidebarProvider defaultOpen={false}>
+              <div className="min-h-screen flex flex-col w-full">
+                {/* Layout principale con sidebar */}
+                <div className="flex flex-1 w-full">
+            <AppSidebar />
+                  <SidebarInset className="flex-1 flex flex-col">
+                    <main className="flex-1 relative pb-20 md:pb-0">
+                      {children}
+                    </main>
+                    <Footer />
+                  </SidebarInset>
                 </div>
-            </SidebarProvider>
-          </MenuStateProvider>
-        </HeaderProvider>
+                <MobileTouchNav />
+              </div>
+          </SidebarProvider>
+        </MenuStateProvider>
       </LocationProvider>
     );
   }
 
   return (
     <LocationProvider>
-      <HeaderProvider>
-        <div className="min-h-screen bg-slate-50 flex flex-col">
-          {/* Header fisso con z-index garantito */}
-          <Header />
-          
-          {/* Main content con padding per header fisso responsive */}
-          <main className="flex-1 relative pb-20 md:pb-0 pt-16 md:pt-20 lg:pt-24">
-            {children}
-          </main>
-          <Footer />
-          <MobileTouchNav />
-        </div>
-      </HeaderProvider>
+      <div className="min-h-screen bg-slate-50 flex flex-col">
+        {/* Main content starts from top of screen */}
+        <main className="flex-1 relative pb-20 md:pb-0">
+          {children}
+        </main>
+        <Footer />
+        <MobileTouchNav />
+      </div>
     </LocationProvider>
   );
 };

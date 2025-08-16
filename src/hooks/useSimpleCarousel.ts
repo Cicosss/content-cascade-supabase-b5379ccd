@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { NAVBAR_CATEGORY_MAPPING } from '@/config/categoryMapping';
+import { FILTER_TO_CATEGORY_MAPPING } from '@/config/categoryMapping';
 import { CarouselError } from '@/types/carousel';
 
 export type SectionType = 'Gusto & Sapori' | 'Eventi' | 'Natura & Avventura' | 'Divertimento & Famiglia' | 'Cultura & Territorio';
@@ -42,10 +42,10 @@ export function useSimpleCarousel(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<CarouselError | null>(null);
 
-  // Get categories for this section - use filters if provided, otherwise default mapping
+  // Get categories for this section - use filters if provided, otherwise fallback to all categories
   const categories = categoryFilters.length > 0 && !categoryFilters.includes('tutte') 
     ? categoryFilters 
-    : NAVBAR_CATEGORY_MAPPING[section] || [];
+    : [];
 
   // Determine if we need events or POIs
   const isEventSection = section === 'Eventi';

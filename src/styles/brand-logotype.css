@@ -53,38 +53,6 @@
     margin-top: 0;
   }
   
-  /* Versione Navbar - Specifica dal design reference */
-  .brand-logotype.navbar-version {
-    padding: 1rem;
-  }
-  
-  .brand-logotype.navbar-version .brand-name-serif {
-    font-size: 1.8rem;
-    margin-bottom: 0.2rem;
-    background: linear-gradient(135deg, #FFFFFF 0%, #f8f9fa 50%, #e9ecef 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 0.08em;
-    text-shadow: 
-        0 3px 6px rgba(0, 0, 0, 0.4),
-        0 6px 12px rgba(0, 0, 0, 0.3),
-        0 12px 24px rgba(0, 0, 0, 0.2);
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
-  }
-  
-  .brand-logotype.navbar-version .brand-payoff-sans {
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.4),
-        0 4px 8px rgba(0, 0, 0, 0.3);
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.08));
-  }
 
   /* Varianti dimensionali */
   .brand-logotype.small .brand-name-serif {
@@ -138,13 +106,5 @@
       font-size: clamp(0.45rem, 1.5vw, 0.6rem);
     }
     
-    /* Responsività navbar version */
-    .brand-logotype.navbar-version .brand-name-serif {
-      font-size: 1.6rem;
-    }
-    
-    .brand-logotype.navbar-version .brand-payoff-sans {
-      font-size: 0.55rem;
-    }
   }
 }

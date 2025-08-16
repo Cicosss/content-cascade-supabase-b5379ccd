@@ -29,14 +29,6 @@ export const OFFICIAL_CATEGORIES = [
   'Vita Notturna'
 ] as const;
 
-// Mapping navbar → categorie per pre-filtri intelligenti (basato sui dati reali del DB)
-export const NAVBAR_CATEGORY_MAPPING: Record<string, string[]> = {
-  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Street Food', 'Mercati Locali'],
-  'Eventi': ['Eventi'],
-  'Natura & Avventura': ['Spiagge', 'Parchi Naturali e Riserve', 'Sport'],
-  'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Sport'],
-  'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi'] // Categorie reali disponibili
-};
 
 // UNIFIED FILTER MAPPING - Replaces poiCategoryMapping.ts logic
 export const FILTER_TO_CATEGORY_MAPPING: Record<string, string[]> = {
@@ -85,9 +77,6 @@ export const getAllCategories = (): string[] => {
   return [...OFFICIAL_CATEGORIES];
 };
 
-export const getCategoriesForNavbar = (navbarItem: string): string[] => {
-  return [...(NAVBAR_CATEGORY_MAPPING[navbarItem as keyof typeof NAVBAR_CATEGORY_MAPPING] || [])];
-};
 
 // UNIFIED FILTER PROCESSING - Replaces poiCategoryMapping.ts getCategoriesForFilters
 export const getCategoriesForFilters = (activityTypes: string[]): string[] => {
