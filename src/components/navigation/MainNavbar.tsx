@@ -191,8 +191,9 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                   <Link to="/auth">Accedi</Link>
                 </Button>
                 <Button
+                  variant="ghost"
                   size="sm"
-                  className="bg-primary hover:bg-primary/90"
+                  className="text-white hover:bg-white/10"
                   asChild
                 >
                   <Link to="/auth">Registrati</Link>
