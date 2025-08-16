@@ -13,6 +13,9 @@ export default {
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
 	],
+	safelist: [
+		'z-[40]', 'z-[45]', 'z-[50]', 'z-[51]', 'z-[52]', 'z-[53]', 'z-[60]', 'z-[70]', 'z-[100]'
+	],
 	prefix: "",
 	theme: {
 		container: {

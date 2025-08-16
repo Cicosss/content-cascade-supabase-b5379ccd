@@ -25,7 +25,7 @@ const ScrollToTop: React.FC<ScrollToTopProps> = ({
       onClick={scrollToTop}
       size={isMobile ? "lg" : "default"}
       className={cn(
-        `fixed z-[${Z_INDEX.scrollToTop}] rounded-full shadow-lg`,
+        "fixed rounded-full shadow-lg",
         "bg-primary text-primary-foreground",
         "hover:bg-primary/90 active:scale-95",
         "transition-all duration-300",
@@ -35,6 +35,7 @@ const ScrollToTop: React.FC<ScrollToTopProps> = ({
         "animate-fade-in",
         className
       )}
+      style={{ zIndex: Z_INDEX.scrollToTop }}
       aria-label="Torna all'inizio"
     >
       <ArrowUp className={isMobile ? "h-6 w-6" : "h-5 w-5"} />

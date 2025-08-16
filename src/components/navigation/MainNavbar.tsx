@@ -49,12 +49,15 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
   ];
 
   return (
-    <nav className={cn(
-      `fixed top-0 left-0 right-0 z-[${Z_INDEX.navbar}] transition-all duration-300`,
-      isScrolled 
-        ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
-        : "bg-transparent"
-    )}>
+    <nav 
+      className={cn(
+        "fixed top-0 left-0 right-0 transition-all duration-300",
+        isScrolled 
+          ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
+          : "bg-transparent"
+      )}
+      style={{ zIndex: Z_INDEX.navbar }}
+    >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo Section */}
@@ -210,7 +213,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className={`w-[300px] sm:w-[400px] z-[${Z_INDEX.sheet}]`}>
+              <SheetContent 
+                side="right" 
+                className="w-[300px] sm:w-[400px]"
+                style={{ zIndex: Z_INDEX.sheet }}
+              >
                 <div className="flex flex-col space-y-4 mt-8">
                   {/* Scopri Section */}
                   <div className="space-y-3">
