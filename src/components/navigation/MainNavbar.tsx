@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, Globe, Search, Menu, User, LogOut, Settings } from 'lucide-react';
+import { Globe, Search, Menu, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
-import { heroCategories } from '@/components/hero/heroCategories';
 import { BrandLogotype } from '@/components/brand/BrandLogotype';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -72,38 +64,6 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-            {/* Scopri Dropdown */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-white bg-transparent hover:bg-white/10 data-[active]:bg-white/10 data-[state=open]:bg-white/10">
-                    Scopri
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-[400px] p-6">
-                      <div className="grid gap-4">
-                        {heroCategories.map((category) => (
-                          <Link
-                            key={category.id}
-                            to={category.route}
-                            className="group block p-3 rounded-lg hover:bg-accent transition-colors"
-                          >
-                            <div className="font-medium text-foreground group-hover:text-accent-foreground">
-                              {category.title}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              {category.subtitle}
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
             {/* Direct Navigation Links */}
             {navigationLinks.map((link) => (
               <Link
@@ -220,23 +180,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 style={{ zIndex: Z_INDEX.sheet }}
               >
                 <div className="flex flex-col space-y-4 mt-8">
-                  {/* Scopri Section */}
                   <div className="space-y-3">
-                    <h3 className="font-medium text-foreground">Scopri</h3>
-                    {heroCategories.map((category) => (
-                      <Link
-                        key={category.id}
-                        to={category.route}
-                        className="block p-3 rounded-lg hover:bg-accent transition-colors"
-                        onClick={() => handleMobileMenuChange(false)}
-                      >
-                        <div className="font-medium text-sm">{category.title}</div>
-                        <div className="text-xs text-muted-foreground">{category.subtitle}</div>
-                      </Link>
-                    ))}
-                  </div>
-
-                  <div className="border-t pt-4 space-y-3">
                     {navigationLinks.map((link) => (
                       <Link
                         key={link.href}
