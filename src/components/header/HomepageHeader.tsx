@@ -11,7 +11,7 @@ export const HomepageHeader: React.FC<HomepageHeaderProps> = React.memo(({ class
     <header className={cn(
       "absolute top-0 left-0 right-0 z-30 w-full",
       "transition-all duration-300 ease-in-out",
-      "bg-transparent",
+      "homepage-navbar",
       className
     )}>
       <HomepageNavbar />
