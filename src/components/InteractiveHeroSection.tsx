@@ -11,7 +11,7 @@ const InteractiveHeroSection = () => {
   return (
     <div className="relative w-full h-[100svh] md:h-screen overflow-visible">
       {/* Dynamic Background with Video/Image */}
-      <HeroBackground isHovered={false} />
+      <HeroBackground />
 
       {/* Content Overlay - Restructured */}
       <div className="relative z-10 h-full flex flex-col text-white">

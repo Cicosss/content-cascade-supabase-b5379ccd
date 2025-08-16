@@ -23,6 +23,7 @@ const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
           {children}
         </main>
         <Footer />
+        {/* Only show MobileTouchNav when MainNavbar mobile menu is closed */}
         <MobileTouchNav />
       </div>
     </LocationProvider>

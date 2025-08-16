@@ -2,14 +2,9 @@
 import React from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoBackground from './VideoBackground';
-import DynamicOverlay from './DynamicOverlay';
 import { HERO_VIDEO_URL, HERO_MOBILE_IMAGE } from './heroCategories';
 
-interface HeroBackgroundProps {
-  isHovered: boolean;
-}
-
-const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered }) => {
+const HeroBackground: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
@@ -21,8 +16,8 @@ const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered }) => {
         isMobile={isMobile}
       />
       
-      {/* Dynamic Overlay for Text Readability */}
-      <DynamicOverlay isHovered={isHovered} />
+      {/* Static overlay for text readability - removed dynamic hover logic */}
+      <div className="absolute inset-0 bg-black/20" />
     </div>
   );
 };

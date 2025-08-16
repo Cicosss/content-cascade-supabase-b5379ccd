@@ -74,10 +74,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           
           {/* Overlay per nascondere eventuali elementi YouTube rimanenti */}
           <div className="absolute inset-0 pointer-events-none">
-            {/* Overlay corners per nascondere loghi o controlli YouTube */}
-            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-10" />
-            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-10" />
-            <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-10" />
+            {/* Overlay corners per nascondere loghi o controlli YouTube - z-index più basso della navbar */}
+            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
+            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
+            <div className="absolute bottom-0 left-0 w-32 h-20 bg-transparent z-[5]" />
           </div>
           
           {/* Loading state overlay cinematografico */}
