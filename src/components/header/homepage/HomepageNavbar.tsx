@@ -12,12 +12,11 @@ export const HomepageNavbar: React.FC = React.memo(() => {
   return (
     <>
       {/* Navigation Bar */}
-      <div className="homepage-navbar homepage-navbar-glass flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-full mx-auto relative z-10 transition-all duration-300 ease-in-out">
+      <div className="homepage-navbar homepage-navbar-glass flex h-16 md:h-20 lg:h-24 items-center px-4 md:px-6 lg:px-10 xl:px-16 max-w-full mx-auto relative z-10 transition-all duration-300 ease-in-out backdrop-blur-xl bg-white/15">
         {/* Logo */}
         <div className="mr-12 flex group">
           <div 
-            className="transition-transform duration-300 group-hover:scale-105" 
-            style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)' }}
+            className="transition-transform duration-300 group-hover:scale-105 homepage-logo-enhanced" 
           >
             <Logo />
           </div>
@@ -26,8 +25,7 @@ export const HomepageNavbar: React.FC = React.memo(() => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex flex-1 items-center justify-end gap-8">
           <div 
-            className="flex items-center space-x-8" 
-            style={{ textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)' }}
+            className="flex items-center space-x-8 homepage-nav-enhanced" 
           >
             <Navigation />
             <UserActions />
