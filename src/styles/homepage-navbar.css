@@ -1,69 +1,209 @@
-/* Homepage Navbar Specific Styles - Enhanced Glassmorphism */
+/* Homepage Navbar - Effetto Acquoso Semitrasparente */
 .homepage-navbar {
-  /* Trasparenza leggermente sfocata con effetto vetro */
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.18),
-    0 4px 16px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  /* Effetto acquoso con gradienti fluidi */
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.12) 25%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      rgba(255, 255, 255, 0.20) 100%
+    );
   
-  /* Testo in rilievo con ombreggiature multiple */
-  --homepage-text-shadow-relief: 
-    0px 1px 0px rgba(255, 255, 255, 0.4),
-    0px 2px 4px rgba(0, 0, 0, 0.6),
-    0px 0px 8px rgba(0, 0, 0, 0.3);
+  /* Blur acquoso avanzato */
+  backdrop-filter: blur(40px) saturate(250%) hue-rotate(10deg);
+  -webkit-backdrop-filter: blur(40px) saturate(250%) hue-rotate(10deg);
+  
+  /* Bordi fluidi */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  
+  /* Ombre multiple per effetto profondità acquosa */
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  
+  /* Animazione fluida di base */
+  animation: water-ripple 8s ease-in-out infinite alternate;
+  
+  /* Testo elegante con effetto cristallino */
+  --homepage-text-shadow-water: 
+    0px 1px 0px rgba(255, 255, 255, 0.6),
+    0px 2px 8px rgba(0, 0, 0, 0.4),
+    0px 4px 16px rgba(0, 0, 0, 0.2),
+    0px 0px 20px rgba(255, 255, 255, 0.3);
 }
 
 .homepage-navbar * {
-  text-shadow: var(--homepage-text-shadow-relief);
+  text-shadow: var(--homepage-text-shadow-water);
   color: rgba(255, 255, 255, 0.98);
   font-weight: 500;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.02em;
 }
 
-/* Enhanced glass morphism container con blur migliorato */
+/* Container acquoso migliorato */
 .homepage-navbar-glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(32px) saturate(220%);
-  -webkit-backdrop-filter: blur(32px) saturate(220%);
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+    linear-gradient(145deg, 
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.18) 100%
+    );
+  
+  backdrop-filter: blur(45px) saturate(280%) brightness(1.1);
+  -webkit-backdrop-filter: blur(45px) saturate(280%) brightness(1.1);
+  
+  /* Bordi ondulati sottili */
   border-radius: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  border-image: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.6) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.6) 75%,
+    transparent 100%
+  ) 1;
+  
+  /* Ombreggiature acquose complesse */
   box-shadow: 
-    0 16px 48px rgba(0, 0, 0, 0.2),
-    0 8px 24px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    0 25px 80px rgba(0, 0, 0, 0.18),
+    0 12px 40px rgba(0, 0, 0, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.12),
+    inset 0 3px 6px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+  
+  /* Movimento fluido del container */
+  animation: water-surface 12s ease-in-out infinite;
   position: relative;
+  overflow: hidden;
 }
 
-/* Effetto rilievo aggiuntivo per i link di navigazione */
+/* Pseudo-elemento per effetto riflesso acquoso */
+.homepage-navbar-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  animation: water-shine 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Keyframes per animazioni acquose */
+@keyframes water-ripple {
+  0%, 100% {
+    filter: hue-rotate(0deg) saturate(250%);
+    backdrop-filter: blur(40px) saturate(250%) hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(5deg) saturate(280%);
+    backdrop-filter: blur(45px) saturate(280%) hue-rotate(5deg);
+  }
+}
+
+@keyframes water-surface {
+  0%, 100% {
+    transform: translateY(0px);
+    box-shadow: 
+      0 25px 80px rgba(0, 0, 0, 0.18),
+      0 12px 40px rgba(0, 0, 0, 0.15),
+      inset 0 3px 6px rgba(255, 255, 255, 0.5);
+  }
+  33% {
+    transform: translateY(-1px);
+    box-shadow: 
+      0 30px 90px rgba(0, 0, 0, 0.2),
+      0 15px 45px rgba(0, 0, 0, 0.17),
+      inset 0 4px 8px rgba(255, 255, 255, 0.6);
+  }
+  66% {
+    transform: translateY(0.5px);
+    box-shadow: 
+      0 20px 70px rgba(0, 0, 0, 0.16),
+      0 10px 35px rgba(0, 0, 0, 0.13),
+      inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  }
+}
+
+@keyframes water-shine {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* Effetti hover acquosi per elementi navbar */
 .homepage-navbar a,
 .homepage-navbar button {
-  text-shadow: 
-    0px 1px 0px rgba(255, 255, 255, 0.5),
-    0px 2px 6px rgba(0, 0, 0, 0.7),
-    0px 0px 12px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: var(--homepage-text-shadow-water);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  z-index: 1;
 }
 
-/* Effetto hover con rilievo aumentato */
 .homepage-navbar a:hover,
 .homepage-navbar button:hover {
   text-shadow: 
-    0px 1px 0px rgba(255, 255, 255, 0.7),
-    0px 3px 8px rgba(0, 0, 0, 0.8),
-    0px 0px 16px rgba(0, 0, 0, 0.5);
-  transform: translateY(-1px);
+    0px 1px 0px rgba(255, 255, 255, 0.8),
+    0px 3px 12px rgba(0, 0, 0, 0.6),
+    0px 6px 24px rgba(0, 0, 0, 0.3),
+    0px 0px 30px rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 8px 16px rgba(255, 255, 255, 0.2));
 }
 
-/* Hover states for homepage navbar */
-.homepage-navbar .nav-item:hover {
-  color: hsl(var(--primary));
-  transform: translateY(-1px);
-  transition: all 0.3s ease-in-out;
+/* Effetto ondulazione al click */
+.homepage-navbar a:active,
+.homepage-navbar button:active {
+  transform: translateY(0px) scale(0.98);
+  transition: all 0.1s ease-out;
+}
+
+/* Logo con effetto acquoso */
+.homepage-logo-enhanced {
+  filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.3));
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.homepage-logo-enhanced:hover {
+  filter: drop-shadow(0 8px 20px rgba(255, 255, 255, 0.4));
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Navigazione con effetti fluidi */
+.homepage-nav-enhanced {
+  backdrop-filter: blur(8px);
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease-out;
+}
+
+.homepage-nav-enhanced:hover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
 /* Mobile menu z-index override for homepage */
@@ -71,28 +211,29 @@
   z-index: 9998 !important;
 }
 
-/* Smooth transitions */
+/* Smooth transitions acquose */
 .homepage-navbar-transition {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Touch targets for mobile */
+/* Touch targets for mobile con effetto acquoso */
 .homepage-touch-target {
   min-height: 44px;
   min-width: 44px;
   touch-action: manipulation;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
-/* Desktop navigation menu dropdown z-index */
+.homepage-touch-target:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Desktop navigation menu dropdown z-index con stile acquoso */
 .homepage-navbar .navigation-menu-content {
   z-index: 9999 !important;
-}
-
-/* Logo hover animation specific to homepage */
-.homepage-logo-hover {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.homepage-logo-hover:hover {
-  transform: scale(1.05);
+  backdrop-filter: blur(30px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
