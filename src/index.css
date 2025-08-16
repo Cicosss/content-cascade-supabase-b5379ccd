@@ -81,3 +81,21 @@ html, body {
     padding-right: 12px !important;
   }
 }
+
+/* Z-Index Management - Global hierarchy to prevent conflicts */
+:root {
+  /* Define z-index CSS custom properties for consistency */
+  --z-background: 0;
+  --z-video-overlay: 5;
+  --z-content: 10;
+  --z-navbar: 40;
+  --z-scroll-to-top: 45;
+  --z-sheet: 50;
+  --z-dialog: 50;
+  --z-dropdown: 51;
+  --z-navigation: 52;
+  --z-mobile-touch-nav: 53;
+  --z-toast: 60;
+  --z-debug: 70;
+  --z-modal: 100;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 
@@ -13,18 +13,19 @@ interface HomepageLayoutProps {
 
 const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   
   return (
     <LocationProvider>
       <div className="min-h-screen bg-slate-50 flex flex-col">
-        <MainNavbar />
-        {/* Main content starts from top of screen */}
-        <main className="flex-1 relative pb-20 md:pb-0">
+        <MainNavbar onMobileMenuChange={setIsMobileNavOpen} />
+        {/* Main content - remove bottom padding when using MainNavbar only */}
+        <main className="flex-1 relative md:pb-0">
           {children}
         </main>
         <Footer />
-        {/* Only show MobileTouchNav when MainNavbar mobile menu is closed */}
-        <MobileTouchNav />
+        {/* Hide MobileTouchNav when MainNavbar mobile menu is open */}
+        <MobileTouchNav isVisible={!isMobileNavOpen} />
       </div>
     </LocationProvider>
   );

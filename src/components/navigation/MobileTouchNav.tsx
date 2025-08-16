@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Heart, Award, LucideIcon } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Home, MapPin, Calendar, Settings } from 'lucide-react';
+import { Z_INDEX } from '@/config/zIndex';
 
 interface NavItem {
   id: string;
   label: string;
-  icon: LucideIcon;
+  icon: React.ElementType;
   path: string;
 }
 
 const navigationItems: NavItem[] = [
+  { id: 'home', label: 'Home', icon: Home, path: '/' },
+  { id: 'dashboard', label: 'Mappa', icon: MapPin, path: '/dashboard' },
   { id: 'oggi', label: 'Oggi', icon: Calendar, path: '/oggi' },
-  { id: 'preferiti', label: 'Preferiti', icon: Heart, path: '/favorites' },
-  { id: 'passaporto', label: 'Passaporto', icon: Award, path: '/my-passport' }
+  { id: 'settings', label: 'Menu', icon: Settings, path: '/profile' }
 ];
 
 interface MobileTouchNavProps {
   className?: string;
   onMenuOpen?: () => void;
+  isVisible?: boolean;
 }
 
-export const MobileTouchNav: React.FC<MobileTouchNavProps> = ({ 
-  className,
-  onMenuOpen 
+const MobileTouchNav: React.FC<MobileTouchNavProps> = ({ 
+  className, 
+  onMenuOpen, 
+  isVisible = true 
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedItem, setSelectedItem] = useState('oggi');
+  const [selectedItem, setSelectedItem] = useState('home');
   const [pressedItem, setPressedItem] = useState<string | null>(null);
-const segmentCount = navigationItems.length;
 
   // Update selected item based on current path
   useEffect(() => {
@@ -55,9 +58,7 @@ const segmentCount = navigationItems.length;
     }
   };
 
-  const getItemIndex = (itemId: string) => {
-    return navigationItems.findIndex(item => item.id === itemId);
-  };
+  if (!isVisible) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[53] flex justify-center pb-4 px-2 md:hidden">
@@ -76,7 +77,7 @@ const segmentCount = navigationItems.length;
             width: 56
           }}
           animate={{
-            left: `${((getItemIndex(selectedItem) + 0.5) * 100) / segmentCount}%`
+            left: `${((navigationItems.findIndex(item => item.id === selectedItem) + 0.5) * 100) / navigationItems.length}%`
           }}
           transition={{
             type: "spring",
@@ -159,4 +160,4 @@ const segmentCount = navigationItems.length;
   );
 };
 
-export default MobileTouchNav;
+export { MobileTouchNav };

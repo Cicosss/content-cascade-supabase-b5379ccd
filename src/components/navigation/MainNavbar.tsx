@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Globe, Search, Menu, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
+import { useScrollState } from '@/hooks/useScrollState';
 import { heroCategories } from '@/components/hero/heroCategories';
 import { BrandLogotype } from '@/components/brand/BrandLogotype';
 import { Button } from '@/components/ui/button';
@@ -22,22 +23,24 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Z_INDEX } from '@/config/zIndex';
 import { cn } from '@/lib/utils';
 
-const MainNavbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+interface MainNavbarProps {
+  onMobileMenuChange?: (isOpen: boolean) => void;
+}
+
+const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useAuth();
   const { handleGuestClick } = useGuestRedirect();
+  const { isScrolled } = useScrollState({ threshold: 50 });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Notify parent component when mobile menu state changes
+  const handleMobileMenuChange = (open: boolean) => {
+    setIsMobileMenuOpen(open);
+    onMobileMenuChange?.(open);
+  };
 
   const navigationLinks = [
     { title: 'Il Mio Passaporto', href: '/my-passport' },
@@ -47,7 +50,7 @@ const MainNavbar: React.FC = () => {
 
   return (
     <nav className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+      `fixed top-0 left-0 right-0 z-[${Z_INDEX.navbar}] transition-all duration-300`,
       isScrolled 
         ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
         : "bg-transparent"
@@ -197,7 +200,7 @@ const MainNavbar: React.FC = () => {
 
           {/* Mobile Menu */}
           <div className="lg:hidden">
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <Sheet open={isMobileMenuOpen} onOpenChange={handleMobileMenuChange}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
@@ -207,7 +210,7 @@ const MainNavbar: React.FC = () => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+              <SheetContent side="right" className={`w-[300px] sm:w-[400px] z-[${Z_INDEX.sheet}]`}>
                 <div className="flex flex-col space-y-4 mt-8">
                   {/* Scopri Section */}
                   <div className="space-y-3">
@@ -217,7 +220,7 @@ const MainNavbar: React.FC = () => {
                         key={category.id}
                         to={category.route}
                         className="block p-3 rounded-lg hover:bg-accent transition-colors"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => handleMobileMenuChange(false)}
                       >
                         <div className="font-medium text-sm">{category.title}</div>
                         <div className="text-xs text-muted-foreground">{category.subtitle}</div>
@@ -235,7 +238,7 @@ const MainNavbar: React.FC = () => {
                           if (handleGuestClick()) {
                             e.preventDefault();
                           } else {
-                            setIsMobileMenuOpen(false);
+                            handleMobileMenuChange(false);
                           }
                         }}
                       >
@@ -262,14 +265,14 @@ const MainNavbar: React.FC = () => {
                       <Link
                         to="/profile"
                         className="block p-3 rounded-lg hover:bg-accent transition-colors text-sm"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                         onClick={() => handleMobileMenuChange(false)}
                       >
                         Profilo
                       </Link>
                       <Link
                         to="/settings"
                         className="block p-3 rounded-lg hover:bg-accent transition-colors text-sm"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                         onClick={() => handleMobileMenuChange(false)}
                       >
                         Impostazioni
                       </Link>
@@ -287,7 +290,7 @@ const MainNavbar: React.FC = () => {
                         className="w-full"
                         asChild
                       >
-                        <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                         <Link to="/auth" onClick={() => handleMobileMenuChange(false)}>
                           Accedi
                         </Link>
                       </Button>
@@ -295,7 +298,7 @@ const MainNavbar: React.FC = () => {
                         className="w-full bg-primary hover:bg-primary/90"
                         asChild
                       >
-                        <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link to="/auth" onClick={() => handleMobileMenuChange(false)}>
                           Registrati
                         </Link>
                       </Button>

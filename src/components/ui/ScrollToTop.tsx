@@ -1,43 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import { ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useMobileOptimization } from '@/hooks/useMobileOptimization';
+import { useScrollState } from '@/hooks/useScrollState';
+import { Z_INDEX } from '@/config/zIndex';
 import { cn } from '@/lib/utils';
 
 interface ScrollToTopProps {
-  threshold?: number;
   className?: string;
 }
 
 const ScrollToTop: React.FC<ScrollToTopProps> = ({ 
-  threshold = 300,
   className 
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useMobileOptimization();
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      setIsVisible(window.pageYOffset > threshold);
-    };
-
-    const handleScroll = () => {
-      requestAnimationFrame(toggleVisibility);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [threshold]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
+  const { isVisible, scrollToTop } = useScrollState({ threshold: 300 });
 
   if (!isVisible) {
     return null;
@@ -48,7 +25,7 @@ const ScrollToTop: React.FC<ScrollToTopProps> = ({
       onClick={scrollToTop}
       size={isMobile ? "lg" : "default"}
       className={cn(
-        "fixed z-50 rounded-full shadow-lg",
+        `fixed z-[${Z_INDEX.scrollToTop}] rounded-full shadow-lg`,
         "bg-primary text-primary-foreground",
         "hover:bg-primary/90 active:scale-95",
         "transition-all duration-300",
