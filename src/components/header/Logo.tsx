@@ -17,9 +17,8 @@ export const Logo: React.FC = () => {
       <BrandLogotype 
         size="small"
         theme="dark"
-        premium={true}
         linkable={false}
-        className="mt-4"
+        className="mt-2"
       />
     </Link>
   );

@@ -1,99 +1,87 @@
-/* Logotipo Testuale di Lusso - Mia Romagna */
+/* Logotipo Testuale di Lusso - Stile Cervia Reference */
 @layer components {
   
   /* Container del logotipo */
   .brand-logotype {
-    @apply inline-flex flex-col items-center text-center transition-all duration-300;
+    @apply inline-flex flex-col items-start text-left transition-all duration-300;
   }
   
   .brand-logotype:hover {
     @apply transform scale-105;
   }
   
-  /* Nome del Brand - "MIA ROMAGNA" */
+  /* Nome del Brand - "MIA ROMAGNA" - Stile Cervia */
   .brand-name-serif {
     font-family: var(--font-serif);
-    font-weight: 700;
+    font-weight: 400;
     text-transform: uppercase;
-    @apply leading-none tracking-tight;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-  }
-  
-  /* Varianti colore per il nome */
-  .brand-name-serif.light {
-    @apply text-slate-900;
-  }
-  
-  .brand-name-serif.dark {
+    @apply leading-none tracking-normal;
+    font-size: clamp(2.5rem, 6vw, 4rem);
     @apply text-white;
+    margin-bottom: 0.25rem;
   }
   
-  .brand-name-serif.brand {
-    color: hsl(var(--primary));
-  }
-  
-  /* Payoff/Slogan */
+  /* Payoff/Slogan - Stile "DISCOVER RIVIERA" */
   .brand-payoff-sans {
     font-family: var(--font-sans);
-    font-weight: 300;
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-size: 0.75rem;
-    @apply mt-1 opacity-90;
-  }
-  
-  /* Varianti colore per il payoff */
-  .brand-payoff-sans.light {
-    @apply text-slate-700;
-  }
-  
-  .brand-payoff-sans.dark {
-    @apply text-white;
-  }
-  
-  .brand-payoff-sans.brand {
-    color: hsl(var(--primary));
+    letter-spacing: 0.3em;
+    font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+    @apply text-white opacity-90;
+    margin-top: 0;
   }
   
   /* Varianti dimensionali */
   .brand-logotype.small .brand-name-serif {
-    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
   }
   
   .brand-logotype.small .brand-payoff-sans {
-    font-size: 0.625rem;
-    letter-spacing: 0.15em;
-  }
-  
-  .brand-logotype.large .brand-name-serif {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-  }
-  
-  .brand-logotype.large .brand-payoff-sans {
-    font-size: 0.875rem;
+    font-size: clamp(0.5rem, 1vw, 0.7rem);
     letter-spacing: 0.25em;
   }
   
-  /* Effetto premium con gradient */
-  .brand-logotype.premium .brand-name-serif {
-    @apply bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900;
-    @apply bg-clip-text text-transparent;
+  .brand-logotype.large .brand-name-serif {
+    font-size: clamp(3rem, 8vw, 5rem);
   }
   
-  .brand-logotype.premium.dark .brand-name-serif {
-    @apply bg-gradient-to-br from-white via-slate-100 to-white;
-    @apply bg-clip-text text-transparent;
+  .brand-logotype.large .brand-payoff-sans {
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    letter-spacing: 0.35em;
+  }
+  
+  /* Varianti colore per diversi sfondi */
+  .brand-logotype.dark .brand-name-serif,
+  .brand-logotype.dark .brand-payoff-sans {
+    @apply text-white;
+  }
+  
+  .brand-logotype.light .brand-name-serif {
+    @apply text-slate-900;
+  }
+  
+  .brand-logotype.light .brand-payoff-sans {
+    @apply text-slate-700 opacity-80;
   }
   
   /* Responsività mobile */
   @media (max-width: 768px) {
     .brand-name-serif {
-      font-size: clamp(1.25rem, 5vw, 2rem);
+      font-size: clamp(2rem, 8vw, 3rem);
     }
     
     .brand-payoff-sans {
-      font-size: 0.625rem;
-      letter-spacing: 0.15em;
+      font-size: clamp(0.6rem, 2vw, 0.8rem);
+      letter-spacing: 0.2em;
+    }
+    
+    .brand-logotype.small .brand-name-serif {
+      font-size: clamp(1.2rem, 6vw, 1.8rem);
+    }
+    
+    .brand-logotype.small .brand-payoff-sans {
+      font-size: clamp(0.45rem, 1.5vw, 0.6rem);
     }
   }
 }

@@ -31,20 +31,12 @@ export const BrandLogotype: React.FC<BrandLogotypeProps> = ({
   const containerClasses = cn(
     'brand-logotype',
     size !== 'medium' && size,
-    premium && 'premium',
-    premium && theme === 'dark' && 'dark',
+    theme,
     className
   );
 
-  const nameClasses = cn(
-    'brand-name-serif',
-    theme
-  );
-
-  const payoffClasses = cn(
-    'brand-payoff-sans',
-    theme
-  );
+  const nameClasses = 'brand-name-serif';
+  const payoffClasses = 'brand-payoff-sans';
 
   const content = (
     <div className={containerClasses} onClick={onClick}>
