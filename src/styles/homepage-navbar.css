@@ -80,7 +80,8 @@
 }
 
 /* 2. Pulsante "Accedi" - Effetto Riempimento Fluido */
-.homepage-navbar [data-ua="login"] {
+.homepage-navbar a[href="/auth"]:first-child,
+.homepage-navbar button[class*="outline"] {
   position: relative;
   border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
   background: transparent !important;
@@ -92,7 +93,8 @@
   backdrop-filter: blur(8px);
 }
 
-.homepage-navbar [data-ua="login"]::before {
+.homepage-navbar a[href="/auth"]:first-child::before,
+.homepage-navbar button[class*="outline"]::before {
   content: '';
   position: absolute;
   top: 100%;
@@ -104,11 +106,13 @@
   z-index: -1;
 }
 
-.homepage-navbar [data-ua="login"]:hover::before {
+.homepage-navbar a[href="/auth"]:first-child:hover::before,
+.homepage-navbar button[class*="outline"]:hover::before {
   top: 0;
 }
 
-.homepage-navbar [data-ua="login"]:hover {
+.homepage-navbar a[href="/auth"]:first-child:hover,
+.homepage-navbar button[class*="outline"]:hover {
   color: hsl(var(--primary)) !important;
   border-color: rgba(255, 255, 255, 0.9) !important;
   transform: translateY(-2px);
@@ -119,7 +123,8 @@
 }
 
 /* 3. Pulsante "Registrati" - Effetto Glow e Movimento */
-.homepage-navbar [data-ua="signup"] {
+.homepage-navbar a[href="/auth"]:last-child,
+.homepage-navbar button[class*="bg-gradient"] {
   background: linear-gradient(135deg, #FBBF24, #F59E0B, #EAB308) !important;
   color: hsl(var(--primary)) !important;
   border: none !important;
@@ -133,7 +138,8 @@
     0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.homepage-navbar [data-ua="signup"]::before {
+.homepage-navbar a[href="/auth"]:last-child::before,
+.homepage-navbar button[class*="bg-gradient"]::before {
   content: '';
   position: absolute;
   top: 0;
@@ -148,7 +154,8 @@
   transition: left 0.6s ease;
 }
 
-.homepage-navbar [data-ua="signup"]:hover {
+.homepage-navbar a[href="/auth"]:last-child:hover,
+.homepage-navbar button[class*="bg-gradient"]:hover {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 
     0 12px 30px rgba(251, 191, 36, 0.6),
@@ -157,7 +164,8 @@
   background: linear-gradient(135deg, #FCD34D, #FBBF24, #F59E0B) !important;
 }
 
-.homepage-navbar [data-ua="signup"]:hover::before {
+.homepage-navbar a[href="/auth"]:last-child:hover::before,
+.homepage-navbar button[class*="bg-gradient"]:hover::before {
   left: 100%;
 }
 

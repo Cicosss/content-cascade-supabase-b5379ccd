@@ -13,7 +13,7 @@ const HeroBackground: React.FC<HeroBackgroundProps> = ({ isHovered }) => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="absolute inset-0 -z-10">
+    <div className="absolute inset-0">
       {/* Video/Image Background */}
       <VideoBackground
         videoUrl={HERO_VIDEO_URL}
