@@ -9,7 +9,8 @@ import { useHeader } from '@/contexts/HeaderContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useNavigation } from '@/hooks/useNavigation';
-import { createMenuItems, LOGO_CONFIG, Z_INDEX } from '@/config/navigationConfig';
+import { createMenuItems, Z_INDEX } from '@/config/navigationConfig';
+import { BrandLogotype } from '@/components/brand/BrandLogotype';
 
 export const MobileMenu: React.FC = () => {
   const { isMobileMenuOpen, setMobileMenuOpen } = useHeader();
@@ -46,10 +47,10 @@ export const MobileMenu: React.FC = () => {
         
         <div className="flex items-center space-x-3 pb-6 border-b border-border relative z-10">
           <div className="group">
-            <img 
-              src={LOGO_CONFIG.src} 
-              alt={LOGO_CONFIG.alt} 
-              className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            <BrandLogotype 
+              size="small"
+              theme="dark"
+              linkable={false}
             />
           </div>
           <span className="typography-h4 text-foreground tracking-wide">Mia Romagna</span>

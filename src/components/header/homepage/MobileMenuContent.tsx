@@ -6,7 +6,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { useNavigation } from '@/hooks/useNavigation';
-import { createMenuItems, LOGO_CONFIG } from '@/config/navigationConfig';
+import { createMenuItems } from '@/config/navigationConfig';
+import { BrandLogotype } from '@/components/brand/BrandLogotype';
 
 interface MobileMenuContentProps {
   onClose: () => void;
@@ -35,10 +36,10 @@ export const MobileMenuContent: React.FC<MobileMenuContentProps> = React.memo(({
       {/* Header */}
       <div className="flex items-center space-x-3 pb-6 border-b border-slate-700">
         <div className="group">
-          <img 
-            src={LOGO_CONFIG.src} 
-            alt={LOGO_CONFIG.alt} 
-            className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          <BrandLogotype 
+            size="small"
+            theme="dark"
+            linkable={false}
           />
         </div>
         <span className="typography-h4 text-white tracking-wide">Mia Romagna</span>
