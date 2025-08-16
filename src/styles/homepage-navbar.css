@@ -170,9 +170,14 @@
 }
 
 /* 4. Logo con Effetto Premium */
+.homepage-logo-enhanced {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .homepage-logo-enhanced:hover {
-  transform: translateY(-2px) scale(1.04);
-  filter: drop-shadow(0 8px 20px rgba(255, 255, 255, 0.4));
+  transform: translateY(-4px) scale(1.08);
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.25)) drop-shadow(0 4px 12px rgba(255, 255, 255, 0.3));
 }
 
 /* 5. Container Navigazione Migliorato */
