@@ -32,6 +32,21 @@
     margin-top: 0;
   }
   
+  /* Versione Navbar - Specifica dal design reference */
+  .brand-logotype.navbar-version {
+    padding: 1rem;
+  }
+  
+  .brand-logotype.navbar-version .brand-name-serif {
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .brand-logotype.navbar-version .brand-payoff-sans {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+  }
+
   /* Varianti dimensionali */
   .brand-logotype.small .brand-name-serif {
     font-size: clamp(1.5rem, 4vw, 2.2rem);
@@ -82,6 +97,15 @@
     
     .brand-logotype.small .brand-payoff-sans {
       font-size: clamp(0.45rem, 1.5vw, 0.6rem);
+    }
+    
+    /* Responsività navbar version */
+    .brand-logotype.navbar-version .brand-name-serif {
+      font-size: 1.6rem;
+    }
+    
+    .brand-logotype.navbar-version .brand-payoff-sans {
+      font-size: 0.55rem;
     }
   }
 }

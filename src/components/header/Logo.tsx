@@ -15,10 +15,9 @@ export const Logo: React.FC = () => {
       aria-label="Vai a Mia Romagna"
     >
       <BrandLogotype 
-        size="small"
+        size="navbar-version"
         theme="dark"
         linkable={false}
-        className="mt-2"
       />
     </Link>
   );

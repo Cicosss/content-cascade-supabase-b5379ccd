@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 interface BrandLogotypeProps {
   /** Dimensione del logotipo */
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'navbar-version';
   /** Tema colore */
   theme?: 'light' | 'dark' | 'brand';
   /** Stile premium con gradient */
@@ -30,7 +30,8 @@ export const BrandLogotype: React.FC<BrandLogotypeProps> = ({
 }) => {
   const containerClasses = cn(
     'brand-logotype',
-    size !== 'medium' && size,
+    size === 'navbar-version' && 'navbar-version',
+    size !== 'medium' && size !== 'navbar-version' && size,
     theme,
     className
   );
