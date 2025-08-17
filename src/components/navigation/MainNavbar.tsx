@@ -69,7 +69,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
               <Link
                 key={link.href}
                 to={link.href}
-                className="text-white hover:text-primary transition-colors text-sm font-medium"
+                className="text-white hover:text-primary transition-colors typography-small font-medium"
                 onClick={(e) => {
                   if (handleGuestClick()) {
                     e.preventDefault();
@@ -114,8 +114,8 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user.user_metadata?.full_name || user.email}</p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">
+                      <p className="typography-small font-medium">{user.user_metadata?.full_name || user.email}</p>
+                      <p className="w-[200px] truncate typography-caption text-muted-foreground">
                         {user.email}
                       </p>
                     </div>
@@ -185,7 +185,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                       <Link
                         key={link.href}
                         to={link.href}
-                        className="block p-3 rounded-lg hover:bg-accent transition-colors font-medium text-sm"
+                        className="block p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
                         onClick={(e) => {
                           if (handleGuestClick()) {
                             e.preventDefault();
@@ -210,27 +210,27 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium text-sm">{user.user_metadata?.full_name || user.email}</p>
-                          <p className="text-xs text-muted-foreground">{user.email}</p>
+                          <p className="typography-small font-medium">{user.user_metadata?.full_name || user.email}</p>
+                          <p className="typography-caption text-muted-foreground">{user.email}</p>
                         </div>
                       </div>
                       <Link
                         to="/profile"
-                        className="block p-3 rounded-lg hover:bg-accent transition-colors text-sm"
+                        className="block p-3 rounded-lg hover:bg-accent transition-colors typography-small"
                          onClick={() => handleMobileMenuChange(false)}
                       >
                         Profilo
                       </Link>
                       <Link
                         to="/settings"
-                        className="block p-3 rounded-lg hover:bg-accent transition-colors text-sm"
+                        className="block p-3 rounded-lg hover:bg-accent transition-colors typography-small"
                          onClick={() => handleMobileMenuChange(false)}
                       >
                         Impostazioni
                       </Link>
                       <Button
                         variant="ghost"
-                        className="w-full justify-start p-3 h-auto text-sm"
+                        className="w-full justify-start p-3 h-auto typography-small"
                       >
                         Esci
                       </Button>
