@@ -20,7 +20,7 @@ const MobileDashboardView: React.FC<DashboardViewProps> = memo(({ data }) => {
   return (
     <DashboardErrorBoundary>
       <Layout>
-        <div className="min-h-screen overflow-x-hidden -mt-16 md:-mt-20 lg:-mt-24">
+        <div className="min-h-screen overflow-x-hidden pt-4">
           {/* Header Section - Ottimizzato per mobile */}
           <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900">
             <div className="container mx-auto py-4 px-3 md:px-4 lg:px-6 sm:py-6">

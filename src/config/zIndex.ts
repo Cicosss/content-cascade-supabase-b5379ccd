@@ -7,6 +7,9 @@ export const Z_INDEX = {
   // Content layers
   content: 10,
   
+  // Sidebar (under navbar)
+  sidebar: 35,
+  
   // Navigation
   navbar: 40,
   scrollToTop: 45,

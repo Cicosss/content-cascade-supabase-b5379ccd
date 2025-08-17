@@ -6,7 +6,11 @@ import { UserProfileContainer } from './sidebar/containers/UserProfileContainer'
 
 const AppSidebar: React.FC = () => {
   return (
-    <Sidebar collapsible="icon" className="glassmorphism-sidebar">
+    <Sidebar 
+      collapsible="icon" 
+      className="glassmorphism-sidebar z-[35]"
+      style={{ top: '5rem' }}
+    >
       <SidebarContent>
         <SidebarMenuContainer />
       </SidebarContent>
