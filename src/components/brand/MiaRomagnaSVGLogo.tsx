@@ -27,7 +27,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
     small: { width: 200, height: 67 },
     medium: { width: 300, height: 100 },
     large: { width: 450, height: 150 },
-    'navbar-version': { width: 200, height: 70 }
+    'navbar-version': { width: 220, height: 80 }
   };
 
   const { width, height } = dimensions[size];
@@ -100,7 +100,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
       {/* Testo principale "Mia Romagna" */}
       <text 
         x={width/2} 
-        y={height * 0.45} 
+        y={height * 0.4} 
         textAnchor="middle" 
         style={{
           fontFamily: 'var(--font-serif)',
@@ -117,7 +117,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
       {/* Slogan */}
       <text 
         x={width/2} 
-        y={height * 0.75} 
+        y={height * 0.7} 
         textAnchor="middle" 
         style={{
           fontFamily: 'var(--font-sans)',
