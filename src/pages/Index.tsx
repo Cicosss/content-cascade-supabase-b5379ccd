@@ -53,14 +53,13 @@ const Index = () => {
       <PullToRefresh onRefresh={handleRefresh}>
         <InteractiveHeroSection />
         
-        {/* Prima sezione caroselli dopo l'hero */}
+        {/* Value Proposition e Prima sezione caroselli raggruppate */}
+        <ValuePropositionSection />
         <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8">
           <FirstCarouselSection />
         </div>
         
-        <ValuePropositionSection />
-        
-        {/* Seconda sezione caroselli dopo value proposition */}
+        {/* Seconda sezione caroselli */}
         <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8">
           <SecondCarouselSection />
         </div>
