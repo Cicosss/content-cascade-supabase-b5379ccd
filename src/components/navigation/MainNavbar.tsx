@@ -39,7 +39,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
 
   const navigationLinks = [
     { title: 'Il Mio Passaporto', href: '/my-passport' },
-    { title: 'Respiro del Mare', href: '/respiro' },
+    { title: 'Respiro del Mare', href: '/respiro-del-mare' },
     { title: 'Oggi in Romagna', href: '/oggi' },
   ];
 
