@@ -4,7 +4,7 @@ import { Globe, Search, Menu, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
-import { BrandLogotype } from '@/components/brand/BrandLogotype';
+import { MiaRomagnaSVGLogo } from '@/components/brand/MiaRomagnaSVGLogo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
@@ -54,11 +54,10 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-            <BrandLogotype 
+            <MiaRomagnaSVGLogo 
               size="navbar-version"
-              theme="light"
+              theme="dark"
               linkable={true}
-              className="text-white"
             />
           </div>
 
