@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { LocationProvider } from '@/contexts/LocationContext';
 
@@ -13,6 +13,21 @@ interface HomepageLayoutProps {
 const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   const { user } = useAuth();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  
+  // Listen to global mobile menu state changes to hide bottom nav
+  useEffect(() => {
+    const handler = (e: CustomEvent) => {
+      // e.detail.open is boolean
+      // @ts-ignore - CustomEvent typing for detail
+      setIsMobileNavOpen(Boolean(e.detail?.open));
+    };
+    // @ts-ignore - allow event type
+    window.addEventListener('mobileMenuChange', handler);
+    return () => {
+      // @ts-ignore
+      window.removeEventListener('mobileMenuChange', handler);
+    };
+  }, []);
   
   return (
     <LocationProvider>

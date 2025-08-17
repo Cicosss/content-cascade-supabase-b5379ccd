@@ -6,7 +6,7 @@ import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
 import { MiaRomagnaSVGLogo } from '@/components/brand/MiaRomagnaSVGLogo';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,10 +46,12 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
   const { handleGuestClick } = useGuestRedirect();
   const { isScrolled } = useScrollState({ threshold: 50 });
 
-  // Notify parent component when mobile menu state changes
+  // Notify parent component and broadcast state changes
   const handleMobileMenuChange = (open: boolean) => {
     setIsMobileMenuOpen(open);
     onMobileMenuChange?.(open);
+    // Broadcast to layouts to hide bottom nav when menu is open
+    window.dispatchEvent(new CustomEvent('mobileMenuChange', { detail: { open } }));
   };
 
   // Check if we're in a page that has sidebar (when user is logged in)
@@ -210,6 +212,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 side="right" 
                 className="w-[300px] sm:w-[400px]"
               >
+                {/* A11y: Title/Description per il dialog Sheet */}
+                <SheetHeader className="sr-only">
+                  <SheetTitle>Menu</SheetTitle>
+                  <SheetDescription>Navigazione principale</SheetDescription>
+                </SheetHeader>
                 <div className="flex flex-col space-y-4 mt-8">
                   {/* Special Item - Oggi in Romagna with badge */}
                   {user && (

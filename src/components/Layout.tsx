@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <div className="flex flex-1 w-full">
             <AppSidebar />
                   <SidebarInset className="flex-1 flex flex-col">
-                    <main className="flex-1 relative pb-20 md:pb-0 pt-16 md:pt-20 lg:pt-24">
+                    <main className="flex-1 relative pb-20 md:pb-0">
                       {children}
                     </main>
                     <Footer />
@@ -47,7 +47,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <LocationProvider>
       <div className="min-h-screen bg-slate-50 flex flex-col">
         {/* Main content */}
-        <main className="flex-1 relative pb-20 md:pb-0 pt-16 md:pt-20 lg:pt-24">
+        <main className="flex-1 relative pb-20 md:pb-0">
           {children}
         </main>
         <Footer />
