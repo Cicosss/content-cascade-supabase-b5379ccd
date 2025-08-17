@@ -7,6 +7,7 @@ import { useScrollState } from '@/hooks/useScrollState';
 import { MiaRomagnaSVGLogo } from '@/components/brand/MiaRomagnaSVGLogo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,13 +58,21 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
     >
       <div className="container mx-auto px-6 h-full flex items-center">
         <div className="flex items-center justify-between w-full">
-          {/* Logo Section */}
-          <div className="flex-shrink-0">
-            <MiaRomagnaSVGLogo 
-              size="navbar-version"
-              theme="dark"
-              linkable={true}
-            />
+          {/* Left Section - Sidebar Toggle + Logo */}
+          <div className="flex items-center space-x-4">
+            {/* Sidebar Toggle - Only visible when user is logged in */}
+            {hasSidebar && (
+              <SidebarTrigger className="relative z-10 h-9 w-9 rounded-md border-2 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-sm transition-all duration-200 shadow-lg hover:shadow-xl" />
+            )}
+            
+            {/* Logo Section */}
+            <div className="flex-shrink-0">
+              <MiaRomagnaSVGLogo 
+                size="navbar-version"
+                theme="dark"
+                linkable={true}
+              />
+            </div>
           </div>
 
           {/* Desktop Navigation */}
