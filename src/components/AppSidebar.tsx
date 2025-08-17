@@ -9,7 +9,6 @@ const AppSidebar: React.FC = () => {
     <Sidebar 
       collapsible="icon" 
       className="glassmorphism-sidebar z-[35]"
-      style={{ top: '5rem' }}
     >
       <SidebarContent>
         <SidebarMenuContainer />
