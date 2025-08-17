@@ -34,6 +34,9 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
     onMobileMenuChange?.(open);
   };
 
+  // Check if we're in a page that has sidebar (when user is logged in)
+  const hasSidebar = !!user;
+
   const navigationLinks = [
     { title: 'Il Mio Passaporto', href: '/my-passport' },
     { title: 'Respiro del Mare', href: '/respiro' },
@@ -44,9 +47,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
     <nav 
       className={cn(
         "fixed top-0 left-0 right-0 transition-all duration-300",
-        isScrolled 
+        hasSidebar 
           ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
-          : "bg-transparent"
+          : (isScrolled 
+            ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
+            : "bg-transparent")
       )}
       style={{ zIndex: Z_INDEX.navbar }}
     >
