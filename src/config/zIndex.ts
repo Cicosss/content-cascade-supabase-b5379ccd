@@ -15,7 +15,7 @@ export const Z_INDEX = {
   scrollToTop: 45,
   
   // Overlays and modals
-  sheet: 50,
+  sheet: 999999, // High z-index for mobile menu over Google Maps
   dialog: 50,
   dropdown: 51,
   navigation: 52,

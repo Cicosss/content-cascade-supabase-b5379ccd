@@ -208,8 +208,8 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
               </SheetTrigger>
               <SheetContent 
                 side="right" 
-                className="w-[300px] sm:w-[400px]"
-                style={{ zIndex: Z_INDEX.sheet }}
+                className="w-[300px] sm:w-[400px] mobile-menu-overlay"
+                style={{ zIndex: 999999 }}
               >
                 <div className="flex flex-col space-y-4 mt-8">
                   {/* Special Item - Oggi in Romagna with badge */}
