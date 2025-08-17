@@ -5,6 +5,15 @@ import { CarouselError } from '@/types/carousel';
 
 export type SectionType = 'Gusto & Sapori' | 'Eventi' | 'Natura & Avventura' | 'Divertimento & Famiglia' | 'Cultura & Territorio';
 
+// Mappatura sezioni verso categorie del database
+const SECTION_TO_CATEGORIES_MAPPING: Record<SectionType, string[]> = {
+  'Gusto & Sapori': ['Ristoranti', 'Agriturismi', 'Aziende Agricole', 'Street Food', 'Mercati Locali'],
+  'Eventi': [], // Eventi vengono gestiti dalla tabella events separata
+  'Natura & Avventura': ['Spiagge', 'Parchi Naturali e Riserve', 'Sport'],
+  'Divertimento & Famiglia': ['Parchi a Tema e Acquatici', 'Attività per Bambini', 'Fattorie Didattiche e Animali', 'Esperienze Educative', 'Vita Notturna'],
+  'Cultura & Territorio': ['Musei', 'Artigianato Locale', 'Storia e Borghi']
+};
+
 interface CarouselItem {
   id: string;
   name: string;
@@ -42,10 +51,15 @@ export function useSimpleCarousel(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<CarouselError | null>(null);
 
-  // Get categories for this section - use filters if provided, otherwise fallback to all categories
-  const categories = categoryFilters.length > 0 && !categoryFilters.includes('tutte') 
-    ? categoryFilters 
-    : [];
+  // Get categories for this section
+  const categories = useMemo(() => {
+    // Se sono specificati filtri specifici e non include 'tutte', usali
+    if (categoryFilters.length > 0 && !categoryFilters.includes('tutte')) {
+      return categoryFilters;
+    }
+    // Altrimenti usa le categorie mappate per questa sezione
+    return SECTION_TO_CATEGORIES_MAPPING[section] || [];
+  }, [section, categoryFilters]);
 
   // Determine if we need events or POIs
   const isEventSection = section === 'Eventi';
@@ -55,8 +69,9 @@ export function useSimpleCarousel(
       setIsLoading(true);
       setError(null);
 
-      // Verify categories are available before queries
+      // Per gli eventi, procediamo sempre. Per i POI, procediamo solo se abbiamo categorie
       if (!isEventSection && categories.length === 0) {
+        console.log(`⚠️ [useSimpleCarousel] Nessuna categoria trovata per la sezione "${section}"`);
         setData([]);
         setIsLoading(false);
         return;
@@ -80,8 +95,12 @@ export function useSimpleCarousel(
           .select('id, name, description, category, latitude, longitude, address, location_name, images, price_info, avg_rating, target_audience, priority_score, duration_info, poi_type, start_datetime, end_datetime, organizer_info')
           .eq('status', 'approved');
 
-        // Filter by categories
-        query = query.in('category', categories);
+        // Filter by categories if we have any
+        if (categories.length > 0) {
+          query = query.in('category', categories);
+        }
+
+        console.log(`🔍 [useSimpleCarousel] Fetching POIs for section "${section}" with categories:`, categories);
 
         // Remove withChildren filter completely to ensure public access
         // All target audiences are now allowed for public viewing
@@ -91,6 +110,7 @@ export function useSimpleCarousel(
           .limit(limit);
 
         if (poisError) throw poisError;
+        console.log(`✅ [useSimpleCarousel] Loaded ${pois?.length || 0} POIs for section "${section}"`);
         setData(pois || []);
       }
     } catch (err) {
