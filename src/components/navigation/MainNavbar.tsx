@@ -42,7 +42,7 @@ interface MainNavbarProps {
 
 const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { handleGuestClick } = useGuestRedirect();
   const { isScrolled } = useScrollState({ threshold: 50 });
 
@@ -166,7 +166,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => signOut()}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Esci
                   </DropdownMenuItem>
@@ -355,6 +355,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                       <Button
                         variant="ghost"
                         className="w-full justify-start p-3 h-auto typography-small"
+                        onClick={() => { signOut(); handleMobileMenuChange(false); }}
                       >
                         Esci
                       </Button>

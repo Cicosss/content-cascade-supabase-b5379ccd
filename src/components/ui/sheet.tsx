@@ -4,6 +4,7 @@ import { X } from "lucide-react"
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { Z_INDEX } from "@/config/zIndex"
 
 const Sheet = SheetPrimitive.Root
 
@@ -22,6 +23,7 @@ const SheetOverlay = React.forwardRef<
       "fixed inset-0 z-[5001] bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
+    style={{ zIndex: Z_INDEX.sheet }}
     {...props}
     ref={ref}
   />
@@ -63,6 +65,7 @@ const SheetContent = React.forwardRef<
       <SheetPrimitive.Content
         ref={ref}
         className={cn(sheetVariants({ side }), className)}
+        style={{ zIndex: Z_INDEX.sheet + 1, ...(props.style as any) }}
         {...props}
       >
         {children}
