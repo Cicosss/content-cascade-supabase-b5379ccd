@@ -9,12 +9,12 @@ const InteractiveHeroSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="relative w-full h-[100svh] md:h-screen overflow-visible">
+    <div className="relative w-full h-[100svh] md:h-screen overflow-visible -mt-20">
       {/* Dynamic Background with Video/Image */}
       <HeroBackground />
 
       {/* Content Overlay - Restructured */}
-      <div className="relative z-10 h-full flex flex-col text-white">
+      <div className="relative z-10 h-full flex flex-col text-white pt-20">
         {/* Brand Section - Left aligned and vertically centered (solo desktop) */}
         <div className="flex-1 flex items-center justify-start">
           <HeroBrandSection />
