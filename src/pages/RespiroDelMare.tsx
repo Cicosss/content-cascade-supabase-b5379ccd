@@ -14,7 +14,7 @@ const RespiroDelMare: React.FC = () => {
   return (
     <Layout>
       <div className="bg-white text-slate-800">
-        <div className="-mt-16 md:-mt-20 lg:-mt-24">
+        <div className="pt-4">
           <YouTubeVideoBackground videoId={YOUTUBE_VIDEO_ID}>
             <div className="space-y-6">
               <TypingAnimation
