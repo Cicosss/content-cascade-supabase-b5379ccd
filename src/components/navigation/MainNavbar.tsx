@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft } from 'lucide-react';
+import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft, MessageSquare, LayoutDashboard, Trophy, Grid3X3, Droplets, CloudSun, Camera, Zap } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
@@ -77,8 +77,12 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
         <div className="flex items-center justify-between w-full">
           {/* Left Section - Sidebar Toggle + Logo */}
           <div className="flex items-center space-x-4">
-            {/* Sidebar Toggle - Only visible when user is logged in */}
-            {hasSidebar && <SafeSidebarTrigger />}
+            {/* Sidebar Toggle - Only visible when user is logged in and NOT on mobile */}
+            {hasSidebar && (
+              <div className="hidden md:block">
+                <SafeSidebarTrigger />
+              </div>
+            )}
             
             {/* Logo Section */}
             <div className="flex-shrink-0">
@@ -208,23 +212,115 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 style={{ zIndex: Z_INDEX.sheet }}
               >
                 <div className="flex flex-col space-y-4 mt-8">
-                  <div className="space-y-3">
-                    {navigationLinks.map((link) => (
+                  {/* Special Item - Oggi in Romagna with badge */}
+                  {user && (
+                    <div className="bg-gradient-to-r from-yellow-500/10 to-amber-500/10 rounded-lg p-3 border border-yellow-500/20">
                       <Link
-                        key={link.href}
-                        to={link.href}
-                        className="block p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
-                        onClick={(e) => {
-                          if (handleGuestClick()) {
-                            e.preventDefault();
-                          } else {
-                            handleMobileMenuChange(false);
-                          }
-                        }}
+                        to="/oggi"
+                        className="flex items-center space-x-3 text-yellow-600 hover:text-yellow-700 transition-colors"
+                        onClick={() => handleMobileMenuChange(false)}
                       >
-                        {link.title}
+                        <Zap className="h-5 w-5" />
+                        <span className="typography-small font-medium">Oggi in Romagna</span>
+                        <span className="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold">7</span>
                       </Link>
-                    ))}
+                    </div>
+                  )}
+
+                  {/* Main Navigation Items */}
+                  <div className="space-y-1">
+                    {user && (
+                      <>
+                        <Link
+                          to="/dashboard"
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                          onClick={() => handleMobileMenuChange(false)}
+                        >
+                          <LayoutDashboard className="h-4 w-4" />
+                          <span>Dashboard</span>
+                        </Link>
+                        <Link
+                          to="/my-passport"
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                          onClick={() => handleMobileMenuChange(false)}
+                        >
+                          <Trophy className="h-4 w-4" />
+                          <span>Il Mio Passaporto</span>
+                        </Link>
+                        <Link
+                          to="/categories"
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                          onClick={(e) => {
+                            if (handleGuestClick()) {
+                              e.preventDefault();
+                            } else {
+                              handleMobileMenuChange(false);
+                            }
+                          }}
+                        >
+                          <Grid3X3 className="h-4 w-4" />
+                          <span>Esplora Categorie</span>
+                        </Link>
+                        <Link
+                          to="/water-quality"
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                          onClick={(e) => {
+                            if (handleGuestClick()) {
+                              e.preventDefault();
+                            } else {
+                              handleMobileMenuChange(false);
+                            }
+                          }}
+                        >
+                          <Droplets className="h-4 w-4" />
+                          <span>Qualità del Mare</span>
+                        </Link>
+                        <Link
+                          to="/weather"
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                          onClick={(e) => {
+                            if (handleGuestClick()) {
+                              e.preventDefault();
+                            } else {
+                              handleMobileMenuChange(false);
+                            }
+                          }}
+                        >
+                          <CloudSun className="h-4 w-4" />
+                          <span>Meteo</span>
+                        </Link>
+                        <Link
+                          to="/webcams"
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                          onClick={(e) => {
+                            if (handleGuestClick()) {
+                              e.preventDefault();
+                            } else {
+                              handleMobileMenuChange(false);
+                            }
+                          }}
+                        >
+                          <Camera className="h-4 w-4" />
+                          <span>Webcam</span>
+                        </Link>
+                      </>
+                    )}
+
+                    {/* Public Navigation Links */}
+                    <Link
+                      to="/respiro-del-mare"
+                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-accent transition-colors typography-small font-medium"
+                      onClick={(e) => {
+                        if (handleGuestClick()) {
+                          e.preventDefault();
+                        } else {
+                          handleMobileMenuChange(false);
+                        }
+                      }}
+                    >
+                      <Droplets className="h-4 w-4" />
+                      <span>Respiro del Mare</span>
+                    </Link>
                   </div>
 
                   {/* Mobile Auth Section */}
