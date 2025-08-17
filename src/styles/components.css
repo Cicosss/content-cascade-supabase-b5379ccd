@@ -26,9 +26,4 @@
   }
 
   /* Service animations consolidated from duplicates */
-+
-+  /* Force mobile sheet above Google Maps and other overlays */
-+  .mobile-menu-overlay {
-+    z-index: 999999 !important;
-+  }
- }
+}

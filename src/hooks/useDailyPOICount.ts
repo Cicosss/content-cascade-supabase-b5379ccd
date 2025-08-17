@@ -44,5 +44,3 @@ export const useDailyPOICount = (poiType: 'event' | 'place', category?: string) 
   return { count, loading };
 };
 
-// Manteniamo l'hook specifico per retrocompatibilità
-export const useDailyEventsCount = () => useDailyPOICount('event');
