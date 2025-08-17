@@ -46,7 +46,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
   return (
     <nav 
       className={cn(
-        "fixed top-0 left-0 right-0 transition-all duration-300",
+        "fixed top-0 left-0 right-0 h-16 md:h-20 lg:h-24 transition-all duration-300",
         hasSidebar 
           ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
           : (isScrolled 
@@ -55,8 +55,8 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
       )}
       style={{ zIndex: Z_INDEX.navbar }}
     >
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-6 h-full flex items-center">
+        <div className="flex items-center justify-between w-full">
           {/* Logo Section */}
           <div className="flex-shrink-0">
             <MiaRomagnaSVGLogo 
