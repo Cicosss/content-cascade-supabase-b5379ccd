@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Search, Menu, User, LogOut, Settings } from 'lucide-react';
+import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
 import { MiaRomagnaSVGLogo } from '@/components/brand/MiaRomagnaSVGLogo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +17,24 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Z_INDEX } from '@/config/zIndex';
 import { cn } from '@/lib/utils';
+
+// Safe Sidebar Trigger Component that uses custom events
+const SafeSidebarTrigger = () => {
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => {
+        // Dispatch a custom event that the sidebar can listen to
+        window.dispatchEvent(new CustomEvent('toggleSidebar'));
+      }}
+      className="relative z-10 h-9 w-9 rounded-md border-2 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-sm transition-all duration-200 shadow-lg hover:shadow-xl"
+    >
+      <PanelLeft className="h-4 w-4" />
+      <span className="sr-only">Toggle Sidebar</span>
+    </Button>
+  );
+};
 
 interface MainNavbarProps {
   onMobileMenuChange?: (isOpen: boolean) => void;
@@ -61,9 +78,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
           {/* Left Section - Sidebar Toggle + Logo */}
           <div className="flex items-center space-x-4">
             {/* Sidebar Toggle - Only visible when user is logged in */}
-            {hasSidebar && (
-              <SidebarTrigger className="relative z-10 h-9 w-9 rounded-md border-2 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-white/50 backdrop-blur-sm transition-all duration-200 shadow-lg hover:shadow-xl" />
-            )}
+            {hasSidebar && <SafeSidebarTrigger />}
             
             {/* Logo Section */}
             <div className="flex-shrink-0">
