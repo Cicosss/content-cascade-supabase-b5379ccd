@@ -11,9 +11,14 @@ import PullToRefresh from '@/components/ui/PullToRefresh';
 
 // Import the new homepage components
 import TopSection from '@/components/homepage/TopSection';
-import HomepageCarousels from '@/components/homepage/HomepageCarousels';
 import HelpBanner from '@/components/homepage/HelpBanner';
 import FamilySection from '@/components/homepage/FamilySection';
+
+// Import distributed carousel sections
+import FirstCarouselSection from '@/components/homepage/sections/FirstCarouselSection';
+import SecondCarouselSection from '@/components/homepage/sections/SecondCarouselSection';
+import ThirdCarouselSection from '@/components/homepage/sections/ThirdCarouselSection';
+import FourthCarouselSection from '@/components/homepage/sections/FourthCarouselSection';
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -47,20 +52,37 @@ const Index = () => {
     <HomepageLayout>
       <PullToRefresh onRefresh={handleRefresh}>
         <InteractiveHeroSection />
+        
+        {/* Prima sezione caroselli dopo l'hero */}
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8">
+          <FirstCarouselSection />
+        </div>
+        
         <ValuePropositionSection />
+        
+        {/* Seconda sezione caroselli dopo value proposition */}
+        <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8">
+          <SecondCarouselSection />
+        </div>
+        
         <AppFeaturesSection />
         
         <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-12">
           {/* Top Section: Weather and Guest Card */}
           <TopSection />
 
+          {/* Terza sezione caroselli dopo top section */}
+          <div className="py-8 md:py-12">
+            <ThirdCarouselSection />
+          </div>
+
           {/* Main Content Sections */}
           <div className="space-y-8 md:space-y-12 lg:space-y-16">
-            {/* Thematic Carousels */}
-            <HomepageCarousels />
-
             {/* Hai bisogno di aiuto? */}
             <HelpBanner />
+
+            {/* Quarta sezione caroselli dopo help banner */}
+            <FourthCarouselSection />
 
             {/* Sezione Family */}
             <FamilySection />
