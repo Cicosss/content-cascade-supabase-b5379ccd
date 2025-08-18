@@ -1,8 +1,10 @@
 
 import React from 'react';
+import { LogOut } from 'lucide-react';
 import { ProfileAvatarView } from './ProfileAvatarView';
 import { useNavigationHandler } from '../logic/NavigationHandler';
 import { useSidebar } from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
 
 interface UserProfileViewProps {
   profile: any;
@@ -50,6 +52,18 @@ const UserProfileView = React.memo<UserProfileViewProps>(({ profile, onSignOut }
           Promotore Bronzo
         </p>
       </div>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={(e) => {
+          e.stopPropagation();
+          onSignOut();
+        }}
+        className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600 transition-colors"
+        aria-label="Logout"
+      >
+        <LogOut className="h-4 w-4" strokeWidth={1.5} />
+      </Button>
     </div>
   );
 });
