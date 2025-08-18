@@ -23,7 +23,7 @@ const AppSidebar: React.FC = () => {
   return (
     <Sidebar 
       collapsible="icon" 
-      className="glassmorphism-sidebar z-[35]"
+      className="hidden lg:flex glassmorphism-sidebar z-[35]"
     >
       <SidebarContent>
         <SidebarMenuContainer />
