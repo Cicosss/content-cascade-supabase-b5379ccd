@@ -28,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 {/* Layout principale con sidebar */}
                 <div className="flex flex-1 w-full">
             <AppSidebar />
-                  <SidebarInset className="flex-1 flex flex-col">
+                  <SidebarInset className="flex-1 flex flex-col w-full">
                     <main className="flex-1 relative pb-20 md:pb-0">
                       {children}
                     </main>
