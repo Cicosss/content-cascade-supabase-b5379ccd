@@ -6,14 +6,9 @@ import { CreditCard, Bus, Ticket, Percent } from 'lucide-react';
 const GuestCard = () => {
   return (
     <Card className="p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <CreditCard className="h-5 w-5 mr-2 text-blue-500" strokeWidth={1.5} />
-          <h3 className="typography-h3">Romagna Guest Card</h3>
-        </div>
-        <Button variant="default" size="sm" className="rounded-xl bg-blue-500 hover:bg-blue-600">
-          Attiva
-        </Button>
+      <div className="flex items-center mb-4">
+        <CreditCard className="h-5 w-5 mr-2 text-blue-500" strokeWidth={1.5} />
+        <h3 className="typography-h3">Romagna Guest Card</h3>
       </div>
       
       <p className="typography-body text-gray-600 mb-4">
