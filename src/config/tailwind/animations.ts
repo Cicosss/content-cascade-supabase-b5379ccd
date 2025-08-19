@@ -9,8 +9,8 @@ export const keyframes = {
     to: { height: '0' }
   },
   'fade-in': {
-    "0%": { opacity: "0", transform: "translateY(10px)" },
-    "100%": { opacity: "1", transform: "translateY(0)" }
+    "0%": { opacity: "0", transform: "translateY(20px) scale(0.8)" },
+    "100%": { opacity: "1", transform: "translateY(0) scale(1)" }
   },
   'slide-down': {
     "0%": { opacity: "0", transform: "translateY(-10px)", maxHeight: "0" },
@@ -61,7 +61,7 @@ export const keyframes = {
 export const animation = {
   'accordion-down': 'accordion-down 0.2s ease-out',
   'accordion-up': 'accordion-up 0.2s ease-out',
-  'fade-in': 'fade-in 0.3s ease-in-out',
+  'fade-in': 'fade-in 0.8s ease-out forwards',
   'slide-down': 'slide-down 0.3s ease-in-out',
   // Weather animations
   'spin-slow': 'spin-slow 8s linear infinite',

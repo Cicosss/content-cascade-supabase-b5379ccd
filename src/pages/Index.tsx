@@ -20,6 +20,9 @@ import SecondCarouselSection from '@/components/homepage/sections/SecondCarousel
 import ThirdCarouselSection from '@/components/homepage/sections/ThirdCarouselSection';
 import FourthCarouselSection from '@/components/homepage/sections/FourthCarouselSection';
 
+// Import passport teaser widget
+import PassportTeaserWidget from '@/components/homepage/PassportTeaserWidget';
+
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
@@ -65,6 +68,9 @@ const Index = () => {
         </div>
         
         <AppFeaturesSection />
+        
+        {/* Passport Teaser Widget - positioned after features */}
+        <PassportTeaserWidget />
         
         <div className="container mx-auto px-3 md:px-4 lg:px-6 py-6 md:py-8 lg:py-12">
           {/* Top Section: Weather and Guest Card */}
