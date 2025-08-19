@@ -116,7 +116,7 @@ const HelpBanner = () => {
             
             {/* Call to Action Warmth */}
             <div className="pt-4">
-              <Button style={{ backgroundColor: '#131C2E' }} className="hover:bg-[#131C2E]/90 text-white font-bold font-inter px-8 py-6 text-lg lg:text-xl transition-all duration-500 hover:scale-105 active:scale-95 shadow-2xl hover:shadow-3xl rounded-2xl transform hover:rotate-1 hover:-translate-y-1">
+              <Button style={{ backgroundColor: '#262E79' }} className="hover:bg-[#262E79]/90 text-white font-bold font-inter px-8 py-6 text-lg lg:text-xl transition-all duration-500 hover:scale-105 active:scale-95 shadow-2xl hover:shadow-3xl rounded-2xl transform hover:rotate-1 hover:-translate-y-1">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl animate-bounce">💬</span>
                   <span className="tracking-wide">Chiedi un Consiglio</span>
