@@ -5,33 +5,33 @@ import { CreditCard, Bus, Ticket, Percent } from 'lucide-react';
 
 const GuestCard = () => {
   return (
-    <Card className="p-6 brand-blue-gradient text-white">
+    <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
-          <CreditCard className="h-6 w-6 mr-3" />
-          <h3 className="text-lg font-semibold">Romagna Guest Card</h3>
+          <CreditCard className="h-5 w-5 mr-2 text-blue-500" strokeWidth={1.5} />
+          <h3 className="typography-h3">Romagna Guest Card</h3>
         </div>
-        <Button variant="secondary" size="sm" className="rounded-xl">
+        <Button variant="default" size="sm" className="rounded-xl bg-blue-500 hover:bg-blue-600">
           Attiva
         </Button>
       </div>
       
-      <p className="text-white/90 mb-4">
+      <p className="typography-body text-gray-600 mb-4">
         Scopri tutti i vantaggi della tua card ospite
       </p>
       
       <div className="grid grid-cols-3 gap-4">
         <div className="text-center">
-          <Bus className="h-8 w-8 mx-auto mb-2 text-white/80" />
-          <div className="text-sm">Trasporti</div>
+          <Bus className="h-8 w-8 mx-auto mb-2 text-blue-500" strokeWidth={1.5} />
+          <div className="typography-caption text-gray-500">Trasporti</div>
         </div>
         <div className="text-center">
-          <Ticket className="h-8 w-8 mx-auto mb-2 text-white/80" />
-          <div className="text-sm">Musei</div>
+          <Ticket className="h-8 w-8 mx-auto mb-2 text-blue-500" strokeWidth={1.5} />
+          <div className="typography-caption text-gray-500">Musei</div>
         </div>
         <div className="text-center">
-          <Percent className="h-8 w-8 mx-auto mb-2 text-white/80" />
-          <div className="text-sm">Sconti</div>
+          <Percent className="h-8 w-8 mx-auto mb-2 text-blue-500" strokeWidth={1.5} />
+          <div className="typography-caption text-gray-500">Sconti</div>
         </div>
       </div>
     </Card>
