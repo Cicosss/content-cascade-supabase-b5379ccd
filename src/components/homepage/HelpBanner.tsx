@@ -103,12 +103,12 @@ const HelpBanner = () => {
           }`} style={{ transitionDelay: '200ms' }}>
             
             {/* Titolo Caldo e Diretto */}
-            <h3 className="font-playfair text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 dark:text-white leading-tight tracking-tight">
+            <h3 className="typography-h2">
               Parla con un Esperto della Romagna
             </h3>
             
             {/* Paragrafo Coinvolgente */}
-            <p className="font-lora text-lg sm:text-xl lg:text-2xl leading-relaxed text-slate-700 dark:text-slate-300 font-normal">
+            <p className="typography-subtitle">
               Che tu stia cercando quel ristorante perfetto o un consiglio per una gita fuori porta, 
               il nostro team di appassionati del territorio è qui per aiutarti a creare la tua 
               <span className="font-semibold text-primary"> esperienza su misura</span>.
@@ -119,13 +119,13 @@ const HelpBanner = () => {
               <Button style={{ backgroundColor: '#262E79' }} className="hover:bg-[#262E79]/90 text-white font-bold font-inter px-8 py-6 text-lg lg:text-xl transition-all duration-500 hover:scale-105 active:scale-95 shadow-2xl hover:shadow-3xl rounded-2xl transform hover:rotate-1 hover:-translate-y-1">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl animate-bounce">💬</span>
-                  <span className="tracking-wide">Chiedi un Consiglio</span>
+                  <span className="typography-body font-bold tracking-wide">Chiedi un Consiglio</span>
                 </div>
               </Button>
             </div>
             
             {/* Sottotesto Rassicurante */}
-            <p className="font-inter text-sm lg:text-base text-slate-600 dark:text-slate-400 mt-4 leading-relaxed">
+            <p className="typography-small text-slate-600 dark:text-slate-400 mt-4">
               <span className="font-semibold text-primary">Risposta gratuita</span> • 
               <span className="mx-2">Consigli personalizzati</span> • 
               <span>Esperti sempre disponibili</span>

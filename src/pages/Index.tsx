@@ -41,7 +41,7 @@ const Index = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-xl">Caricamento...</div>
+        <div className="typography-h4 text-white">Caricamento...</div>
       </div>
     );
   }

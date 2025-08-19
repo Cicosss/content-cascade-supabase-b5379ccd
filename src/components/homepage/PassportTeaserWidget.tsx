@@ -54,11 +54,11 @@ const PassportTeaserWidget = () => {
             
             {/* Left Column - Content */}
             <div className="space-y-6">
-              <h3 className="font-serif text-4xl lg:text-5xl font-bold text-white leading-tight">
+              <h3 className="typography-h1 text-white">
                 La Tua Avventura ti Attende
               </h3>
               
-              <p className="text-white/80 text-lg leading-relaxed font-sans">
+              <p className="typography-subtitle text-white/80">
                 Ogni luogo che visiti diventa un timbro sul tuo passaporto digitale. 
                 Sblocca badge, completa le sfide e mostra a tutti che sei un vero 
                 conoscitore della Romagna.
@@ -67,7 +67,7 @@ const PassportTeaserWidget = () => {
               <Button
                 onClick={handleStartAdventure}
                 size="lg"
-                className="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-900 font-semibold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0"
+                className="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-900 typography-body font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0"
               >
                 🗺️ Inizia la Tua Avventura
               </Button>
@@ -159,8 +159,8 @@ const PassportTeaserWidget = () => {
 
                     {/* Badge Name with enhanced typography */}
                     <div className="mt-3 text-center">
-                      <span className={`
-                        text-xs font-medium transition-all duration-300
+                    <span className={`
+                        typography-caption font-medium transition-all duration-300
                         ${badge.unlocked 
                           ? 'text-white group-hover:text-amber-200' 
                           : 'text-white/50 group-hover:text-white/70'
@@ -208,7 +208,7 @@ const PassportTeaserWidget = () => {
               <div className="mt-8 text-center">
                 <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
                   <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-                  <span className="text-white/80 text-sm font-medium">
+                  <span className="typography-small text-white/80 font-medium">
                     {badges.filter(b => b.unlocked).length} di {badges.length} badge sbloccati
                   </span>
                 </div>

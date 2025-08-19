@@ -22,7 +22,7 @@ const WeatherWidget = () => {
           <div key={index} className="text-center">
             <div className="typography-body-small text-gray-600 mb-2">{day.day}</div>
             <day.icon className="h-8 w-8 mx-auto mb-2 text-blue-500" strokeWidth={1.5} />
-            <div className="font-semibold text-lg">{day.temp}</div>
+            <div className="typography-body font-semibold">{day.temp}</div>
             <div className="typography-caption text-gray-500">{day.desc}</div>
           </div>
         ))}

@@ -25,8 +25,8 @@ const BlurredWeatherWidget = () => {
             <Eye className="h-6 w-6" />
           </div>
           <div>
-            <h4 className="font-semibold text-gray-800 mb-2">Meteo Personalizzato</h4>
-            <p className="text-sm text-gray-600 mb-4">
+            <h4 className="typography-h4 text-gray-800 mb-2">Meteo Personalizzato</h4>
+            <p className="typography-small text-gray-600 mb-4">
               Registrati per vedere le previsioni precise della tua zona
             </p>
             <Button 
@@ -50,7 +50,7 @@ const BlurredWeatherWidget = () => {
             <div key={index} className="text-center">
               <div className="typography-body-small text-gray-600 mb-2">{day.day}</div>
               <day.icon className="h-8 w-8 mx-auto mb-2 text-blue-500" strokeWidth={1.5} />
-              <div className="font-semibold text-lg">{day.temp}</div>
+              <div className="typography-body font-semibold">{day.temp}</div>
               <div className="typography-caption text-gray-500">{day.desc}</div>
             </div>
           ))}
