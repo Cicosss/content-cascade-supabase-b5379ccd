@@ -11,10 +11,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   mobileImageUrl, 
   isMobile 
 }) => {
-  const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  // Calcola le dimensioni dell'iframe per coprire interamente il viewport (rapporto 16:9)
+  // Solo per desktop: calcola le dimensioni dell'iframe
   const VIDEO_RATIO = 16 / 9;
   const [videoSize, setVideoSize] = useState<{ width: number; height: number }>({
     width: 0,
@@ -23,18 +22,18 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const computeVideoSize = () => {
+    if (isMobile) return; // Skip calculation on mobile
+    
     const rect = containerRef.current?.getBoundingClientRect();
     const vw = rect?.width ?? window.innerWidth;
     const vh = rect?.height ?? window.innerHeight;
     const viewportRatio = vw / vh;
 
     if (viewportRatio > VIDEO_RATIO) {
-      // Contenitore più largo del video → usa larghezza come base
       const width = vw;
       const height = vw / VIDEO_RATIO;
       setVideoSize({ width, height });
     } else {
-      // Contenitore più alto del video → usa altezza come base
       const height = vh;
       const width = vh * VIDEO_RATIO;
       setVideoSize({ width, height });
@@ -42,21 +41,23 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   useEffect(() => {
-    computeVideoSize();
-    const onResize = () => computeVideoSize();
+    if (!isMobile) {
+      computeVideoSize();
+      const onResize = () => computeVideoSize();
 
-    window.addEventListener('resize', onResize);
-    window.addEventListener('orientationchange', onResize);
+      window.addEventListener('resize', onResize);
+      window.addEventListener('orientationchange', onResize);
 
-    const ro = new ResizeObserver(() => onResize());
-    if (containerRef.current) ro.observe(containerRef.current);
+      const ro = new ResizeObserver(() => onResize());
+      if (containerRef.current) ro.observe(containerRef.current);
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('orientationchange', onResize);
-      ro.disconnect();
-    };
-  }, []);
+      return () => {
+        window.removeEventListener('resize', onResize);
+        window.removeEventListener('orientationchange', onResize);
+        ro.disconnect();
+      };
+    }
+  }, [isMobile]);
 
   // Estrae l'ID del video da YouTube URL
   const getYouTubeVideoId = (url: string) => {
@@ -71,16 +72,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` 
     : null;
 
-  const handleIframeLoad = () => {
-    setIsVideoReady(true);
-  };
-
   const handleIframeError = () => {
     setVideoError(true);
   };
 
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden">
+    <div ref={containerRef} className={isMobile ? "fixed inset-0 w-screen h-screen z-0 overflow-hidden" : "absolute inset-0 w-full h-full overflow-hidden"}>
       {videoError || !embedUrl ? (
         // Fallback background image solo in caso di errore
         <div
@@ -88,40 +85,40 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           style={{ backgroundImage: `url(${mobileImageUrl})` }}
         />
       ) : (
-        // Video background per desktop e mobile - sempre attivo
-        <>
-          <div className="absolute inset-0 w-full h-full overflow-hidden">
-            <iframe
-              src={embedUrl}
-              className="absolute inset-0"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              onLoad={handleIframeLoad}
-              onError={handleIframeError}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                width: `${videoSize.width}px`,
-                height: `${videoSize.height}px`,
-                transform: `translate(-50%, -50%)${isMobile ? ' scale(1.6)' : ''}`,
-                willChange: 'transform',
-                pointerEvents: 'none'
-              }}
-              title="YouTube video background"
-            />
-          </div>
-          {/* Loading state overlay cinematografico */}
-          {!isVideoReady && !videoError && (
-            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
-              <div className="text-white text-lg font-light animate-pulse">
-                Caricamento esperienza cinematografica...
-              </div>
-            </div>
-          )}
-        </>
+        // Video background - Desktop normale, Mobile fullscreen con overscan
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <iframe
+            src={embedUrl}
+            className="absolute inset-0"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            onError={handleIframeError}
+            style={isMobile ? {
+              // Mobile: overscan per coprire tutto lo schermo
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '140vw',
+              height: '140vh',
+              transform: 'translate(-50%, -50%)',
+              willChange: 'transform',
+              pointerEvents: 'none'
+            } : {
+              // Desktop: dimensioni calcolate come prima
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: `${videoSize.width}px`,
+              height: `${videoSize.height}px`,
+              transform: 'translate(-50%, -50%)',
+              willChange: 'transform',
+              pointerEvents: 'none'
+            }}
+            title="YouTube video background"
+          />
+        </div>
       )}
     </div>
   );
