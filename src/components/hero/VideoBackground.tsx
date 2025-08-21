@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -21,19 +20,21 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     width: 0,
     height: 0,
   });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const computeVideoSize = () => {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
+    const rect = containerRef.current?.getBoundingClientRect();
+    const vw = rect?.width ?? window.innerWidth;
+    const vh = rect?.height ?? window.innerHeight;
     const viewportRatio = vw / vh;
 
     if (viewportRatio > VIDEO_RATIO) {
-      // Viewport più largo del video → usa larghezza come base
+      // Contenitore più largo del video → usa larghezza come base
       const width = vw;
       const height = vw / VIDEO_RATIO;
       setVideoSize({ width, height });
     } else {
-      // Viewport più alto del video → usa altezza come base
+      // Contenitore più alto del video → usa altezza come base
       const height = vh;
       const width = vh * VIDEO_RATIO;
       setVideoSize({ width, height });
@@ -42,8 +43,19 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   useEffect(() => {
     computeVideoSize();
-    window.addEventListener('resize', computeVideoSize);
-    return () => window.removeEventListener('resize', computeVideoSize);
+    const onResize = () => computeVideoSize();
+
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
+
+    const ro = new ResizeObserver(() => onResize());
+    if (containerRef.current) ro.observe(containerRef.current);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onResize);
+      ro.disconnect();
+    };
   }, []);
 
   // Estrae l'ID del video da YouTube URL
@@ -68,7 +80,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden">
+    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden">
       {videoError || !embedUrl ? (
         // Fallback background image solo in caso di errore
         <div
