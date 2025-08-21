@@ -39,13 +39,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {videoError || !embedUrl ? (
-        // Mobile background image or video fallback
+        // Fallback background image solo in caso di errore
         <div
           className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${mobileImageUrl})` }}
         />
       ) : (
-        // Video background che copre completamente la superficie
+        // Video background per desktop e mobile - sempre attivo
         <>
           <div className="absolute inset-0 w-full h-full overflow-hidden">
             <iframe
@@ -61,10 +61,14 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '300vw',
-                height: '300vh',
+                // Mobile: stili ottimizzati per schermo piccolo
+                width: isMobile ? '400vw' : '300vw',
+                height: isMobile ? '400vh' : '300vh',
                 transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                // Forza il video a coprire tutto lo schermo mobile
+                minWidth: isMobile ? '100vw' : 'auto',
+                minHeight: isMobile ? '100vh' : 'auto'
               }}
               title="YouTube video background"
             />
