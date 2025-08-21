@@ -106,20 +106,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 left: '50%',
                 width: `${videoSize.width}px`,
                 height: `${videoSize.height}px`,
-                transform: `translate(-50%, -50%)${isMobile ? ' scale(1.28)' : ''}`,
+                transform: `translate(-50%, -50%)${isMobile ? ' scale(1.6)' : ''}`,
                 willChange: 'transform',
                 pointerEvents: 'none'
               }}
               title="YouTube video background"
             />
           </div>
-          
-          {/* Overlay per nascondere elementi YouTube residui */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
-            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
-          </div>
-          
           {/* Loading state overlay cinematografico */}
           {!isVideoReady && !videoError && (
             <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
