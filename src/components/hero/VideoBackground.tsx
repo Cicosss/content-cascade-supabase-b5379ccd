@@ -106,7 +106,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 left: '50%',
                 width: `${videoSize.width}px`,
                 height: `${videoSize.height}px`,
-                transform: 'translate(-50%, -50%)',
+                transform: `translate(-50%, -50%)${isMobile ? ' scale(1.28)' : ''}`,
+                willChange: 'transform',
                 pointerEvents: 'none'
               }}
               title="YouTube video background"
