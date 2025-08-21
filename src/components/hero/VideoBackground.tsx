@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -14,6 +14,37 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 }) => {
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
+
+  // Calcola le dimensioni dell'iframe per coprire interamente il viewport (rapporto 16:9)
+  const VIDEO_RATIO = 16 / 9;
+  const [videoSize, setVideoSize] = useState<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+
+  const computeVideoSize = () => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const viewportRatio = vw / vh;
+
+    if (viewportRatio > VIDEO_RATIO) {
+      // Viewport più largo del video → usa larghezza come base
+      const width = vw;
+      const height = vw / VIDEO_RATIO;
+      setVideoSize({ width, height });
+    } else {
+      // Viewport più alto del video → usa altezza come base
+      const height = vh;
+      const width = vh * VIDEO_RATIO;
+      setVideoSize({ width, height });
+    }
+  };
+
+  useEffect(() => {
+    computeVideoSize();
+    window.addEventListener('resize', computeVideoSize);
+    return () => window.removeEventListener('resize', computeVideoSize);
+  }, []);
 
   // Estrae l'ID del video da YouTube URL
   const getYouTubeVideoId = (url: string) => {
@@ -61,14 +92,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                // Mobile: stili ottimizzati per schermo piccolo
-                width: isMobile ? '400vw' : '300vw',
-                height: isMobile ? '400vh' : '300vh',
+                width: `${videoSize.width}px`,
+                height: `${videoSize.height}px`,
                 transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none',
-                // Forza il video a coprire tutto lo schermo mobile
-                minWidth: isMobile ? '100vw' : 'auto',
-                minHeight: isMobile ? '100vh' : 'auto'
+                pointerEvents: 'none'
               }}
               title="YouTube video background"
             />
