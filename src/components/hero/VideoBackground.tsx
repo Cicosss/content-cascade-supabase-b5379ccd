@@ -77,7 +77,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div ref={containerRef} className={isMobile ? "fixed top-0 left-0 w-screen h-screen z-0 overflow-hidden" : "absolute inset-0 w-full h-full overflow-hidden"}>
+    <div 
+      ref={isMobile ? undefined : containerRef} 
+      className={isMobile ? "fixed top-0 left-0 w-screen h-screen z-0 overflow-hidden" : "absolute inset-0 w-full h-full overflow-hidden"}
+    >
       {videoError || !embedUrl ? (
         // Fallback background image solo in caso di errore
         <div
