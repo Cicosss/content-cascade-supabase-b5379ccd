@@ -92,7 +92,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <iframe
             src={embedUrl}
-            className="absolute inset-0"
+            className="absolute"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             referrerPolicy="strict-origin-when-cross-origin"
