@@ -82,6 +82,13 @@ html, body {
   }
 }
 
+/* Hero unclamp utility to bypass global max-width/height clamp in Hero */
+.hero-unclamp,
+.hero-unclamp * {
+  max-width: none !important;
+  max-height: none !important;
+}
+
 /* Z-Index Management - Global hierarchy to prevent conflicts */
 :root {
   /* Define z-index CSS custom properties for consistency */

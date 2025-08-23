@@ -42,7 +42,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className={`absolute ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} w-full h-full overflow-hidden bg-slate-900`}>
+    <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} w-full h-full overflow-hidden bg-slate-900`}>
       {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
@@ -52,7 +52,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Video background che copre completamente la superficie
         <>
-          <div className={`absolute ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
+          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
             <iframe
               src={embedUrl}
               className="absolute inset-0"
@@ -68,6 +68,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 left: '50%',
                 width: isMobile ? '400vw' : '300vw',
                 height: isMobile ? `${(viewportHeight || window.innerHeight) + 64}px` : '300vh',
+                maxWidth: 'none',
+                maxHeight: 'none',
                 transform: isMobile ? 'translate(-48%, -51%) scale(1.08)' : 'translate(-50%, -50%) scale(1.05)',
                 pointerEvents: 'none',
                 border: 0,
@@ -82,7 +84,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           </div>
           
           {/* Overlay per nascondere elementi YouTube residui */}
-          <div className={`absolute ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} pointer-events-none`}>
+          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} pointer-events-none`}>
             <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
           </div>
