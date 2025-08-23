@@ -156,19 +156,28 @@
     overflow-y: auto;
   }
 
-  /* Hide debug overlays on mobile */
+  /* Hide debug overlays on mobile - but protect hamburger menu */
   .cache-stats-overlay,
   .api-health-monitor,
   [data-testid="cache-stats"],
   [data-testid="api-monitor"],
-  [data-testid],
-  [class*="debug"],
+  [class*="debug"]:not([data-mobile-menu]),
   [class*="stats"],
   [class*="monitor"],
   [class*="health"],
   [class*="recovery"],
   [class*="metrics"] {
     display: none !important;
+  }
+  
+  /* Protect hamburger menu and mobile navigation */
+  [data-mobile-menu],
+  [data-mobile-menu] *,
+  .mobile-menu-trigger,
+  .mobile-menu-trigger * {
+    display: revert !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
   }
   
   /* Optimize map container for mobile touch */

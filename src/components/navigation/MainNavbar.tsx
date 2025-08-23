@@ -202,8 +202,14 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/10"
+                  size="sm" 
+                  className="mobile-menu-trigger text-white hover:bg-white/10 relative z-[60] min-h-[48px] min-w-[48px]"
+                  data-mobile-menu="true"
+                  style={{ 
+                    zIndex: Z_INDEX.navbar + 20,
+                    touchAction: 'manipulation',
+                    pointerEvents: 'auto'
+                  }}
                 >
                   <Menu className="h-6 w-6" />
                 </Button>

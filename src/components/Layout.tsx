@@ -16,8 +16,21 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   
   const shouldShowSidebar = !loading && user;
+  
+  // Listen for mobile menu changes to hide MobileTouchNav
+  React.useEffect(() => {
+    const handleMobileMenuChange = (event: CustomEvent) => {
+      setIsMobileMenuOpen(event.detail.open);
+    };
+    
+    window.addEventListener('mobileMenuChange', handleMobileMenuChange as EventListener);
+    return () => {
+      window.removeEventListener('mobileMenuChange', handleMobileMenuChange as EventListener);
+    };
+  }, []);
   
   if (shouldShowSidebar) {
     return (
@@ -35,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Footer />
                   </SidebarInset>
                 </div>
-                <MobileTouchNav />
+                <MobileTouchNav isVisible={!isMobileMenuOpen} />
               </div>
           </SidebarProvider>
         </MenuStateProvider>
@@ -51,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {children}
         </main>
         <Footer />
-        <MobileTouchNav />
+        <MobileTouchNav isVisible={!isMobileMenuOpen} />
       </div>
     </LocationProvider>
   );
