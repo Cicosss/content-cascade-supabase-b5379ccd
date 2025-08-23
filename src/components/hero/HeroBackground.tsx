@@ -8,7 +8,7 @@ const HeroBackground: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute -inset-[2px] overflow-hidden">
       {/* Video/Image Background */}
       <VideoBackground
         videoUrl={HERO_VIDEO_URL}
@@ -18,7 +18,7 @@ const HeroBackground: React.FC = () => {
       />
       
       {/* Static overlay for text readability - removed dynamic hover logic */}
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute -inset-[2px] bg-black/20 pointer-events-none" />
     </div>
   );
 };
