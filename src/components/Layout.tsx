@@ -8,6 +8,7 @@ import { MenuStateProvider } from '@/contexts/MenuStateContext';
 import { MobileTouchNav } from './navigation/MobileTouchNav';
 import AppSidebar from './AppSidebar';
 import Footer from './Footer';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,9 +17,10 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   
-  const shouldShowSidebar = !loading && user;
+  const shouldShowSidebar = !loading && user && !isMobile;
   
   // Listen for mobile menu changes to hide MobileTouchNav
   React.useEffect(() => {
