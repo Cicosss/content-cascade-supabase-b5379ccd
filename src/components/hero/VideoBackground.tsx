@@ -42,7 +42,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute -inset-[8px] w-full h-full overflow-hidden bg-slate-900">
+    <div className={`absolute ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} w-full h-full overflow-hidden bg-slate-900`}>
       {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
@@ -52,7 +52,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Video background che copre completamente la superficie
         <>
-          <div className="absolute -inset-[8px] overflow-hidden bg-slate-900">
+          <div className={`absolute ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
             <iframe
               src={embedUrl}
               className="absolute inset-0"
@@ -66,11 +66,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: isMobile ? '320vw' : '300vw',
-                height: isMobile ? `${(viewportHeight || window.innerHeight) + 16}px` : '300vh',
-                transform: 'translate(-50%, -50%) scale(1.02)',
+                width: isMobile ? '350vw' : '300vw',
+                height: isMobile ? `${(viewportHeight || window.innerHeight) + 32}px` : '300vh',
+                transform: 'translate(-50%, -50%) scale(1.05)',
                 pointerEvents: 'none',
                 border: 0,
+                margin: 0,
+                padding: 0,
                 display: 'block',
                 willChange: 'transform',
                 backfaceVisibility: 'hidden'
@@ -80,7 +82,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           </div>
           
           {/* Overlay per nascondere elementi YouTube residui */}
-          <div className="absolute -inset-[8px] pointer-events-none">
+          <div className={`absolute ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} pointer-events-none`}>
             <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
           </div>
