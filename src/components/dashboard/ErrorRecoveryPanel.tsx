@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertTriangle, RefreshCw, CheckCircle, Clock, X } from 'lucide-react';
 import { errorLogger, ErrorLogEntry } from '@/services/errorLogger';
 import { APIErrorType } from '@/types/api';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 
 export const ErrorRecoveryPanel: React.FC = () => {
   const [errors, setErrors] = useState<ErrorLogEntry[]>([]);

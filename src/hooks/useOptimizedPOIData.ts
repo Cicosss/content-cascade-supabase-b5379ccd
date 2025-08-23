@@ -3,7 +3,7 @@ import { POI, POIFilters } from '@/types/poi';
 import { POIDataService } from '@/services/poiDataService';
 import { apiClient } from '@/services/apiClient';
 import { APIErrorType } from '@/types/api';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { devLog } from '@/utils/devLogger';
 
 export const useOptimizedPOIData = () => {

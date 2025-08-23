@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { ProfileHeader } from '@/components/profile/ProfileHeader';
 import { ProfileAvatarSection } from '@/components/profile/ProfileAvatarSection';
 import { ProfileForm } from '@/components/profile/ProfileForm';

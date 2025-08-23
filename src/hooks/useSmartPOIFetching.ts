@@ -3,7 +3,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { POI, POIFilters } from '@/types/poi';
 import { POIDataService } from '@/services/poiDataService';
 import { geographicCache } from '@/services/geographicCacheService';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { devLog } from '@/utils/devLogger';
 
 interface UseSmartPOIFetchingProps {

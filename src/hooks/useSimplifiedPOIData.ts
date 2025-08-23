@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { POI, POIFilters } from '@/types/poi';
 import { simplifiedPOIService } from '@/services/simplifiedPOIService';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 
 interface UseSimplifiedPOIDataProps {
   initialFilters: POIFilters;

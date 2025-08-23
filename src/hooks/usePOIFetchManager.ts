@@ -2,7 +2,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { POI, POIFilters } from '@/types/poi';
 import { useOptimizedPOIData } from './useOptimizedPOIData';
-import { useToast } from './use-toast';
+import { useToast } from '@/components/ui/use-toast';
 
 interface UsePOIFetchManagerProps {
   initialFilters: POIFilters;

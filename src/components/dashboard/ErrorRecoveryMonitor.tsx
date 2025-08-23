@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { errorRecoveryService } from '@/services/errorRecoveryService';
 import { enhancedApiClient } from '@/services/enhancedApiClient';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 
 export const ErrorRecoveryMonitor: React.FC = () => {
   const [stats, setStats] = useState<any>(null);

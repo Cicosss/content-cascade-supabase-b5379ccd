@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { FormData } from './usePOIFormData';
 
