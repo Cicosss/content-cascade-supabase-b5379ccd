@@ -92,6 +92,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 size="navbar-version"
                 theme="dark"
                 linkable={true}
+                className="md:translate-y-[6px] lg:translate-y-[10px]"
               />
             </div>
           </div>
