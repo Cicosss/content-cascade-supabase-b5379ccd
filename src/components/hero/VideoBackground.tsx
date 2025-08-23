@@ -17,12 +17,11 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  // Estrae l'ID del video da YouTube URL
+  // Estrae l'ID del video da YouTube URL (supporta anche Shorts)
   const getYouTubeVideoId = (url: string) => {
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\n?#]+)/);
     return match ? match[1] : null;
   };
-
   // Scegli il video appropriato per la piattaforma
   const currentVideoUrl = isMobile ? mobileVideoUrl : videoUrl;
   const videoId = getYouTubeVideoId(currentVideoUrl);
