@@ -9,7 +9,7 @@ const InteractiveHeroSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="relative w-full h-[calc(100svh+5rem)] md:h-screen overflow-visible -mt-20">
+    <div className="relative w-full h-[100svh] md:h-screen overflow-visible">
       {/* Dynamic Background with Video/Image */}
       <HeroBackground />
 
