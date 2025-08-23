@@ -12,10 +12,9 @@ const NavigationMenu = React.forwardRef<
   <NavigationMenuPrimitive.Root
     ref={ref}
     className={cn(
-      "relative z-dropdown flex max-w-max flex-1 items-center justify-center",
+      "relative z-navigation flex max-w-max flex-1 items-center justify-center",
       className
     )}
-    style={{ zIndex: 9999 }}
     {...props}
   >
     {children}
@@ -70,7 +69,7 @@ const NavigationMenuContent = React.forwardRef<
   <NavigationMenuPrimitive.Content
     ref={ref}
       className={cn(
-        "left-0 top-full w-full z-dropdown navigation-menu-content data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:top-full md:w-auto pointer-events-auto ",
+        "left-0 top-full w-full z-navigation navigation-menu-content data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 md:absolute md:top-full md:w-auto pointer-events-auto ",
         className
       )}
     {...props}
@@ -84,14 +83,13 @@ const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Viewport>
 >(({ className, ...props }, ref) => (
-  <div className={cn("absolute left-0 top-full z-dropdown flex justify-center pointer-events-auto")} style={{ zIndex: 9999 }}> 
+  <div className={cn("absolute left-0 top-full z-navigation flex justify-center pointer-events-auto")}> 
     <NavigationMenuPrimitive.Viewport
       className={cn(
         "origin-top-center relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-visible rounded-md border bg-slate-900 text-white shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]",
         className
       )}
       ref={ref}
-      style={{ zIndex: 9999 }}
       {...props}
     />
   </div>

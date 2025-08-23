@@ -17,8 +17,8 @@ export const Z_INDEX = {
   // Overlays and modals
   sheet: 9999, // High z-index for mobile menu over Google Maps
   dialog: 50,
-  dropdown: 51,
-  navigation: 52,
+  navigation: 51,
+  dropdown: 52,
   mobileTouchNav: 53,
   
   // Notifications and alerts
