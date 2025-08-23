@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
+  mobileVideoUrl: string;
   mobileImageUrl: string;
   isMobile: boolean;
 }
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ 
-  videoUrl, 
+  videoUrl,
+  mobileVideoUrl, 
   mobileImageUrl, 
   isMobile 
 }) => {
@@ -21,7 +23,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     return match ? match[1] : null;
   };
 
-  const videoId = getYouTubeVideoId(videoUrl);
+  // Scegli il video appropriato per la piattaforma
+  const currentVideoUrl = isMobile ? mobileVideoUrl : videoUrl;
+  const videoId = getYouTubeVideoId(currentVideoUrl);
   
   // URL embed ottimizzato per autoplay in loop
   const embedUrl = videoId ? 
@@ -61,8 +65,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '300vw',
-                height: '300vh',
+                width: isMobile ? '100vw' : '300vw',
+                height: isMobile ? '100vh' : '300vh',
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'none'
               }}
