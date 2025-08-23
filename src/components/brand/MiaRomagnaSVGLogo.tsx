@@ -41,7 +41,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
   };
 
   const { main: mainFontSize, tagline: taglineFontSize } = fontSizes[size];
-  const verticalNudge = size === 'navbar-version' ? 8 : 0;
+  const verticalNudge = size === 'navbar-version' ? 14 : 0;
 
   const content = (
     <svg 
