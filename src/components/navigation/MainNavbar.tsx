@@ -87,7 +87,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             )}
             
             {/* Logo Section */}
-            <div className="flex-shrink-0 md:translate-y-[8px] lg:translate-y-[12px]">
+            <div className="flex-shrink-0">
               <MiaRomagnaSVGLogo 
                 size="navbar-version"
                 theme="dark"

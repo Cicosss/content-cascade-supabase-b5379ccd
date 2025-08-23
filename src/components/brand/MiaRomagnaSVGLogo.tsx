@@ -41,6 +41,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
   };
 
   const { main: mainFontSize, tagline: taglineFontSize } = fontSizes[size];
+  const verticalNudge = size === 'navbar-version' ? 8 : 0;
 
   const content = (
     <svg 
@@ -100,7 +101,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
       {/* Testo principale "Mia Romagna" */}
       <text 
         x={width/2} 
-        y={height * 0.4} 
+        y={height * 0.4 + verticalNudge} 
         textAnchor="middle" 
         style={{
           fontFamily: 'var(--font-serif)',
@@ -117,7 +118,7 @@ export const MiaRomagnaSVGLogo: React.FC<MiaRomagnaSVGLogoProps> = ({
       {/* Slogan */}
       <text 
         x={width/2} 
-        y={height * 0.7} 
+        y={height * 0.7 + verticalNudge} 
         textAnchor="middle" 
         style={{
           fontFamily: 'var(--font-sans)',
