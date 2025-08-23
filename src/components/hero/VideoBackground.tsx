@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useViewportSize } from '@/hooks/useViewportSize';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -16,6 +17,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 }) => {
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const { height: viewportHeight } = useViewportSize(isMobile);
 
   // Estrae l'ID del video da YouTube URL (supporta anche Shorts)
   const getYouTubeVideoId = (url: string) => {
@@ -40,7 +42,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute -inset-[2px] w-full h-full overflow-hidden">
+    <div className="absolute -inset-[8px] w-full h-full overflow-hidden bg-slate-900">
       {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
@@ -50,7 +52,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Video background che copre completamente la superficie
         <>
-          <div className="absolute -inset-[2px] overflow-hidden">
+          <div className="absolute -inset-[8px] overflow-hidden bg-slate-900">
             <iframe
               src={embedUrl}
               className="absolute inset-0"
@@ -64,19 +66,21 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: isMobile ? '240vw' : '300vw',
-                height: isMobile ? '120svh' : '300vh',
-                transform: 'translate(-50%, -50%)',
+                width: isMobile ? '320vw' : '300vw',
+                height: isMobile ? `${(viewportHeight || window.innerHeight) + 16}px` : '300vh',
+                transform: 'translate(-50%, -50%) scale(1.02)',
                 pointerEvents: 'none',
                 border: 0,
-                display: 'block'
+                display: 'block',
+                willChange: 'transform',
+                backfaceVisibility: 'hidden'
               }}
               title="YouTube video background"
             />
           </div>
           
           {/* Overlay per nascondere elementi YouTube residui */}
-          <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -inset-[8px] pointer-events-none">
             <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
             <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
           </div>
