@@ -15,8 +15,8 @@ const InteractiveHeroSection = () => {
 
       {/* Content Overlay - Restructured */}
       <div className="relative z-10 h-full flex flex-col text-white pt-20">
-        {/* Brand Section - Left aligned and vertically centered (solo desktop) */}
-        <div className="flex-1 flex items-center justify-start">
+        {/* Brand Section - Desktop aligned with hamburger menu, mobile centered */}
+        <div className={`flex-1 flex justify-start ${isMobile ? 'items-center' : 'items-start pt-6'}`}>
           <HeroBrandSection />
         </div>
         
