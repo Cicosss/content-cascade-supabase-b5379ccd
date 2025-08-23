@@ -40,7 +40,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden">
+    <div className="absolute -inset-[2px] w-full h-full overflow-hidden">
       {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
@@ -50,7 +50,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Video background che copre completamente la superficie
         <>
-          <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <div className="absolute -inset-[2px] overflow-hidden">
             <iframe
               src={embedUrl}
               className="absolute inset-0"
@@ -67,7 +67,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 width: isMobile ? '240vw' : '300vw',
                 height: isMobile ? '120svh' : '300vh',
                 transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                border: 0,
+                display: 'block'
               }}
               title="YouTube video background"
             />
