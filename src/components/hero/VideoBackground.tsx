@@ -62,6 +62,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         <>
           <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
             <iframe
+              key={videoId || (isMobile ? 'mobile' : 'desktop')}
               src={embedUrl}
               className="absolute inset-0"
               frameBorder="0"
@@ -87,7 +88,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 willChange: 'transform',
                 backfaceVisibility: 'hidden'
               }}
-              title="YouTube video background"
+              title={`YouTube video background - ${isMobile ? 'Mobile' : 'Desktop'}`}
             />
           </div>
           
