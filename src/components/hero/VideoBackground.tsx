@@ -24,9 +24,17 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\n?#]+)/);
     return match ? match[1] : null;
   };
-  // Scegli il video appropriato per la piattaforma
-  const currentVideoUrl = isMobile ? mobileVideoUrl : videoUrl;
-  const videoId = getYouTubeVideoId(currentVideoUrl);
+
+  // Selezione esplicita e sicura del video per desktop/mobile
+  const selectedVideoUrl = isMobile ? mobileVideoUrl : videoUrl;
+  const videoId = getYouTubeVideoId(selectedVideoUrl);
+  
+  // Debug logging per verificare la selezione corretta
+  React.useEffect(() => {
+    console.log('VideoBackground - Device type:', isMobile ? 'Mobile' : 'Desktop');
+    console.log('VideoBackground - Selected URL:', selectedVideoUrl);
+    console.log('VideoBackground - Video ID:', videoId);
+  }, [isMobile, selectedVideoUrl, videoId]);
   
   // URL embed ottimizzato per autoplay in loop
   const embedUrl = videoId ? 
