@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft, MessageSquare, LayoutDashboard, Trophy, Grid3X3, Droplets, CloudSun, Camera, Zap } from 'lucide-react';
+import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft, MessageSquare, LayoutDashboard, Trophy, Grid3X3, Droplets, CloudSun, Camera, Zap, Heart, Shield } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
+import { useNavigation } from '@/hooks/useNavigation';
 import { MiaRomagnaSVGLogo } from '@/components/brand/MiaRomagnaSVGLogo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
@@ -43,8 +46,19 @@ interface MainNavbarProps {
 const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { profile } = useUserProfile();
+  const { logoutAdmin, isAdmin } = useAdminAuth();
+  const { handleNavigation } = useNavigation();
   const { handleGuestClick } = useGuestRedirect();
   const { isScrolled } = useScrollState({ threshold: 50 });
+
+  const handleSignOut = async () => {
+    await signOut();
+    if (isAdmin) {
+      logoutAdmin();
+    }
+    handleNavigation('/');
+  };
 
   // Notify parent component and broadcast state changes
   const handleMobileMenuChange = (open: boolean) => {
@@ -136,40 +150,74 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.user_metadata?.avatar_url} alt={user.email} />
-                      <AvatarFallback className="bg-primary text-primary-foreground">
-                        {user.email?.charAt(0).toUpperCase()}
+                  <Button 
+                    variant="ghost" 
+                    className="flex items-center space-x-2 px-3 py-2 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-600/50 hover:border-orange-400/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-slate-200 hover:text-orange-400"
+                  >
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={profile?.avatar_url || user.user_metadata?.avatar_url} alt="Avatar" />
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                        <User className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
+                    <span className="typography-small hidden sm:block font-medium">
+                      {profile?.first_name || user.user_metadata?.first_name || user.email?.split('@')[0]}
+                    </span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="typography-small font-medium">{user.user_metadata?.full_name || user.email}</p>
-                      <p className="w-[200px] truncate typography-caption text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile">
-                      <User className="mr-2 h-4 w-4" />
-                      Profilo
-                    </Link>
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-48 rounded-xl border border-slate-600/50 shadow-xl bg-slate-900 backdrop-blur-sm"
+                  style={{ zIndex: Z_INDEX.dropdown }}
+                >
+                  <DropdownMenuItem 
+                    onClick={() => handleNavigation('/dashboard')}
+                    className="typography-small rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
+                  >
+                    <LayoutDashboard className="h-4 w-4 mr-3 text-blue-200" />
+                    Dashboard
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Impostazioni
-                    </Link>
+                  <DropdownMenuItem 
+                    onClick={() => handleNavigation('/profile')}
+                    className="typography-small rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
+                  >
+                    <Settings className="h-4 w-4 mr-3 text-emerald-200" />
+                    Il Mio Profilo
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()}>
-                    <LogOut className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem 
+                    onClick={() => handleNavigation('/favorites')}
+                    className="typography-small rounded-lg hover:bg-white/10 cursor-pointer text-white focus:bg-white/10 focus:text-white"
+                  >
+                    <Heart className="h-4 w-4 mr-3 text-red-200" />
+                    Preferiti
+                  </DropdownMenuItem>
+                  
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator className="bg-white/20" />
+                      <DropdownMenuItem 
+                        onClick={() => handleNavigation('/admin')}
+                        className="typography-small rounded-lg hover:bg-orange-500/20 cursor-pointer text-orange-200 hover:text-orange-100 focus:bg-orange-500/20 focus:text-orange-100"
+                      >
+                        <Shield className="h-4 w-4 mr-3" />
+                        Pannello Admin
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={logoutAdmin}
+                        className="typography-small rounded-lg hover:bg-yellow-500/20 cursor-pointer text-yellow-200 hover:text-yellow-100 focus:bg-yellow-500/20 focus:text-yellow-100"
+                      >
+                        <Shield className="h-4 w-4 mr-3" />
+                        Esci da Admin
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  
+                  <DropdownMenuSeparator className="bg-white/20" />
+                  <DropdownMenuItem 
+                    onClick={handleSignOut}
+                    className="typography-small rounded-lg hover:bg-red-500/20 text-red-200 hover:text-red-100 cursor-pointer focus:bg-red-500/20 focus:text-red-100"
+                  >
+                    <LogOut className="h-4 w-4 mr-3" />
                     Esci
                   </DropdownMenuItem>
                 </DropdownMenuContent>
