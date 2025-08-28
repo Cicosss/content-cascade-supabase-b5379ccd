@@ -31,7 +31,7 @@ const UserProfileView = React.memo<UserProfileViewProps>(({ profile, onSignOut }
 
   if (isCollapsed) {
     return (
-      <div className="flex justify-center p-1 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      <div className="flex justify-center p-1 rounded-lg hover:bg-muted cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         {...buttonProps}
       >
         <ProfileAvatarView size="sm" profile={profile} />
@@ -40,15 +40,15 @@ const UserProfileView = React.memo<UserProfileViewProps>(({ profile, onSignOut }
   }
 
   return (
-    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+    <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       {...buttonProps}
     >
       <ProfileAvatarView size="md" profile={profile} />
       <div className="flex-1 min-w-0">
-        <p className="typography-small font-bold text-slate-900 truncate">
+        <p className="typography-small font-bold text-foreground truncate">
           {profile?.first_name || 'giulia'}
         </p>
-        <p className="typography-caption text-slate-500 truncate">
+        <p className="typography-caption text-muted-foreground truncate">
           Promotore Bronzo
         </p>
       </div>
@@ -59,7 +59,7 @@ const UserProfileView = React.memo<UserProfileViewProps>(({ profile, onSignOut }
           e.stopPropagation();
           onSignOut();
         }}
-        className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600 transition-colors"
+        className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive transition-colors"
         aria-label="Logout"
       >
         <LogOut className="h-4 w-4" strokeWidth={1.5} />

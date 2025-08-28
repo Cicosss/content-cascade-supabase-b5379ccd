@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { MENU_CONFIG, MenuSection } from '@/config/menuConfig';
+import { SidebarErrorBoundary } from '@/components/sidebar/ErrorBoundary';
 
 interface MenuStateContextType {
   // Data
@@ -74,8 +75,10 @@ export const MenuStateProvider: React.FC<MenuStateProviderProps> = ({ children }
   };
 
   return (
-    <MenuStateContext.Provider value={value}>
-      {children}
-    </MenuStateContext.Provider>
+    <SidebarErrorBoundary>
+      <MenuStateContext.Provider value={value}>
+        {children}
+      </MenuStateContext.Provider>
+    </SidebarErrorBoundary>
   );
 };

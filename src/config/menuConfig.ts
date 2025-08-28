@@ -29,17 +29,7 @@ export interface MenuSection {
 }
 
 export const MENU_CONFIG: MenuSection[] = [
-  {
-    id: 'main',
-    items: [
-      {
-        id: 'messages',
-        title: "Messaggi",
-        url: "/dashboard",
-        icon: MessageSquare,
-      }
-    ]
-  },
+  // Main section removed to eliminate duplicate /dashboard route
   {
     id: 'special',
     items: [
