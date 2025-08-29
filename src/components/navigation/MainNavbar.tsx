@@ -227,7 +227,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-white text-white hover:bg-white hover:text-slate-900"
+                  className="border-white text-white hover:bg-white hover:text-slate-900 typography-small"
                   asChild
                 >
                   <Link to="/auth">Accedi</Link>
@@ -235,7 +235,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10"
+                  className="text-white hover:bg-white/10 typography-small"
                   asChild
                 >
                   <Link to="/auth">Registrati</Link>
@@ -282,7 +282,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                       >
                         <Zap className="h-5 w-5" />
                         <span className="typography-small font-medium">Oggi in Romagna</span>
-                        <span className="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold">7</span>
+                        <span className="bg-yellow-500 text-white px-2 py-1 rounded-full typography-caption font-medium">7</span>
                       </Link>
                     </div>
                   )}
