@@ -15,7 +15,7 @@ const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLoca
   const { userLocation, locationError } = useLocation();
   
   return (
-    <div className={`absolute z-10 flex flex-col space-y-2 ${isMobile ? 'bottom-4 left-4' : 'bottom-4 left-4'}`}>
+    <div className={`absolute z-10 flex flex-col space-y-2 ${isMobile ? 'bottom-4 right-4' : 'bottom-4 right-4'}`}>
       {/* Bottone principale per centrare sulla posizione utente */}
       <Button
         size={isMobile ? "sm" : "sm"}
