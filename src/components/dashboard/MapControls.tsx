@@ -15,27 +15,29 @@ const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLoca
   const { userLocation, locationError } = useLocation();
   
   return (
-    <div className={`absolute z-10 flex flex-col space-y-2 ${isMobile ? 'bottom-4 right-4' : 'bottom-4 right-4'}`}>
-      {/* Bottone principale per centrare sulla posizione utente */}
-      <Button
-        size={isMobile ? "sm" : "sm"}
-        variant="secondary"
-        onClick={onCenterOnUser}
-        disabled={isLoadingLocation}
-        className={`glassmorphism-sidebar hover:bg-white/20 flex items-center gap-2 transition-all duration-300 ${isMobile ? 'h-8 w-8 p-0' : ''}`}
-        title="Trova la mia posizione"
-      >
-        {isLoadingLocation ? (
-          <Loader2 className={`${isMobile ? 'h-5 w-5' : 'h-4 w-4'} animate-spin`} />
-        ) : (
-          <Navigation className={`${isMobile ? 'h-5 w-5' : 'h-4 w-4'}`} />
-        )}
-        {!isMobile && <span className="hidden sm:inline text-xs font-medium">La mia posizione</span>}
-      </Button>
+    <>
+      {/* Bottone principale per centrare sulla posizione utente - In basso a destra */}
+      <div className={`absolute z-10 ${isMobile ? 'bottom-4 right-4' : 'bottom-4 right-4'}`}>
+        <Button
+          size={isMobile ? "sm" : "sm"}
+          variant="secondary"
+          onClick={onCenterOnUser}
+          disabled={isLoadingLocation}
+          className={`glassmorphism-sidebar hover:bg-white/20 flex items-center gap-2 transition-all duration-300 ${isMobile ? 'h-8 w-8 p-0' : ''}`}
+          title="Trova la mia posizione"
+        >
+          {isLoadingLocation ? (
+            <Loader2 className={`${isMobile ? 'h-5 w-5' : 'h-4 w-4'} animate-spin`} />
+          ) : (
+            <Navigation className={`${isMobile ? 'h-5 w-5' : 'h-4 w-4'}`} />
+          )}
+          {!isMobile && <span className="hidden sm:inline text-xs font-medium">La mia posizione</span>}
+        </Button>
+      </div>
 
-      {/* Indicatore stato GPS - Solo desktop */}
+      {/* Indicatore stato GPS - Posizionato in basso a sinistra */}
       {!isMobile && (userLocation || locationError) && (
-        <div className="bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 text-xs">
+        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg px-3 py-2 text-xs z-10">
           {userLocation ? (
             <div className="flex items-center gap-2 text-green-600">
               <CheckCircle2 className="h-3 w-3" />
@@ -52,7 +54,7 @@ const MapControls: React.FC<MapControlsProps> = ({ onCenterOnUser, isLoadingLoca
           ) : null}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
