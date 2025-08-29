@@ -77,15 +77,13 @@ const SimpleInteractiveMap: React.FC<SimpleInteractiveMapProps> = memo(({ filter
         isMobile={isMobile}
       />
       
-      {/* Map Controls - Mobile optimized */}
-      <div className={`map-controls-overlay ${isMobile ? 'mobile-controls' : ''}`}>
-        <MapControls 
-          onCenterOnUser={handleCenterOnUser}
-          isLoadingLocation={isLoadingLocation}
-          isUserMarkerVisible={isUserMarkerVisible}
-          isMobile={isMobile}
-        />
-      </div>
+      {/* Map Controls - Desktop & Mobile */}
+      <MapControls 
+        onCenterOnUser={handleCenterOnUser}
+        isLoadingLocation={isLoadingLocation}
+        isUserMarkerVisible={isUserMarkerVisible}
+        isMobile={isMobile}
+      />
 
       {/* Cache Stats Overlay (development only - hidden on mobile) */}
       {!isMobile && <CacheStatsOverlay stats={cacheStats} />}
