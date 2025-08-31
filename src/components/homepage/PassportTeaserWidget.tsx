@@ -54,9 +54,9 @@ const PassportTeaserWidget = () => {
             
             {/* Left Column - Content */}
             <div className="space-y-6">
-              <h3 className="typography-h1 text-white">
+              <h1 className="typography-h1 text-white">
                 La Tua Avventura ti Attende
-              </h3>
+              </h1>
               
               <p className="typography-subtitle text-white/80">
                 Ogni luogo che visiti diventa un timbro sul tuo passaporto digitale. 
@@ -159,7 +159,7 @@ const PassportTeaserWidget = () => {
 
                     {/* Badge Name with enhanced typography */}
                     <div className="mt-3 text-center">
-                    <span className={`
+                      <span className={`
                         typography-caption font-medium transition-all duration-300
                         ${badge.unlocked 
                           ? 'text-white group-hover:text-amber-200' 
