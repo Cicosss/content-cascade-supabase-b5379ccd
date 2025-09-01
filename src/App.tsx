@@ -34,6 +34,7 @@ const AppContent = () => {
   const location = useLocation();
   const isAuthPage = location.pathname === '/auth';
   const isHomepage = location.pathname === '/';
+  const isCinematic = isHomepage || location.pathname === '/respiro-del-mare';
 
   return (
     <>
@@ -41,7 +42,7 @@ const AppContent = () => {
       {/* Fixed Global Navbar - hidden on auth page */}
       {!isAuthPage && <MainNavbar />}
       {/* Main Content with conditional top padding for fixed navbar */}
-      <div className={isAuthPage ? '' : (isHomepage ? '' : 'pt-16 md:pt-20 lg:pt-24')}>
+      <div className={isAuthPage ? '' : (isCinematic ? '' : 'pt-16 md:pt-20 lg:pt-24')}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
