@@ -117,24 +117,24 @@ const YouTubeVideoBackground: React.FC<YouTubeVideoBackgroundProps> = ({ videoId
   }, [videoId]);
 
   return (
-    <section className="relative hero-unclamp -inset-[8px] md:-inset-[12px] h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+    <section className="relative hero-unclamp -inset-[16px] md:-inset-[20px] h-screen flex items-center justify-center overflow-hidden bg-slate-900">
       {/* Video Background Container - Cinematographic Effect */}
-      <div className="absolute hero-unclamp -inset-[8px] md:-inset-[12px] w-full h-full">
+      <div className="absolute hero-unclamp -inset-[16px] md:-inset-[20px] w-full h-full overflow-hidden">
         <div
           ref={containerRef}
-          className="absolute top-1/2 left-1/2 w-[120vw] h-[67.5vw] min-h-[120vh] min-w-[213.33vh] -translate-x-1/2 -translate-y-1/2 scale-110"
+          className="absolute top-1/2 left-1/2 w-[140vw] h-[78.75vw] min-h-[140vh] min-w-[248.89vh] -translate-x-1/2 -translate-y-1/2 scale-125"
           id="youtube-background-video"
         />
         {/* Enhanced color overlay for better text contrast and cinematographic feel */}
-        <div className="absolute hero-unclamp -inset-[8px] md:-inset-[12px] bg-gradient-to-b from-blue-900/60 via-blue-900/40 to-slate-900/80" />
+        <div className="absolute hero-unclamp -inset-[16px] md:-inset-[20px] bg-gradient-to-b from-blue-900/60 via-blue-900/40 to-slate-900/80" />
         
         {/* YouTube UI Elements Masking Overlay */}
-        <div className="absolute hero-unclamp -inset-[8px] md:-inset-[12px] pointer-events-none z-20">
+        <div className="absolute hero-unclamp -inset-[16px] md:-inset-[20px] pointer-events-none z-20 overflow-hidden">
           {/* Hide YouTube title and end screen suggestions */}
-          <div className="absolute top-0 left-0 right-0 h-20 bg-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-transparent" />
-          <div className="absolute top-0 right-0 w-32 h-16 bg-transparent" />
-          <div className="absolute bottom-0 right-0 w-40 h-20 bg-transparent" />
+          <div className="absolute -top-8 -left-8 -right-8 h-32 bg-transparent" />
+          <div className="absolute -bottom-8 -left-8 -right-8 h-32 bg-transparent" />
+          <div className="absolute -top-8 -right-8 w-40 h-24 bg-transparent" />
+          <div className="absolute -bottom-8 -right-8 w-48 h-32 bg-transparent" />
           
           {/* Complete overlay to ensure no YouTube branding shows */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/20" />
