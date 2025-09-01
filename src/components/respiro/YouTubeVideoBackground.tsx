@@ -117,19 +117,19 @@ const YouTubeVideoBackground: React.FC<YouTubeVideoBackgroundProps> = ({ videoId
   }, [videoId]);
 
   return (
-    <section className="relative hero-unclamp -inset-[16px] md:-inset-[20px] h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+    <section className="relative hero-unclamp -inset-[24px] md:-inset-[28px] h-screen flex items-center justify-center overflow-hidden bg-slate-900">
       {/* Video Background Container - Cinematographic Effect */}
-      <div className="absolute hero-unclamp -inset-[16px] md:-inset-[20px] w-full h-full overflow-hidden">
+      <div className="absolute hero-unclamp -inset-[24px] md:-inset-[28px] w-full h-full overflow-hidden">
         <div
           ref={containerRef}
-          className="absolute top-1/2 left-1/2 w-[140vw] h-[78.75vw] min-h-[140vh] min-w-[248.89vh] -translate-x-1/2 -translate-y-1/2 scale-125"
+          className="absolute top-1/2 left-1/2 w-[200vw] h-[112.5vw] min-h-[200vh] min-w-[355.55vh] -translate-x-1/2 -translate-y-1/2 scale-[1.35]"
           id="youtube-background-video"
         />
         {/* Enhanced color overlay for better text contrast and cinematographic feel */}
-        <div className="absolute hero-unclamp -inset-[16px] md:-inset-[20px] bg-gradient-to-b from-blue-900/60 via-blue-900/40 to-slate-900/80" />
+        <div className="absolute hero-unclamp -inset-[24px] md:-inset-[28px] bg-gradient-to-b from-blue-900/60 via-blue-900/40 to-slate-900/80" />
         
         {/* YouTube UI Elements Masking Overlay */}
-        <div className="absolute hero-unclamp -inset-[16px] md:-inset-[20px] pointer-events-none z-20 overflow-hidden">
+        <div className="absolute hero-unclamp -inset-[24px] md:-inset-[28px] pointer-events-none z-20 overflow-hidden">
           {/* Hide YouTube title and end screen suggestions */}
           <div className="absolute -top-8 -left-8 -right-8 h-32 bg-transparent" />
           <div className="absolute -bottom-8 -left-8 -right-8 h-32 bg-transparent" />
