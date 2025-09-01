@@ -22,6 +22,7 @@ import FourthCarouselSection from '@/components/homepage/sections/FourthCarousel
 
 // Import passport teaser widget
 import PassportTeaserWidget from '@/components/homepage/PassportTeaserWidget';
+import RespiroDelMareTeaser from '@/components/homepage/RespiroDelMareTeaser';
 
 const Index = () => {
   const { user, loading } = useAuth();
@@ -93,6 +94,9 @@ const Index = () => {
             <FamilySection />
           </div>
         </div>
+
+        {/* Respiro del Mare Teaser - positioned before footer */}
+        <RespiroDelMareTeaser />
       </PullToRefresh>
       <ScrollToTop />
     </HomepageLayout>
