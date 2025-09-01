@@ -114,16 +114,16 @@ const YouTubeVideoBackground: React.FC<YouTubeVideoBackgroundProps> = ({ videoId
   }, [videoId]);
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-slate-900">
-      {/* Video Background Container */}
-      <div className="absolute inset-0 w-full h-full">
+    <section className="relative hero-unclamp -inset-[8px] md:-inset-[12px] h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+      {/* Video Background Container - Cinematographic Effect */}
+      <div className="absolute hero-unclamp -inset-[8px] md:-inset-[12px] w-full h-full">
         <div
           ref={containerRef}
-          className="absolute top-1/2 left-1/2 w-[100vw] h-[56.25vw] min-h-[100vh] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2"
+          className="absolute top-1/2 left-1/2 w-[120vw] h-[67.5vw] min-h-[120vh] min-w-[213.33vh] -translate-x-1/2 -translate-y-1/2 scale-110"
           id="youtube-background-video"
         />
-        {/* Color overlay for better text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/50 via-blue-900/30 to-slate-900/70" />
+        {/* Enhanced color overlay for better text contrast and cinematographic feel */}
+        <div className="absolute hero-unclamp -inset-[8px] md:-inset-[12px] bg-gradient-to-b from-blue-900/60 via-blue-900/40 to-slate-900/80" />
       </div>
 
       {/* Content Overlay */}
