@@ -68,7 +68,7 @@ const RespiroDelMareTeaser: React.FC = () => {
   return (
     <motion.section 
       ref={ref}
-      className="bg-gradient-to-r from-blue-50 to-teal-50 py-12 md:py-16 lg:py-20"
+      className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 py-12 md:py-16 lg:py-20"
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -100,7 +100,7 @@ const RespiroDelMareTeaser: React.FC = () => {
             
             {/* Badge */}
             <motion.div 
-              className="inline-flex items-center gap-2 bg-teal-100 text-teal-800 px-4 py-2 rounded-full"
+              className="inline-flex items-center gap-2 bg-teal-100/20 text-teal-200 px-4 py-2 rounded-full backdrop-blur-sm"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.5, delay: 0.6 }}
@@ -111,19 +111,19 @@ const RespiroDelMareTeaser: React.FC = () => {
 
             {/* Titolo Principale */}
             <motion.h2 
-              className="typography-h2 text-slate-900 leading-tight"
+              className="typography-h2 text-white leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, delay: 0.8 }}
             >
               Più di una vacanza.
               <br />
-              <span className="text-teal-700">Un'impronta positiva.</span>
+              <span className="text-teal-300">Un'impronta positiva.</span>
             </motion.h2>
 
             {/* Descrizione */}
             <motion.p 
-              className="typography-body text-slate-700 leading-relaxed"
+              className="typography-body text-slate-200 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, delay: 1.0 }}
@@ -159,7 +159,7 @@ const RespiroDelMareTeaser: React.FC = () => {
               <div>
                 <motion.button 
                   onClick={handleDiscoverProject}
-                  className="typography-small text-teal-700 hover:text-teal-800 font-medium underline-offset-4 hover:underline transition-colors"
+                  className="typography-small text-teal-300 hover:text-teal-200 font-medium underline-offset-4 hover:underline transition-colors"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -170,7 +170,7 @@ const RespiroDelMareTeaser: React.FC = () => {
 
             {/* Statistiche rapide - Counter Animation */}
             <motion.div 
-              className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-200"
+              className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-600/50"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 1.0 }}
@@ -180,20 +180,20 @@ const RespiroDelMareTeaser: React.FC = () => {
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.4 }}
               >
-                <div className="typography-h4 text-teal-700 font-bold">
+                <div className="typography-h4 text-teal-300 font-bold">
                   {transparency}%
                 </div>
-                <div className="typography-caption text-slate-600">Trasparenza</div>
+                <div className="typography-caption text-slate-300">Trasparenza</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.6 }}
               >
-                <div className="typography-h4 text-teal-700 font-bold">
+                <div className="typography-h4 text-teal-300 font-bold">
                   {impact}x
                 </div>
-                <div className="typography-caption text-slate-600">Impatto positivo</div>
+                <div className="typography-caption text-slate-300">Impatto positivo</div>
               </motion.div>
             </motion.div>
 
