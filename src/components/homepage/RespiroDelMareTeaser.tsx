@@ -155,17 +155,6 @@ const RespiroDelMareTeaser: React.FC = () => {
                 </Button>
               </motion.div>
 
-              {/* Link secondario */}
-              <div>
-                <motion.button 
-                  onClick={handleDiscoverProject}
-                  className="typography-small text-teal-300 hover:text-teal-200 font-medium underline-offset-4 hover:underline transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Fai una donazione →
-                </motion.button>
-              </div>
             </motion.div>
 
             {/* Statistiche rapide - Counter Animation */}
