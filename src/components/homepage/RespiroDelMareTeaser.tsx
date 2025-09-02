@@ -88,7 +88,7 @@ const RespiroDelMareTeaser: React.FC = () => {
                 className="w-full h-64 md:h-80 lg:h-96 object-cover transition-transform duration-500 hover:scale-105"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent shadow-2xl" />
             </div>
           </motion.div>
 
