@@ -11,7 +11,7 @@ const HeroBrandSection = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full text-center px-4 md:px-8 lg:px-16 relative z-20">
+    <div className="flex flex-col items-center justify-center w-full text-center relative z-20">
       <h1 className="typography-h1 text-4xl md:text-6xl lg:text-7xl text-white mb-4 md:mb-6 drop-shadow-2xl text-shadow-lg">
         Il Tuo Passaporto per Tesori Nascosti
       </h1>
