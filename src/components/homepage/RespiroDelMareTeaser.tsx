@@ -100,47 +100,57 @@ const RespiroDelMareTeaser: React.FC = () => {
             
             {/* Badge */}
             <motion.div 
-              className="inline-flex items-center gap-3 bg-teal-100/30 text-teal-100 px-6 py-3 rounded-full backdrop-blur-sm border border-teal-400/30"
+              className="inline-flex items-center gap-4 bg-gradient-to-r from-teal-500/40 to-cyan-500/40 text-white px-8 py-4 rounded-full backdrop-blur-md border-2 border-teal-300/50 shadow-2xl shadow-teal-500/25"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <Heart className="w-5 h-5" />
-              <span className="typography-small font-semibold tracking-wide uppercase">Impatto Sociale</span>
+              <Heart className="w-6 h-6 text-teal-200" />
+              <span className="typography-small font-bold tracking-widest uppercase text-teal-100">Impatto Sociale</span>
             </motion.div>
 
             {/* Titolo Principale */}
-            <motion.h2 
-              className="typography-h1 text-white leading-none font-bold"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.7, delay: 0.8 }}
+            <motion.div 
+              className="space-y-2"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
             >
-              Più di una vacanza.
-              <br />
-              <span className="bg-gradient-to-r from-teal-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent font-extrabold">
-                Un'impronta positiva.
-              </span>
-            </motion.h2>
+              <h2 className="text-3xl md:text-5xl lg:text-7xl font-light text-white leading-none tracking-tight">
+                Più di una vacanza.
+              </h2>
+              <div className="relative">
+                <h2 className="text-4xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter bg-gradient-to-r from-teal-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-2xl">
+                  Un'impronta positiva.
+                </h2>
+                <div className="absolute inset-0 text-4xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter text-teal-300/20 blur-sm transform translate-x-1 translate-y-1">
+                  Un'impronta positiva.
+                </div>
+              </div>
+            </motion.div>
 
             {/* Descrizione */}
-            <motion.p 
-              className="typography-subtitle text-slate-100 leading-relaxed font-light"
+            <motion.div 
+              className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.7, delay: 1.0 }}
+              transition={{ duration: 0.7, delay: 1.2 }}
             >
-              Con <span className="font-semibold text-teal-200">"Respiro del Mare"</span> trasformiamo la pulizia delle nostre spiagge in un'opportunità 
-              di lavoro concreta per le persone più fragili del nostro territorio. Ogni donazione ha 
-              un doppio valore: <strong className="text-white font-bold">ambientale e sociale</strong>.
-            </motion.p>
+              <p className="text-lg md:text-xl lg:text-2xl text-slate-100 leading-relaxed font-light">
+                Con <span className="font-bold text-teal-200 bg-teal-900/30 px-2 py-1 rounded">"Respiro del Mare"</span> trasformiamo la pulizia delle nostre spiagge in un'opportunità 
+                di lavoro concreta per le persone più fragili del nostro territorio.
+              </p>
+              <p className="text-base md:text-lg lg:text-xl text-slate-200 leading-relaxed">
+                Ogni donazione ha un doppio valore: <strong className="text-white font-black text-lg md:text-xl lg:text-2xl bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">ambientale e sociale</strong>.
+              </p>
+            </motion.div>
 
             {/* Call-to-Action */}
             <motion.div 
               className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.7, delay: 1.2 }}
+              transition={{ duration: 0.7, delay: 1.4 }}
             >
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -150,10 +160,10 @@ const RespiroDelMareTeaser: React.FC = () => {
                 <Button 
                   onClick={handleDiscoverProject}
                   size="lg"
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 text-base font-medium group"
+                  className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-10 py-4 text-lg font-bold group shadow-2xl shadow-teal-500/25 border border-teal-400/30"
                 >
                   Scopri il progetto
-                  <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-3 w-6 h-6 transition-transform group-hover:translate-x-2" />
                 </Button>
               </motion.div>
 
@@ -161,30 +171,32 @@ const RespiroDelMareTeaser: React.FC = () => {
 
             {/* Statistiche rapide - Counter Animation */}
             <motion.div 
-              className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-600/50"
+              className="grid grid-cols-2 gap-8 pt-6 border-t border-teal-400/30"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 1.0 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
             >
               <motion.div
+                className="text-center p-4 bg-gradient-to-br from-teal-900/40 to-cyan-900/40 rounded-xl border border-teal-400/20 backdrop-blur-sm"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 1.4 }}
+                transition={{ duration: 0.6, delay: 1.8 }}
               >
-                <div className="typography-h4 text-teal-300 font-bold">
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-teal-200 to-cyan-200 bg-clip-text text-transparent mb-2">
                   {transparency}%
                 </div>
-                <div className="typography-caption text-slate-300">Trasparenza</div>
+                <div className="typography-small text-teal-100 font-semibold uppercase tracking-wider">Trasparenza</div>
               </motion.div>
               <motion.div
+                className="text-center p-4 bg-gradient-to-br from-cyan-900/40 to-blue-900/40 rounded-xl border border-cyan-400/20 backdrop-blur-sm"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 1.6 }}
+                transition={{ duration: 0.6, delay: 2.0 }}
               >
-                <div className="typography-h4 text-teal-300 font-bold">
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 to-blue-200 bg-clip-text text-transparent mb-2">
                   {impact}x
                 </div>
-                <div className="typography-caption text-slate-300">Impatto positivo</div>
+                <div className="typography-small text-cyan-100 font-semibold uppercase tracking-wider">Impatto positivo</div>
               </motion.div>
             </motion.div>
 
