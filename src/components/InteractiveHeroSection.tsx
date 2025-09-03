@@ -22,7 +22,7 @@ const InteractiveHeroSection = () => {
         
         {/* Key Features - Moved higher up */}
         {!isMobile && (
-          <div className="absolute bottom-32 left-0 right-0 px-3 md:px-4 lg:px-6">
+          <div className="absolute bottom-16 left-0 right-0 px-3 md:px-4 lg:px-6">
             <HeroFeatures />
           </div>
         )}
