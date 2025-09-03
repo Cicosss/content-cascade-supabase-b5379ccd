@@ -100,13 +100,13 @@ const RespiroDelMareTeaser: React.FC = () => {
             
             {/* Badge */}
             <motion.div 
-              className="inline-flex items-center gap-4 bg-gradient-to-r from-teal-500/40 to-cyan-500/40 text-white px-8 py-4 rounded-full backdrop-blur-md border-2 border-teal-300/50 shadow-2xl shadow-teal-500/25"
+              className="inline-flex items-center gap-3 bg-gradient-to-r from-teal-500/40 to-cyan-500/40 text-white px-6 py-3 rounded-full backdrop-blur-md border-2 border-teal-300/50 shadow-2xl shadow-teal-500/25"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <Heart className="w-6 h-6 text-teal-200" />
-              <span className="typography-small font-bold tracking-widest uppercase text-teal-100">Impatto Sociale</span>
+              <Heart className="w-4 h-4 text-teal-200" />
+              <span className="typography-caption font-bold tracking-widest uppercase text-teal-100">Impatto Sociale</span>
             </motion.div>
 
             {/* Titolo Principale */}
@@ -116,14 +116,14 @@ const RespiroDelMareTeaser: React.FC = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <h2 className="text-3xl md:text-5xl lg:text-7xl font-light text-white leading-none tracking-tight">
+              <h2 className="typography-h2 font-light text-white leading-tight tracking-tight">
                 Più di una vacanza.
               </h2>
               <div className="relative">
-                <h2 className="text-4xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter bg-gradient-to-r from-teal-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-2xl">
+                <h2 className="typography-h2 font-black leading-tight tracking-tighter bg-gradient-to-r from-teal-200 via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-2xl">
                   Un'impronta positiva.
                 </h2>
-                <div className="absolute inset-0 text-4xl md:text-6xl lg:text-8xl font-black leading-none tracking-tighter text-teal-300/20 blur-sm transform translate-x-1 translate-y-1">
+                <div className="absolute inset-0 typography-h2 font-black leading-tight tracking-tighter text-teal-300/20 blur-sm transform translate-x-1 translate-y-1">
                   Un'impronta positiva.
                 </div>
               </div>
@@ -136,12 +136,12 @@ const RespiroDelMareTeaser: React.FC = () => {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, delay: 1.2 }}
             >
-              <p className="text-lg md:text-xl lg:text-2xl text-slate-100 leading-relaxed font-light">
+              <p className="typography-subtitle text-slate-100 leading-relaxed font-light">
                 Con <span className="font-bold text-teal-200 bg-teal-900/30 px-2 py-1 rounded">"Respiro del Mare"</span> trasformiamo la pulizia delle nostre spiagge in un'opportunità 
                 di lavoro concreta per le persone più fragili del nostro territorio.
               </p>
-              <p className="text-base md:text-lg lg:text-xl text-slate-200 leading-relaxed">
-                Ogni donazione ha un doppio valore: <strong className="text-white font-black text-lg md:text-xl lg:text-2xl bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">ambientale e sociale</strong>.
+              <p className="typography-body text-slate-200 leading-relaxed">
+                Ogni donazione ha un doppio valore: <strong className="text-white font-black bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">ambientale e sociale</strong>.
               </p>
             </motion.div>
 
