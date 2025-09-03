@@ -100,37 +100,39 @@ const RespiroDelMareTeaser: React.FC = () => {
             
             {/* Badge */}
             <motion.div 
-              className="inline-flex items-center gap-2 bg-teal-100/20 text-teal-200 px-4 py-2 rounded-full backdrop-blur-sm"
+              className="inline-flex items-center gap-3 bg-teal-100/30 text-teal-100 px-6 py-3 rounded-full backdrop-blur-sm border border-teal-400/30"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <Heart className="w-4 h-4" />
-              <span className="typography-caption font-medium">Impatto Sociale</span>
+              <Heart className="w-5 h-5" />
+              <span className="typography-small font-semibold tracking-wide uppercase">Impatto Sociale</span>
             </motion.div>
 
             {/* Titolo Principale */}
             <motion.h2 
-              className="typography-h2 text-white leading-tight"
+              className="typography-h1 text-white leading-none font-bold"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, delay: 0.8 }}
             >
               Più di una vacanza.
               <br />
-              <span className="text-teal-300">Un'impronta positiva.</span>
+              <span className="bg-gradient-to-r from-teal-300 via-teal-200 to-cyan-300 bg-clip-text text-transparent font-extrabold">
+                Un'impronta positiva.
+              </span>
             </motion.h2>
 
             {/* Descrizione */}
             <motion.p 
-              className="typography-body text-slate-200 leading-relaxed"
+              className="typography-subtitle text-slate-100 leading-relaxed font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.7, delay: 1.0 }}
             >
-              Con "Respiro del Mare" trasformiamo la pulizia delle nostre spiagge in un'opportunità 
+              Con <span className="font-semibold text-teal-200">"Respiro del Mare"</span> trasformiamo la pulizia delle nostre spiagge in un'opportunità 
               di lavoro concreta per le persone più fragili del nostro territorio. Ogni donazione ha 
-              un doppio valore: <strong>ambientale e sociale</strong>.
+              un doppio valore: <strong className="text-white font-bold">ambientale e sociale</strong>.
             </motion.p>
 
             {/* Call-to-Action */}
