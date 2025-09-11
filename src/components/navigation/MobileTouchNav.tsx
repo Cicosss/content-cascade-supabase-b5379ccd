@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, MapPin, Calendar, Settings } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface NavItem {
   id: string;
@@ -28,6 +29,7 @@ const MobileTouchNav: React.FC<MobileTouchNavProps> = (props) => {
   const isVisible = props.isVisible ?? true;
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const [selectedItem, setSelectedItem] = useState('home');
   const [pressedItem, setPressedItem] = useState<string | null>(null);
 
@@ -55,7 +57,8 @@ const MobileTouchNav: React.FC<MobileTouchNavProps> = (props) => {
     }
   };
 
-  if (!isVisible) return null;
+  // Show navigation only for authenticated users
+  if (!isVisible || !user) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[53] flex justify-center pb-4 px-2 md:hidden">
