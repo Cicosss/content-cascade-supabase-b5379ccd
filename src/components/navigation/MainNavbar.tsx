@@ -113,20 +113,31 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {/* Direct Navigation Links */}
-            {navigationLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="text-white hover:text-primary transition-colors typography-small font-medium"
-                onClick={(e) => {
-                  if (handleGuestClick()) {
-                    e.preventDefault();
-                  }
-                }}
-              >
-                {link.title}
-              </Link>
-            ))}
+            {navigationLinks.map((link, index) => {
+              const colors = ['border-blue-400', 'border-emerald-400', 'border-amber-400'];
+              const hoverColors = ['hover:text-blue-400', 'hover:text-emerald-400', 'hover:text-amber-400'];
+              
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`
+                    relative text-white ${hoverColors[index]} transition-colors typography-small font-medium tracking-wide
+                    after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
+                    after:${colors[index]} after:origin-bottom-right after:transition-transform after:duration-300 
+                    hover:after:scale-x-100 hover:after:origin-bottom-left
+                    ${window.location.pathname === link.href ? `after:scale-x-100 ${colors[index]}` : ''}
+                  `}
+                  onClick={(e) => {
+                    if (handleGuestClick()) {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  {link.title}
+                </Link>
+              );
+            })}
 
             {/* Language Selector */}
             <Button
@@ -227,7 +238,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-white text-white hover:bg-white hover:text-slate-900 typography-small"
+                  className="border-white text-white hover:bg-white hover:text-slate-900 typography-small font-medium tracking-wide"
                   asChild
                 >
                   <Link to="/auth">Accedi</Link>
@@ -235,7 +246,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10 typography-small"
+                  className="text-white hover:bg-white/10 typography-small font-medium tracking-wide"
                   asChild
                 >
                   <Link to="/auth">Registrati</Link>
