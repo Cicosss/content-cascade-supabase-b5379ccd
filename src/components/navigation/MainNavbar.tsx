@@ -115,14 +115,13 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             {/* Direct Navigation Links */}
             {navigationLinks.map((link, index) => {
               const colors = ['border-blue-400', 'border-emerald-400', 'border-amber-400'];
-              const hoverColors = ['hover:text-blue-400', 'hover:text-emerald-400', 'hover:text-amber-400'];
               
               return (
                 <Link
                   key={link.href}
                   to={link.href}
                   className={`
-                    relative text-white ${hoverColors[index]} transition-colors typography-small font-medium tracking-wide
+                    relative text-white hover:text-white transition-colors typography-small font-medium tracking-wide
                     after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
                     after:${colors[index]} after:origin-bottom-right after:transition-transform after:duration-300 
                     hover:after:scale-x-100 hover:after:origin-bottom-left
@@ -143,7 +142,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10"
+              className="text-white hover:bg-white/10 font-medium tracking-wide"
             >
               <Globe className="h-4 w-4" />
             </Button>
@@ -152,7 +151,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10"
+              className="text-white hover:bg-white/10 font-medium tracking-wide"
             >
               <Search className="h-4 w-4" />
             </Button>
