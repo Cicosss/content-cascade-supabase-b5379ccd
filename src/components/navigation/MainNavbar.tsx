@@ -114,16 +114,19 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
           <div className="hidden lg:flex items-center space-x-8">
             {/* Direct Navigation Links */}
             {navigationLinks.map((link, index) => {
-              const colorClasses = ['nav-link-blue', 'nav-link-emerald', 'nav-link-amber'];
-              const isActive = window.location.pathname === link.href;
+              const colors = ['border-blue-400', 'border-emerald-400', 'border-amber-400'];
+              const hoverColors = ['hover:text-blue-400', 'hover:text-emerald-400', 'hover:text-amber-400'];
               
               return (
                 <Link
                   key={link.href}
                   to={link.href}
                   className={`
-                    nav-link-animated ${colorClasses[index]} ${isActive ? 'active' : ''}
-                    text-white hover:text-white transition-colors typography-small font-medium tracking-wide
+                    relative text-white ${hoverColors[index]} transition-colors typography-small font-medium tracking-wide
+                    after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
+                    after:${colors[index]} after:origin-bottom-right after:transition-transform after:duration-300 
+                    hover:after:scale-x-100 hover:after:origin-bottom-left
+                    ${window.location.pathname === link.href ? `after:scale-x-100 ${colors[index]}` : ''}
                   `}
                   onClick={(e) => {
                     if (handleGuestClick()) {
@@ -140,7 +143,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10 font-medium tracking-wide"
+              className="text-white hover:bg-white/10"
             >
               <Globe className="h-4 w-4" />
             </Button>
@@ -149,7 +152,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-white hover:bg-white/10 font-medium tracking-wide"
+              className="text-white hover:bg-white/10"
             >
               <Search className="h-4 w-4" />
             </Button>
