@@ -114,18 +114,16 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
           <div className="hidden lg:flex items-center space-x-8">
             {/* Direct Navigation Links */}
             {navigationLinks.map((link, index) => {
-              const colors = ['border-blue-400', 'border-emerald-400', 'border-amber-400'];
+              const colorClasses = ['nav-link-blue', 'nav-link-emerald', 'nav-link-amber'];
+              const isActive = window.location.pathname === link.href;
               
               return (
                 <Link
                   key={link.href}
                   to={link.href}
                   className={`
-                    relative text-white hover:text-white transition-colors typography-small font-medium tracking-wide
-                    after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 
-                    after:${colors[index]} after:origin-bottom-right after:transition-transform after:duration-300 
-                    hover:after:scale-x-100 hover:after:origin-bottom-left
-                    ${window.location.pathname === link.href ? `after:scale-x-100 ${colors[index]}` : ''}
+                    nav-link-animated ${colorClasses[index]} ${isActive ? 'active' : ''}
+                    text-white hover:text-white transition-colors typography-small font-medium tracking-wide
                   `}
                   onClick={(e) => {
                     if (handleGuestClick()) {
