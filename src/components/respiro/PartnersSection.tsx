@@ -18,7 +18,7 @@ const PartnersSection = () => {
           {partners.map((partner, index) => (
             <div 
               key={index}
-              className="text-slate-500 text-lg font-semibold px-6 py-3 bg-slate-100 rounded-lg"
+              className="text-slate-300 text-lg font-semibold px-6 py-3 bg-white border-2 border-dashed border-slate-200 rounded-lg"
             >
               {partner}
             </div>
