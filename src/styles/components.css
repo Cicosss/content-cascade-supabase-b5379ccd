@@ -1,6 +1,5 @@
 
-@layer utilities {
-  /* Sfondo marino animato */
+/* Sfondo marino animato */
   .sea-gradient-background {
     background: linear-gradient(-45deg, #BDE0FE, #A2D2FF, #8ECAE6, #74C0FC);
     background-size: 400% 400%;
@@ -26,4 +25,3 @@
   }
 
   /* Service animations consolidated from duplicates */
-}

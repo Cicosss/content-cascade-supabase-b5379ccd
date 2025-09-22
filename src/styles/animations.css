@@ -1,6 +1,5 @@
 
-@layer utilities {
-  /* Animazioni essenziali e organiche */
+/* Animazioni essenziali e organiche */
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
@@ -273,4 +272,3 @@
   .animation-delay-900 {
     animation-delay: 0.9s;
   }
-}
