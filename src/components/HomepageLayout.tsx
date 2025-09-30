@@ -31,7 +31,7 @@ const HomepageLayout: React.FC<HomepageLayoutProps> = ({ children }) => {
   
   return (
     <LocationProvider>
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen flex flex-col">
         {/* Main content - navbar is now global */}
         <main className="flex-1 relative md:pb-0">
           {children}
