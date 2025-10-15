@@ -39,8 +39,8 @@ const AppContent = () => {
   return (
     <>
       <ScrollToTop />
-      {/* Fixed Global Navbar - hidden on auth page and homepage */}
-      {!isAuthPage && !isHomepage && <MainNavbar />}
+      {/* Fixed Global Navbar - hidden only on auth page */}
+      {!isAuthPage && <MainNavbar />}
       {/* Main Content with conditional top padding for fixed navbar */}
       <div className={isAuthPage ? '' : (isCinematic ? '' : 'pt-16 md:pt-20 lg:pt-24')}>
         <Routes>
