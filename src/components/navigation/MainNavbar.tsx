@@ -275,7 +275,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
               </SheetTrigger>
               <SheetContent 
                 side="right" 
-                className="w-[300px] sm:w-[400px]"
+                className="w-full sm:w-[380px] md:w-[420px] lg:w-[480px] bg-background/95 backdrop-blur-md border-l border-white/10"
               >
                 {/* A11y: Title/Description per il dialog Sheet */}
                 <SheetHeader className="sr-only">
