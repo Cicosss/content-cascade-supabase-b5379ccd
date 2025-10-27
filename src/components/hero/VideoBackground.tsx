@@ -42,7 +42,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} w-full h-full overflow-hidden bg-slate-900`}>
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-slate-900">
       {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
@@ -52,7 +52,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Video background che copre completamente la superficie
         <>
-          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
+          <div className="absolute inset-0 overflow-hidden bg-slate-900">
             <iframe
               src={embedUrl}
               className="absolute inset-0"
@@ -66,34 +66,33 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: isMobile ? '400vw' : '200vw',
-                height: isMobile ? `${(viewportHeight || window.innerHeight) + 64}px` : '112.5vw',
+                width: isMobile ? '250vw' : '180vw',
+                height: isMobile ? `${(viewportHeight || window.innerHeight) + 32}px` : '112.5vw',
                 maxWidth: 'none',
                 maxHeight: 'none',
-                transform: isMobile ? 'translate(-48%, -51%) scale(1.08)' : 'translate(-50%, -55%)',
+                transform: isMobile ? 'translate(-50%, -50%) scale(1.05)' : 'translate(-50%, -50%)',
                 pointerEvents: 'none',
                 border: 0,
                 margin: 0,
                 padding: 0,
                 display: 'block',
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
+                objectFit: 'cover'
               }}
               title="YouTube video background"
             />
           </div>
           
           {/* Overlay per nascondere elementi YouTube residui */}
-          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} pointer-events-none`}>
-            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
-            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-24 h-16 bg-slate-900 z-[5]" />
+            <div className="absolute bottom-0 right-0 w-32 h-20 bg-slate-900 z-[5]" />
           </div>
           
           {/* Loading state overlay cinematografico */}
           {!isVideoReady && !videoError && (
             <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
               <div className="text-white text-lg font-light animate-pulse">
-                Caricamento esperienza cinematografica...
+                Caricamento...
               </div>
             </div>
           )}
