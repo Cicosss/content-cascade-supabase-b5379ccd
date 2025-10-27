@@ -79,10 +79,16 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             />
           </div>
           
-          {/* Overlay per nascondere controlli YouTube */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 right-0 w-24 h-16 bg-slate-900/50 z-[5]" />
-            <div className="absolute bottom-0 right-0 w-32 h-20 bg-slate-900/50 z-[5]" />
+          {/* Overlay per nascondere controlli YouTube - Z-index MOLTO alto per bloccare tutto */}
+          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1000 }}>
+            {/* Angolo top-right - più grande per coprire tutti i controlli */}
+            <div className="absolute top-0 right-0 w-32 h-24 bg-slate-900" style={{ zIndex: 1001 }} />
+            {/* Angolo bottom-right - più grande per coprire tutti i controlli */}
+            <div className="absolute bottom-0 right-0 w-40 h-28 bg-slate-900" style={{ zIndex: 1001 }} />
+            {/* Bordo superiore completo per sicurezza */}
+            <div className="absolute top-0 left-0 right-0 h-20 bg-slate-900" style={{ zIndex: 1001 }} />
+            {/* Bordo destro completo */}
+            <div className="absolute top-0 right-0 bottom-0 w-20 bg-slate-900" style={{ zIndex: 1001 }} />
           </div>
         </>
       )}

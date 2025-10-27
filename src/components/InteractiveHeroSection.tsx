@@ -23,7 +23,9 @@ const InteractiveHeroSection = () => {
       style={{
         height: isMobile ? `${viewportHeight}px` : '100vh',
         minHeight: isMobile ? `${viewportHeight}px` : '100vh',
-        maxHeight: isMobile ? `${viewportHeight}px` : '100vh'
+        maxHeight: isMobile ? `${viewportHeight}px` : '100vh',
+        isolation: 'isolate', // Crea un nuovo stacking context per contenere il video
+        zIndex: 0 // Assicura che la hero sia sotto la navbar
       }}
     >
       {/* Dynamic Background with Video/Image */}
