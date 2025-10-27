@@ -42,20 +42,20 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden bg-slate-900">
-      {/* Sempre mostra background image come base */}
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${mobileImageUrl})` }}
-      />
-      
-      {/* Video overlay solo se non c'è errore e su desktop */}
-      {!videoError && embedUrl && !isMobile && (
+    <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} w-full h-full overflow-hidden bg-slate-900`}>
+      {videoError || !embedUrl ? (
+        // Mobile background image or video fallback
+        <div
+          className="w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${mobileImageUrl})` }}
+        />
+      ) : (
+        // Video background che copre completamente la superficie
         <>
-          <div className="absolute inset-0 overflow-hidden">
+          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
             <iframe
               src={embedUrl}
-              className="absolute"
+              className="absolute inset-0"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -66,30 +66,37 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '177.77vh',
-                height: '100vh',
-                minWidth: '100vw',
-                minHeight: '56.25vw',
-                transform: 'translate(-50%, -50%)',
+                width: isMobile ? '400vw' : '200vw',
+                height: isMobile ? `${(viewportHeight || window.innerHeight) + 64}px` : '112.5vw',
+                maxWidth: 'none',
+                maxHeight: 'none',
+                transform: isMobile ? 'translate(-48%, -51%) scale(1.08)' : 'translate(-50%, -55%)',
                 pointerEvents: 'none',
                 border: 0,
-                objectFit: 'cover'
+                margin: 0,
+                padding: 0,
+                display: 'block',
+                willChange: 'transform',
+                backfaceVisibility: 'hidden'
               }}
               title="YouTube video background"
             />
           </div>
           
-          {/* Overlay per nascondere controlli YouTube - Z-index MOLTO alto per bloccare tutto */}
-          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1000 }}>
-            {/* Angolo top-right - più grande per coprire tutti i controlli */}
-            <div className="absolute top-0 right-0 w-32 h-24 bg-slate-900" style={{ zIndex: 1001 }} />
-            {/* Angolo bottom-right - più grande per coprire tutti i controlli */}
-            <div className="absolute bottom-0 right-0 w-40 h-28 bg-slate-900" style={{ zIndex: 1001 }} />
-            {/* Bordo superiore completo per sicurezza */}
-            <div className="absolute top-0 left-0 right-0 h-20 bg-slate-900" style={{ zIndex: 1001 }} />
-            {/* Bordo destro completo */}
-            <div className="absolute top-0 right-0 bottom-0 w-20 bg-slate-900" style={{ zIndex: 1001 }} />
+          {/* Overlay per nascondere elementi YouTube residui */}
+          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} pointer-events-none`}>
+            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
+            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
           </div>
+          
+          {/* Loading state overlay cinematografico */}
+          {!isVideoReady && !videoError && (
+            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
+              <div className="text-white text-lg font-light animate-pulse">
+                Caricamento esperienza cinematografica...
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
