@@ -42,7 +42,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} w-full h-full overflow-hidden bg-slate-900`}>
+    <div 
+      className="absolute inset-0 w-full h-full overflow-hidden bg-slate-900"
+      style={{ 
+        isolation: 'isolate',
+        zIndex: 0
+      }}
+    >
       {videoError || !embedUrl ? (
         // Mobile background image or video fallback
         <div
@@ -52,46 +58,67 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       ) : (
         // Video background che copre completamente la superficie
         <>
-          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} overflow-hidden bg-slate-900`}>
-            <iframe
-              src={embedUrl}
-              className="absolute inset-0"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              onLoad={handleIframeLoad}
-              onError={handleIframeError}
+          <div className="absolute inset-0 overflow-hidden bg-slate-900">
+            <div 
+              className="absolute inset-0 overflow-hidden"
               style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                width: isMobile ? '400vw' : '200vw',
-                height: isMobile ? `${(viewportHeight || window.innerHeight) + 64}px` : '112.5vw',
-                maxWidth: 'none',
-                maxHeight: 'none',
-                transform: isMobile ? 'translate(-48%, -51%) scale(1.08)' : 'translate(-50%, -55%)',
-                pointerEvents: 'none',
-                border: 0,
-                margin: 0,
-                padding: 0,
-                display: 'block',
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
+                borderRadius: 0,
+                isolation: 'isolate'
               }}
-              title="YouTube video background"
-            />
+            >
+              <iframe
+                src={embedUrl}
+                className="absolute inset-0"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+                onLoad={handleIframeLoad}
+                onError={handleIframeError}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: isMobile ? '100%' : '177.77vh',
+                  height: isMobile ? '100%' : '100vh',
+                  minWidth: isMobile ? '100vw' : '100vw',
+                  minHeight: isMobile ? '100vh' : '56.25vw',
+                  maxWidth: 'none',
+                  maxHeight: 'none',
+                  transform: 'translate(-50%, -50%)',
+                  objectFit: 'cover',
+                  pointerEvents: 'none',
+                  border: 0,
+                  margin: 0,
+                  padding: 0,
+                  display: 'block',
+                  willChange: 'auto',
+                  backfaceVisibility: 'hidden'
+                }}
+                title="YouTube video background"
+              />
+            </div>
           </div>
           
-          {/* Overlay per nascondere elementi YouTube residui */}
-          <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[8px]'} pointer-events-none`}>
-            <div className="absolute top-0 right-0 w-24 h-16 bg-transparent z-[5]" />
-            <div className="absolute bottom-0 right-0 w-32 h-20 bg-transparent z-[5]" />
-          </div>
+          {/* Overlay opachi per nascondere controlli YouTube - SOLO su mobile */}
+          {isMobile && (
+            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 100 }}>
+              {/* Top right corner - controlli YouTube */}
+              <div className="absolute top-0 right-0 w-32 h-24 bg-slate-900" />
+              {/* Bottom right corner - info e controlli */}
+              <div className="absolute bottom-0 right-0 w-40 h-28 bg-slate-900" />
+              {/* Top edge */}
+              <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-slate-900 to-transparent" />
+              {/* Right edge */}
+              <div className="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-l from-slate-900 to-transparent" />
+              {/* Left edge */}
+              <div className="absolute top-0 left-0 bottom-0 w-20 bg-gradient-to-r from-slate-900 to-transparent" />
+            </div>
+          )}
           
           {/* Loading state overlay cinematografico */}
           {!isVideoReady && !videoError && (
-            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
+            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center" style={{ zIndex: 150 }}>
               <div className="text-white text-lg font-light animate-pulse">
                 Caricamento esperienza cinematografica...
               </div>

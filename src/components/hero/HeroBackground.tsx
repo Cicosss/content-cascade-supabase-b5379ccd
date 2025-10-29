@@ -3,12 +3,16 @@ import React from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import VideoBackground from './VideoBackground';
 import { HERO_VIDEO_URL, HERO_MOBILE_VIDEO_URL, HERO_MOBILE_IMAGE } from './heroCategories';
+import { Z_INDEX } from '@/config/zIndex';
 
 const HeroBackground: React.FC = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[2px]'} overflow-hidden bg-slate-900`}>
+    <div 
+      className="absolute inset-0 overflow-hidden bg-slate-900"
+      style={{ zIndex: Z_INDEX.background }}
+    >
       {/* Video/Image Background */}
       <VideoBackground
         videoUrl={HERO_VIDEO_URL}
@@ -17,8 +21,8 @@ const HeroBackground: React.FC = () => {
         isMobile={isMobile}
       />
       
-      {/* Static overlay for text readability - removed dynamic hover logic */}
-      <div className={`absolute hero-unclamp ${isMobile ? '-inset-[12px]' : '-inset-[2px]'} bg-black/20 pointer-events-none`} />
+      {/* Static overlay for text readability */}
+      <div className="absolute inset-0 bg-black/20 pointer-events-none" style={{ zIndex: Z_INDEX.videoOverlay }} />
     </div>
   );
 };

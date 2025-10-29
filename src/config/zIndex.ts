@@ -2,6 +2,7 @@
 export const Z_INDEX = {
   // Background elements
   background: 0,
+  heroVideo: 1,
   videoOverlay: 5,
   
   // Content layers
@@ -12,23 +13,23 @@ export const Z_INDEX = {
   
   // Navigation
   navbar: 40,
-  scrollToTop: 45,
+  navbarButton: 45,
+  scrollToTop: 48,
   
   // Overlays and modals
-  sheet: 9999, // High z-index for mobile menu over Google Maps
   dialog: 50,
-  navigation: 51,
   dropdown: 52,
   mobileTouchNav: 53,
+  sheet: 100, // Mobile menu over all content
   
   // Notifications and alerts
-  toast: 60,
+  toast: 110,
   
   // Development and debug
-  debug: 70,
+  debug: 120,
   
   // Maximum priority
-  modal: 100,
+  modal: 150,
 } as const;
 
 // Helper function to get z-index value

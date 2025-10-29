@@ -262,10 +262,11 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                 <Button
                   variant="ghost"
                   size="sm" 
-                  className="mobile-menu-trigger text-white hover:bg-white/10 relative z-[60] min-h-[48px] min-w-[48px]"
+                  className="mobile-menu-trigger text-white hover:bg-white/10 min-h-[48px] min-w-[48px]"
                   data-mobile-menu="true"
                   style={{ 
-                    zIndex: Z_INDEX.navbar + 20,
+                    position: 'relative',
+                    zIndex: Z_INDEX.navbarButton,
                     touchAction: 'manipulation',
                     pointerEvents: 'auto'
                   }}
