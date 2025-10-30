@@ -1,126 +1,103 @@
-
 import React, { useState } from 'react';
-import { useViewportSize } from '@/hooks/useViewportSize';
 
 interface VideoBackgroundProps {
-  videoUrl: string;
+  desktopVideoUrl: string;
   mobileVideoUrl: string;
-  mobileImageUrl: string;
+  fallbackImageUrl: string;
   isMobile: boolean;
 }
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({ 
-  videoUrl,
+  desktopVideoUrl,
   mobileVideoUrl, 
-  mobileImageUrl, 
+  fallbackImageUrl, 
   isMobile 
 }) => {
-  const [isVideoReady, setIsVideoReady] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const { height: viewportHeight } = useViewportSize(isMobile);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Estrae l'ID del video da YouTube URL (supporta anche Shorts)
+  // Determina se usare YouTube (desktop) o video nativo (mobile)
+  const useNativeVideo = isMobile;
+  
+  // Estrae l'ID del video da YouTube URL per desktop
   const getYouTubeVideoId = (url: string) => {
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\n?#]+)/);
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
     return match ? match[1] : null;
   };
-  // Scegli il video appropriato per la piattaforma
-  const currentVideoUrl = isMobile ? mobileVideoUrl : videoUrl;
-  const videoId = getYouTubeVideoId(currentVideoUrl);
   
-  // URL embed ottimizzato per autoplay in loop
+  const videoId = !useNativeVideo ? getYouTubeVideoId(desktopVideoUrl) : null;
   const embedUrl = videoId ? 
-    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` 
+    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0` 
     : null;
-
-  const handleIframeLoad = () => {
-    setIsVideoReady(true);
-  };
-
-  const handleIframeError = () => {
-    setVideoError(true);
-  };
 
   return (
     <div 
       className="absolute inset-0 w-full h-full overflow-hidden bg-slate-900"
-      style={{ 
-        isolation: 'isolate',
-        zIndex: 0
-      }}
+      style={{ zIndex: 0 }}
     >
-      {videoError || !embedUrl ? (
-        // Mobile background image or video fallback
+      {videoError ? (
         <div
-          className="w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${mobileImageUrl})` }}
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${fallbackImageUrl})` }}
         />
-      ) : (
-        // Video background che copre completamente la superficie
+      ) : useNativeVideo ? (
+        // Video nativo HTML5 per mobile - pulito e performante
         <>
-          <div className="absolute inset-0 overflow-hidden bg-slate-900">
-            <div 
-              className="absolute inset-0 overflow-hidden"
-              style={{
-                borderRadius: 0,
-                isolation: 'isolate'
-              }}
-            >
-              <iframe
-                src={embedUrl}
-                className="absolute inset-0"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-                onLoad={handleIframeLoad}
-                onError={handleIframeError}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: isMobile ? '100%' : '177.77vh',
-                  height: isMobile ? '100%' : '100vh',
-                  minWidth: isMobile ? '100vw' : '100vw',
-                  minHeight: isMobile ? '100vh' : '56.25vw',
-                  maxWidth: 'none',
-                  maxHeight: 'none',
-                  transform: 'translate(-50%, -50%)',
-                  objectFit: 'cover',
-                  pointerEvents: 'none',
-                  border: 0,
-                  margin: 0,
-                  padding: 0,
-                  display: 'block',
-                  willChange: 'auto',
-                  backfaceVisibility: 'hidden'
-                }}
-                title="YouTube video background"
-              />
-            </div>
-          </div>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={() => setVideoError(true)}
+            onLoadedData={() => setIsLoading(false)}
+            style={{
+              pointerEvents: 'none',
+              objectFit: 'cover'
+            }}
+          >
+            <source src={mobileVideoUrl} type="video/mp4" />
+          </video>
           
-          {/* Overlay opachi per nascondere controlli YouTube - SOLO su mobile */}
-          {isMobile && (
-            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 100 }}>
-              {/* Top right corner - controlli YouTube */}
-              <div className="absolute top-0 right-0 w-32 h-24 bg-slate-900" />
-              {/* Bottom right corner - info e controlli */}
-              <div className="absolute bottom-0 right-0 w-40 h-28 bg-slate-900" />
-              {/* Top edge */}
-              <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-slate-900 to-transparent" />
-              {/* Right edge */}
-              <div className="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-l from-slate-900 to-transparent" />
-              {/* Left edge */}
-              <div className="absolute top-0 left-0 bottom-0 w-20 bg-gradient-to-r from-slate-900 to-transparent" />
+          {isLoading && (
+            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
+              <div className="text-white text-base font-light animate-pulse">
+                Caricamento...
+              </div>
             </div>
           )}
+        </>
+      ) : (
+        // YouTube embed per desktop
+        <>
+          <iframe
+            src={embedUrl || ''}
+            className="absolute inset-0"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            onLoad={() => setIsLoading(false)}
+            onError={() => setVideoError(true)}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '177.77vh',
+              height: '100vh',
+              minWidth: '100vw',
+              minHeight: '56.25vw',
+              transform: 'translate(-50%, -50%)',
+              pointerEvents: 'none',
+              border: 0
+            }}
+            title="Hero video background"
+          />
           
-          {/* Loading state overlay cinematografico */}
-          {!isVideoReady && !videoError && (
-            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center" style={{ zIndex: 150 }}>
-              <div className="text-white text-lg font-light animate-pulse">
-                Caricamento esperienza cinematografica...
+          {isLoading && (
+            <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
+              <div className="text-white text-base font-light animate-pulse">
+                Caricamento...
               </div>
             </div>
           )}
