@@ -45,12 +45,12 @@ const HelpBanner = () => {
         <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-secondary/5 rounded-full animate-pulse animation-delay-1000"></div>
       </div>
 
-      <Card className={`relative p-6 sm:p-8 lg:p-10 rounded-3xl shadow-2xl border border-slate-200/50 bg-gradient-to-br from-slate-50/90 to-white/95 backdrop-blur-sm perspective-1000 transition-all duration-1000 transform ${
+      <Card className={`relative p-6 sm:p-8 lg:p-10 rounded-3xl shadow-2xl border bg-card/95 backdrop-blur-sm perspective-1000 transition-all duration-1000 transform ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}>
         {/* 3D Relief Shadow Layers */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-200/30 to-slate-400/20 rounded-3xl transform translate-x-2 translate-y-2 blur-sm -z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-tl from-slate-300/20 to-slate-100/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-muted/30 to-muted/20 rounded-3xl transform translate-x-2 translate-y-2 blur-sm -z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-tl from-muted/20 to-muted/30 rounded-3xl transform translate-x-1 translate-y-1 -z-10"></div>
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center relative z-10">
           
@@ -103,12 +103,12 @@ const HelpBanner = () => {
           }`} style={{ transitionDelay: '200ms' }}>
             
             {/* Titolo Caldo e Diretto */}
-            <h3 className="typography-h2">
+            <h3 className="typography-h2 text-foreground">
               Parla con un Esperto della Romagna
             </h3>
             
             {/* Paragrafo Coinvolgente */}
-            <p className="typography-subtitle">
+            <p className="typography-subtitle text-muted-foreground">
               Che tu stia cercando quel ristorante perfetto o un consiglio per una gita fuori porta, 
               il nostro team di appassionati del territorio è qui per aiutarti a creare la tua 
               <span className="font-semibold text-primary"> esperienza su misura</span>.
@@ -116,7 +116,7 @@ const HelpBanner = () => {
             
             {/* Call to Action Warmth */}
             <div className="pt-4">
-              <Button style={{ backgroundColor: '#262E79' }} className="hover:bg-[#262E79]/90 text-white font-bold font-inter px-8 py-6 text-lg lg:text-xl transition-all duration-500 hover:scale-105 active:scale-95 shadow-2xl hover:shadow-3xl rounded-2xl transform hover:rotate-1 hover:-translate-y-1">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-6 text-lg lg:text-xl transition-all duration-500 hover:scale-105 active:scale-95 shadow-2xl hover:shadow-3xl rounded-2xl transform hover:rotate-1 hover:-translate-y-1">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl animate-bounce">💬</span>
                   <span className="typography-body font-bold tracking-wide">Chiedi un Consiglio</span>
@@ -125,7 +125,7 @@ const HelpBanner = () => {
             </div>
             
             {/* Sottotesto Rassicurante */}
-            <p className="typography-small text-slate-600 dark:text-slate-400 mt-4">
+            <p className="typography-small text-muted-foreground mt-4">
               <span className="font-semibold text-primary">Risposta gratuita</span> • 
               <span className="mx-2">Consigli personalizzati</span> • 
               <span>Esperti sempre disponibili</span>
@@ -140,9 +140,9 @@ const HelpBanner = () => {
         
         {/* Subtle twinkle effects */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-8 left-16 w-1 h-1 bg-white/60 rounded-full animate-twinkle animation-delay-0"></div>
-          <div className="absolute bottom-12 right-20 w-1.5 h-1.5 bg-white/50 rounded-full animate-twinkle animation-delay-500"></div>
-          <div className="absolute top-1/3 right-8 w-1 h-1 bg-white/40 rounded-full animate-twinkle animation-delay-1000"></div>
+          <div className="absolute top-8 left-16 w-1 h-1 bg-primary-foreground/60 rounded-full animate-twinkle animation-delay-0"></div>
+          <div className="absolute bottom-12 right-20 w-1.5 h-1.5 bg-primary-foreground/50 rounded-full animate-twinkle animation-delay-500"></div>
+          <div className="absolute top-1/3 right-8 w-1 h-1 bg-primary-foreground/40 rounded-full animate-twinkle animation-delay-1000"></div>
         </div>
       </Card>
     </div>

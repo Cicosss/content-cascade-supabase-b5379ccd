@@ -22,14 +22,14 @@ const ValuePropositionSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         {/* Header Section - Semplificato */}
         <div className="text-center mb-20">
-          <h2 className="typography-h2 typography-brand-primary mb-8">
+          <h2 className="typography-h2 text-primary mb-8">
             3 Modi per Vivere la Romagna Autentica
           </h2>
-          <p className="typography-body-large max-w-3xl mx-auto text-slate-600">
+          <p className="typography-body-large max-w-3xl mx-auto text-muted-foreground">
             Non siamo solo un'app di viaggio. Siamo il tuo passaporto per scoprire 
             l'anima autentica della Romagna attraverso esperienze uniche e genuine.
           </p>
@@ -42,24 +42,24 @@ const ValuePropositionSection = () => {
               key={index} 
               className={`text-center px-8 ${
                 index === 1 
-                  ? 'md:border-l md:border-r md:border-slate-200' 
+                  ? 'md:border-l md:border-r md:border-border' 
                   : index === 2 
-                  ? 'md:border-l md:border-slate-200' 
+                  ? 'md:border-l md:border-border' 
                   : ''
               }`}
             >
               {/* Icona Outline Grande */}
               <div className="mb-8">
-                <prop.icon className="h-12 w-12 mx-auto text-brand-yellow-400 stroke-1" />
+                <prop.icon className="h-12 w-12 mx-auto text-brand-yellow stroke-1" />
               </div>
               
               {/* Titolo del Pilastro */}
-              <h4 className="typography-h4 typography-brand-primary mb-6 font-bold">
+              <h4 className="typography-h4 text-primary mb-6 font-bold">
                 {prop.title}
               </h4>
               
               {/* Descrizione con Larghezza Limitata */}
-              <p className="typography-body text-slate-600 leading-relaxed max-w-sm mx-auto">
+              <p className="typography-body text-muted-foreground leading-relaxed max-w-sm mx-auto">
                 {prop.description}
               </p>
             </div>
@@ -68,12 +68,12 @@ const ValuePropositionSection = () => {
 
         {/* Bottom CTA - Manteniamo l'elemento esistente */}
         <div className="text-center mt-20">
-          <div className="inline-flex items-center space-x-2 text-brand-yellow-600">
-            <span className="w-2 h-2 bg-brand-yellow-400 rounded-full animate-pulse"></span>
+          <div className="inline-flex items-center space-x-2 text-brand-yellow">
+            <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse"></span>
             <span className="typography-body-small font-medium">
               Inizia il tuo viaggio autentico oggi stesso
             </span>
-            <span className="w-2 h-2 bg-brand-yellow-400 rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-brand-yellow rounded-full animate-pulse"></span>
           </div>
         </div>
       </div>

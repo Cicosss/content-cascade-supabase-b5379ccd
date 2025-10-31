@@ -43,46 +43,56 @@ export const colors = {
     border: 'hsl(var(--sidebar-border))',
     ring: 'hsl(var(--sidebar-ring))'
   },
-  // Palette Istituzionale Mia Romagna
+  // Palette Istituzionale Mia Romagna - Convertita in HSL per corretto funzionamento
   brand: {
     blue: {
-      50: '#f0f7ff',
-      100: '#e0efff',
-      200: '#bae0ff',
-      300: '#7cc8ff',
-      400: '#36abff',
-      500: '#0c8cef',
-      600: '#0066cc',
-      700: '#0052a3',
-      800: '#065296',
-      900: '#0F172A', // Blu scuro principale
-      950: '#0a0f1a'
+      DEFAULT: 'hsl(var(--brand-blue))',
+      foreground: 'hsl(var(--brand-blue-foreground))',
+      50: 'hsl(214, 100%, 97%)',
+      100: 'hsl(214, 100%, 94%)',
+      200: 'hsl(207, 100%, 87%)',
+      300: 'hsl(205, 100%, 74%)',
+      400: 'hsl(204, 100%, 60%)',
+      500: 'hsl(205, 93%, 49%)',
+      600: 'hsl(210, 100%, 40%)',
+      700: 'hsl(210, 100%, 32%)',
+      800: 'hsl(210, 96%, 31%)',
+      900: 'hsl(222, 47%, 11%)', // Blu scuro principale
+      950: 'hsl(220, 44%, 8%)'
     },
     yellow: {
-      50: '#fffbeb',
-      100: '#fef3c7',
-      200: '#fde68a',
-      300: '#fcd34d',
-      400: '#fbbf24', // Giallo/Arancione principale
-      500: '#f59e0b',
-      600: '#d97706',
-      700: '#b45309',
-      800: '#92400e',
-      900: '#78350f'
+      DEFAULT: 'hsl(var(--brand-yellow))',
+      foreground: 'hsl(var(--brand-yellow-foreground))',
+      50: 'hsl(48, 100%, 96%)',
+      100: 'hsl(48, 96%, 89%)',
+      200: 'hsl(48, 97%, 77%)',
+      300: 'hsl(46, 97%, 65%)',
+      400: 'hsl(43, 96%, 56%)', // Giallo/Arancione principale
+      500: 'hsl(38, 92%, 50%)',
+      600: 'hsl(32, 95%, 44%)',
+      700: 'hsl(26, 90%, 37%)',
+      800: 'hsl(23, 83%, 32%)',
+      900: 'hsl(21, 77%, 27%)'
+    },
+    gradient: {
+      primary: 'hsl(var(--brand-gradient-primary))',
+      soft: 'hsl(var(--brand-gradient-soft))'
     }
   },
-  // Nuova palette oro per La Mappa dell'Esploratore
+  // Palette oro per La Mappa dell'Esploratore - Convertita in HSL
   gold: {
-    50: '#fefce8',
-    100: '#fef9c3',
-    200: '#fef08a',
-    300: '#fde047',
-    400: '#CDA434', // Oro/bronzo metallico principale
-    500: '#eab308',
-    600: '#ca8a04',
-    700: '#a16207',
-    800: '#854d0e',
-    900: '#713f12',
-    950: '#422006'
+    DEFAULT: 'hsl(var(--gold))',
+    foreground: 'hsl(var(--gold-foreground))',
+    50: 'hsl(54, 91%, 95%)',
+    100: 'hsl(55, 97%, 88%)',
+    200: 'hsl(52, 98%, 77%)',
+    300: 'hsl(54, 96%, 64%)',
+    400: 'hsl(43, 64%, 51%)', // Oro/bronzo metallico principale
+    500: 'hsl(48, 89%, 50%)',
+    600: 'hsl(43, 94%, 41%)',
+    700: 'hsl(41, 88%, 33%)',
+    800: 'hsl(36, 86%, 28%)',
+    900: 'hsl(31, 80%, 25%)',
+    950: 'hsl(27, 79%, 15%)'
   }
 };

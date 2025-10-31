@@ -29,7 +29,7 @@ const AppFeaturesSection = () => {
   ];
 
   return (
-    <section ref={elementRef} className="py-16 md:py-20 bg-brand-gradient-soft relative overflow-hidden">
+    <section ref={elementRef} className="py-16 md:py-20 bg-secondary relative overflow-hidden">
       {/* Background Animation Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full animate-float animation-delay-0"></div>
@@ -40,10 +40,10 @@ const AppFeaturesSection = () => {
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
         {/* Header Section */}
         <div className={`text-center mb-12 md:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="typography-h1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-slate-900 dark:text-white mb-6 md:mb-8">
+          <h2 className="typography-h1 text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-foreground mb-6 md:mb-8">
             La Tua Guida Intelligente
           </h2>
-          <p className="typography-subtitle text-lg sm:text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto text-slate-700 dark:text-slate-300 px-4">
+          <p className="typography-subtitle text-lg sm:text-xl md:text-2xl leading-relaxed max-w-4xl mx-auto text-muted-foreground px-4">
             Un compagno di viaggio intelligente che ti offre accesso privilegiato alle autentiche meraviglie della Romagna, 
             con tecnologie avanzate e il supporto di esperti locali per un'esperienza indimenticabile
           </p>
@@ -62,10 +62,10 @@ const AppFeaturesSection = () => {
               {/* Content Section */}
               <div className={`flex-1 ${feature.imagePosition === 'right' ? 'lg:order-1' : 'lg:order-2'}`}>
                 <div className={`max-w-xl mx-auto lg:mx-0 ${feature.imagePosition === 'right' ? 'text-center lg:text-right' : 'text-center lg:text-left'} px-4 lg:px-0`}>
-                  <h3 className="typography-h2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-900 dark:text-white mb-6 md:mb-8">
+                  <h3 className="typography-h2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 md:mb-8">
                     {feature.title}
                   </h3>
-                  <p className="typography-subtitle text-lg sm:text-xl md:text-2xl text-slate-700 dark:text-slate-300">
+                  <p className="typography-subtitle text-lg sm:text-xl md:text-2xl text-muted-foreground">
                     {feature.description}
                   </p>
                 </div>
@@ -75,8 +75,8 @@ const AppFeaturesSection = () => {
               <div className={`flex-1 ${feature.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
                 <div className="relative group max-w-lg mx-auto perspective-1000">
                   {/* 3D Relief Shadow Layer */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-200/60 to-slate-400/40 rounded-3xl transform translate-x-2 translate-y-2 blur-sm"></div>
-                  <div className="absolute inset-0 bg-gradient-to-tl from-slate-300/40 to-slate-100/60 rounded-3xl transform translate-x-1 translate-y-1"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-muted/60 to-muted/40 rounded-3xl transform translate-x-2 translate-y-2 blur-sm"></div>
+                  <div className="absolute inset-0 bg-gradient-to-tl from-muted/40 to-muted/60 rounded-3xl transform translate-x-1 translate-y-1"></div>
                   
                   {/* Main Image Container */}
                   <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/10 to-secondary/10 transform transition-all duration-700 hover:scale-105 hover:rotate-1 hover:shadow-3xl group-hover:translate-y-2">
@@ -88,7 +88,7 @@ const AppFeaturesSection = () => {
                     />
                     
                     {/* Image Overlay Effects */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/10 opacity-60 group-hover:opacity-30 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-primary-foreground/10 opacity-60 group-hover:opacity-30 transition-opacity duration-500"></div>
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
                   </div>
                   
@@ -99,9 +99,9 @@ const AppFeaturesSection = () => {
                   
                   {/* Floating Particles */}
                   <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-4 left-4 w-2 h-2 bg-white/60 rounded-full animate-twinkle animation-delay-0"></div>
-                    <div className="absolute bottom-6 right-8 w-1.5 h-1.5 bg-white/50 rounded-full animate-twinkle animation-delay-500"></div>
-                    <div className="absolute top-1/3 right-4 w-1 h-1 bg-white/40 rounded-full animate-twinkle animation-delay-1000"></div>
+                    <div className="absolute top-4 left-4 w-2 h-2 bg-primary-foreground/60 rounded-full animate-twinkle animation-delay-0"></div>
+                    <div className="absolute bottom-6 right-8 w-1.5 h-1.5 bg-primary-foreground/50 rounded-full animate-twinkle animation-delay-500"></div>
+                    <div className="absolute top-1/3 right-4 w-1 h-1 bg-primary-foreground/40 rounded-full animate-twinkle animation-delay-1000"></div>
                   </div>
                 </div>
               </div>

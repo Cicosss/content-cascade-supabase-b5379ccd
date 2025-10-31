@@ -10,7 +10,7 @@ const InteractiveHeroSection = () => {
 
   return (
     <div 
-      className="relative w-full h-[100svh] md:h-screen overflow-hidden bg-slate-900"
+      className="relative w-full h-[100svh] md:h-screen overflow-hidden bg-primary"
       style={{ 
         isolation: 'isolate',
         zIndex: 0
@@ -20,7 +20,7 @@ const InteractiveHeroSection = () => {
       <HeroBackground />
 
       {/* Content Overlay - Restructured */}
-      <div className="relative z-10 h-full flex flex-col text-white pt-16 md:pt-20 lg:pt-24">
+      <div className="relative z-10 h-full flex flex-col text-primary-foreground pt-16 md:pt-20 lg:pt-24">
         {/* Brand Section - Centered vertically between navbar and buttons */}
         <div className="flex-1 flex items-center justify-center">
           <HeroBrandSection />
