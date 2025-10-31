@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { Smartphone } from 'lucide-react';
 import { useServiceVisibility } from '@/hooks/useServiceVisibility';
 
 const AppFeaturesSection = () => {

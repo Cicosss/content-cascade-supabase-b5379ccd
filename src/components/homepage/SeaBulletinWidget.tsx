@@ -27,7 +27,7 @@ const SeaBulletinWidget = () => {
     waterTemp: waterTemperature,
     waveHeight: 0.3,
     waveDescription: 'Calmo',
-    windSpeed: 8,
+    windSpeed: mockWeatherData.wind,
     windDescription: 'Brezza leggera'
   });
 
@@ -36,9 +36,9 @@ const SeaBulletinWidget = () => {
     setSeaConditions(prev => ({
       ...prev,
       waterTemp: waterTemperature,
-      windSpeed: mockWeatherData.wind
+      windSpeed: 8
     }));
-  }, [waterTemperature, mockWeatherData.wind]);
+  }, [waterTemperature]);
 
   // Get flag color and status text based on coastal status
   const getFlagStyles = () => {
