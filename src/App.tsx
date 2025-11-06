@@ -17,6 +17,7 @@ import Partner from './pages/Partner';
 import ChiSiamo from './pages/ChiSiamo';
 import Auth from './pages/Auth';
 import AdminModerationPage from './pages/AdminModerationPage';
+import AdminRoles from './pages/AdminRoles';
 import ScrollToTop from './components/ScrollToTop';
 import NotFound from './pages/NotFound';
 import TerritoryPromoter from '@/pages/TerritoryPromoter';
@@ -57,7 +58,8 @@ const AppContent = () => {
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/admin" element={<AdminModerationPage />} />
+          <Route path="/admin-moderation" element={<AdminModerationPage />} />
+          <Route path="/admin-roles" element={<AdminRoles />} />
           <Route path="/promotore-territorio" element={<TerritoryPromoter />} />
           <Route path="/respiro-del-mare" element={<RespiroDelMare />} />
           <Route path="/restaurants" element={<Restaurants />} />
