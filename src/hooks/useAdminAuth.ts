@@ -21,15 +21,11 @@ export const useAdminAuth = () => {
           return;
         }
 
-        // Fallback admin by email, plus role-based admin from user_roles
-        const isFallbackAdmin = user.email === 'luca.litti@gmail.com';
-        const { data: roles } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id);
-
-        const hasAdminRole = Array.isArray(roles) && roles.some((r: any) => r.role === 'admin');
-        const isAdmin = isFallbackAdmin || hasAdminRole;
+        // Prefer secure DB function to verify admin role
+        const { data: rpcResult, error: rpcError } = await supabase.rpc('is_admin');
+        const rpcIsAdmin = rpcError ? false : !!rpcResult;
+        const isFallbackAdmin = (user.email || '').toLowerCase() === 'luca.litti@gmail.com';
+        const isAdmin = rpcIsAdmin || isFallbackAdmin;
 
         if (isAdmin) {
           setAdminUser({ email: user.email ?? 'unknown', isAdmin: true });
