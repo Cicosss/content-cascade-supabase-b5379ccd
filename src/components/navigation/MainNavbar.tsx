@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft, MessageSquare, LayoutDashboard, Trophy, Grid3X3, Droplets, CloudSun, Camera, Zap, Heart, Shield } from 'lucide-react';
+import { Globe, Search, Menu, User, LogOut, Settings, PanelLeft, MessageSquare, LayoutDashboard, Trophy, Grid3X3, Droplets, CloudSun, Camera, Zap, Heart, Shield, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useGuestRedirect } from '@/hooks/useGuestRedirect';
 import { useScrollState } from '@/hooks/useScrollState';
@@ -212,6 +212,13 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
                       >
                         <Shield className="h-4 w-4 mr-3" />
                         Pannello Admin
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleNavigation('/admin-roles')}
+                        className="typography-small rounded-lg hover:bg-purple-500/20 cursor-pointer text-purple-200 hover:text-purple-100 focus:bg-purple-500/20 focus:text-purple-100"
+                      >
+                        <Users className="h-4 w-4 mr-3" />
+                        Gestione Ruoli
                       </DropdownMenuItem>
                       <DropdownMenuItem 
                         onClick={logoutAdmin}
