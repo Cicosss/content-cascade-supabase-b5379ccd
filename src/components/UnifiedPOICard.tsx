@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { memo } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Star, Euro, Clock, Users, Calendar, Eye, Phone, Globe } from 'lucide-react';
@@ -42,7 +41,7 @@ interface UnifiedPOICardProps {
   className?: string;
 }
 
-const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
+const UnifiedPOICard: React.FC<UnifiedPOICardProps> = memo(({
   id,
   name,
   title,
@@ -230,6 +229,8 @@ const UnifiedPOICard: React.FC<UnifiedPOICardProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
+
+UnifiedPOICard.displayName = 'UnifiedPOICard';
 
 export default UnifiedPOICard;

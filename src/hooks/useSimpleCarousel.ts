@@ -1,5 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+
+// In-memory cache for carousel data
+const carouselCache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 import { FILTER_TO_CATEGORY_MAPPING } from '@/config/categoryMapping';
 import { CarouselError } from '@/types/carousel';
 

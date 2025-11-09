@@ -35,7 +35,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             className="absolute inset-0 w-full h-full object-cover"
             onError={() => setVideoError(true)}
             onLoadedData={() => setIsLoading(false)}
@@ -45,6 +45,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             }}
           >
             <source src={videoUrl} type="video/mp4" />
+            <source src={videoUrl.replace('.mp4', '.webm')} type="video/webm" />
           </video>
           
           {isLoading && (

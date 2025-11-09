@@ -1,19 +1,19 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Cloud, Sun, CloudRain, Eye, Lock } from 'lucide-react';
+import { Eye, Lock } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import WeatherWidgetBase from '@/components/weather/WeatherWidgetBase';
 
 const BlurredWeatherWidget = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
-  const mockWeatherData = [
-    { day: 'Oggi', icon: Sun, temp: '2?°', desc: '?' },
-    { day: 'Dom', icon: Cloud, temp: '2?°', desc: '?' },
-    { day: 'Lun', icon: CloudRain, temp: '2?°', desc: '?' },
-    { day: 'Mar', icon: Sun, temp: '2?°', desc: '?' },
-  ];
+  // Se l'utente è loggato, mostra i dati reali
+  if (user) {
+    return <WeatherWidgetBase />;
+  }
 
   return (
     <Card className="p-6 relative overflow-hidden">
@@ -41,20 +41,7 @@ const BlurredWeatherWidget = () => {
 
       {/* Contenuto sfocato sotto */}
       <div className="blur-sm">
-        <h3 className="typography-h3 mb-4 flex items-center">
-          <Sun className="h-5 w-5 mr-2 text-yellow-500" strokeWidth={1.5} />
-          Meteo Rimini
-        </h3>
-        <div className="grid grid-cols-4 gap-4">
-          {mockWeatherData.map((day, index) => (
-            <div key={index} className="text-center">
-              <div className="typography-body-small text-gray-600 mb-2">{day.day}</div>
-              <day.icon className="h-8 w-8 mx-auto mb-2 text-blue-500" strokeWidth={1.5} />
-              <div className="typography-body font-semibold">{day.temp}</div>
-              <div className="typography-caption text-gray-500">{day.desc}</div>
-            </div>
-          ))}
-        </div>
+        <WeatherWidgetBase />
       </div>
     </Card>
   );

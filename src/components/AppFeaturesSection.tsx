@@ -1,5 +1,6 @@
 import React from 'react';
 import { useServiceVisibility } from '@/hooks/useServiceVisibility';
+import LazyImage from '@/components/ui/LazyImage';
 
 const AppFeaturesSection = () => {
   const { isVisible, elementRef } = useServiceVisibility({ threshold: 0.2 });
@@ -30,13 +31,6 @@ const AppFeaturesSection = () => {
 
   return (
     <section ref={elementRef} className="py-16 md:py-20 bg-secondary relative overflow-hidden">
-      {/* Background Animation Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full animate-float animation-delay-0"></div>
-        <div className="absolute bottom-20 right-10 w-24 h-24 bg-accent/5 rounded-full animate-drift animation-delay-500"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-secondary/5 rounded-full animate-pulse animation-delay-1000"></div>
-      </div>
-      
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
         {/* Header Section */}
         <div className={`text-center mb-12 md:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -71,38 +65,24 @@ const AppFeaturesSection = () => {
                 </div>
               </div>
 
-              {/* Image Section */}
+              {/* Image Section - Optimized */}
               <div className={`flex-1 ${feature.imagePosition === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
-                <div className="relative group max-w-lg mx-auto perspective-1000">
-                  {/* 3D Relief Shadow Layer */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-muted/60 to-muted/40 rounded-3xl transform translate-x-2 translate-y-2 blur-sm"></div>
-                  <div className="absolute inset-0 bg-gradient-to-tl from-muted/40 to-muted/60 rounded-3xl transform translate-x-1 translate-y-1"></div>
-                  
+                <div className="relative group max-w-lg mx-auto">
                   {/* Main Image Container */}
-                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/10 to-secondary/10 transform transition-all duration-700 hover:scale-105 hover:rotate-1 hover:shadow-3xl group-hover:translate-y-2">
-                    <img
-                      src={`https://images.unsplash.com/${feature.imagePlaceholder}?auto=format&fit=crop&w=700&h=525&q=85`}
+                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-primary/10 to-secondary/10 transform transition-all duration-700 hover:scale-105">
+                    <LazyImage
+                      src={`https://images.unsplash.com/${feature.imagePlaceholder}?auto=format&fit=crop&w=600&h=400&q=70`}
                       alt={feature.title}
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                       loading="lazy"
                     />
                     
-                    {/* Image Overlay Effects */}
+                    {/* Image Overlay Effect */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-primary-foreground/10 opacity-60 group-hover:opacity-30 transition-opacity duration-500"></div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
                   </div>
                   
-                  {/* Animated Decorative Elements */}
-                  <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-full opacity-80 animate-bounce animation-delay-300 shadow-lg"></div>
-                  <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-full opacity-70 animate-pulse animation-delay-600 shadow-lg"></div>
-                  <div className="absolute top-1/2 -right-3 w-6 h-6 bg-gradient-to-br from-secondary to-secondary/80 rounded-full opacity-60 animate-ping animation-delay-1000"></div>
-                  
-                  {/* Floating Particles */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-4 left-4 w-2 h-2 bg-primary-foreground/60 rounded-full animate-twinkle animation-delay-0"></div>
-                    <div className="absolute bottom-6 right-8 w-1.5 h-1.5 bg-primary-foreground/50 rounded-full animate-twinkle animation-delay-500"></div>
-                    <div className="absolute top-1/3 right-4 w-1 h-1 bg-primary-foreground/40 rounded-full animate-twinkle animation-delay-1000"></div>
-                  </div>
+                  {/* Decorative Element */}
+                  <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-full blur-2xl"></div>
                 </div>
               </div>
             </div>

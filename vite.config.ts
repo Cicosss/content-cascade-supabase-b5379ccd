@@ -26,4 +26,16 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ['react', 'react-dom'],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-popover'],
+          'maps': ['@googlemaps/js-api-loader'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
+  },
 }));

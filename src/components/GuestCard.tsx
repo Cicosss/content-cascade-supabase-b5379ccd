@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { CreditCard, Bus, Ticket, Percent } from 'lucide-react';
 
 const GuestCard = () => {

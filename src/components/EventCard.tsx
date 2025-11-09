@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { memo } from 'react';
 import { Card } from '@/components/ui/card';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +15,7 @@ interface EventCardProps {
   image: string;
 }
 
-const EventCard: React.FC<EventCardProps> = ({
+const EventCard: React.FC<EventCardProps> = memo(({
   id,
   title,
   date,
@@ -104,6 +103,8 @@ const EventCard: React.FC<EventCardProps> = ({
       </div>
     </Card>
   );
-};
+});
+
+EventCard.displayName = 'EventCard';
 
 export default EventCard;
