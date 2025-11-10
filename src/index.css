@@ -73,10 +73,19 @@ html, body {
   max-width: 100vw;
 }
 
-/* Prevent horizontal scroll on mobile */
-* {
+/* Prevent horizontal scroll on mobile - but exclude fixed/absolute positioned dialogs */
+*:not([data-radix-portal]):not([data-radix-popper-content-wrapper]):not([role="dialog"]):not([role="menu"]) {
   max-width: 100%;
   box-sizing: border-box;
+}
+
+/* Explicitly allow fixed/absolute dialogs to be full width */
+[data-radix-portal],
+[data-radix-popper-content-wrapper],
+[role="dialog"],
+[role="menu"],
+.sheet-content-mobile {
+  max-width: none !important;
 }
 
 /* Mobile container override */

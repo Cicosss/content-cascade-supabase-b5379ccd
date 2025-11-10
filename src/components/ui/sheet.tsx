@@ -64,8 +64,13 @@ const SheetContent = React.forwardRef<
       <SheetOverlay />
       <SheetPrimitive.Content
         ref={ref}
-        className={cn(sheetVariants({ side }), className)}
-        style={{ zIndex: Z_INDEX.sheet + 1, ...(props.style as any) }}
+        className={cn(sheetVariants({ side }), "sheet-content-mobile", className)}
+        style={{ 
+          zIndex: Z_INDEX.sheet + 1,
+          maxWidth: 'none',
+          width: side === 'right' || side === 'left' ? '100vw' : 'auto',
+          ...(props.style as any) 
+        }}
         {...props}
       >
         {children}

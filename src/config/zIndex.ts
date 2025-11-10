@@ -20,7 +20,7 @@ export const Z_INDEX = {
   dialog: 50,
   dropdown: 52,
   mobileTouchNav: 53,
-  sheet: 100, // Mobile menu over all content
+  sheet: 9999, // Mobile menu must be above everything including Google Maps
   
   // Notifications and alerts
   toast: 110,

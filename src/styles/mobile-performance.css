@@ -192,4 +192,30 @@
       transition-duration: 0.15s;
     }
   }
+  
+  /* Sheet/Dialog Mobile Protection */
+  /* Ensure mobile menu (Sheet) displays correctly */
+  [data-radix-dialog-content],
+  [role="dialog"] {
+    max-width: none !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+  
+  /* Mobile Sheet specific styling */
+  [data-radix-dialog-content][data-side="right"],
+  [data-radix-dialog-content][data-side="left"] {
+    width: 100vw !important;
+    inset-x: 0 !important;
+  }
+  
+  /* Ensure Sheet overlay covers everything on mobile */
+  [data-radix-dialog-overlay] {
+    inset: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
 }
