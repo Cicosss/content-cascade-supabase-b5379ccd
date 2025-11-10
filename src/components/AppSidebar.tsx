@@ -25,7 +25,7 @@ const AppSidebar: React.FC = () => {
   return (
     <Sidebar 
       collapsible="icon" 
-      className="glassmorphism-sidebar"
+      className="glassmorphism-sidebar hidden md:flex"
       style={{ zIndex: Z_INDEX.sidebar }}
     >
       <SidebarContent className="glassmorphism-inner">

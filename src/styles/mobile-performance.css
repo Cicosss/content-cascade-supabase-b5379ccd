@@ -218,4 +218,38 @@
     width: 100vw !important;
     height: 100vh !important;
   }
+  
+  /* CRITICAL: Force hide desktop Sidebar on mobile - Prevent layout interference */
+  .group.peer.hidden.lg\:block {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+  
+  /* Ensure SidebarProvider wrapper doesn't interfere on mobile */
+  .group\/sidebar-wrapper {
+    min-width: 100vw !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Force hide any sidebar-related elements on mobile */
+  [data-sidebar="sidebar"]:not([data-mobile="true"]),
+  [data-sidebar="trigger"],
+  [data-sidebar="rail"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  /* Ensure SidebarInset takes full width on mobile */
+  .peer-data-\[variant\=inset\]\:min-h-\[calc\(100svh-theme\(spacing\.4\)\)\] {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
 }

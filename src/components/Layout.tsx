@@ -39,12 +39,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <LocationProvider>
         <MenuStateProvider>
           <SidebarProvider defaultOpen={false}>
-              <div className="min-h-screen flex flex-col w-full">
+              <div className="min-h-screen flex flex-col w-full max-w-[100vw]">
                 {/* Layout principale con sidebar */}
-                <div className="flex flex-1 w-full">
+                <div className="flex flex-1 w-full max-w-[100vw]">
             <AppSidebar />
-                  <SidebarInset className="flex-1 flex flex-col w-full">
-                    <main className="flex-1 relative pb-20 md:pb-0 overflow-x-hidden">
+                  <SidebarInset className="flex-1 flex flex-col w-full max-w-[100vw] md:max-w-none">
+                    <main className="flex-1 relative pb-20 md:pb-0 overflow-x-hidden w-full">
                       {children}
                     </main>
                     <Footer />
