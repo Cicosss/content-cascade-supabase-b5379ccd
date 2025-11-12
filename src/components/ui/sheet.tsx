@@ -53,15 +53,30 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
   VariantProps<typeof sheetVariants> {
   portalContainer?: HTMLElement
+  mobileNoOverlay?: boolean
 }
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, portalContainer, ...props }, ref) => {
+>(({ side = "right", className, children, portalContainer, mobileNoOverlay, ...props }, ref) => {
   const defaultContainer = typeof document !== 'undefined' ? document.body : undefined
+  
+  // Detect mobile breakpoint (max-width: 767px)
+  const [isMobile, setIsMobile] = React.useState(false)
+  
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)')
+    const handleChange = () => setIsMobile(mediaQuery.matches)
+    handleChange()
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+  
+  const shouldRenderOverlay = !(isMobile && mobileNoOverlay)
+  
   return (
     <SheetPortal container={portalContainer ?? defaultContainer}>
-      <SheetOverlay />
+      {shouldRenderOverlay && <SheetOverlay />}
       <SheetPrimitive.Content
         ref={ref}
         className={cn(sheetVariants({ side }), "sheet-content-mobile", className)}
