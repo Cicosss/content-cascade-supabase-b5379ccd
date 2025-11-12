@@ -23,7 +23,7 @@ const SheetOverlay = React.forwardRef<
       "fixed inset-0 bg-black/95 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
-    style={{ zIndex: Z_INDEX.sheet }}
+    style={{ zIndex: Z_INDEX.sheet - 1 }}
     {...props}
     ref={ref}
   />

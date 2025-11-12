@@ -193,30 +193,26 @@
     }
   }
   
-  /* Sheet/Dialog Mobile Protection */
-  /* Ensure mobile menu (Sheet) displays correctly */
-  [data-radix-dialog-content],
-  [role="dialog"] {
-    max-width: none !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
+  /* Sheet Mobile Menu Fix - SOLO per il menu hamburger mobile */
+  /* Overlay specifico per Sheet mobile - sotto il contenuto */
+  .sheet-content-mobile ~ [data-radix-dialog-overlay] {
+    z-index: 9998 !important;
+    background-color: rgba(0, 0, 0, 0.65) !important;
   }
   
-  /* Mobile Sheet specific styling */
-  [data-radix-dialog-content][data-side="right"],
-  [data-radix-dialog-content][data-side="left"] {
-    width: 100vw !important;
-    inset-x: 0 !important;
+  /* Content dello Sheet mobile - sopra l'overlay */
+  .sheet-content-mobile {
+    z-index: 9999 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
   }
   
-  /* Ensure Sheet overlay covers everything on mobile */
-  [data-radix-dialog-overlay] {
-    inset: 0 !important;
-    max-width: none !important;
-    max-height: none !important;
-    width: 100vw !important;
-    height: 100vh !important;
+  /* Assicura che il contenuto interno sia visibile */
+  .sheet-content-mobile * {
+    opacity: inherit;
+    visibility: inherit;
   }
   
   /* CRITICAL: Force hide desktop Sidebar on mobile - Prevent layout interference */
