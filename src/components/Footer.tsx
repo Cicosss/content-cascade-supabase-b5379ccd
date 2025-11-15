@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import MiaRomagnaLogo from './MiaRomagnaLogo';
 
-const Footer = () => {
+const FooterComponent = () => {
   return (
     <footer className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white py-16 mt-16 overflow-hidden pb-24 md:pb-16">
       {/* Geometric Background Elements */}
@@ -203,5 +203,8 @@ const Footer = () => {
     </footer>
   );
 };
+
+// Memoized export for performance optimization
+const Footer = React.memo(FooterComponent);
 
 export default Footer;

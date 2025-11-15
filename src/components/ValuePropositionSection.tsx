@@ -2,7 +2,7 @@
 import React from 'react';
 import { MapPin, ChefHat, Camera } from 'lucide-react';
 
-const ValuePropositionSection = () => {
+const ValuePropositionSectionComponent = () => {
   const propositions = [
     {
       icon: MapPin,
@@ -80,5 +80,8 @@ const ValuePropositionSection = () => {
     </section>
   );
 };
+
+// Memoized export for performance optimization
+const ValuePropositionSection = React.memo(ValuePropositionSectionComponent);
 
 export default ValuePropositionSection;
