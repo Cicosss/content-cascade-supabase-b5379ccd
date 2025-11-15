@@ -815,14 +815,8 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      move_expired_events: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      is_admin: { Args: never; Returns: boolean }
+      move_expired_events: { Args: never; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "promoter" | "user"

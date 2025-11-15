@@ -284,7 +284,7 @@ const MainNavbar: React.FC<MainNavbarProps> = ({ onMobileMenuChange }) => {
               <SheetContent 
                 side="right"
                 mobileNoOverlay
-                className="w-[100vw] sm:w-[380px] md:w-[420px] lg:w-[480px] bg-background md:bg-background/95 backdrop-blur-none md:backdrop-blur-md border-l border-white/10 overflow-y-auto text-foreground"
+                className="w-[100vw] sm:w-[380px] md:w-[420px] lg:w-[480px] bg-background/90 md:bg-background/95 backdrop-blur-sm md:backdrop-blur-md border-l border-white/10 overflow-y-auto text-foreground"
                 data-mobile-menu="true"
               >
                 {/* A11y: Title/Description per il dialog Sheet */}
