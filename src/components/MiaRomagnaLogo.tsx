@@ -7,7 +7,7 @@ interface MiaRomagnaLogoProps {
   className?: string;
 }
 
-const MiaRomagnaLogo: React.FC<MiaRomagnaLogoProps> = ({ 
+const MiaRomagnaLogoComponent: React.FC<MiaRomagnaLogoProps> = ({ 
   width = 40, 
   height = 40, 
   className = "" 
@@ -38,5 +38,8 @@ const MiaRomagnaLogo: React.FC<MiaRomagnaLogoProps> = ({
     />
   );
 };
+
+// Memoized export for performance optimization
+const MiaRomagnaLogo = React.memo(MiaRomagnaLogoComponent);
 
 export default MiaRomagnaLogo;
