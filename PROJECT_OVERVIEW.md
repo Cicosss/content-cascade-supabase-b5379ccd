@@ -491,7 +491,10 @@ Ottimizzazioni performance attive:
 - Coesistono due tabelle preferiti (`favorites` vs `user_favorites`) — possibile consolidamento.
 - Coesistono `events` (legacy) e `points_of_interest` con `poi_type='experience'` — strategia da unificare.
 - Numerosi hook con responsabilità sovrapposte (`usePOIData`, `useOptimizedPOIData`, `useSimplifiedPOIData`, `useSmartPOIFetching`) — refactor verso un'unica fonte di verità consigliato.
-- Service worker / PWA non ancora attivi.
+- **Google Fonts caricati due volte**: `<link>` in `index.html` (con preconnect) **e** `@import url(...)` in `index.css`. Tenere solo il `<link>` per performance.
+- **Service Worker non registrato**: il `manifest.json` è pronto ma manca lo SW per offline cache / install prompt completo.
+- File `manifest.json` referenzia `screenshot-mobile.png`, `screenshot-desktop.png`, `icon-192x192.png`, `icon-512x512.png` — verificare che siano effettivamente presenti in `public/`.
+
 
 ---
 
