@@ -273,31 +273,115 @@ Tipi DB in `src/integrations/supabase/types.ts` (read-only, generati).
   → carouselMetrics → insert su `carousel_metrics`
 ```
 
-### 8.3 Submission POI (Promoter)
+### 8.3 Submission POI — Pannello Promotore del Territorio
+**Rotta**: `/promotore-territorio` → `TerritoryPromoter.tsx`
+
+**Accesso**: attualmente la pagina mostra prima `PasswordAuth` (gate password legacy ancora presente nel codice). Il modello target — già implementato negli hook `useAdminAuth` / `useUserRoles` — prevede accesso via ruolo `promoter` o `admin` nella tabella `user_roles`.
+
+**Composizione UI**:
+- `POISubmissionForm` — entry-point form (può montare il `WizardController`).
+- `WizardController` (in `src/components/territory/wizard/`) — wizard 4 step:
+  1. **POITypeSelector** — scelta `place` vs `event`.
+  2. **Step1BasicInfo** — nome, descrizione, categoria, target audience.
+  3. **Step2LocationDetails** — indirizzo (Google Places autocomplete), lat/lng, tag.
+  4. **Step3ScheduleMedia** — orari, date evento, prezzo, media upload, contatti.
+- `WizardNavigation` — pulsanti precedente/successivo/invio con validazione step-by-step.
+- `PromoterStats` — contatori submissions (pending/approved/rejected) per il promoter.
+- `ImprovedSubmissionsList` — lista delle proprie submissions con `ProposalCard` e `ProgressBar`.
+- `TerritoryMediaUploader` — upload immagini/video.
+
+**Flusso dati**:
 ```
-[/promotore-territorio → TerritoryPromoter.tsx]
-  → controllo ruolo via useAdminAuth (richiede 'promoter' o 'admin')
-  → WizardController (4 step: Tipo → Info → Luogo → Orari/Media)
-  → usePOIFormData (state form) + usePOIFormValidation (zod)
-  → TerritoryMediaUploader → edge `upload-image` → ImgBB URL
-  → AddressAutocomplete → Google Places via edge `search-places`
-  → usePOIFormSubmission
-      → supabase.from('poi_submissions').insert(...)
-      → trigger DB set_submitter_id
-      → edge `send-poi-notification` → email admin via Resend
+WizardController
+  ├─ usePOIFormData         (state form + categorie disponibili)
+  ├─ usePOIFormValidation   (regole zod step-by-step)
+  └─ usePOIFormSubmission
+       ├─ TerritoryMediaUploader → edge `upload-image` → ImgBB → URL salvati in formData.images
+       ├─ AddressAutocomplete → useAddressAutocomplete → Google Places (via edge `search-places`)
+       └─ supabase.from('poi_submissions').insert({ ...formData, status: 'pending' })
+            ├─ trigger DB `set_submitter_id` → popola submitter_id = auth.uid()
+            └─ edge `send-poi-notification` → email admin (Resend)
+
+useSubmissions → fetch submissions personali (RLS: submitter_id = auth.uid())
 ```
 
-### 8.4 Moderazione (Admin)
-```
-[/admin-moderation → AdminModerationPage.tsx]
-  → usePOISubmissions → fetch poi_submissions (RLS: is_admin)
-  → ModerationTabs (pending / approved / rejected)
-  → useModerationActions:
-      - approve → INSERT in points_of_interest + UPDATE submission status
-      - reject → UPDATE status + admin_notes
-      - edit → EditSubmissionModal / EditApprovedModal
-  → useApprovedExperiences gestisce esperienze già approvate
-```
+**RLS rilevante** sulla tabella `poi_submissions`:
+- `Authenticated users can create submissions` (INSERT con `auth.uid() IS NOT NULL`).
+- `Submitter can view own submissions` (SELECT se `submitter_id = auth.uid()`).
+- `Admins can view all submissions` / update / delete (via `is_admin()`).
+
+---
+
+### 8.4 Pannello Admin — Moderazione & Gestione POI
+**Rotta**: `/admin-moderation` → `AdminModerationPage.tsx` → `AdminPanel.tsx`
+
+**Gate accesso**: `useAdminAuth` verifica `has_role(uid, 'admin')` o email hardcoded `luca.litti@gmail.com` (via funzione DB `is_admin()`). In caso contrario, schermata "Accesso negato".
+
+**AdminPanel — Sezioni principali**:
+
+1. **Moderazione submissions** (`src/components/admin/moderation/`)
+   - `ModerationStats` — contatori globali (totale, pending, approved, rejected).
+   - `ModerationTabs` — switch tra pending / approved / rejected.
+   - `ModerationFilters` + `useSubmissionFilters` — filtri per categoria, data, testo.
+   - `PendingSubmissionsTable` — tabella editabile delle proposte da moderare.
+   - `ApprovedExperiencesTable` — tabella delle esperienze già approvate.
+   - `POISubmissionCard/` — card dettagliata (header, descrizione, dettagli, tag, azioni).
+   - `ModerationModal` / `EditSubmissionModal` / `EditApprovedModal` — modifica inline.
+   - `RejectSubmissionModal` — flusso di rifiuto con `admin_notes`.
+   - `DeleteConfirmModal` / `DeApprovalConfirmDialog` — conferme distruttive.
+
+   **Hook centrali**:
+   - `usePOISubmissions` — fetch con realtime/refresh.
+   - `useModerationActions`:
+     - **Approve** → `INSERT` in `points_of_interest` (status `approved`) + `UPDATE` su `poi_submissions` (`status='approved'`, `moderated_by`, `moderated_at`).
+     - **Reject** → `UPDATE` con `status='rejected'` + `admin_notes`.
+     - **Edit** → `UPDATE` diretto su `poi_submissions` o `points_of_interest`.
+
+2. **Inserimento manuale POI** (`src/components/admin/form/`)
+   - `POIFormComponent` — form completo per creare un POI direttamente come admin (bypassa il flusso submission).
+   - Campi modulari da `src/components/admin/form-fields/`:
+     - `BasicInfoFields` (nome, descrizione, categoria)
+     - `POITypeSelector` (place/event)
+     - `LocationFields` (indirizzo + Google Places autocomplete)
+     - `ContactInfoFields` (telefono, email, sito web)
+     - `DateTimeFields` (start/end datetime per eventi)
+     - `TagsSelector` (tag multipli)
+   - `MediaUploader` / `CompactMediaUploader` — upload immagini su Supabase Storage `assets` o ImgBB.
+   - Validazione via `useFormValidation` + `usePOIValidation`.
+   - Submit → `INSERT` diretta in `points_of_interest` (RLS: `Allow authenticated users to insert POI`).
+
+3. **Gestione esperienze approvate** (`ApprovedExperiencesPanel`)
+   - `ApprovedExperiencesHeader` + `ApprovedExperiencesSummary` (KPI).
+   - `ApprovedExperiencesList` con `ApprovedExperienceCard`.
+   - Hook `useApprovedExperiences` — CRUD su `points_of_interest` filtrato per `poi_type='experience'`.
+   - Trigger DB `check_and_move_expired_events` sposta automaticamente le esperienze scadute in `eventi_passati`.
+
+4. **Import bulk via CSV** (`DynamicCsvUploader`, `ExperienceCsvUploader`, `CsvFileInput`, `CsvFormatGuide`)
+   - Upload file CSV → parsing con `utils/csvParser.ts` → validazione con `utils/csvValidationRules.ts` → preview → bulk insert su `points_of_interest`.
+   - `useSchemaColumns` — introspezione runtime delle colonne DB per mappatura dinamica.
+
+5. **Gestione ruoli utente** — pagina separata `/admin-roles` → `AdminRoles.tsx`
+   - `UserRoleCard` per ogni utente.
+   - `useUserRoles` (CRUD `user_roles`) per assegnare/rimuovere ruoli `admin | moderator | promoter | user`.
+   - Notifiche toast su successo/errore.
+
+---
+
+### 8.5 POI Dinamici — Categorizzazione & Tipologie
+I POI sono **dinamici** in due dimensioni nella stessa tabella `points_of_interest`:
+
+- **`poi_type`** = `place` (luogo permanente: ristorante, museo, spiaggia, …) **oppure** `experience` (evento con `start_datetime`/`end_datetime`).
+- **`category`** = stringa libera mappata in `src/config/categoryMapping.ts` e `categoryIcons.ts` (es. *Ristoranti*, *Musei*, *Spiagge*, *Concerti*, *Famiglia*…).
+- **`tags`** = array libero filtrabile via `TagGroupFilter` / `TagsSelector`.
+- **`target_audience`** (`everyone`, `family`, …) per filtri tematici (es. pagina `/family`).
+
+**Ranking dinamico**: trigger `update_priority_score_trigger` ricalcola `priority_score` su ogni update usando `calculate_priority_score(avg_rating, created_at, reviews_count)` — i carousel ordinano per questo punteggio.
+
+**Filtri runtime** (`src/config/filtersConfig.ts`, `advancedFiltersConfig.ts`):
+- Categoria, tag, periodo (oggi/settimana/custom), distanza utente, target audience.
+- Stato sincronizzato in URL (`useURLFilters`) e stabilizzato (`useStableFilters`).
+
+
 
 ### 8.5 Preferiti & Passaporto
 ```
@@ -369,6 +453,7 @@ Ottimizzazioni performance attive:
 ## 12. Punti di Attenzione / Debito Tecnico
 
 - Email admin hardcoded in funzione `is_admin()` (`luca.litti@gmail.com`) — fallback temporaneo, andrebbe sostituito da soli ruoli DB.
+- **`PasswordAuth` legacy** ancora attivo in `TerritoryPromoter.tsx` come gate iniziale: dovrebbe essere sostituito dal controllo ruolo `promoter`/`admin` (hook già pronti).
 - Coesistono due tabelle preferiti (`favorites` vs `user_favorites`) — possibile consolidamento.
 - Coesistono `events` (legacy) e `points_of_interest` con `poi_type='experience'` — strategia da unificare.
 - Numerosi hook con responsabilità sovrapposte (`usePOIData`, `useOptimizedPOIData`, `useSimplifiedPOIData`, `useSmartPOIFetching`) — refactor verso un'unica fonte di verità consigliato.
