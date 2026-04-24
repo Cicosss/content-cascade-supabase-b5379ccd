@@ -23,7 +23,7 @@ const Restaurants = () => {
     setLoading(true);
     try {
       // @ts-ignore - Workaround for Supabase TypeScript issue
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('points_of_interest')
         .select('*')
         .eq('macro_area', 'Gusto & Sapori')
