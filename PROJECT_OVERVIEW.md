@@ -419,18 +419,52 @@ CoastalStatusWidget → useCoastalStatus
 
 ## 10. Configurazione Build & Tooling
 
-- **Vite** (`vite.config.ts`) — alias `@/` → `src/`, plugin React SWC.
-- **Tailwind** (`tailwind.config.ts`) — modulare via `src/config/tailwind/{colors,animations,typography,plugins}.ts`.
-- **ESLint** (`eslint.config.js`) — flat config, `@typescript-eslint/no-unused-vars: "warn"`.
-- **TypeScript** — `tsconfig.json` con path aliases.
+### Entry Point
+- **`src/main.tsx`** — `createRoot(document.getElementById('root')).render(<App />)` (React 18 concurrent root). Throw esplicito se manca `#root`.
+
+### Vite (`vite.config.ts`)
+- Plugin: `@vitejs/plugin-react-swc` + `lovable-tagger` (solo in `mode === 'development'` per markup dei componenti nel preview).
+- Dev server: `host: "::"` (IPv6/all interfaces), porta **8080**.
+- Alias: `@/` → `src/`. **Dedupe React** + `react-dom` per evitare doppia istanza (causa di errori invariant in librerie peer-dep).
+- `optimizeDeps.include` forzato su `react`, `react-dom`.
+- **Code splitting manuale** (`build.rollupOptions.output.manualChunks`):
+  - `vendor` → react, react-dom, react-router-dom
+  - `ui` → Radix Dialog, DropdownMenu, Popover
+  - `maps` → `@googlemaps/js-api-loader`
+- `chunkSizeWarningLimit: 1000` (KB).
+
+### Tailwind & Styling
+- **Tailwind** (`tailwind.config.ts`) — config splittata in `src/config/tailwind/{colors,animations,typography,plugins}.ts`.
 - **PostCSS** (`postcss.config.js`) — Tailwind + autoprefixer.
+- **`src/index.css`** — `@tailwind base/components/utilities` + import Google Fonts (⚠️ duplicati anche in `index.html`) + import dei 10 file CSS modulari + classi di **isolamento Google Maps** (`map-isolation-container`, `map-instance-isolated`, `poi-card-protected`, `carousel-container-protected`) per evitare conflitti di rendering.
 
 ### File CSS modulari (importati da `index.css`)
-- `base.css`
-- `typography-official.css` (sistema tipografico ufficiale Playfair + Inter)
-- `mobile-typography.css`, `mobile-performance.css`
-- `glassmorphism.css`, `hover-scale.css`, `brand-logotype.css`
-- `components.css`, `services-optimized.css`, `animations.css`
+- `base.css`, `typography-official.css`, `mobile-typography.css`, `mobile-performance.css`, `animations.css`, `components.css`, `services-optimized.css`, `brand-logotype.css`, `hover-scale.css`, `glassmorphism.css`.
+
+### Linting & TS
+- **ESLint** (`eslint.config.js`) — flat config v9, `@typescript-eslint/no-unused-vars: "warn"`.
+- **TypeScript** — `tsconfig.json` (root) + `tsconfig.app.json` (app, con `types: ["node", "google.maps"]`) + `tsconfig.node.json` (vite config). Path alias `@/*`.
+
+### Z-Index Scale globale (`src/config/zIndex.ts`)
+Scala numerica centralizzata per evitare conflitti di stacking: `background(0) → heroVideo(1) → content(10) → sidebar(35) → navbar(40) → scrollToTop(48) → dialog(50)` ecc. Usata in tutti i componenti con stacking context.
+
+### Menu Config (`src/config/menuConfig.ts`)
+Definizione tipizzata (`MenuSection[]`) della sidebar e bottom-nav: ogni item ha `id`, `title`, `url`, `icon` (lucide), `badge?`, `isSpecial?`. Permette di gestire la struttura di navigazione in un unico file.
+
+### PWA (`public/manifest.json`)
+- `display: standalone`, `orientation: portrait-primary`, `lang: it`, `theme_color: #2563eb`, `background_color: #ffffff`.
+- **Icone**: `favicon.ico`, `icon-192x192.png`, `icon-512x512.png` (purpose `maskable any`).
+- **Screenshots** mobile (390×844) e desktop (1280×720) per install banner.
+- `categories: [travel, entertainment, lifestyle]`.
+- Service Worker **non ancora registrato** (PWA installabile ma senza offline cache).
+
+### SEO (`public/robots.txt`)
+Whitelist esplicita per `Googlebot`, `Bingbot`, `Twitterbot`, `facebookexternalhit` e fallback `*: Allow /`.
+
+### Migrations Supabase
+- ~36 file SQL versionati in `supabase/migrations/` (read-only via tooling Lovable). Storia completa di schema, RLS, funzioni, trigger.
+
+
 
 ---
 
