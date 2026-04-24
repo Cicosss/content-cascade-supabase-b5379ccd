@@ -453,6 +453,7 @@ Ottimizzazioni performance attive:
 ## 12. Punti di Attenzione / Debito Tecnico
 
 - Email admin hardcoded in funzione `is_admin()` (`luca.litti@gmail.com`) — fallback temporaneo, andrebbe sostituito da soli ruoli DB.
+- **`PasswordAuth` legacy** ancora attivo in `TerritoryPromoter.tsx` come gate iniziale: dovrebbe essere sostituito dal controllo ruolo `promoter`/`admin` (hook già pronti).
 - Coesistono due tabelle preferiti (`favorites` vs `user_favorites`) — possibile consolidamento.
 - Coesistono `events` (legacy) e `points_of_interest` con `poi_type='experience'` — strategia da unificare.
 - Numerosi hook con responsabilità sovrapposte (`usePOIData`, `useOptimizedPOIData`, `useSimplifiedPOIData`, `useSmartPOIFetching`) — refactor verso un'unica fonte di verità consigliato.
