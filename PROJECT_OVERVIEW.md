@@ -84,7 +84,12 @@ src/
 ├── services/             # 14 servizi (cache, API client, fallback, metriche)
 ├── contexts/             # AuthContext, LocationContext, MenuStateContext
 ├── config/               # Tailwind config split, menu, filtri, z-index, categorie
-├── constants/, types/, utils/, data/
+├── constants/            # navigation.ts (rotte, label menu)
+├── types/                # Type definitions: api, carousel, poi, poiDetail, restaurant, youtube.d
+├── utils/                # categoryIcons, contentTransformers, csvParser, csvValidationRules,
+│                         # dateUtils, devLogger, distanceCalculator, environmentDebug,
+│                         # experienceMapper, locationUtils, url
+├── data/                 # webcamData.ts (lista webcam statica)
 ├── styles/               # CSS modulari (base, glassmorphism, animations, ...)
 ├── integrations/supabase/ # client.ts (auto-generato) + types.ts
 ├── App.tsx               # Router + Providers
