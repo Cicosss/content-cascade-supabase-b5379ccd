@@ -48,6 +48,15 @@
 - Project ID: `jxkelzoxxsixqfblnjwj`.
 - Client SDK: `@supabase/supabase-js` v2.
 
+### HTML Shell (`index.html`)
+- **Lingua**: `it`, viewport mobile `fit-cover`, `apple-mobile-web-app-capable`, status bar `black-translucent`.
+- **PWA**: collegamento a `public/manifest.json`, titolo "Mia Romagna" (installabile su mobile).
+- **SEO/Social**: meta description, Open Graph (`og:type`, `og:image`, `og:title`), Twitter Cards (`summary_large_image`, handle `@miaromagna`).
+- **Favicon**: SVG hostato su Google Cloud Storage.
+- **Google Fonts**: Playfair Display (400/600/700) + Inter (400/600) caricati con `preconnect` per ottimizzare il TTFB.
+- **Google Analytics 4** (gtag.js) — Measurement ID `G-K25T1E4ZQT`, caricato `async`.
+- **ImgBB Upload Script** (`https://imgbb.com/upload.js`) caricato `async` per upload diretto immagini.
+
 ---
 
 ## 3. Struttura delle Cartelle
