@@ -48,6 +48,15 @@
 - Project ID: `jxkelzoxxsixqfblnjwj`.
 - Client SDK: `@supabase/supabase-js` v2.
 
+### HTML Shell (`index.html`)
+- **Lingua**: `it`, viewport mobile `fit-cover`, `apple-mobile-web-app-capable`, status bar `black-translucent`.
+- **PWA**: collegamento a `public/manifest.json`, titolo "Mia Romagna" (installabile su mobile).
+- **SEO/Social**: meta description, Open Graph (`og:type`, `og:image`, `og:title`), Twitter Cards (`summary_large_image`, handle `@miaromagna`).
+- **Favicon**: SVG hostato su Google Cloud Storage.
+- **Google Fonts**: Playfair Display (400/600/700) + Inter (400/600) caricati con `preconnect` per ottimizzare il TTFB.
+- **Google Analytics 4** (gtag.js) — Measurement ID `G-K25T1E4ZQT`, caricato `async`.
+- **ImgBB Upload Script** (`https://imgbb.com/upload.js`) caricato `async` per upload diretto immagini.
+
 ---
 
 ## 3. Struttura delle Cartelle
@@ -75,7 +84,12 @@ src/
 ├── services/             # 14 servizi (cache, API client, fallback, metriche)
 ├── contexts/             # AuthContext, LocationContext, MenuStateContext
 ├── config/               # Tailwind config split, menu, filtri, z-index, categorie
-├── constants/, types/, utils/, data/
+├── constants/            # navigation.ts (rotte, label menu)
+├── types/                # Type definitions: api, carousel, poi, poiDetail, restaurant, youtube.d
+├── utils/                # categoryIcons, contentTransformers, csvParser, csvValidationRules,
+│                         # dateUtils, devLogger, distanceCalculator, environmentDebug,
+│                         # experienceMapper, locationUtils, url
+├── data/                 # webcamData.ts (lista webcam statica)
 ├── styles/               # CSS modulari (base, glassmorphism, animations, ...)
 ├── integrations/supabase/ # client.ts (auto-generato) + types.ts
 ├── App.tsx               # Router + Providers
@@ -222,6 +236,10 @@ Tipi DB in `src/integrations/supabase/types.ts` (read-only, generati).
 | **Unsplash CDN** | Immagini placeholder/hero (con `?auto=format` per WebP) | URL diretto |
 | **YouTube Embed** | Video background pagina Respiro del Mare | iframe API |
 | **Open-Meteo / API meteo** | Dati meteo costieri | Via edge `get-weather` |
+| **Google Analytics 4** | Tracking pageview e eventi | gtag.js (`G-K25T1E4ZQT`) in `index.html` |
+| **Google Fonts** | Webfont Playfair + Inter | `<link>` con preconnect in `index.html` |
+| **ImgBB JS Widget** | Upload diretto immagini lato client | Script `imgbb.com/upload.js` in `index.html` |
+| **Google Cloud Storage** | Hosting favicon SVG e immagini social/OG | URL statici in `index.html` |
 
 ---
 
