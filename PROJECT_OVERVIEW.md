@@ -236,6 +236,10 @@ Tipi DB in `src/integrations/supabase/types.ts` (read-only, generati).
 | **Unsplash CDN** | Immagini placeholder/hero (con `?auto=format` per WebP) | URL diretto |
 | **YouTube Embed** | Video background pagina Respiro del Mare | iframe API |
 | **Open-Meteo / API meteo** | Dati meteo costieri | Via edge `get-weather` |
+| **Google Analytics 4** | Tracking pageview e eventi | gtag.js (`G-K25T1E4ZQT`) in `index.html` |
+| **Google Fonts** | Webfont Playfair + Inter | `<link>` con preconnect in `index.html` |
+| **ImgBB JS Widget** | Upload diretto immagini lato client | Script `imgbb.com/upload.js` in `index.html` |
+| **Google Cloud Storage** | Hosting favicon SVG e immagini social/OG | URL statici in `index.html` |
 
 ---
 
